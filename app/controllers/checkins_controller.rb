@@ -3,7 +3,7 @@ class CheckinsController < ApplicationController
   load_and_authorize_resource
   before_filter :get_user_if_nil
   helper_method :get_basket
-  cache_sweeper :page_sweeper, :only => [:create, :update, :destroy]
+  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkins
   # GET /checkins.xml
