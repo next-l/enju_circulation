@@ -5,6 +5,7 @@ class CheckoutsController < ApplicationController
   before_filter :get_user, :except => :index
   helper_method :get_item
   after_filter :convert_charset, :only => :index
+  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkouts
   # GET /checkouts.xml
