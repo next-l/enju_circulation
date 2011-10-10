@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   resources :checkins
   resources :checked_items
   resources :checkouts
+  resources :reserves
   resources :items do
     resources :checked_items
     resources :item_has_use_restrictions
