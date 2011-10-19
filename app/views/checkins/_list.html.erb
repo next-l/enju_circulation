@@ -1,5 +1,6 @@
 <div style="color: red"><%= flash[:message] -%></div>
 
+<div class="search_form">
 <%= form_for @checkin, :html => {:method => :post}, :url => user_basket_checkins_path(@basket.user, @basket, :mode => 'list'), :remote => true do |f| -%>
 
   <p><%= t('activerecord.attributes.item.item_identifier') -%>:
@@ -7,6 +8,7 @@
     <%= f.hidden_field :librarian_id, :value => current_user.id -%>
     <%= submit_tag t('checkin.checkin') -%></p>
 <%- end -%>
+</div>
 
 <table class="index">
   <tr>
