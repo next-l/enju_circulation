@@ -128,6 +128,7 @@ class CheckoutsController < ApplicationController
     @checkout.destroy
 
     respond_to do |format|
+      flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.checkout'))
       format.html { redirect_to user_checkouts_url(@checkout.user) }
       format.xml  { head :ok }
     end

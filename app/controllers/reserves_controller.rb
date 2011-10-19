@@ -185,6 +185,7 @@ class ReservesController < ApplicationController
     end
 
     respond_to do |format|
+      flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.reserve'))
       format.html { redirect_to user_reserves_url(@user) }
       format.xml  { head :ok }
     end
