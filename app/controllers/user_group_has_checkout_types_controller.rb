@@ -1,5 +1,4 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
-  before_filter :check_client_ip_address
   load_and_authorize_resource
   helper_method :get_user_group, :get_checkout_type
   before_filter :prepare_options, :only => [:new, :edit]
