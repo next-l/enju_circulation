@@ -24,14 +24,14 @@ class ReservesController < ApplicationController
     end
 
     if params[:mode] == 'hold' and current_user.has_role?('Librarian')
-      @reserves = Reserve.hold.order('id DESC').page(params[:page])
+      @reserves = Reserve.hold.order('reserves.id DESC').page(params[:page])
     else
       if @user
         # 一般ユーザ
-        @reserves = @user.reserves.order('id DESC').page(params[:page])
+        @reserves = @user.reserves.order('reserves.id DESC').page(params[:page])
       else
         # 管理者
-        @reserves = Reserve.order('id DESC').includes(:manifestation).page(params[:page])
+        @reserves = Reserve.order('reserve.id DESC').includes(:manifestation).page(params[:page])
       end
     end
 
