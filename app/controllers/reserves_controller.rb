@@ -31,7 +31,7 @@ class ReservesController < ApplicationController
         @reserves = @user.reserves.order('reserves.id DESC').page(params[:page])
       else
         # 管理者
-        @reserves = Reserve.order('reserve.id DESC').includes(:manifestation).page(params[:page])
+        @reserves = Reserve.order('reserves.id DESC').includes(:manifestation).page(params[:page])
       end
     end
 
