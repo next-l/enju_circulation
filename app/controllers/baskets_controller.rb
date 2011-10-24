@@ -59,7 +59,7 @@ class BasketsController < ApplicationController
     respond_to do |format|
       if @basket.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.basket'))
-        format.html { redirect_to user_basket_checked_items_url(@basket.user, @basket) }
+        format.html { redirect_to basket_checked_items_url(@basket) }
         format.xml  { render :xml => @basket, :status => :created, :location => @basket }
       else
         format.html { render :action => "new" }
@@ -73,7 +73,7 @@ class BasketsController < ApplicationController
   def update
     librarian = current_user
     unless @basket.basket_checkout(librarian)
-      redirect_to user_basket_checked_items_url(@basket.user, @basket)
+      redirect_to basket_checked_items_url(@basket)
       return
     end
 
@@ -86,7 +86,7 @@ class BasketsController < ApplicationController
         format.html { redirect_to(user_checkouts_url(@basket.user)) }
         format.xml  { head :ok }
       else
-        format.html { redirect_to(user_basket_checked_items_url(@basket.user, @basket)) }
+        format.html { redirect_to(basket_checked_items_url(@basket)) }
         format.xml  { head :ok }
       end
     end

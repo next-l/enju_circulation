@@ -3,11 +3,11 @@ Rails.application.routes.draw do
   resources :item_has_use_restrictions
   resources :lending_policies
   resources :circulation_statuses
+  resources :baskets do
+    resources :checked_items
+    resources :checkins
+  end
   resources :users do
-    resources :baskets do
-      resources :checked_items
-      resources :checkins
-    end
     resources :checkouts
     resources :reserves
   end
@@ -19,9 +19,6 @@ Rails.application.routes.draw do
   resources :user_group_has_checkout_types
   resources :checkout_types do
     resources :user_group_has_checkout_types
-  end
-  resources :baskets do
-    resources :checked_items
   end
   resources :user_groups do
     resources :user_group_has_checkout_types

@@ -87,20 +87,20 @@ class CheckedItemsController < ApplicationController
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checked_item'))
 
         if params[:mode] == 'list'
-          format.html { redirect_to(user_basket_checked_items_url(@basket.user, @basket, :mode => 'list')) }
+          format.html { redirect_to(basket_checked_items_url(@basket, :mode => 'list')) }
           format.xml  { render :xml => @checked_item, :status => :created, :location => @checked_item }
-          format.js { redirect_to(user_basket_checked_items_url(@basket.user, @basket, :format => :js)) }
+          format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
         else
           flash[:message] << @checked_item.errors[:base]
-          format.html { redirect_to(user_basket_checked_items_url(@basket.user, @basket)) }
+          format.html { redirect_to(basket_checked_items_url(@basket)) }
           format.xml  { render :xml => @checked_item, :status => :created, :location => @checked_item }
         end
       else
         flash[:message] << @checked_item.errors[:base]
         if params[:mode] == 'list'
-          format.html { redirect_to(user_basket_checked_items_url(@basket.user, @basket, :mode => 'list')) }
+          format.html { redirect_to(basket_checked_items_url(@basket, :mode => 'list')) }
           format.xml  { render :xml => @checked_item, :status => :created, :location => @checked_item }
-          format.js { redirect_to(user_basket_checked_items_url(@basket.user, @basket, :format => :js)) }
+          format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
         else
           format.html { render :action => "new" }
           format.xml  { render :xml => @checked_item.errors, :status => :unprocessable_entity }
@@ -143,7 +143,7 @@ class CheckedItemsController < ApplicationController
     @checked_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to(user_basket_checked_items_url(@checked_item.basket.user, @checked_item.basket)) }
+      format.html { redirect_to(basket_checked_items_url(@checked_item.basket)) }
       format.xml  { head :ok }
     end
   end
