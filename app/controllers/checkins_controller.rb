@@ -5,7 +5,7 @@ class CheckinsController < ApplicationController
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkins
-  # GET /checkins.xml
+  # GET /checkins.json
   def index
     # かごがない場合、自動的に作成する
     get_basket
@@ -20,19 +20,19 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @checkins.to_xml }
+      format.json { render :json => @checkins.to_json }
       format.js
     end
   end
 
   # GET /checkins/1
-  # GET /checkins/1.xml
+  # GET /checkins/1.json
   def show
     #@checkin = Checkin.find(params[:id])
 
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @checkin.to_xml }
+      format.json { render :json => @checkin.to_json }
     end
   end
 
@@ -48,7 +48,7 @@ class CheckinsController < ApplicationController
   end
 
   # POST /checkins
-  # POST /checkins.xml
+  # POST /checkins.json
   def create
     get_basket
     unless @basket
@@ -75,7 +75,7 @@ class CheckinsController < ApplicationController
     respond_to do |format|
       unless item
         format.html { redirect_to basket_checkins_url(@checkin.basket) }
-        format.xml  { render :xml => @checkin.errors.to_xml }
+        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
         format.js {
           redirect_to basket_checkins_url(@checkin.basket, :mode => 'list', :format => :js)
         }
@@ -88,13 +88,13 @@ class CheckinsController < ApplicationController
           message = @checkin.item_checkin(current_user)
           flash[:message] << message if message
           format.html { redirect_to basket_checkins_url(@checkin.basket) }
-          format.xml  { render :xml => @checkin, :status => :created, :location => checkin_url(@checkin) }
+          format.json { render :json => @checkin, :status => :created, :location => checkin_url(@checkin) }
           format.js {
             redirect_to basket_checkins_url(@checkin.basket, :mode => 'list', :format => :js)
           }
         else
           format.html { render :action => "new" }
-          format.xml  { render :xml => @checkin.errors.to_xml }
+          format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
           format.js {
             redirect_to basket_checkins_url(@basket, :mode => 'list', :format => :js)
           }
@@ -104,7 +104,7 @@ class CheckinsController < ApplicationController
   end
 
   # PUT /checkins/1
-  # PUT /checkins/1.xml
+  # PUT /checkins/1.json
   def update
     #@checkin = Checkin.find(params[:id])
     @checkin.item_identifier = params[:checkin][:item_identifier] rescue nil
@@ -117,23 +117,23 @@ class CheckinsController < ApplicationController
       if @checkin.update_attributes(params[:checkin])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkin'))
         format.html { redirect_to checkin_url(@checkin) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @checkin.errors.to_xml }
+        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /checkins/1
-  # DELETE /checkins/1.xml
+  # DELETE /checkins/1.json
   def destroy
     #@checkin = Checkin.find(params[:id])
     @checkin.destroy
 
     respond_to do |format|
       format.html { redirect_to checkins_url }
-      format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end

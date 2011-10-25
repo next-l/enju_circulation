@@ -8,7 +8,7 @@ class CheckoutsController < ApplicationController
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkouts
-  # GET /checkouts.xml
+  # GET /checkouts.json
 
   def index
     if params[:icalendar_token].present?
@@ -65,7 +65,7 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @checkouts.to_xml }
+      format.json { render :json => @checkouts.to_json }
       format.rss  { render :layout => false }
       format.ics
       format.csv
@@ -74,11 +74,11 @@ class CheckoutsController < ApplicationController
   end
 
   # GET /checkouts/1
-  # GET /checkouts/1.xml
+  # GET /checkouts/1.json
   def show
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @checkout.to_xml }
+      format.json { render :json => @checkout.to_json }
     end
   end
 
@@ -88,7 +88,7 @@ class CheckoutsController < ApplicationController
   end
 
   # PUT /checkouts/1
-  # PUT /checkouts/1.xml
+  # PUT /checkouts/1.json
   def update
     if @checkout.reserved?
       flash[:notice] = t('checkout.this_item_is_reserved')
@@ -114,23 +114,23 @@ class CheckoutsController < ApplicationController
       if @checkout.update_attributes(params[:checkout])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout'))
         format.html { redirect_to(@checkout) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @checkout.errors.to_xml }
+        format.json { render :json => @checkout.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /checkouts/1
-  # DELETE /checkouts/1.xml
+  # DELETE /checkouts/1.json
   def destroy
     @checkout.destroy
 
     respond_to do |format|
       flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.checkout'))
       format.html { redirect_to user_checkouts_url(@checkout.user) }
-      format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end

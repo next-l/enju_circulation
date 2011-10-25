@@ -4,7 +4,7 @@ class BasketsController < ApplicationController
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /baskets
-  # GET /baskets.xml
+  # GET /baskets.json
   def index
     if current_user.has_role?('Librarian')
      @baskets = Basket.page(params[:page])
@@ -15,28 +15,28 @@ class BasketsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @baskets }
+      format.json { render :json => @baskets }
     end
   end
 
   # GET /baskets/1
-  # GET /baskets/1.xml
+  # GET /baskets/1.json
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @basket }
+      format.json { render :json => @basket }
     end
   end
 
   # GET /baskets/new
-  # GET /baskets/new.xml
+  # GET /baskets/new.json
   def new
     @basket = Basket.new
     @basket.user_number = params[:user_number]
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @basket }
+      format.json { render :json => @basket }
     end
   end
 
@@ -45,7 +45,7 @@ class BasketsController < ApplicationController
   end
 
   # POST /baskets
-  # POST /baskets.xml
+  # POST /baskets.json
   def create
     @basket = Basket.new
     @user = User.where(:user_number => params[:basket][:user_number]).first rescue nil
@@ -59,16 +59,16 @@ class BasketsController < ApplicationController
       if @basket.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.basket'))
         format.html { redirect_to basket_checked_items_url(@basket) }
-        format.xml  { render :xml => @basket, :status => :created, :location => @basket }
+        format.json { render :json => @basket, :status => :created, :location => @basket }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @basket.errors, :status => :unprocessable_entity }
+        format.json { render :json => @basket.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /baskets/1
-  # PUT /baskets/1.xml
+  # PUT /baskets/1.json
   def update
     librarian = current_user
     unless @basket.basket_checkout(librarian)
@@ -83,24 +83,24 @@ class BasketsController < ApplicationController
         # 貸出完了時
         flash[:notice] = t('basket.checkout_completed')
         format.html { redirect_to(user_checkouts_url(@basket.user)) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { redirect_to(basket_checked_items_url(@basket)) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       end
     end
 
   end
 
   # DELETE /baskets/1
-  # DELETE /baskets/1.xml
+  # DELETE /baskets/1.json
   def destroy
     @basket.destroy
 
     respond_to do |format|
       #format.html { redirect_to(user_baskets_url(@user)) }
       format.html { redirect_to(user_checkouts_url(@basket.user)) }
-      format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end

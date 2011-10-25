@@ -10,7 +10,7 @@ class ReservesController < ApplicationController
   before_filter :store_page, :only => :index
 
   # GET /reserves
-  # GET /reserves.xml
+  # GET /reserves.json
   def index
     unless current_user.has_role?('Librarian')
       if @user
@@ -37,7 +37,7 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @reserves.to_xml }
+      format.json { render :json => @reserves.to_json }
       format.rss  { render :layout => false }
       format.atom
       format.csv
@@ -45,11 +45,11 @@ class ReservesController < ApplicationController
   end
 
   # GET /reserves/1
-  # GET /reserves/1.xml
+  # GET /reserves/1.json
   def show
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @reserve.to_xml }
+      format.json { render :json => @reserve.to_json }
     end
   end
 
@@ -94,7 +94,7 @@ class ReservesController < ApplicationController
   end
 
   # POST /reserves
-  # POST /reserves.xml
+  # POST /reserves.json
   def create
     if params[:reserve]
       user = User.where(:user_number => params[:reserve][:user_number]).first
@@ -123,16 +123,16 @@ class ReservesController < ApplicationController
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.reserve'))
         #format.html { redirect_to reserve_url(@reserve) }
         format.html { redirect_to(@reserve) }
-        format.xml  { render :xml => @reserve, :status => :created, :location => reserve_url(@reserve) }
+        format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @reserve.errors.to_xml }
+        format.json { render :json => @reserve.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /reserves/1
-  # PUT /reserves/1.xml
+  # PUT /reserves/1.json
   def update
     if params[:reserve]
       user = User.where(:user_number => params[:reserve][:user_number]).first
@@ -161,16 +161,16 @@ class ReservesController < ApplicationController
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
         format.html { redirect_to reserve_url(@reserve) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @reserve.errors.to_xml }
+        format.json { render :json => @reserve.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /reserves/1
-  # DELETE /reserves/1.xml
+  # DELETE /reserves/1.json
   def destroy
     @reserve.destroy
     #flash[:notice] = t('reserve.reservation_was_canceled')
@@ -187,7 +187,7 @@ class ReservesController < ApplicationController
     respond_to do |format|
       flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.reserve'))
       format.html { redirect_to user_reserves_url(@user) }
-      format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
 end
