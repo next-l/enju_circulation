@@ -96,28 +96,29 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    if params[:reserve]
-      user = User.where(:user_number => params[:reserve][:user_number]).first
+    begin
+      if params[:reserve][:user_number]
+        user = User.where(:user_number => params[:reserve][:user_number]).first
+      end
+    rescue NoMethodError
     end
+
     # 図書館員以外は自分の予約しか作成できない
     unless current_user.has_role?('Librarian')
-      unless user == current_user
+      if user != current_user
         access_denied
         return
       end
-    else
-      user = @user if @user
     end
 
-    @reserve = Reserve.new(params[:reserve])
-    @reserve.user = user
+    if user
+      @reserve = user.reserves.new(params[:reserve])
+    else
+      @reserve = current_user.reserves.new(params[:reserve])
+    end
 
     respond_to do |format|
       if @reserve.save
-        # 予約受付のメール送信
-        #unless user.email.blank?
-        #  ReservationNotifier.deliver_accepted(user, @reserve.manifestation)
-        #end
         @reserve.send_message('accepted')
 
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.reserve'))
@@ -134,14 +135,19 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    if params[:reserve][:user_number]
-      user = User.where(:user_number => params[:reserve][:user_number]).first
+    begin
+      if params[:reserve][:user_number]
+        user = User.where(:user_number => params[:reserve][:user_number]).first
+      end
+    rescue NoMethodError
     end
 
-    if user
-      if user != @reserve.user
-        access_denied
-        return
+    unless current_user.has_role?('Librarian')
+      if user
+        if user != @reserve.user
+          access_denied
+          return
+        end
       end
     end
 
@@ -153,7 +159,7 @@ class ReservesController < ApplicationController
       if @reserve.update_attributes(params[:reserve])
         if @reserve.state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
-          #@reserve.send_message('canceled')
+          @reserve.send_message('canceled')
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
