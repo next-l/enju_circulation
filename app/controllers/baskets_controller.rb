@@ -6,9 +6,8 @@ class BasketsController < ApplicationController
   # GET /baskets
   # GET /baskets.xml
   def index
-    get_user
-    if @user
-      @baskets = @user.baskets.page(params[:page])
+    if current_user.has_role?('Librarian')
+     @baskets = Basket.page(params[:page])
     else
       redirect_to new_basket_url
       return
