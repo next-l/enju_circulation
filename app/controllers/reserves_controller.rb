@@ -134,18 +134,15 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    if params[:reserve]
+    if params[:reserve][:user_number]
       user = User.where(:user_number => params[:reserve][:user_number]).first
-    end
-    user = @user if @user
-
-    if user.blank?
-      access_denied
-      return
     end
 
     if user
-      @reserve = user.reserves.find(params[:id])
+      if user != @reserve.user
+        access_denied
+        return
+      end
     end
 
     if params[:mode] == 'cancel'
@@ -156,11 +153,11 @@ class ReservesController < ApplicationController
       if @reserve.update_attributes(params[:reserve])
         if @reserve.state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
-          @reserve.send_message('canceled')
+          #@reserve.send_message('canceled')
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
-        format.html { redirect_to reserve_url(@reserve) }
+        format.html { redirect_to(@reserve) }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -177,7 +174,7 @@ class ReservesController < ApplicationController
 
     if @reserve.manifestation.is_reserved?
       if @reserve.item
-        retain = @reserve.item.retain(User.find('admin')) # TODO: システムからの送信ユーザの設定
+        retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
         if retain.nil?
           flash[:message] = t('reserve.this_item_is_not_reserved')
         end
