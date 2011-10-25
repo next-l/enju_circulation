@@ -16,7 +16,7 @@
 
 <%- @reserves.each_with_index do |reserve, i| -%>
   <tr class="line<%= cycle("0", "1") -%>">
-    <td><%= link_to reserve.id, user_reserve_path(reserve.user, reserve) -%></td>
+    <td><%= link_to reserve.id, reserve -%></td>
     <td><%= link_to reserve.user.username, reserve.user -%></td>
     <td>
       <%= render 'title', :reserve => reserve -%>
@@ -25,13 +25,13 @@
     <td><%= l(reserve.expired_at, :format => :only_date) -%></td>
     <%- if can? :destroy, reserve -%>
       <td>
-        <%= link_to t('page.edit'), edit_user_reserve_path(reserve.user, reserve) -%>
+        <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>
           <br />
-          <%= link_to t('page.cancel'), user_reserve_path(reserve.user, reserve, :mode => 'cancel'), :confirm => t('page.are_you_sure'), :method => :put -%>
+          <%= link_to t('page.cancel'), reserve_path(reserve, :mode => 'cancel'), :confirm => t('page.are_you_sure'), :method => :put -%>
         <%- else -%>
           <br />
-          <%= link_to t('page.destroy'), user_reserve_path(reserve.user, reserve), :confirm => t('page.are_you_sure'), :method => :delete -%>
+          <%= link_to t('page.destroy'), reserve, :confirm => t('page.are_you_sure'), :method => :delete -%>
         <%- end -%>
       </td>
     <%- end -%>

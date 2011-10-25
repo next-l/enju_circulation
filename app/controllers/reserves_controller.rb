@@ -122,8 +122,8 @@ class ReservesController < ApplicationController
 
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.reserve'))
         #format.html { redirect_to reserve_url(@reserve) }
-        format.html { redirect_to user_reserve_url(@reserve.user, @reserve) }
-        format.xml  { render :xml => @reserve, :status => :created, :location => user_reserve_url(@reserve.user, @reserve) }
+        format.html { redirect_to(@reserve) }
+        format.xml  { render :xml => @reserve, :status => :created, :location => reserve_url(@reserve) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @reserve.errors.to_xml }
@@ -160,7 +160,7 @@ class ReservesController < ApplicationController
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
-        format.html { redirect_to user_reserve_url(@reserve.user, @reserve) }
+        format.html { redirect_to reserve_url(@reserve) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

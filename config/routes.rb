@@ -8,8 +8,8 @@ Rails.application.routes.draw do
     resources :checkins
   end
   resources :users do
-    resources :checkouts
-    resources :reserves
+    resources :checkouts, :only => :index
+    resources :reserves, :only => :index
   end
   resources :user_checkout_stats
   resources :user_reserve_stats

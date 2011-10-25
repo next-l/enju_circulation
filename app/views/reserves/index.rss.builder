@@ -33,8 +33,8 @@ xml.rss('version' => "2.0",
         #xml.description(reserve.title)
         # rfc822
         xml.pubDate reserve.created_at.utc.rfc822
-        xml.link user_reserve_url(reserve.user, reserve)
-        xml.guid user_reserve_url(reserve.user, reserve), :isPermaLink => "true"
+        xml.link reserve_url(reserve)
+        xml.guid reserve_url(reserve), :isPermaLink => "true"
       end
     end
   }
