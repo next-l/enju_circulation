@@ -30,8 +30,8 @@ xml.rss('version' => "2.0",
         #xml.description(checkout.title)
         # rfc822
         xml.pubDate checkout.created_at.utc.rfc822
-        xml.link user_checkout_url(checkout.user, checkout)
-        xml.guid user_checkout_url(checkout.user, checkout), :isPermaLink => "true"
+        xml.link checkout_url(checkout)
+        xml.guid checkout_url(checkout), :isPermaLink => "true"
       end
     end
   }

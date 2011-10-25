@@ -92,18 +92,18 @@ class CheckoutsController < ApplicationController
   def update
     if @checkout.reserved?
       flash[:notice] = t('checkout.this_item_is_reserved')
-      redirect_to edit_user_checkout_url(@checkout.user, @checkout)
+      redirect_to edit_checkout_url(@checkout)
       return
     end
     if @checkout.over_checkout_renewal_limit?
       flash[:notice] = t('checkout.excessed_renewal_limit')
-      redirect_to edit_user_checkout_url(@checkout.user, @checkout)
+      redirect_to edit_checkout_url(@checkout)
       return
     end
     if @checkout.overdue?
       flash[:notice] = t('checkout.you_have_overdue_item')
       #unless current_user.has_role?('Librarian')
-        redirect_to edit_user_checkout_url(@checkout.user, @checkout)
+        redirect_to edit_checkout_url(@checkout)
         return
       #end
     end
@@ -113,7 +113,7 @@ class CheckoutsController < ApplicationController
     respond_to do |format|
       if @checkout.update_attributes(params[:checkout])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout'))
-        format.html { redirect_to user_checkout_url(@checkout.user, @checkout) }
+        format.html { redirect_to(@checkout) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
