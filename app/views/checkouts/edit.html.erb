@@ -43,7 +43,7 @@
 <div id="submenu" class="ui-corner-all">
   <%= render 'manifestations/book_jacket', :manifestation => @checkout.item.manifestation if @checkout.item -%>
   <ul>
-    <li><%= link_to t('page.show'), @checkout) -%></li>
+    <li><%= link_to t('page.show'), @checkout -%></li>
     <li><%= link_to t('page.back'), user_checkouts_path(@checkout.user) -%></li>
   </ul>
 </div>
