@@ -1,6 +1,7 @@
 class CheckoutsController < ApplicationController
   before_filter :store_location, :only => :index
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
   before_filter :get_user_if_nil, :only => :index
   before_filter :get_user, :except => :index
   helper_method :get_item
@@ -43,14 +44,14 @@ class CheckoutsController < ApplicationController
       else
         # 一般ユーザ
         if current_user == @user
-          checkouts = current_user.checkouts.not_returned.order('created_at DESC')
+          redirect_to checkouts_url
+          return
         else
           if @user
             access_denied
             return
           else
-            redirect_to user_checkouts_url(current_user)
-            return
+            checkouts = current_user.checkouts.not_returned.order('created_at DESC')
           end
         end
       end
