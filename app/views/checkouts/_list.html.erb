@@ -16,7 +16,7 @@
     </td>
     <td>
       <%= render 'manifestations/show_index', :manifestation => checkout.item.manifestation -%>
-      (<%= link_to checkout.item.item_identifier, item_path(checkout.item) -%>)
+      (<%= link_to checkout.item.item_identifier, checkout.item -%>)
     </td>
     <td>
       <%= l(checkout.due_date, :format => :only_date) -%>
@@ -28,14 +28,14 @@
     <td>
       <%- if can? :update, checkout -%>
         <% unless checkout.checkin %>
-          <%= link_to t('checkout.extend'), edit_user_checkout_path(checkout.user, checkout) -%>
+          <%= link_to t('checkout.extend'), edit_checkout_path(checkout) -%>
         <% end %>
       <%- end -%>
     </td>
     <!--
     <td>
       <%- if can? :destroy, checkout -%>
-        <%= link_to t('page.destroy'), user_checkout_path(checkout.user, checkout), :confirm => t('page.are_you_sure'), :method => :delete -%>
+        <%= link_to t('page.destroy'), checkout, :confirm => t('page.are_you_sure'), :method => :delete -%>
       <%- end -%>
     </td>
     -->
