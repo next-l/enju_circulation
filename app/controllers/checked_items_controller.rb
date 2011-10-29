@@ -22,13 +22,6 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/1
   # GET /checked_items/1.json
   def show
-    if @basket
-      @checked_item = @basket.checked_items.find(params[:id])
-    else
-      access_denied
-      return
-    end
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @checked_item }
@@ -53,12 +46,6 @@ class CheckedItemsController < ApplicationController
 
   # GET /checked_items/1/edit
   def edit
-    if @basket
-      @checked_item = @basket.checked_items.find(params[:id])
-    else
-      access_denied
-      return
-    end
   end
 
   # POST /checked_items
