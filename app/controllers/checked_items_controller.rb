@@ -134,12 +134,6 @@ class CheckedItemsController < ApplicationController
   # DELETE /checked_items/1
   # DELETE /checked_items/1.json
   def destroy
-    if @basket
-      @checked_item = @basket.checked_items.find(params[:id])
-    else
-      access_denied
-      return
-    end
     @checked_item.destroy
 
     respond_to do |format|
