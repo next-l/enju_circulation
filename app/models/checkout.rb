@@ -21,6 +21,8 @@ class Checkout < ActiveRecord::Base
   validate :is_not_checked?, :on => :create
   validates_date :due_date
 
+  attr_protected :user_id
+
   def self.per_page
     10
   end

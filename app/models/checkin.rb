@@ -11,6 +11,7 @@ class Checkin < ActiveRecord::Base
   validates_associated :item, :librarian, :basket, :on => :update
   validates_presence_of :item_identifier, :on => :create
 
+  attr_protected :user_id
   attr_accessor :item_identifier
 
   def item_checkin(current_user)
