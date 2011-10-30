@@ -3,8 +3,7 @@ class ReservesController < ApplicationController
   before_filter :store_location, :only => :index
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user_if_nil
-  #, :only => [:show, :edit, :create, :update, :destroy]
+  before_filter :get_user_if_nil, :only => [:index, :new]
   helper_method :get_manifestation
   helper_method :get_item
   before_filter :store_page, :only => :index
@@ -16,10 +15,9 @@ class ReservesController < ApplicationController
       if @user
         unless current_user == @user
           access_denied; return
+        else
+          redirect_to reserves_url
         end
-      else
-        redirect_to user_reserves_path(current_user)
-        return
       end
     end
 
@@ -27,11 +25,17 @@ class ReservesController < ApplicationController
       @reserves = Reserve.hold.order('reserves.id DESC').page(params[:page])
     else
       if @user
-        # 一般ユーザ
-        @reserves = @user.reserves.order('reserves.id DESC').page(params[:page])
+        if current_user.has_role?('Librarian')
+          @reserves = @user.reserves.order('reserves.id DESC').page(params[:page])
+        else
+          access_denied; return
+        end
       else
-        # 管理者
-        @reserves = Reserve.order('reserves.id DESC').includes(:manifestation).page(params[:page])
+        if current_user.has_role?('Librarian')
+          @reserves = Reserve.order('reserves.id DESC').includes(:manifestation).page(params[:page])
+        else
+          @reserves = current_user.reserves.order('reserves.id DESC').includes(:manifestation).page(params[:page])
+        end
       end
     end
 
@@ -57,22 +61,22 @@ class ReservesController < ApplicationController
   def new
     if params[:reserve]
       user = User.where(:user_number => params[:reserve][:user_number]).first
+    else
+      user = @user if @user
     end
-    user = @user if @user
+
     unless current_user.has_role?('Librarian')
-      if user.try(:user_number).blank?
-        access_denied; return
-      end
-      if user.blank? or user != current_user
-        access_denied
-        return
+      if user
+        if user != current_user
+          access_denied; return
+        end
       end
     end
 
     if user
       @reserve = user.reserves.new
     else
-      @reserve = Reserve.new
+      @reserve = current_user.reserves.new
     end
 
     get_manifestation
