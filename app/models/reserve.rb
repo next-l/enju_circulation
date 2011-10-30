@@ -32,6 +32,7 @@ class Reserve < ActiveRecord::Base
   before_validation :set_expired_at
   before_validation :set_request_status, :on => :create
 
+  attr_protected :user_id
   attr_accessor :user_number, :item_identifier
 
   state_machine :initial => :pending do

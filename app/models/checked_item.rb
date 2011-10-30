@@ -10,6 +10,7 @@ class CheckedItem < ActiveRecord::Base
   before_validation :set_due_date, :on => :create
   normalize_attributes :item_identifier
 
+  attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction
 
   def available_for_checkout?

@@ -21,6 +21,8 @@ class Checkout < ActiveRecord::Base
   validate :is_not_checked?, :on => :create
   validates_date :due_date
 
+  attr_protected :user_id
+
   def self.per_page
     10
   end
@@ -65,7 +67,7 @@ class Checkout < ActiveRecord::Base
     end
   end
 
-  def set_renew_due_date(user)
+  def set_renew_due_date
     if self.item
       if self.checkout_renewal_count <= self.item.checkout_status(user).checkout_renewal_limit
         renew_due_date = self.due_date.advance(:days => self.item.checkout_status(user).checkout_period)

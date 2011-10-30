@@ -12,6 +12,7 @@ class Basket < ActiveRecord::Base
   validates_presence_of :user, :on => :create
   validate :check_suspended
 
+  attr_protected :user_id
   attr_accessor :user_number
 
   def check_suspended

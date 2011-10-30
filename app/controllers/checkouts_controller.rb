@@ -3,7 +3,6 @@ class CheckoutsController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
   before_filter :get_user_if_nil, :only => :index
-  before_filter :get_user, :except => :index
   helper_method :get_item
   after_filter :convert_charset, :only => :index
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
@@ -85,7 +84,7 @@ class CheckoutsController < ApplicationController
 
   # GET /checkouts/1;edit
   def edit
-    @renew_due_date = @checkout.set_renew_due_date(@user)
+    @renew_due_date = @checkout.set_renew_due_date
   end
 
   # PUT /checkouts/1
