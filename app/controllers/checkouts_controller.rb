@@ -43,7 +43,7 @@ class CheckoutsController < ApplicationController
       else
         # 一般ユーザ
         if current_user == @user
-          redirect_to checkouts_url
+          redirect_to checkouts_url(:format => params[:format])
           return
         else
           if @user
