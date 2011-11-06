@@ -13,10 +13,10 @@ class ReservesController < ApplicationController
   def index
     unless current_user.has_role?('Librarian')
       if @user
-        unless current_user == @user
-          access_denied; return
+        if current_user == @user
+          redirect_to reserves_url(:format => params[:format])
         else
-          redirect_to reserves_url
+          access_denied; return
         end
       end
     end
