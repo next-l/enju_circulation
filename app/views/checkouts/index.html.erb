@@ -1,5 +1,7 @@
 <%- if @user -%>
   <%= render 'index_user', :user => @user -%>
+<%- elsif !current_user.has_role?, 'Librarian') -%>
+  <%= render 'index_user', :user => current_user -%>
 <%- else -%>
   <%- if params[:view] == 'overdue' -%>
     <%= render 'index_overdue' -%>
