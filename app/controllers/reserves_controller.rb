@@ -15,6 +15,7 @@ class ReservesController < ApplicationController
       if @user
         if current_user == @user
           redirect_to reserves_url(:format => params[:format])
+          return
         else
           access_denied; return
         end
