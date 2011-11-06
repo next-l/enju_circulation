@@ -10,9 +10,11 @@
   <%- @checkouts.each_with_index do |checkout, i| %>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
-      <%= link_to checkout.user_username, checkout.user %>
-      <br />
-      (<%= link_to checkout.user_user_number, checkout.user %>)
+      <% if checkout.user %>
+        <%= link_to checkout.user_username, checkout.user %>
+        <br />
+        (<%= link_to checkout.user_user_number, checkout.user %>)
+      <% end %>
     </td>
     <td>
       <%= render 'manifestations/show_index', :manifestation => checkout.item.manifestation -%>
