@@ -18,7 +18,7 @@ class Checkin < ActiveRecord::Base
     message = ''
     Checkin.transaction do
       checkouts = Checkout.not_returned.where(:item_id => item_id).select([:id, :item_id, :user_id, :basket_id, :lock_version])
-      self.item.checkin!
+      item.checkin!
       checkouts.each do |checkout|
         # TODO: ILL時の処理
         checkout.checkin = self
@@ -31,22 +31,19 @@ class Checkin < ActiveRecord::Base
         end
       end
 
-      #unless checkout.user.save_checkout_history
-      #  checkout.user = nil
-      #end
-      if self.item.reserved?
+      if item.reserved?
         # TODO: もっと目立たせるために別画面を表示するべき？
         message << I18n.t('item.this_item_is_reserved')
-        self.item.retain(current_user)
+        item.retain(current_user)
       end
 
-      if self.item.include_supplements?
+      if item.include_supplements?
         message << I18n.t('item.this_item_include_supplement')
       end
 
       # メールとメッセージの送信
-      #ReservationNotifier.deliver_reserved(self.item.manifestation.reserves.first.user, self.item.manifestation)
-      #Message.create(:sender => current_user, :receiver => self.item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => self.item.manifestation.next_reservation.user)
+      #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
+      #Message.create(:sender => current_user, :receiver => item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => item.manifestation.next_reservation.user)
     end
     if message.present?
       message
