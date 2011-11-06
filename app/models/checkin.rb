@@ -17,11 +17,14 @@ class Checkin < ActiveRecord::Base
   def item_checkin(current_user)
     message = ''
     Checkin.transaction do
-      checkouts = Checkout.not_returned.where(:item_id => self.item_id).select([:id, :item_id, :lock_version])
+      checkouts = Checkout.not_returned.where(:item_id => item_id).select([:id, :item_id, :user_id, :basket_id, :lock_version])
       self.item.checkin!
       checkouts.each do |checkout|
         # TODO: ILL時の処理
         checkout.checkin = self
+        unless checkout.user.try(:save_checkout_history)
+          checkout.user = nil
+        end
         checkout.save(:validate => false)
         unless checkout.item.shelf.library == current_user.library
           message << I18n.t('checkin.other_library_item')

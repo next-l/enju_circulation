@@ -125,11 +125,13 @@ class CheckoutsController < ApplicationController
   # DELETE /checkouts/1
   # DELETE /checkouts/1.json
   def destroy
-    @checkout.destroy
+    user = @checkout.user
+    @checkout.user_id = nil
+    @checkout.save!
 
     respond_to do |format|
       flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.checkout'))
-      format.html { redirect_to user_checkouts_url(@checkout.user) }
+      format.html { redirect_to user_checkouts_url(user) }
       format.json { head :ok }
     end
   end
