@@ -60,9 +60,4 @@ class Manifestation < ActiveRecord::Base
   include EnjuCirculation::Manifestation
 
   has_many :reserves, :foreign_key => :manifestation_id
-  searchable do
-    boolean :reservable do
-      items.for_checkout.exists?
-    end
-  end
 end
