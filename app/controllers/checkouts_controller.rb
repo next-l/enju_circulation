@@ -84,7 +84,7 @@ class CheckoutsController < ApplicationController
 
   # GET /checkouts/1;edit
   def edit
-    @renew_due_date = @checkout.set_renew_due_date
+    @new_due_date = @checkout.get_new_due_date
   end
 
   # PUT /checkouts/1
