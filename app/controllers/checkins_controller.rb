@@ -82,6 +82,7 @@ class CheckinsController < ApplicationController
         }
       else
         @checkin.item = item
+        flash[:checkout_username] = @checkin.checkout.user.try(:username) if @checkin.checkout
         if @checkin.save(:validate => false)
         # 速度を上げるためvalidationを省略している
           #flash[:message] << t('controller.successfully_created', :model => t('activerecord.models.checkin'))
