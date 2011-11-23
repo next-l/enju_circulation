@@ -39,7 +39,11 @@
         <%= l(checkin.checkout.due_date, :format => :only_date) -%>
       <%- end -%>
     </td>
-    <td><%= link_to flash[:checkout_username], User.where(:username => flash[:username]) if flash[:checkout_username] -%></td>
+    <td>
+      <% if checkin.checkout.user %>
+        <%= link_to checkin.checkout.user.username, checkin.checkout.user -%>
+      <% end %>
+    </td>
   </tr>
 <%- end -%>
 </table>
