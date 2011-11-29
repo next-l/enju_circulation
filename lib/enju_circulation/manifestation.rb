@@ -53,6 +53,14 @@ module EnjuCirculation
         available_checkout_types(user).collect(&:reservation_expired_period).max || 0
       end
     end
+
+    def is_checked_out_by?(user)
+      if items.size > items.size - user.checkouts.not_returned.collect(&:item).size
+        true
+      else
+        false
+      end
+    end
   end
 end
 
