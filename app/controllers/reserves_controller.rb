@@ -4,9 +4,9 @@ class ReservesController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
   before_filter :get_user_if_nil, :only => [:index, :new]
+  before_filter :store_page
   helper_method :get_manifestation
   helper_method :get_item
-  before_filter :store_page, :only => :index
 
   # GET /reserves
   # GET /reserves.json

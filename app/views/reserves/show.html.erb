@@ -53,7 +53,7 @@
     <%- else -%>
       <li><%= link_to t('page.destroy'), @reserve, :confirm => t('page.are_you_sure'), :method => :delete -%></li>
     <%- end -%>
-    <li><%= link_to t('page.back'), @reserve -%></li>
+    <li><%= link_to t('page.back'), reserves_path(:page => flash[:page] ||= nil) -%></li>
   </ul>
   <!--
   <p>TODO: 予約取り消し時に、次の予約者に連絡する</p>
