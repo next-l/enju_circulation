@@ -12,7 +12,6 @@ class CreateUserGroupHasCheckoutTypes < ActiveRecord::Migration
       t.datetime :fixed_due_date
       t.text :note
       t.integer :position
-      t.integer :current_checkout_count
 
       t.timestamps
     end

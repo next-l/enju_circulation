@@ -1,5 +1,5 @@
 module ReservesHelper
-  include ManifestationsHelper
+  include ManifestationsHelper rescue nil
   def i18n_state(state)
     case state
     when 'pending'

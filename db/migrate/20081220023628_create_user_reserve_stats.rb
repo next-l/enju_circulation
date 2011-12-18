@@ -5,12 +5,9 @@ class CreateUserReserveStats < ActiveRecord::Migration
       t.datetime :end_date
       t.text :note
       t.string :state
-      t.datetime :started_at
-      t.datetime :completed_at
 
       t.timestamps
     end
-    add_index :user_reserve_stats, :state
   end
 
   def self.down
