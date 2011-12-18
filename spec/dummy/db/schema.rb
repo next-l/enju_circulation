@@ -225,17 +225,20 @@ ActiveRecord::Schema.define(:version => 20111218002349) do
   add_index "items", ["shelf_id"], :name => "index_items_on_shelf_id"
 
   create_table "languages", :force => true do |t|
-    t.string   "name"
-    t.string   "native_name"
-    t.text     "display_name"
-    t.string   "iso_639_1"
-    t.string   "iso_639_2"
-    t.string   "iso_639_3"
-    t.text     "note"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "name",         :null => false
+    t.string  "native_name"
+    t.text    "display_name"
+    t.string  "iso_639_1"
+    t.string  "iso_639_2"
+    t.string  "iso_639_3"
+    t.text    "note"
+    t.integer "position"
   end
+
+  add_index "languages", ["iso_639_1"], :name => "index_languages_on_iso_639_1"
+  add_index "languages", ["iso_639_2"], :name => "index_languages_on_iso_639_2"
+  add_index "languages", ["iso_639_3"], :name => "index_languages_on_iso_639_3"
+  add_index "languages", ["name"], :name => "index_languages_on_name", :unique => true
 
   create_table "lending_policies", :force => true do |t|
     t.integer  "item_id",                         :null => false

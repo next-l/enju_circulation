@@ -52,7 +52,7 @@ class CheckedItem < ActiveRecord::Base
       end
     end
 
-    checkout_count = self.basket.user.checked_item_count
+    checkout_count = basket.user.checked_item_count
     CheckoutType.all.each do |checkout_type|
       #carrier_type = self.item.manifestation.carrier_type
       if checkout_count[:"#{checkout_type.name}"] + self.basket.checked_items.count(:id) >= self.item_checkout_type.checkout_limit
@@ -61,7 +61,11 @@ class CheckedItem < ActiveRecord::Base
       end
     end
     
-    return false unless errors[:base]
+    if errors[:base].empty?
+      true
+    else
+      false
+    end
   end
 
   def item_checkout_type
