@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 3.1.3"
+  s.add_dependency "rails", "~> 3"
   s.add_dependency "simple_form"
   s.add_dependency "devise"
   s.add_dependency "cancan"
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "attribute_normalizer", "~> 1.0"
   s.add_dependency "inherited_resources"
   s.add_dependency "state_machine"
-  s.add_dependency "friendly_id", "4.0.0.beta14"
+  s.add_dependency "friendly_id", "~> 4.0.0.rc2"
   s.add_dependency "sunspot_rails", "~> 1.3"
   s.add_dependency "sunspot_solr", "~> 1.3"
   s.add_dependency "will_paginate", "~> 3.0"

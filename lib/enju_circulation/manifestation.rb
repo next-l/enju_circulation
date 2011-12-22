@@ -64,8 +64,5 @@ module EnjuCirculation
   end
 end
 
-class Manifestation < ActiveRecord::Base
-  include EnjuCirculation::Manifestation
-
-  has_many :reserves, :foreign_key => :manifestation_id
-end
+#class Manifestation < ActiveRecord::Base
+#end
