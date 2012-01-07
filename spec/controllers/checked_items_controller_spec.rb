@@ -261,7 +261,7 @@ describe CheckedItemsController do
 
       it "should create checked_item" do
         post :create, :checked_item => @attrs, :basket_id => 3
-        assigns(:checked_item).due_date.should_not be_nil
+        assigns(:checked_item).due_date.should eq Time.zone.now.tomorrow.end_of_day
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
       end
 

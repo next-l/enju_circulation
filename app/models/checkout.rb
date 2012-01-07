@@ -52,7 +52,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def overdue?
-    if Time.zone.now.tomorrow.beginning_of_day > self.due_date
+    if Time.zone.now > self.due_date.end_of_day
       return true
     else
       return false

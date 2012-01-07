@@ -82,10 +82,10 @@ class CheckedItem < ActiveRecord::Base
 
     if lending_rule.fixed_due_date.blank?
       #self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-      self.due_date = (lending_rule.loan_period + 1).days.since Time.zone.now
+      self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
     else
       #self.due_date = item_checkout_type.fixed_due_date
-      self.due_date = lending_rule.fixed_due_date.tomorrow
+      self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
     end
     # 返却期限日が閉館日の場合
     while item.shelf.library.closed?(due_date)
