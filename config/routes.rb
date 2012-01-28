@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :checkouts, :only => :index
     resources :reserves, :only => :index
+    resources :baskets, :only => :index
   end
   resources :user_checkout_stats
   resources :user_reserve_stats
