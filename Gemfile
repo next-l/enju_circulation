@@ -14,7 +14,7 @@ gem "jquery-rails"
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'sunspot-rails-tester'
-gem 'factory_girl_rails', '~> 1.4'
+gem 'factory_girl_rails', '~> 1.7'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
