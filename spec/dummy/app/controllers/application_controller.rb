@@ -112,6 +112,14 @@ class ApplicationController < ActionController::Base
       session[:user_return_to] = request.fullpath
     end
   end
+
+  def move_position(resource, direction)
+    if ['higher', 'lower'].include?(direction)
+      resource.send("move_#{direction}")
+      redirect_to url_for(:controller => resource.class.to_s.pluralize.underscore)
+      return
+    end
+  end
 end
 
 class InvalidLocaleError < StandardError
