@@ -80,8 +80,8 @@ class CheckoutTypesController < ApplicationController
       @checkout_type = @user_group.checkout_types.find(params[:id])
     end
 
-    if params[:position]
-      @checkout_type.insert_at(params[:position])
+    if ['higher', 'lower'].include?(params[:move])
+      @checkout_type.send("move_#{params[:move]}")
       redirect_to checkout_types_url
       return
     end

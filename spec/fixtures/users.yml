@@ -103,3 +103,4 @@ user4:
   checkout_icalendar_token: 
   user_number: "00007"
   locale: "ja"
+  locked_at: <%= 1.day.ago %>
