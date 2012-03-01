@@ -50,7 +50,7 @@ class CheckoutsController < ApplicationController
             access_denied
             return
           else
-            checkouts = current_user.checkouts.not_returned.order('checkouts.id DESC')
+            checkouts = current_user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page])
           end
         end
       end

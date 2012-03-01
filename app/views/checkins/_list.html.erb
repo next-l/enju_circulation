@@ -40,7 +40,7 @@
       <%- end -%>
     </td>
     <td>
-      <% if checkin.checkout.user %>
+      <% if checkin.checkout.try(:user) %>
         <%= link_to checkin.checkout.user.username, checkin.checkout.user -%>
       <% end %>
     </td>
