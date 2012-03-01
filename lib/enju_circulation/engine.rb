@@ -9,6 +9,7 @@ require "will_paginate"
 require "sunspot_rails"
 require "enju_message"
 require "enju_event"
+require "acts_as_list"
 
 module EnjuCirculation
   class Engine < Rails::Engine

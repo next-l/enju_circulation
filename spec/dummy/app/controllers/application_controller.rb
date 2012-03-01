@@ -62,6 +62,11 @@ class ApplicationController < ActionController::Base
     @user_group = UserGroup.find(params[:user_group_id]) if params[:user_group_id]
   end
 
+  def get_item
+    @item = Item.find(params[:item_id]) if params[:item_id]
+    authorize! :show, @item if @item
+  end
+
   def set_locale
     if params[:locale]
       unless I18n.available_locales.include?(params[:locale].to_s.intern)

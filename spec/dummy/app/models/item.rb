@@ -26,6 +26,7 @@ class Item < ActiveRecord::Base
     integer :circulation_status_id
   end
   attr_accessor :use_restriction_id
+  attr_accessor :library_id, :manifestation_id
 
   def set_circulation_status
     self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
