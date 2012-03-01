@@ -303,7 +303,7 @@ describe CheckoutTypesController do
         end
 
         it "moves its position when specified" do
-          put :update, :id => @checkout_type.id, :checkout_type => @attrs, :position => 2
+          put :update, :id => @checkout_type.id, :checkout_type => @attrs, :move => 'lower'
           response.should redirect_to(checkout_types_url)
         end
       end

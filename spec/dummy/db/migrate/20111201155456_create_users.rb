@@ -8,6 +8,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :locale
       t.string :user_number
       t.integer :library_id
+      t.datetime :locked_at
 
       t.timestamps
     end
