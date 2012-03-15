@@ -102,10 +102,10 @@ class CheckoutsController < ApplicationController
     end
     if @checkout.overdue?
       flash[:notice] = t('checkout.you_have_overdue_item')
-      #unless current_user.has_role?('Librarian')
+      unless current_user.has_role?('Librarian')
         redirect_to edit_checkout_url(@checkout)
         return
-      #end
+      end
     end
     @checkout.reload
     @checkout.checkout_renewal_count += 1

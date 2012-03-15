@@ -254,8 +254,7 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
     t.datetime "updated_at",                      :null => false
   end
 
-  add_index "lending_policies", ["item_id"], :name => "index_lending_policies_on_item_id"
-  add_index "lending_policies", ["user_group_id"], :name => "index_lending_policies_on_user_group_id"
+  add_index "lending_policies", ["item_id", "user_group_id"], :name => "index_lending_policies_on_item_id_and_user_group_id", :unique => true
 
   create_table "libraries", :force => true do |t|
     t.integer  "patron_id"
