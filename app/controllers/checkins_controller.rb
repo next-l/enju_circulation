@@ -116,7 +116,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       if @checkin.update_attributes(params[:checkin])
-        format.html { redirect_to checkin_url @checkin, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkin')) }
+        format.html { redirect_to @checkin, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkin')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
