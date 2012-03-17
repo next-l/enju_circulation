@@ -1,6 +1,5 @@
 class BasketsController < ApplicationController
   load_and_authorize_resource
-  helper_method :get_user
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /baskets
