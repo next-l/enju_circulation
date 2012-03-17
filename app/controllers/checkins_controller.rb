@@ -1,7 +1,7 @@
 class CheckinsController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user_if_nil
+  before_filter :get_user
   helper_method :get_basket
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
