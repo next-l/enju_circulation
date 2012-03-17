@@ -65,8 +65,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
     respond_to do |format|
       if @user_group_has_checkout_type.update_attributes(params[:user_group_has_checkout_type])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.user_group_has_checkout_type'))
-        format.html { redirect_to(@user_group_has_checkout_type) }
-        format.json { head :ok }
+        format.html { redirect_to @user_group_has_checkout_type }
+        format.json { head :no_content }
       else
         prepare_options
         format.html { render :action => "edit" }
@@ -81,8 +81,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
     @user_group_has_checkout_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to(user_group_has_checkout_types_url) }
-      format.json { head :ok }
+      format.html { redirect_to user_group_has_checkout_types_url }
+      format.json { head :no_content }
     end
   end
 

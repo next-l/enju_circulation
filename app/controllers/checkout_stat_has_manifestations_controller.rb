@@ -44,7 +44,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_manifestation'))
-        format.html { redirect_to(@checkout_stat_has_manifestation) }
+        format.html { redirect_to @checkout_stat_has_manifestation }
         format.json { render :json => @checkout_stat_has_manifestation, :status => :created, :location => @checkout_stat_has_manifestation }
       else
         format.html { render :action => "new" }
@@ -59,8 +59,8 @@ class CheckoutStatHasManifestationsController < ApplicationController
     respond_to do |format|
       if @checkout_stat_has_manifestation.update_attributes(params[:checkout_stat_has_manifestation])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation'))
-        format.html { redirect_to(@checkout_stat_has_manifestation) }
-        format.json { head :ok }
+        format.html { redirect_to @checkout_stat_has_manifestation }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @checkout_stat_has_manifestation.errors, :status => :unprocessable_entity }
@@ -74,8 +74,8 @@ class CheckoutStatHasManifestationsController < ApplicationController
     @checkout_stat_has_manifestation.destroy
 
     respond_to do |format|
-      format.html { redirect_to(checkout_stat_has_manifestations_url) }
-      format.json { head :ok }
+      format.html { redirect_to checkout_stat_has_manifestations_url }
+      format.json { head :no_content }
     end
   end
 end

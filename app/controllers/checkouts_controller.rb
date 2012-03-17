@@ -65,7 +65,7 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.json { render :json => @checkouts.to_json }
+      format.json { render :json => @checkouts }
       format.rss  { render :layout => false }
       format.ics
       format.csv
@@ -78,11 +78,11 @@ class CheckoutsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.rhtml
-      format.json { render :json => @checkout.to_json }
+      format.json { render :json => @checkout }
     end
   end
 
-  # GET /checkouts/1;edit
+  # GET /checkouts/1/edit
   def edit
     @new_due_date = @checkout.get_new_due_date
   end
@@ -112,9 +112,8 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       if @checkout.update_attributes(params[:checkout])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout'))
-        format.html { redirect_to(@checkout) }
-        format.json { head :ok }
+        format.html { redirect_to @checkout, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @checkout.errors, :status => :unprocessable_entity }
@@ -130,9 +129,8 @@ class CheckoutsController < ApplicationController
     @checkout.save!
 
     respond_to do |format|
-      flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.checkout'))
-      format.html { redirect_to user_checkouts_url(user) }
-      format.json { head :ok }
+      format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.json { head :no_content }
     end
   end
 end

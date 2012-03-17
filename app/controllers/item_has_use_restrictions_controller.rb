@@ -50,7 +50,7 @@ class ItemHasUseRestrictionsController < ApplicationController
     respond_to do |format|
       if @item_has_use_restriction.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.item_has_use_restriction'))
-        format.html { redirect_to(@item_has_use_restriction) }
+        format.html { redirect_to @item_has_use_restriction }
         format.json { render :json => @item_has_use_restriction, :status => :created, :location => @item_has_use_restriction }
       else
         @use_restrictions = UseRestriction.all
@@ -66,8 +66,8 @@ class ItemHasUseRestrictionsController < ApplicationController
     respond_to do |format|
       if @item_has_use_restriction.update_attributes(params[:item_has_use_restriction])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.item_has_use_restriction'))
-        format.html { redirect_to(@item_has_use_restriction) }
-        format.json { head :ok }
+        format.html { redirect_to @item_has_use_restriction }
+        format.json { head :no_content }
       else
         @use_restrictions = UseRestriction.all
         format.html { render :action => "edit" }
@@ -82,8 +82,8 @@ class ItemHasUseRestrictionsController < ApplicationController
     @item_has_use_restriction.destroy
 
     respond_to do |format|
-      format.html { redirect_to(item_has_use_restrictions_url) }
-      format.json { head :ok }
+      format.html { redirect_to item_has_use_restrictions_url }
+      format.json { head :no_content }
     end
   end
 end

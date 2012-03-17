@@ -64,7 +64,7 @@ class CheckoutTypesController < ApplicationController
     respond_to do |format|
       if @checkout_type.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checkout_type'))
-        format.html { redirect_to(@checkout_type) }
+        format.html { redirect_to @checkout_type }
         format.json { render :json => @checkout_type, :status => :created, :location => @checkout_type }
       else
         format.html { render :action => "new" }
@@ -88,8 +88,8 @@ class CheckoutTypesController < ApplicationController
     respond_to do |format|
       if @checkout_type.update_attributes(params[:checkout_type])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout_type'))
-        format.html { redirect_to(@checkout_type) }
-        format.json { head :ok }
+        format.html { redirect_to @checkout_type }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @checkout_type.errors, :status => :unprocessable_entity }
@@ -106,8 +106,8 @@ class CheckoutTypesController < ApplicationController
     @checkout_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to(checkout_types_url) }
-      format.json { head :ok }
+      format.html { redirect_to checkout_types_url }
+      format.json { head :no_content }
     end
   end
 end

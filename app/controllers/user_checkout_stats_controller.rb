@@ -48,8 +48,7 @@ class UserCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       if @user_checkout_stat.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.user_checkout_stat'))
-        format.html { redirect_to(@user_checkout_stat) }
+        format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { render :json => @user_checkout_stat, :status => :created, :location => @user_checkout_stat }
       else
         format.html { render :action => "new" }
@@ -63,9 +62,8 @@ class UserCheckoutStatsController < ApplicationController
   def update
     respond_to do |format|
       if @user_checkout_stat.update_attributes(params[:user_checkout_stat])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat'))
-        format.html { redirect_to(@user_checkout_stat) }
-        format.json { head :ok }
+        format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @user_checkout_stat.errors, :status => :unprocessable_entity }
@@ -79,8 +77,8 @@ class UserCheckoutStatsController < ApplicationController
     @user_checkout_stat.destroy
 
     respond_to do |format|
-      format.html { redirect_to(user_checkout_stats_url) }
-      format.json { head :ok }
+      format.html { redirect_to user_checkout_stats_url }
+      format.json { head :no_content }
     end
   end
 end

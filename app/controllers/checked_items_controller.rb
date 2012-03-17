@@ -109,8 +109,8 @@ class CheckedItemsController < ApplicationController
     respond_to do |format|
       if @checked_item.update_attributes(params[:checked_item])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checked_item'))
-        format.html { redirect_to(@checked_item) }
-        format.json { head :ok }
+        format.html { redirect_to @checked_item }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
@@ -124,8 +124,8 @@ class CheckedItemsController < ApplicationController
     @checked_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to(basket_checked_items_url(@checked_item.basket)) }
-      format.json { head :ok }
+      format.html { redirect_to basket_checked_items_url(@checked_item.basket) }
+      format.json { head :no_content }
     end
   end
 end

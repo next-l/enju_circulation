@@ -57,8 +57,7 @@ class BasketsController < ApplicationController
 
     respond_to do |format|
       if @basket.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.basket'))
-        format.html { redirect_to basket_checked_items_url(@basket) }
+        format.html { redirect_to basket_checked_items_url(@basket), :notice => t('controller.successfully_created', :model => t('activerecord.models.basket')) }
         format.json { render :json => @basket, :status => :created, :location => @basket }
       else
         format.html { render :action => "new" }
@@ -81,12 +80,11 @@ class BasketsController < ApplicationController
       #if @basket.update_attributes({})
       if @basket.save(:validate => false)
         # 貸出完了時
-        flash[:notice] = t('basket.checkout_completed')
-        format.html { redirect_to(user_checkouts_url(@basket.user)) }
-        format.json { head :ok }
+        format.html { redirect_to user_checkouts_url(@basket.user), :notice => t('basket.checkout_completed') }
+        format.json { head :no_content }
       else
-        format.html { redirect_to(basket_checked_items_url(@basket)) }
-        format.json { head :ok }
+        format.html { redirect_to basket_checked_items_url(@basket) }
+        format.json { render :json => @basket.errors, :status => :unprocessable_entity }
       end
     end
 
@@ -99,8 +97,8 @@ class BasketsController < ApplicationController
 
     respond_to do |format|
       #format.html { redirect_to(user_baskets_url(@user)) }
-      format.html { redirect_to(user_checkouts_url(@basket.user)) }
-      format.json { head :ok }
+      format.html { redirect_to user_checkouts_url(@basket.user) }
+      format.json { head :no_content }
     end
   end
 end

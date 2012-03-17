@@ -44,7 +44,7 @@ class ReserveStatHasUsersController < ApplicationController
     respond_to do |format|
       if @reserve_stat_has_user.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.reserve_stat_has_user'))
-        format.html { redirect_to(@reserve_stat_has_user) }
+        format.html { redirect_to @reserve_stat_has_user }
         format.json { render :json => @reserve_stat_has_user, :status => :created, :location => @reserve_stat_has_user }
       else
         format.html { render :action => "new" }
@@ -59,8 +59,8 @@ class ReserveStatHasUsersController < ApplicationController
     respond_to do |format|
       if @reserve_stat_has_user.update_attributes(params[:reserve_stat_has_user])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve_stat_has_user'))
-        format.html { redirect_to(@reserve_stat_has_user) }
-        format.json { head :ok }
+        format.html { redirect_to @reserve_stat_has_user }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @reserve_stat_has_user.errors, :status => :unprocessable_entity }
@@ -75,7 +75,7 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(reserve_stat_has_users_url) }
-      format.json { head :ok }
+      format.json { head :no_content }
     end
   end
 end

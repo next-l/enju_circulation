@@ -48,7 +48,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
     respond_to do |format|
       if @carrier_type_has_checkout_type.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.carrier_type_has_checkout_type'))
-        format.html { redirect_to(@carrier_type_has_checkout_type) }
+        format.html { redirect_to @carrier_type_has_checkout_type }
         format.json { render :json => @carrier_type_has_checkout_type, :status => :created, :location => @carrier_type_has_checkout_type }
       else
         prepare_options
@@ -64,8 +64,8 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
     respond_to do |format|
       if @carrier_type_has_checkout_type.update_attributes(params[:carrier_type_has_checkout_type])
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.carrier_type_has_checkout_type'))
-        format.html { redirect_to(@carrier_type_has_checkout_type) }
-        format.json { head :ok }
+        format.html { redirect_to @carrier_type_has_checkout_type }
+        format.json { head :no_content }
       else
         prepare_options
         format.html { render :action => "edit" }
@@ -80,8 +80,8 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
     @carrier_type_has_checkout_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to(carrier_type_has_checkout_types_url) }
-      format.json { head :ok }
+      format.html { redirect_to carrier_type_has_checkout_types_url }
+      format.json { head :no_content }
     end
   end
 

@@ -21,7 +21,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.json { render :json => @checkins.to_json }
+      format.json { render :json => @checkins }
       format.js
     end
   end
@@ -33,7 +33,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # show.rhtml
-      format.json { render :json => @checkin.to_json }
+      format.json { render :json => @checkin }
     end
   end
 
@@ -43,7 +43,7 @@ class CheckinsController < ApplicationController
     redirect_to checkins_url
   end
 
-  # GET /checkins/1;edit
+  # GET /checkins/1/edit
   def edit
     #@checkin = Checkin.find(params[:id])
   end
@@ -116,9 +116,8 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       if @checkin.update_attributes(params[:checkin])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkin'))
-        format.html { redirect_to checkin_url(@checkin) }
-        format.json { head :ok }
+        format.html { redirect_to checkin_url @checkin, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkin')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
@@ -134,7 +133,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to checkins_url }
-      format.json { head :ok }
+      format.json { head :no_content }
     end
   end
 end

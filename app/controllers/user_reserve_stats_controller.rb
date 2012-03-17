@@ -48,8 +48,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       if @user_reserve_stat.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.user_reserve_stat'))
-        format.html { redirect_to(@user_reserve_stat) }
+        format.html { redirect_to @user_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.user_reserve_stat')) }
         format.json { render :json => @user_reserve_stat, :status => :created, :location => @user_reserve_stat }
       else
         format.html { render :action => "new" }
@@ -63,9 +62,8 @@ class UserReserveStatsController < ApplicationController
   def update
     respond_to do |format|
       if @user_reserve_stat.update_attributes(params[:user_reserve_stat])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.user_reserve_stat'))
-        format.html { redirect_to(@user_reserve_stat) }
-        format.json { head :ok }
+        format.html { redirect_to @user_reserve_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_reserve_stat')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @user_reserve_stat.errors, :status => :unprocessable_entity }
@@ -79,8 +77,8 @@ class UserReserveStatsController < ApplicationController
     @user_reserve_stat.destroy
 
     respond_to do |format|
-      format.html { redirect_to(user_reserve_stats_url) }
-      format.json { head :ok }
+      format.html { redirect_to user_reserve_stats_url }
+      format.json { head :no_content }
     end
   end
 end

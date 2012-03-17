@@ -42,7 +42,7 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.json { render :json => @reserves.to_json }
+      format.json { render :json => @reserves }
       format.rss  { render :layout => false }
       format.atom
       format.csv
@@ -54,7 +54,7 @@ class ReservesController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.rhtml
-      format.json { render :json => @reserve.to_json }
+      format.json { render :json => @reserve }
     end
   end
 
@@ -94,7 +94,7 @@ class ReservesController < ApplicationController
     end
   end
 
-  # GET /reserves/1;edit
+  # GET /reserves/1/edit
   def edit
   end
 
@@ -126,9 +126,8 @@ class ReservesController < ApplicationController
       if @reserve.save
         @reserve.send_message('accepted')
 
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.reserve'))
         #format.html { redirect_to reserve_url(@reserve) }
-        format.html { redirect_to(@reserve) }
+        format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }
         format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
       else
         format.html { render :action => "new" }
@@ -168,8 +167,8 @@ class ReservesController < ApplicationController
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
-        format.html { redirect_to(@reserve) }
-        format.json { head :ok }
+        format.html { redirect_to @reserve }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @reserve.errors, :status => :unprocessable_entity }
@@ -193,9 +192,8 @@ class ReservesController < ApplicationController
     end
 
     respond_to do |format|
-      flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.reserve'))
-      format.html { redirect_to reserves_url }
-      format.json { head :ok }
+      format.html { redirect_to reserves_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.reserve')) }
+      format.json { head :no_content }
     end
   end
 end
