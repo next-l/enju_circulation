@@ -4,12 +4,12 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-<strong><%= t('activerecord.models.item') -%>:</strong>
+  <strong><%= t('activerecord.models.item') -%>:</strong>
   <%= link_to @checkin.item.manifestation.original_title, @checkin.item -%>
 </p>
 
 <p>
-<strong><%= ('Librarian') -%>:</strong>
+  <strong><%= t('activerecord.models.user') -%>:</strong>
   <%= link_to @checkin.librarian.username, @checkin.librarian -%>
 </p>
 

@@ -3,10 +3,11 @@
 <div class="search_form">
 <%= form_for @checkin, :html => {:method => :post}, :url => basket_checkins_path(@basket, :mode => 'list'), :remote => true do |f| -%>
 
-  <p><%= t('activerecord.attributes.item.item_identifier') -%>:
+  <p>
+    <%= t('activerecord.attributes.item.item_identifier') -%>:
     <%= f.text_field :item_identifier, :class => 'resource_item_identifier' -%>
-    <%= f.hidden_field :librarian_id, :value => current_user.id -%>
-    <%= submit_tag t('checkin.checkin') -%></p>
+    <%= f.submit t('checkin.checkin') -%>
+  </p>
 <%- end -%>
 </div>
 

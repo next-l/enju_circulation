@@ -2,14 +2,13 @@ class CheckinsController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
   before_filter :get_user
-  helper_method :get_basket
+  before_filter :get_basket, :only => [:index, :create]
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkins
   # GET /checkins.json
   def index
     # かごがない場合、自動的に作成する
-    get_basket
     unless @basket
       @basket = Basket.create!(:user => current_user)
       redirect_to basket_checkins_url(@basket)
@@ -51,12 +50,12 @@ class CheckinsController < ApplicationController
   # POST /checkins
   # POST /checkins.json
   def create
-    get_basket
     unless @basket
       @basket = Basket.new(:user => current_user)
       @basket.save(:validate => false)
     end
     @checkin = @basket.checkins.new(params[:checkin])
+    @checkin.librarian = current_user
 
     flash[:message] = ''
     if @checkin.item_identifier.blank?
@@ -67,10 +66,10 @@ class CheckinsController < ApplicationController
 
     if item.blank?
       flash[:message] << t('checkin.item_not_found')
-    end
-
-    if @basket.checkins.collect(&:item).include?(item)
-      flash[:message] << t('checkin.already_checked_in')
+    else
+      if @basket.checkins.collect(&:item).include?(item)
+        flash[:message] << t('checkin.already_checked_in')
+      end
     end
 
     respond_to do |format|
@@ -89,7 +88,7 @@ class CheckinsController < ApplicationController
           message = @checkin.item_checkin(current_user)
           flash[:message] << message if message
           format.html { redirect_to basket_checkins_url(@checkin.basket) }
-          format.json { render :json => @checkin, :status => :created, :location => checkin_url(@checkin) }
+          format.json { render :json => @checkin, :status => :created, :location => @checkin }
           format.js {
             redirect_to basket_checkins_url(@checkin.basket, :mode => 'list', :format => :js)
           }
