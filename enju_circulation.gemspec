@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 3.1"
+  s.add_dependency "rails", "~> 3.2"
   s.add_dependency "simple_form"
   s.add_dependency "devise"
   s.add_dependency "cancan"
@@ -29,11 +29,11 @@ Gem::Specification.new do |s|
   s.add_dependency "sunspot_solr"
   s.add_dependency "will_paginate", "~> 3.0"
   s.add_dependency "acts_as_list", "~> 0.1.5"
-  s.add_dependency "enju_message", "~> 0.0.10"
+  s.add_dependency "enju_message", "~> 0.0.13"
   s.add_dependency "enju_event", ">= 0.0.5"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "factory_girl_rails", "~> 1.7"
+  s.add_development_dependency "factory_girl_rails", "~> 3.0"
   s.add_development_dependency "sunspot-rails-tester"
 end
