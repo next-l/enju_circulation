@@ -42,7 +42,9 @@ class Reserve < ActiveRecord::Base
     before_transition [:pending, :requested, :retained] => :expired, :do => :expire
     before_transition :retained => :completed, :do => :checkout
     after_transition any => any do |reserve, transition|
-      ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
+      if Rails.env == 'production'
+        ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
+      end
     end
 
     event :sm_request do
