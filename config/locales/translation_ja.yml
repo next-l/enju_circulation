@@ -28,10 +28,10 @@ ja:
         note: 注記
         lock_version: ロックバージョン
       checked_item:
-        due_date: 期日
+        due_date: 返却期限
       checkin:
       checkout:
-        due_date: 期日
+        due_date: 返却期限
         lock_version: ロックバージョン
       reserve:
         user: 利用者
@@ -137,6 +137,7 @@ ja:
     number_of_day_overdue: "延滞日数"
     extend: "貸出期間の延長"
     returned: "返却済み"
+    my_checkout: "自分の貸出"
   checkin:
     item_not_found: "資料が見つかりません。"
     enter_item_identifier: "所蔵情報番号を入力してください。"

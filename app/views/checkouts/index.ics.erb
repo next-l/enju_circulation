@@ -3,10 +3,11 @@ checkouts = @checkouts
 RiCal.Calendar do
   checkouts.each do |checkout|
     event do
+      summary I18n.t('activerecord.attributes.checkout.due_date')
       description checkout.item.manifestation.original_title
-      dtstart     checkout.created_at
-      dtend       checkout.due_date
-      location    checkout.item.shelf.library.address
+      dtstart checkout.due_date.to_date
+      dtend checkout.due_date.to_date
+      location checkout.item.shelf.library.display_name.localize
     end
   end
 end.to_s

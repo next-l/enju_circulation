@@ -139,6 +139,7 @@ en:
     number_of_day_overdue: "Number of days overdue"
     extend: "Extend"
     returned: "Returned"
+    my_checkout: "My checkout"
   checkin:
     item_not_found: "Item not found."
     enter_item_identifier: "Enter item identifier."
