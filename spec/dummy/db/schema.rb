@@ -689,6 +689,7 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
     t.string   "checkout_icalendar_token"
   end
 
+  add_index "users", ["checkout_icalendar_token"], :name => "index_users_on_checkout_icalendar_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
