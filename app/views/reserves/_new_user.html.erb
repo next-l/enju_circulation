@@ -24,6 +24,7 @@
     <%= f.label t('activerecord.models.user') -%>
     <%= link_to @reserve.user.username, @reserve.user -%>
     (<%= @reserve.user.user_number %>)
+    <%= f.hidden_field :user_number, :value => @user.user_number -%>
   </div>
 
   <div class="field">
@@ -31,9 +32,8 @@
     <%= f.text_field :expired_at, :value => @reserve.expired_at.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
   </div>
 
-  <div class="field">
-    <%= f.hidden_field :user_number, :value => @user.user_number -%>
-    <%= f.submit t('page.create') -%>
+  <div class="actions">
+    <%= f.submit %>
   </div>
 <%- end -%>
 </div>
