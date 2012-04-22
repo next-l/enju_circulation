@@ -1712,6 +1712,9 @@ manifestation_00202:
   created_at: 2007-11-19 17:55:41 UTC
   frequency_id: 3
   issn: 12345678
+  serial_number: 2
+  volume_number: 1
+  issue_number: 2
 manifestation_00203:
   carrier_type_id: 1
   language_id: 1
@@ -1958,8 +1961,8 @@ manifestation_00216:
 #  manifestation_identifier        :string(255)
 #  date_of_publication             :datetime
 #  date_copyrighted                :datetime
-#  created_at                      :datetime
-#  updated_at                      :datetime
+#  created_at                      :datetime        not null
+#  updated_at                      :datetime        not null
 #  deleted_at                      :datetime
 #  access_address                  :string(255)
 #  language_id                     :integer         default(1), not null
@@ -1967,9 +1970,9 @@ manifestation_00216:
 #  extent_id                       :integer         default(1), not null
 #  start_page                      :integer
 #  end_page                        :integer
-#  height                          :decimal(, )
-#  width                           :decimal(, )
-#  depth                           :decimal(, )
+#  height                          :integer
+#  width                           :integer
+#  depth                           :integer
 #  isbn                            :string(255)
 #  isbn10                          :string(255)
 #  wrong_isbn                      :string(255)
@@ -2006,12 +2009,16 @@ manifestation_00216:
 #  date_accepted                   :datetime
 #  date_caputured                  :datetime
 #  ndl_bib_id                      :string(255)
-#  file_hash                       :string(255)
 #  pub_date                        :string(255)
 #  edition_string                  :string(255)
 #  volume_number                   :integer
 #  issue_number                    :integer
 #  serial_number                   :integer
 #  ndc                             :string(255)
+#  content_type_id                 :integer         default(1)
+#  year_of_publication             :integer
+#  attachment_fingerprint          :string(255)
+#  attachment_meta                 :text
+#  month_of_publication            :integer
 #
 

@@ -2,7 +2,7 @@
 class Reserve < ActiveRecord::Base
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
-  scope :waiting, where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('id DESC')
+  scope :waiting, where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')
   scope :completed, where('checked_out_at IS NOT NULL')
   scope :canceled, where('canceled_at IS NOT NULL')
   scope :will_expire_retained, lambda {|datetime| {:conditions => ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained'], :order => 'expired_at'}}
@@ -106,55 +106,52 @@ class Reserve < ActiveRecord::Base
   end
 
   def next_reservation
-    manifestation.reserves.where('reserves.id != ?', self.id).order('reserves.created_at').first
+    if item
+      Reserve.waiting.where(:manifestation_id => item.manifestation.id).first
+    end
   end
 
-  def retain
-    # TODO: 「取り置き中」の状態を正しく表す
-    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :checked_out_at => Time.zone.now})
-  end
-
-  def expire
-    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now})
-    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
-  end
-
-  def cancel
-    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now})
-  end
-
-  def checkout
-    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now})
-  end
-
-  def send_message(status)
-    system_user = User.find(1) # TODO: システムからのメッセージの発信者
+  def send_message(sender = nil)
+    sender = User.find(1) unless sender # TODO: システムからのメッセージの発信者
     Reserve.transaction do
-      case status
-      when 'accepted'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', self.user.locale)
-        request = MessageRequest.create!(:sender => system_user, :receiver => self.user, :message_template => message_template_to_patron)
-        request.save_message_body(:manifestations => Array[self.manifestation], :user => self.user)
+      case state
+      when 'requested'
+        message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # 受付時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', self.user.locale)
-        request = MessageRequest.create!(:sender => system_user, :receiver => system_user, :message_template => message_template_to_library)
-        request.save_message_body(:manifestations => Array[self.manifestation], :user => self.user)
+        message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # 受付時は即時送信
       when 'canceled'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', self.user.locale)
-        request = MessageRequest.create!(:sender => system_user, :receiver => self.user, :message_template => message_template_to_patron)
-        request.save_message_body(:manifestations => Array[self.manifestation], :user => self.user)
+        message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # キャンセル時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', self.user.locale)
-        request = MessageRequest.create!(:sender => system_user, :receiver => system_user, :message_template => message_template_to_library)
-        request.save_message_body(:manifestations => Array[self.manifestation], :user => self.user)
+        message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # キャンセル時は即時送信
       when 'expired'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', self.user.locale)
-        request = MessageRequest.create!(:sender => system_user, :receiver => self.user, :message_template => message_template_to_patron)
-        request.save_message_body(:manifestations => Array[self.manifestation], :user => self.user)
-        request.sm_send_message! # 期限切れ時は利用者にのみ即時送信
+        message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
+        request.sm_send_message!
         self.update_attribute(:expiration_notice_to_patron, true)
+        message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request.save_message_body(:manifestations => Array[manifestation], :user => sender)
+        request.sm_send_message!
+      when 'retained'
+        message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_for_patron)
+        request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
+        request.sm_send_message!
+        message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.locale)
+        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_for_library)
+        request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
+        request.sm_send_message!
       else
         raise 'status not defined'
       end
@@ -162,18 +159,18 @@ class Reserve < ActiveRecord::Base
   end
 
   def self.send_message_to_library(status, options = {})
-    system_user = User.find(1) # TODO: システムからのメッセージの発信者
+    sender = User.find(1) # TODO: システムからのメッセージの発信者
     case status
     when 'expired'
-      message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', system_user.locale)
-      request = MessageRequest.create!(:sender => system_user, :receiver => system_user, :message_template => message_template_to_library)
+      message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
+      request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
       request.save_message_body(:manifestations => options[:manifestations])
       self.not_sent_expiration_notice_to_library.each do |reserve|
         reserve.update_attribute(:expiration_notice_to_library, true)
       end
     #when 'canceled'
-    #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', system_user.locale)
-    #  request = MessageRequest.create!(:sender => system_user, :receiver => system_user, :message_template => message_template_to_library)
+    #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', sender.locale)
+    #  request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
     #  request.save_message_body(:manifestations => self.not_sent_expiration_notice_to_library.collect(&:manifestation))
     #  self.not_sent_cancel_notice_to_library.each do |reserve|
     #    reserve.update_attribute(:expiration_notice_to_library, true)
@@ -218,6 +215,37 @@ class Reserve < ActiveRecord::Base
         errors[:base] << I18n.t('reserve.this_patron_cannot_reserve')
       end
     end
+  end
+
+  private
+  def retain
+    # TODO: 「取り置き中」の状態を正しく表す
+    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :checked_out_at => Time.zone.now})
+  end
+
+  def expire
+    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now})
+    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
+    reserve = next_reservation
+    if reserve
+      reserve.item = item
+      reserve.sm_retain!
+      reserve.send_message
+    end
+  end
+
+  def cancel
+    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now})
+    reserve = next_reservation
+    if reserve
+      reserve.item = item
+      reserve.sm_retain!
+      reserve.send_message
+    end
+  end
+
+  def checkout
+    self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now})
   end
 end
 

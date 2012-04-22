@@ -20,10 +20,14 @@
     <%= f.text_field :expired_at, :value => @reserve.expired_at.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
   </div>
 
-  <div class="field">
-    <%= f.label t('activerecord.attributes.user.user_number') -%><br />
-    <%= f.text_field :user_number, :class => 'resource_user_number' -%>
-  </div>
+  <% if current_user.has_role?('Librarian') %>
+    <div class="field">
+      <%= f.label t('activerecord.attributes.user.user_number') -%><br />
+      <%= f.text_field :user_number, :class => 'resource_user_number' -%>
+    </div>
+  <% else %>
+    <%= f.hidden_field :user_number, :class => 'resource_user_number' -%>
+  <% end %>
 
   <div class="actions">
     <%= f.submit t('page.create') -%>

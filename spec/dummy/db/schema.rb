@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
     t.integer  "required_role_id",            :default => 1,     :null => false
     t.string   "state"
     t.integer  "required_score",              :default => 0,     :null => false
+    t.datetime "acquired_at"
   end
 
   add_index "items", ["checkout_type_id"], :name => "index_items_on_checkout_type_id"
@@ -349,9 +350,9 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
     t.integer  "extent_id",                :default => 1,     :null => false
     t.integer  "start_page"
     t.integer  "end_page"
-    t.decimal  "height"
-    t.decimal  "width"
-    t.decimal  "depth"
+    t.integer  "height"
+    t.integer  "width"
+    t.integer  "depth"
     t.string   "isbn"
     t.string   "isbn10"
     t.string   "wrong_isbn"
@@ -377,6 +378,9 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
     t.integer  "required_score",           :default => 0,     :null => false
     t.integer  "frequency_id",             :default => 1,     :null => false
     t.boolean  "subscription_master",      :default => false, :null => false
+    t.integer  "volume_number"
+    t.integer  "issue_number"
+    t.integer  "serial_number"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"

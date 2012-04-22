@@ -62,7 +62,6 @@ checkout_00006:
   id: 6
   librarian_id: 2
   checkout_renewal_count: 0
-  due_date: <%= 2.day.from_now.beginning_of_day %>
   due_date: 2010-09-15 00:00:00 +09:00
   created_at: 2007-09-08 01:39:03.210081 +09:00
 checkout_00007: 

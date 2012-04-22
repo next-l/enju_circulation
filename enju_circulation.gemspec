@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency "sunspot_rails"
   s.add_dependency "sunspot_solr"
   s.add_dependency "will_paginate", "~> 3.0"
-  s.add_dependency "acts_as_list", "~> 0.1.5"
-  s.add_dependency "enju_message", "~> 0.0.13"
+  s.add_dependency "acts_as_list", "~> 0.1.6"
+  s.add_dependency "enju_message", "~> 0.0.17"
   s.add_dependency "enju_event", ">= 0.0.12"
 
   s.add_development_dependency "sqlite3"
