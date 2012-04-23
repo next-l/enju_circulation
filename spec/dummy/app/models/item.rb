@@ -22,6 +22,7 @@ class Item < ActiveRecord::Base
   validates :url, :url => true, :allow_blank => true, :length => {:maximum => 255}
   validates_date :acquired_at, :allow_blank => true
 
+  #has_paper_trail
   normalize_attributes :item_identifier
 
   searchable do
@@ -43,8 +44,13 @@ class Item < ActiveRecord::Base
   attr_accessor :library_id, :manifestation_id
 
   if defined?(EnjuCirculation)
-    scope :for_checkout, where('item_identifier IS NOT NULL')
-    scope :not_for_checkout, where(:item_identifier => nil)
+    FOR_CHECKOUT = [
+      'Available On Shelf',
+      'On Loan',
+      'Waiting To Be Reshelved'
+    ]
+    scope :for_checkout, includes(:circulation_status).where('circulation_statuses.name' => FOR_CHECKOUT).where('item_identifier IS NOT NULL')
+    scope :removed, includes(:circulation_status).where('circulation_statuses.name' => 'Removed')
     has_many :checkouts
     has_many :reserves
     has_many :reserved_patrons, :through => :reserves, :class_name => 'Patron'
@@ -80,12 +86,8 @@ class Item < ActiveRecord::Base
        user.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
     end
 
-    def next_reservation
-      Reserve.waiting.where(:manifestation_id => self.manifestation.id).first
-    end
-
     def reserved?
-      return true if self.next_reservation
+      return true if manifestation.next_reservation
       false
     end
 
@@ -95,8 +97,8 @@ class Item < ActiveRecord::Base
     end
 
     def reserved_by_user?(user)
-      if self.next_reservation
-        return true if self.next_reservation.user == user
+      if manifestation.next_reservation
+        return true if manifestation.next_reservation.user == user
       end
       false
     end
@@ -110,8 +112,8 @@ class Item < ActiveRecord::Base
     def checkout!(user)
       self.circulation_status = CirculationStatus.where(:name => 'On Loan').first
       if self.reserved_by_user?(user)
-        self.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
-        self.next_reservation.sm_complete!
+        manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
+        manifestation.next_reservation.sm_complete!
       end
       save!
     end
@@ -123,7 +125,7 @@ class Item < ActiveRecord::Base
 
     def retain(librarian)
       Item.transaction do
-        reservation = self.manifestation.next_reservation
+        reservation = manifestation.next_reservation
         unless reservation.nil?
           reservation.item = self
           reservation.sm_retain!
@@ -186,17 +188,17 @@ class Item < ActiveRecord::Base
     manifestation.try(:original_title)
   end
 
-  #def creator
-  #  manifestation.try(:creator)
-  #end
+  def creator
+    manifestation.try(:creator)
+  end
 
-  #def contributor
-  #  manifestation.try(:contributor)
-  #end
+  def contributor
+    manifestation.try(:contributor)
+  end
 
-  #def publisher
-  #  manifestation.try(:publisher)
-  #end
+  def publisher
+    manifestation.try(:publisher)
+  end
 
   def shelf_name
     shelf.name
