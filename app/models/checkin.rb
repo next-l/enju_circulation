@@ -1,18 +1,21 @@
 class Checkin < ActiveRecord::Base
-  default_scope :order => 'id DESC'
+  default_scope :order => 'checkins.id DESC'
   scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
-
   has_one :checkout
   belongs_to :item
   belongs_to :librarian, :class_name => 'User'
   belongs_to :basket
 
-  validates_presence_of :item, :basket, :on => :update
-  validates_associated :item, :librarian, :basket, :on => :update
-  validates_presence_of :item_identifier, :on => :create
+  validates_uniqueness_of :item_id, :scope => :basket_id, :message => I18n.t('checkin.already_checked_in')
+  validates_presence_of :item_id, :message => I18n.t('checkin.item_not_found')
+  validates_presence_of :basket_id
 
   attr_protected :user_id
   attr_accessor :item_identifier
+
+  def self.per_page
+    10
+  end
 
   def item_checkin(current_user)
     message = ''

@@ -1,20 +1,29 @@
+<div id="content_detail" class="ui-corner-all">
 <h1 class="title"><%= t('page.new', :model => t('activerecord.models.checked_item')) -%></h1>
+<div id="content_list">
+  <p id="notice"><%= notice %></p>
 
-<%= form_for(@checked_item, :url => basket_checked_items_path(@basket)) do |f| -%>
-  <%= f.error_messages -%>
-  <div class="field">
-    <%= f.label t('activerecord.models.item') -%><br />
-    <%= f.text_field :item_id -%>
+  <div id="checked_item_list">
+    <%= render 'list' -%>
   </div>
+  <%= render 'checkouts' -%>
+</div>
+</div>
 
-  <div class="field">
-    <%= f.label t('activerecord.models.basket') -%><br />
-    <%= f.text_field :basket_id -%>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<%- end -%>
-
-<%= link_to t('page.back'), basket_checked_items_path(@basket) -%>
+<div id="submenu" class="ui-corner-all">
+  <ul>
+    <li><%= link_to @basket.user.username, @basket.user -%></li>
+  </ul>
+  <ul>
+    <%- @basket.user.user_group.user_group_has_checkout_types.each do |available_checkout_type| -%>
+      <li>
+        <%= available_checkout_type.checkout_type.display_name.localize -%>:
+        <%= @basket.user.checked_item_count[:"#{available_checkout_type.checkout_type.name}"] -%> / <%= available_checkout_type.checkout_limit -%>
+      </li>
+    <%- end -%>
+  </ul>
+  <ul>
+    <li><%= link_to t('activerecord.models.checkin'), checkins_path -%></li>
+    <li><%= link_to t('activerecord.models.reserve'), user_reserves_path(@basket.user) -%></li>
+  </ul>
+</div>

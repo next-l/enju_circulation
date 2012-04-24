@@ -31,12 +31,11 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/new
   # GET /checked_items/new.json
   def new
-    if @basket
-      @checked_item = @basket.checked_items.new
-    else
-      access_denied
-      return
+    unless @basket
+      access_denied; return
     end
+    @checked_item = CheckedItem.new
+    @checked_items = []
 
     respond_to do |format|
       format.html # new.html.erb
@@ -51,13 +50,8 @@ class CheckedItemsController < ApplicationController
   # POST /checked_items
   # POST /checked_items.json
   def create
-    if @basket
-      @checked_item = CheckedItem.new(params[:checked_item])
-      @checked_item.basket = @basket
-    else
-      access_denied
-      return
-    end
+    @checked_item.basket = @basket
+    @checked_item.librarian = current_user
 
     flash[:message] = []
     item_identifier = @checked_item.item_identifier.to_s.strip
@@ -72,26 +66,13 @@ class CheckedItemsController < ApplicationController
           flash[:message] << t('item.this_item_include_supplement')
         end
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checked_item'))
-
-        if params[:mode] == 'list'
-          format.html { redirect_to(basket_checked_items_url(@basket, :mode => 'list')) }
-          format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
-          format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
-        else
-          flash[:message] << @checked_item.errors[:base]
-          format.html { redirect_to(basket_checked_items_url(@basket)) }
-          format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
-        end
+        format.html { redirect_to(basket_checked_items_url(@basket)) }
+        format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
+        format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
       else
-        flash[:message] << @checked_item.errors[:base]
-        if params[:mode] == 'list'
-          format.html { redirect_to(basket_checked_items_url(@basket, :mode => 'list')) }
-          format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
-          format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
-        else
-          format.html { render :action => "new" }
-          format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
-        end
+        format.html { render :action => "index" }
+        format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
+        format.js { render :action => "index" }
       end
     end
   end

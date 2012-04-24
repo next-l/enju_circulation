@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120224094141) do
+ActiveRecord::Schema.define(:version => 20120424103932) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -47,11 +47,12 @@ ActiveRecord::Schema.define(:version => 20120224094141) do
   end
 
   create_table "checked_items", :force => true do |t|
-    t.integer  "item_id",    :null => false
-    t.integer  "basket_id",  :null => false
-    t.datetime "due_date",   :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "item_id",      :null => false
+    t.integer  "basket_id",    :null => false
+    t.datetime "due_date",     :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "librarian_id"
   end
 
   add_index "checked_items", ["basket_id"], :name => "index_checked_items_on_basket_id"

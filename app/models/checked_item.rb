@@ -1,6 +1,7 @@
 class CheckedItem < ActiveRecord::Base
   belongs_to :item #, :validate => true
   belongs_to :basket #, :validate => true
+  belongs_to :librarian, :class_name => 'User' #, :validate => true
 
   validates_associated :item, :basket, :on => :update
   validates_presence_of :item, :basket, :due_date, :on => :update
@@ -69,8 +70,8 @@ class CheckedItem < ActiveRecord::Base
   end
 
   def item_checkout_type
-    if item
-      self.basket.user.user_group.user_group_has_checkout_types.available_for_item(item).first
+    if item and basket
+      basket.user.user_group.user_group_has_checkout_types.available_for_item(item).first
     end
   end
 

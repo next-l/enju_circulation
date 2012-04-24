@@ -1,52 +1,14 @@
 <div style="color: red"><%= flash[:message] -%></div>
 
 <div class="search_form">
-<%= form_for @checkin, :html => {:method => :post}, :url => basket_checkins_path(@basket, :mode => 'list'), :remote => true do |f| -%>
-
+<%= form_for @checkin, :html => {:method => :post}, :url => basket_checkins_path(@basket), :remote => true do |f| -%>
+  <%= f.error_messages %>
   <p>
     <%= t('activerecord.attributes.item.item_identifier') -%>:
-    <%= f.text_field :item_identifier, :class => 'resource_item_identifier' -%>
-    <%= f.submit t('checkin.checkin') -%>
+    <%= f.search_field :item_identifier, :class => 'resource_item_identifier', :value => nil -%>
+    <%= f.submit t('checkin.checkin'), :disable_with => t('page.saving') -%>
   </p>
 <%- end -%>
 </div>
 
-<table class="index">
-  <tr>
-    <th><%= t('page.title') -%></th>
-    <th><%= t('activerecord.models.item') -%></th>
-    <th><%= t('activerecord.attributes.checkout.due_date') -%></th>
-    <th><%= t('activerecord.models.user') -%></th>
-  </tr>
-
-<%- @checkins.each_with_index do |checkin, i| -%>
-  <tr class="line<%= cycle("0", "1") -%>">
-    <td>
-      <%= render 'manifestations/show_index', :manifestation => checkin.item.manifestation -%>
-    </td>
-    <td>
-      <%= link_to checkin.item.item_identifier, checkin.item -%>
-      <br />
-      (<%= link_to checkin.item.shelf.library.display_name.localize, checkin.item.shelf.library %>)
-      <% if defined?(EnjuInterLibraryLoan) %>
-        <br />
-        <%- unless checkin.item.shelf.library == current_user.library -%>
-          <span style="color: red"><%= link_to t('activerecord.models.inter_library_loan'), item_inter_library_loans_path(checkin.item) -%></span>
-        <%- end -%>
-      <% end %>
-    </td>
-    <td>
-      <%- if checkin.checkout -%>
-        <%= l(checkin.checkout.due_date, :format => :only_date) -%>
-      <%- end -%>
-    </td>
-    <td>
-      <% if checkin.checkout.try(:user) %>
-        <%= link_to checkin.checkout.user.username, checkin.checkout.user -%>
-      <% end %>
-    </td>
-  </tr>
-<%- end -%>
-</table>
-
-<%= javascript_tag("$('#checkin_item_identifier').focus()") -%>
+<%= render 'checkin' %>

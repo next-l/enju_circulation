@@ -8,20 +8,16 @@ class CheckinsController < ApplicationController
   # GET /checkins
   # GET /checkins.json
   def index
-    # かごがない場合、自動的に作成する
-    unless @basket
-      @basket = Basket.create!(:user => current_user)
-      redirect_to basket_checkins_url(@basket)
-      return
+    if @basket
+      @checkins = @basket.checkins.paginate(:page => params[:page])
+    else
+      @checkins = Checkin.paginate(:page => params[:page])
     end
-    @checkins = @basket.checkins.order('checkins.created_at DESC').all
-
-    @checkin = @basket.checkins.new
 
     respond_to do |format|
       format.html # index.rhtml
       format.json { render :json => @checkins }
-      format.js
+      format.js { @checkin = Checkin.new }
     end
   end
 
@@ -38,8 +34,14 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/new
   def new
-    #@checkin = @basket.checkins.new
-    redirect_to checkins_url
+    if flash[:checkin_basket_id]
+      @basket = Basket.find(flash[:checkin_basket_id])
+    else
+      @basket = Basket.create!(:user => current_user)
+    end
+    @checkin = Checkin.new
+    @checkins = []
+    flash[:checkin_basket_id] = @basket.id
   end
 
   # GET /checkins/1/edit
@@ -50,11 +52,7 @@ class CheckinsController < ApplicationController
   # POST /checkins
   # POST /checkins.json
   def create
-    unless @basket
-      @basket = Basket.new(:user => current_user)
-      @basket.save(:validate => false)
-    end
-    @checkin = @basket.checkins.new(params[:checkin])
+    @checkin.basket = @basket
     @checkin.librarian = current_user
 
     flash[:message] = ''
@@ -63,42 +61,20 @@ class CheckinsController < ApplicationController
     else
       item = Item.where(:item_identifier => @checkin.item_identifier.to_s.strip).first
     end
-
-    if item.blank?
-      flash[:message] << t('checkin.item_not_found')
-    else
-      if @basket.checkins.collect(&:item).include?(item)
-        flash[:message] << t('checkin.already_checked_in')
-      end
-    end
+    @checkin.item = item
 
     respond_to do |format|
-      unless item
+      if @checkin.save
+        flash[:message] << t('checkin.successfully_checked_in', :model => t('activerecord.models.checkin'))
+        message = @checkin.item_checkin(current_user)
+        flash[:message] << message if message
         format.html { redirect_to basket_checkins_url(@checkin.basket) }
-        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
-        format.js {
-          redirect_to basket_checkins_url(@checkin.basket, :mode => 'list', :format => :js)
-        }
+        format.json { render :json => @checkin, :status => :created, :location => @checkin }
+        format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
       else
-        @checkin.item = item
-        if @checkin.save(:validate => false)
-        # 速度を上げるためvalidationを省略している
-          #flash[:message] << t('controller.successfully_created', :model => t('activerecord.models.checkin'))
-          flash[:message] << t('checkin.successfully_checked_in', :model => t('activerecord.models.checkin'))
-          message = @checkin.item_checkin(current_user)
-          flash[:message] << message if message
-          format.html { redirect_to basket_checkins_url(@checkin.basket) }
-          format.json { render :json => @checkin, :status => :created, :location => @checkin }
-          format.js {
-            redirect_to basket_checkins_url(@checkin.basket, :mode => 'list', :format => :js)
-          }
-        else
-          format.html { render :action => "new" }
-          format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
-          format.js {
-            redirect_to basket_checkins_url(@basket, :mode => 'list', :format => :js)
-          }
-        end
+        format.html { render :action => "new" }
+        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
+        format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
       end
     end
   end
