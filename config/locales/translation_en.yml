@@ -166,3 +166,5 @@ en:
     canceled: "Canceled"
     expired: "Expired"
     completed: "Completed"
+  page:
+    saving: "Saving..."
