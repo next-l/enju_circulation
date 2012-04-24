@@ -4,7 +4,7 @@
 <%= form_for :checked_item, :html => {:method => :post}, :url => basket_checked_items_path(@basket, :mode => 'list'), :remote => true do |f| -%>
   <%= f.error_messages -%>
   <p>
-    <%= t('activerecord.attributes.item.item_identifier') -%>: <%= f.text_field :item_identifier -%>
+    <%= t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
     <%= t('checked_item.ignore_restriction') -%>: <%= f.check_box :ignore_restriction -%>
     <%= submit_tag t('page.read') -%>
   </p>
