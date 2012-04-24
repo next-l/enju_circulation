@@ -42,6 +42,11 @@ class CheckinsController < ApplicationController
     @checkin = Checkin.new
     @checkins = []
     flash[:checkin_basket_id] = @basket.id
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render :json => @checkin }
+    end
   end
 
   # GET /checkins/1/edit
