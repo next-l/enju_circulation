@@ -52,6 +52,9 @@ class CheckinsController < ApplicationController
   # POST /checkins
   # POST /checkins.json
   def create
+    unless @basket
+      access_denied; return
+    end
     @checkin.basket = @basket
     @checkin.librarian = current_user
 
@@ -72,9 +75,10 @@ class CheckinsController < ApplicationController
         format.json { render :json => @checkin, :status => :created, :location => @checkin }
         format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
       else
+        @checkins = @basket.checkins
         format.html { render :action => "new" }
         format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
-        format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
+        format.js { render :action => "index" }
       end
     end
   end

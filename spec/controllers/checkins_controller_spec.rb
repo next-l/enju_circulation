@@ -204,7 +204,7 @@ describe CheckinsController do
 
         it "should not create checkin without basket_id" do
           post :create, :checkin => @attrs
-          response.should be_success
+          response.should be_forbidden
         end
 
         describe "When basket_id is specified" do
@@ -222,9 +222,9 @@ describe CheckinsController do
           assigns(:checkin).should_not be_valid
         end
 
-        it "redirects to the list" do
+        it "should be forbidden" do
           post :create, :checkin => @invalid_attrs
-          response.should be_success
+          response.should be_forbidden
         end
       end
 
@@ -241,8 +241,12 @@ describe CheckinsController do
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
           post :create, :checkin => @attrs
-          response.should be_success
           assigns(:checkin).should_not be_valid
+        end
+
+        it "should not create checkin without basket_id" do
+          post :create, :checkin => @attrs
+          response.should be_forbidden
         end
 
         it "should show notification when it is reserved" do

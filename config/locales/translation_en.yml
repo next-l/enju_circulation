@@ -32,6 +32,7 @@ en:
       checked_item:
         due_date: Due date
       checkin:
+        item_id: Item
       checkout:
         due_date: Due date
         lock_version: Lock version

@@ -30,6 +30,7 @@ ja:
       checked_item:
         due_date: 返却期限
       checkin:
+        item_id: 個別資料
       checkout:
         due_date: 返却期限
         lock_version: ロックバージョン

@@ -1,15 +1,14 @@
 class CheckedItemsController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_basket
+  before_filter :get_basket, :only => [:index, :new, :create, :update]
 
   # GET /checked_items
   # GET /checked_items.json
   def index
     if @basket
-      @checked_items = @basket.checked_items
+      @checked_items = @basket.checked_items.paginate(:page => params[:page])
     else
-      access_denied
-      return
+      @checked_items = CheckedItem.paginate(:page => params[:page])
     end
 
     respond_to do |format|
@@ -32,7 +31,8 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/new.json
   def new
     unless @basket
-      access_denied; return
+      redirect_to new_basket_url
+      return
     end
     @checked_item = CheckedItem.new
     @checked_items = []
@@ -50,6 +50,9 @@ class CheckedItemsController < ApplicationController
   # POST /checked_items
   # POST /checked_items.json
   def create
+    unless @basket
+      access_denied; return
+    end
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
@@ -70,6 +73,7 @@ class CheckedItemsController < ApplicationController
         format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
         format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
       else
+        @checked_items = @basket.checked_items
         format.html { render :action => "index" }
         format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
         format.js { render :action => "index" }

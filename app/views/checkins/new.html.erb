@@ -9,6 +9,7 @@
 
 <div id="submenu" class="ui-corner-all">
   <ul>
-    <li><%= link_to t('page.back'), checkins_path -%></li>
+    <li><%= link_to t('page.new', :model => t('activerecord.models.checkout')), new_basket_path -%></li>
+    <li><%= link_to t('page.listing', :model => t('activerecord.models.checkin')), checkins_path -%></li>
   </ul>
 </div>
