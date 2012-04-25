@@ -20,16 +20,16 @@ class CheckedItem < ActiveRecord::Base
       return false
     end
 
-    if self.item.rent?
+    if item.rent?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
     end
 
-    unless self.item.available_for_checkout?
+    unless item.available_for_checkout?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
       return false
     end
 
-    if self.item_checkout_type.blank?
+    if item_checkout_type.blank?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.this_group_cannot_checkout')
       return false
     end
@@ -37,15 +37,11 @@ class CheckedItem < ActiveRecord::Base
 
     return true if self.ignore_restriction == "1"
 
-    if self.item.not_for_loan?
+    if item.not_for_loan?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
     end
 
-    if self.in_transaction?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.in_transcation')
-    end
-
-    if self.item.reserved?
+    if item.reserved?
       if self.item.manifestation.next_reservation.user == self.basket.user
         self.item.manifestation.next_reservation.sm_complete
       else
@@ -97,10 +93,6 @@ class CheckedItem < ActiveRecord::Base
       end
     end
     return self.due_date
-  end
-
-  def in_transaction?
-    true if CheckedItem.where(:basket_id => self.basket.id, :item_id => self.item_id).first
   end
 end
 

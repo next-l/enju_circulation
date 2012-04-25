@@ -228,14 +228,6 @@ describe CheckedItemsController do
         end
       end
 
-      describe "When the item is in transaction" do
-        it "assigns a newly created checked_item as @checked_item" do
-          post :create, :checked_item => {:item_identifier => '00006'} , :basket_id => 9
-          assigns(:checked_item).should_not be_valid
-          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.in_transcation')).should be_true
-        end
-      end
-
       describe "When the item is reserved" do
         it "assigns a newly created checked_item as @checked_item" do
           old_count = items(:item_00021).manifestation.reserves.waiting.count
