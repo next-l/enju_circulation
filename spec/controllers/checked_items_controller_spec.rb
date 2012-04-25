@@ -278,7 +278,7 @@ describe CheckedItemsController do
         flash[:message].index(I18n.t('item.this_item_include_supplement')).should be_true
       end 
 
-      it "should create checked_item when ignore_restrictoin is checked" do
+      it "should create checked_item when ignore_restriction is checked" do
         post :create, :checked_item => {:item_identifier => '00011', :ignore_restriction => "1"}, :basket_id => 2
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
