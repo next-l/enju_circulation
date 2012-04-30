@@ -64,7 +64,7 @@ class CheckoutsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # index.rhtml
+      format.html # index.html.erb
       format.json { render :json => @checkouts }
       format.rss  { render :layout => false }
       format.ics
@@ -77,7 +77,7 @@ class CheckoutsController < ApplicationController
   # GET /checkouts/1.json
   def show
     respond_to do |format|
-      format.html # show.rhtml
+      format.html # show.html.erb
       format.json { render :json => @checkout }
     end
   end

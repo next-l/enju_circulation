@@ -15,7 +15,7 @@ class CheckinsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # index.rhtml
+      format.html # index.html.erb
       format.json { render :json => @checkins }
       format.js { @checkin = Checkin.new }
     end
@@ -27,7 +27,7 @@ class CheckinsController < ApplicationController
     #@checkin = Checkin.find(params[:id])
 
     respond_to do |format|
-      format.html # show.rhtml
+      format.html # show.html.erb
       format.json { render :json => @checkin }
     end
   end
