@@ -29,11 +29,11 @@ Gem::Specification.new do |s|
   s.add_dependency "sunspot_solr"
   s.add_dependency "will_paginate", "~> 3.0"
   s.add_dependency "acts_as_list", "~> 0.1.6"
-  s.add_dependency "enju_message", ">= 0.0.17"
+  s.add_dependency "enju_message", ">= 0.0.18"
   s.add_dependency "enju_event", ">= 0.0.12"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "factory_girl_rails", "~> 3.1"
+  s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "sunspot-rails-tester"
 end
