@@ -62,6 +62,10 @@ describe Reserve do
   it "should expire all reservations" do
     assert Reserve.expire.should be_true
   end
+
+  it "should send accepted notification" do
+    assert Reserve.expire.should be_true
+  end
 end
 
 # == Schema Information

@@ -130,6 +130,7 @@ class ReservesController < ApplicationController
     respond_to do |format|
       if @reserve.save
         @reserve.sm_request!
+        @reserve.send_message
 
         #format.html { redirect_to reserve_url(@reserve) }
         format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }

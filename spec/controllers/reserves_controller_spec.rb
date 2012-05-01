@@ -409,6 +409,12 @@ describe ReservesController do
           response.should redirect_to(assigns(:reserve))
           assigns(:reserve).expired_at.should be_true
         end
+
+        it "should send accepted messages" do
+          old_count = Message.count
+          post :create, :reserve => @attrs, :user_id => users(:user1).username
+          Message.count.should eq old_count + 2
+        end
       end
 
       describe "with invalid params" do
