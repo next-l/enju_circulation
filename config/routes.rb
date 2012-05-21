@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     resources :checkins
   end
   resources :users do
-    resources :checkouts, :only => :index
+    resources :checkouts, :only => :index do
+      put :remove_all, :on => :collection
+    end
     resources :reserves, :only => :index
     resources :baskets, :only => :index
   end

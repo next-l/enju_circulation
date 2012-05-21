@@ -1,8 +1,8 @@
 class CheckoutsController < ApplicationController
   before_filter :store_location, :only => :index
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
-  before_filter :get_user, :only => :index
+  load_and_authorize_resource :except => [:index, :remove_all]
+  authorize_resource :only => [:index, :remove_all]
+  before_filter :get_user, :only => [:index, :remove_all]
   helper_method :get_item
   after_filter :convert_charset, :only => :index
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
@@ -130,6 +130,22 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.json { head :no_content }
+    end
+  end
+
+  def remove_all
+    if @user
+      unless current_user.has_role?('Librarian')
+        if @user != current_user
+          access_denied; return
+        end
+      end
+      Checkout.remove_all_history(@user)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to checkouts_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end

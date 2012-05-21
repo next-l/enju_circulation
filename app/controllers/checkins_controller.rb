@@ -34,6 +34,7 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/new
   def new
+    flash[:message] = nil
     if flash[:checkin_basket_id]
       @basket = Basket.find(flash[:checkin_basket_id])
     else

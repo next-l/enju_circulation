@@ -107,6 +107,10 @@ class Checkout < ActiveRecord::Base
     end
     queues.size
   end
+
+  def self.remove_all_history(user)
+    user.checkouts.update_all(:user_id => nil)
+  end
 end
 
 # == Schema Information

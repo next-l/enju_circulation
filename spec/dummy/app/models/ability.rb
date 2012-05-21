@@ -71,7 +71,7 @@ class Ability
         manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
       end
     when 'User'
-      can [:index, :create], Checkout
+      can [:index, :create, :remove_all], Checkout
       can [:show, :update, :destroy], Checkout do |checkout|
         checkout.user == user
       end

@@ -46,6 +46,14 @@ describe Checkout do
   it "should respond to send_overdue_notification" do
     Checkout.send_overdue_notification.should eq 1
   end
+
+  it "should destroy all history" do
+    user = users(:user1)
+    old_count = Checkout.count
+    Checkout.remove_all_history(user)
+    user.checkouts.count.should eq 0
+    Checkout.count.should eq old_count
+  end
 end
 
 # == Schema Information

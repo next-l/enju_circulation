@@ -264,6 +264,18 @@ describe CheckoutsController do
         put :update, :id => 'missing', :checkout => { }
         response.should be_missing
       end
+
+      it "should remove its own checkout history" do
+        put :remove_all, :user_id => users(:user1).username
+        users(:user1).checkouts.count.should eq 0
+        response.should redirect_to checkouts_url
+      end
+
+      it "should not remove other checkout history" do
+        put :remove_all, :user_id => users(:user2).username
+        users(:user1).checkouts.count.should_not eq 0
+        response.should redirect_to checkouts_url
+      end
     end
 
     describe "When logged in as Librarian" do
@@ -302,6 +314,18 @@ describe CheckoutsController do
       it "should update other user's checkout" do
         put :update, :id => 1, :checkout => { }
         response.should redirect_to checkout_url(assigns(:checkout))
+      end
+
+      it "should remove its own checkout history" do
+        put :remove_all, :user_id => users(:user1).username
+        users(:user1).checkouts.count.should eq 0
+        response.should redirect_to checkouts_url
+      end
+
+      it "should not remove other checkout history" do
+        put :remove_all, :user_id => users(:user2).username
+        users(:user1).checkouts.count.should_not eq 0
+        response.should redirect_to checkouts_url
       end
     end
 
@@ -348,6 +372,18 @@ describe CheckoutsController do
         put :update, :id => 3, :checkout => {:item_id => nil}
         assigns(:checkout).should_not be_valid
         response.should be_success
+      end
+
+      it "should remove its own checkout history" do
+        put :remove_all, :user_id => users(:user1).username
+        assigns(:user).checkouts.count.should eq 0
+        response.should redirect_to checkouts_url
+      end
+
+      it "should not remove other checkout history" do
+        put :remove_all, :user_id => users(:admin).username
+        assigns(:user).checkouts.count.should_not eq 0
+        response.should be_forbidden
       end
     end
 
