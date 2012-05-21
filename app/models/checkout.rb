@@ -28,8 +28,8 @@ class Checkout < ActiveRecord::Base
   end
 
   def is_not_checked?
-    checkout = Checkout.not_returned.find(self.item) rescue nil
-    unless checkout.nil?
+    checkout = Checkout.not_returned.where(:item_id => item_id)
+    unless checkout.empty?
       errors[:base] << I18n.t('activerecord.errors.messages.checkin.already_checked_out')
     end
   end

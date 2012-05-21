@@ -122,6 +122,7 @@ en:
     checkout: "Checkout!"
     ignore_restriction: "Ignore restriction"
     already_checked_out: "This item is already checked out."
+    already_checked_out_try_again: "Item already checked out. Try again."
   checkout:
     user_checkout: "%{login_name}'s checkouts"
     library_group_checkout: "Checkouts in %{library_group_name}"

@@ -120,6 +120,7 @@ ja:
     checkout: "上記の資料を貸し出す"
     ignore_restriction: "制限を無視する"
     already_checked_out: "この資料はすでに貸し出されています。"
+    already_checked_out_try_again: "資料はすでに貸し出されています。もう一度やり直してください。"
   checkout:
     user_checkout: "%{login_name} さんの貸出資料"
     library_group_checkout: "%{library_group_name} での貸出"

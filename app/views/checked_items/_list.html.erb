@@ -1,4 +1,4 @@
-<div style="color: red"><%= flash[:message].try(:join) -%></div>
+<div style="color: red"><%= flash[:message] -%></div>
 
 <div class="search_form">
 <%= form_for :checked_item, :html => {:method => :post}, :url => basket_checked_items_path(@basket), :remote => true do |f| -%>

@@ -56,7 +56,7 @@ class CheckedItemsController < ApplicationController
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
-    flash[:message] = []
+    flash[:message] = ''
     item_identifier = @checked_item.item_identifier.to_s.strip
     unless item_identifier.blank?
       item = Item.where(:item_identifier => item_identifier).first
