@@ -19,7 +19,6 @@ class Reserve < ActiveRecord::Base
   belongs_to :manifestation, :validate => true
   belongs_to :librarian, :class_name => 'User', :validate => true
   belongs_to :item, :validate => true
-  has_one :inter_library_loan
   belongs_to :request_status_type
 
   validates_associated :user, :librarian, :item, :request_status_type, :manifestation
@@ -246,6 +245,10 @@ class Reserve < ActiveRecord::Base
 
   def checkout
     self.update_attributes!({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now})
+  end
+
+  if defined?(EnjuInterLibraryLoan)
+    has_one :inter_library_loan
   end
 end
 

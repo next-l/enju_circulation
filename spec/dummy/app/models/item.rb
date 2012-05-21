@@ -68,7 +68,6 @@ class Item < ActiveRecord::Base
     scope :removed, includes(:circulation_status).where('circulation_statuses.name' => 'Removed')
     has_many :checkouts
     has_many :reserves
-    has_many :reserved_patrons, :through => :reserves, :class_name => 'Patron'
     has_many :checked_items, :dependent => :destroy
     has_many :baskets, :through => :checked_items
     belongs_to :circulation_status, :validate => true
