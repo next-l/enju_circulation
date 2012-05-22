@@ -59,33 +59,27 @@ class ReservesController < ApplicationController
   end
 
   # GET /reserves/new
+  # GET /reserves/new.json
   def new
-    if params[:reserve]
-      user = User.where(:user_number => params[:reserve][:user_number]).first
+    @reserve = Reserve.new(params[:reserve])
+    if @user
+      @reserve.user = @user
     else
-      user = @user if @user
+      @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
     end
 
     unless current_user.has_role?('Librarian')
-      if user
-        if user != current_user
-          access_denied; return
-        end
+      if @reserve.user and @reserve.user != current_user
+        access_denied; return
       end
-    end
-
-    if user
-      @reserve = user.reserves.new
-    else
-      @reserve = current_user.reserves.new
     end
 
     get_manifestation
     if @manifestation
       @reserve.manifestation = @manifestation
-      if user
-        @reserve.expired_at = @manifestation.reservation_expired_period(user).days.from_now.end_of_day
-        if @manifestation.is_reserved_by?(user)
+      if @reserve.user
+        @reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
+        if @manifestation.is_reserved_by?(@reserve.user)
           flash[:notice] = t('reserve.this_manifestation_is_already_reserved')
           redirect_to @manifestation
           return
@@ -101,30 +95,13 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    begin
-      if params[:reserve][:user_number]
-        user = User.where(:user_number => params[:reserve][:user_number]).first
-      else
-        access_denied
-        return
-      end
-    rescue NoMethodError
-    end
+    @reserve = Reserve.new(params[:reserve])
+    @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
 
-    # 図書館員以外は自分の予約しか作成できない
     unless current_user.has_role?('Librarian')
-      if user
-        if user != current_user
-          access_denied
-          return
-        end
+      if @reserve.user != current_user
+        access_denied; return
       end
-    end
-
-    if user
-      @reserve = user.reserves.new(params[:reserve])
-    else
-      @reserve = current_user.reserves.new(params[:reserve])
     end
 
     respond_to do |format|
@@ -145,19 +122,11 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    begin
-      if params[:reserve][:user_number]
-        user = User.where(:user_number => params[:reserve][:user_number]).first
-      end
-    rescue NoMethodError
-    end
+    @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
 
     unless current_user.has_role?('Librarian')
-      if user
-        if user != @reserve.user
-          access_denied
-          return
-        end
+      if @reserve.user != current_user
+        access_denied; return
       end
     end
 
