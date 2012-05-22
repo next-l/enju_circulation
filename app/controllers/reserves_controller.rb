@@ -109,7 +109,6 @@ class ReservesController < ApplicationController
         @reserve.sm_request!
         @reserve.send_message
 
-        #format.html { redirect_to reserve_url(@reserve) }
         format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }
         format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
       else
