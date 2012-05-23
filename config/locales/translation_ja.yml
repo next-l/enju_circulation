@@ -140,6 +140,7 @@ ja:
     extend: "貸出期間の延長"
     returned: "返却済み"
     my_checkout: "自分の貸出"
+    remove_all: "すべての貸出履歴を削除"
   checkin:
     item_not_found: "資料が見つかりません。"
     enter_item_identifier: "所蔵情報番号を入力してください。"
