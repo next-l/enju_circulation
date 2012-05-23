@@ -16,8 +16,12 @@ class UserCheckoutStatsController < ApplicationController
   # GET /user_checkout_stats/1
   # GET /user_checkout_stats/1.json
   def show
-    CheckoutStatHasUser.per_page = 65534 if params[:format] == 'csv'
-    @stats = @user_checkout_stat.checkout_stat_has_users.order('checkouts_count DESC, user_id').page(params[:page])
+    if params[:format] == 'csv'
+      per_page = 65534
+    else
+      per_page = CheckoutStatHasUser.per_page
+    end
+    @stats = @user_checkout_stat.checkout_stat_has_users.order('checkouts_count DESC, user_id').page(params[:page]).per_page(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

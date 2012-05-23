@@ -16,8 +16,12 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/1
   # GET /user_reserve_stats/1.json
   def show
-    ReserveStatHasUser.per_page = 65534 if params[:format] == 'csv'
-    @stats = @user_reserve_stat.reserve_stat_has_users.order('reserves_count DESC, user_id').page(params[:page])
+    if params[:format] == 'csv'
+      per_page = 65534
+    else
+      per_page = ReserveStatHasUser.per_page
+    end
+    @stats = @user_reserve_stat.reserve_stat_has_users.order('reserves_count DESC, user_id').page(params[:page]).per_page(per_page)
 
     respond_to do |format|
       format.html # show.html.erb
