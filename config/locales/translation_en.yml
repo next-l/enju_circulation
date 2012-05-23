@@ -142,7 +142,7 @@ en:
     extend: "Extend"
     returned: "Returned"
     my_checkout: "My checkout"
-    remove_all: "Remove all checkout history"
+    remove_all_history: "Remove all checkout history"
   checkin:
     item_not_found: "Item not found."
     enter_item_identifier: "Enter item identifier."
