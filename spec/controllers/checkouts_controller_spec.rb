@@ -411,6 +411,7 @@ describe CheckoutsController do
   describe "DELETE destroy" do
     before(:each) do
       @checkout = checkouts(:checkout_00003)
+      @returned_checkout = checkouts(:checkout_00012)
     end
 
     describe "When logged in as Administrator" do
@@ -420,16 +421,16 @@ describe CheckoutsController do
         delete :destroy, :id => @checkout.id
       end
 
-      it "redirects to the checkouts list" do
+      it "should not destroy the checkout that is not checked in" do
         delete :destroy, :id => @checkout.id
-        response.should redirect_to(user_checkouts_url(@checkout.user))
+        response.should be_forbidden
       end
 
-      it "should destroy other user's checkout" do
-        delete :destroy, :id => 3
-        response.should redirect_to user_checkouts_url(@checkout.user)
+      it "redirects to the checkouts list" do
+        delete :destroy, :id => @returned_checkout.id
+        response.should redirect_to(user_checkouts_url(@returned_checkout.user))
       end
-  
+
       it "should not destroy missing checkout" do
         delete :destroy, :id => 'missing'
         response.should be_missing
@@ -443,15 +444,14 @@ describe CheckoutsController do
         delete :destroy, :id => @checkout.id
       end
 
-      it "redirects to the checkouts list" do
+      it "should not destroy the checkout that is not checked in" do
         delete :destroy, :id => @checkout.id
-        response.should redirect_to(user_checkouts_url(@checkout.user))
+        response.should be_forbidden
       end
 
-      it "should destroy other user's checkout" do
-        user = Checkout.find(1).user
-        delete :destroy, :id => 1
-        response.should redirect_to user_checkouts_url(user)
+      it "redirects to the checkouts list" do
+        delete :destroy, :id => @returned_checkout.id
+        response.should redirect_to(user_checkouts_url(@returned_checkout.user))
       end
     end
 
@@ -468,7 +468,7 @@ describe CheckoutsController do
       end
 
       it "should destroy my checkout" do
-        delete :destroy, :id => 3
+        delete :destroy, :id => 13
         response.should redirect_to user_checkouts_url(users(:user1))
       end
     end

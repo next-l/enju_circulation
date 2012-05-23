@@ -9,7 +9,6 @@ class Ability
         CarrierTypeHasCheckoutType,
         CheckedItem,
         Checkin,
-        Checkout,
         CheckoutStatHasManifestation,
         CheckoutStatHasUser,
         CheckoutType,
@@ -23,6 +22,10 @@ class Ability
         UserGroupHasCheckoutType,
         UserReserveStat
       ]
+      can [:read, :create, :update, :remove_all], Checkout
+      can :destroy, Checkout do |checkout|
+        checkout.checkin
+      end
       can [:read, :update], [
         CirculationStatus,
         LendingPolicy,
@@ -42,11 +45,14 @@ class Ability
         Basket,
         CheckedItem,
         Checkin,
-        Checkout,
         ManifestationCheckoutStat,
         ManifestationReserveStat,
         Reserve
       ]
+      can [:read, :create, :update, :remove_all], Checkout
+      can :destroy, Checkout do |checkout|
+        checkout.checkin
+      end
       can [:read, :create, :update], UserCheckoutStat
       can [:read, :create, :update], UserReserveStat
       can :read, [
@@ -72,8 +78,11 @@ class Ability
       end
     when 'User'
       can [:index, :create, :remove_all], Checkout
-      can [:show, :update, :destroy], Checkout do |checkout|
+      can [:show, :update], Checkout do |checkout|
         checkout.user == user
+      end
+      can :destroy, Checkout do |checkout|
+        checkout.user == user && checkout.checkin
       end
       can :index, Reserve
       can :create, Reserve do |reserve|
