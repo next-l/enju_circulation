@@ -6,12 +6,12 @@ xml.rss('version' => "2.0",
     if @user
       xml.title t('checkout.user_checkout', :login_name => @user.username)
       xml.link user_checkouts_url(@user)
-      xml.tag! "atom:link", :rel => 'self', :href => "#{request.protocol}#{request.host_with_port}#{url_for(params.merge(:format => :rss))}"
+      xml.tag! "atom:link", :rel => 'self', :href => "#{request.protocol}#{request.host_with_port}#{url_for(params.merge(:format => :rss, :only_path => true))}"
       xml.tag! "atom:link", :rel => 'alternate', :href => user_checkouts_url(@user)
     else
       xml.title t('checkout.library_group_checkout', :library_group_name => @library_group.display_name.localize)
       xml.link checkouts_url
-      xml.tag! "atom:link", :rel => 'self', :href => "#{request.protocol}#{request.host_with_port}#{url_for(params.merge(:format => :rss))}"
+      xml.tag! "atom:link", :rel => 'self', :href => "#{request.protocol}#{request.host_with_port}#{url_for(params.merge(:format => :rss, :only_path => true))}"
       xml.tag! "atom:link", :rel => 'alternate', :href => checkouts_url
     end
     xml.description "Next-L Enju, an open source integrated library system developed by Project Next-L"
