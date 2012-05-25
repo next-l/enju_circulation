@@ -38,7 +38,9 @@ class CheckinsController < ApplicationController
     if flash[:checkin_basket_id]
       @basket = Basket.find(flash[:checkin_basket_id])
     else
-      @basket = Basket.create!(:user => current_user)
+      @basket = Basket.new
+      @basket.user = current_user
+      @basket.save!
     end
     @checkin = Checkin.new
     @checkins = []
