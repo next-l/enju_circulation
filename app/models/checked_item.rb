@@ -1,4 +1,5 @@
 class CheckedItem < ActiveRecord::Base
+  attr_accessible
   belongs_to :item #, :validate => true
   belongs_to :basket #, :validate => true
   belongs_to :librarian, :class_name => 'User' #, :validate => true
