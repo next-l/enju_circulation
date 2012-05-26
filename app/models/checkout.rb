@@ -1,4 +1,5 @@
 class Checkout < ActiveRecord::Base
+  attr_accessible
   default_scope :order => 'id DESC'
   scope :not_returned, where(:checkin_id => nil)
   scope :overdue, lambda {|date| {:conditions => ['checkin_id IS NULL AND due_date < ?', date]}}
@@ -20,8 +21,6 @@ class Checkout < ActiveRecord::Base
   validates_uniqueness_of :item_id, :scope => [:basket_id, :user_id]
   validate :is_not_checked?, :on => :create
   validates_date :due_date
-
-  attr_protected :user_id
 
   def self.per_page
     10

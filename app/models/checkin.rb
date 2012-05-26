@@ -1,4 +1,5 @@
 class Checkin < ActiveRecord::Base
+  attr_accessible :item_identifier
   default_scope :order => 'checkins.id DESC'
   scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
   has_one :checkout
@@ -10,7 +11,6 @@ class Checkin < ActiveRecord::Base
   validates_presence_of :item_id, :message => I18n.t('checkin.item_not_found')
   validates_presence_of :basket_id
 
-  attr_protected :user_id
   attr_accessor :item_identifier
 
   def self.per_page

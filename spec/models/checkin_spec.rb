@@ -4,11 +4,19 @@ require 'spec_helper'
 describe Checkin do
   fixtures :all
 
+  before(:each) do
+    @basket = Basket.new
+    @basket.user = users(:librarian1)
+    @basket.save
+  end
+
   it "should save checkout history if save_checkout_history is true" do
     user = users(:user1)
     checkouts_count = user.checkouts.count
-    checkin = Checkin.new(:item => user.checkouts.not_returned.first.item, :basket => Basket.create(:user => users(:librarian1)))
-    checkin.item_identifier = checkin.item.item_identifier
+    checkin = Checkin.new
+    checkin.item = user.checkouts.not_returned.first.item
+    checkin.basket = @basket
+    #checkin.item_identifier = checkin.item.item_identifier
     checkin.save!
     checkin.item_checkin(user)
     user.checkouts.count.should eq checkouts_count
@@ -17,8 +25,9 @@ describe Checkin do
   it "should not save checkout history if save_checkout_history is false" do
     user = users(:librarian1)
     checkouts_count = user.checkouts.count
-    checkin = Checkin.new(:item => user.checkouts.not_returned.first.item, :basket => Basket.create(:user => users(:librarian1)))
-    checkin.item_identifier = checkin.item.item_identifier
+    checkin = Checkin.new
+    checkin.item = user.checkouts.not_returned.first.item
+    checkin.basket = @basket
     checkin.save!
     checkin.item_checkin(user)
     user.checkouts.count.should eq checkouts_count - 1
