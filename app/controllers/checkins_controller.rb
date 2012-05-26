@@ -39,7 +39,7 @@ class CheckinsController < ApplicationController
       @basket = Basket.find(flash[:checkin_basket_id])
     else
       @basket = Basket.new
-      @basket.user= current_user
+      @basket.user = current_user
       @basket.save!
     end
     @checkin = Checkin.new
