@@ -116,39 +116,47 @@ class Reserve < ActiveRecord::Base
       case state
       when 'requested'
         message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # 受付時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # 受付時は即時送信
       when 'canceled'
         message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # キャンセル時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message! # キャンセル時は即時送信
       when 'expired'
         message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_to_patron)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message!
         self.update_attribute(:expiration_notice_to_patron, true)
         message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => sender)
         request.sm_send_message!
       when 'retained'
         message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => user, :message_template => message_template_for_patron)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_for_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
         request.sm_send_message!
         message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.locale)
-        request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_for_library)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
         request.sm_send_message!
       else
@@ -162,14 +170,16 @@ class Reserve < ActiveRecord::Base
     case status
     when 'expired'
       message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
-      request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+      request = MessageRequest.new
+      request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
       request.save_message_body(:manifestations => options[:manifestations])
       self.not_sent_expiration_notice_to_library.each do |reserve|
         reserve.update_attribute(:expiration_notice_to_library, true)
       end
     #when 'canceled'
     #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', sender.locale)
-    #  request = MessageRequest.create!(:sender => sender, :receiver => sender, :message_template => message_template_to_library)
+    #  request = MessageRequest.new
+    #  request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
     #  request.save_message_body(:manifestations => self.not_sent_expiration_notice_to_library.collect(&:manifestation))
     #  self.not_sent_cancel_notice_to_library.each do |reserve|
     #    reserve.update_attribute(:expiration_notice_to_library, true)
