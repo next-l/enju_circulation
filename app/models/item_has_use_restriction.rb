@@ -1,4 +1,6 @@
 class ItemHasUseRestriction < ActiveRecord::Base
+  attr_accessible
+  attr_accessible :item_id, :use_restriction_id, :as => :admin
   belongs_to :item, :validate => true
   belongs_to :use_restriction, :validate => true
   accepts_nested_attributes_for :use_restriction

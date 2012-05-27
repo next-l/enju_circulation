@@ -52,8 +52,7 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat'))
-        format.html { redirect_to @manifestation_reserve_stat }
+        format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
         format.json { render :json => @manifestation_reserve_stat, :status => :created, :location => @manifestation_reserve_stat }
       else
         format.html { render :action => "new" }
@@ -67,8 +66,7 @@ class ManifestationReserveStatsController < ApplicationController
   def update
     respond_to do |format|
       if @manifestation_reserve_stat.update_attributes(params[:manifestation_reserve_stat])
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat'))
-        format.html { redirect_to @manifestation_reserve_stat }
+        format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

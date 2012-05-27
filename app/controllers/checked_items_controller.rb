@@ -68,8 +68,7 @@ class CheckedItemsController < ApplicationController
         if @checked_item.item.include_supplements
           flash[:message] << t('item.this_item_include_supplement')
         end
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checked_item'))
-        format.html { redirect_to(basket_checked_items_url(@basket)) }
+        format.html { redirect_to(basket_checked_items_url(@basket), :notice => t('controller.successfully_created', :model => t('activerecord.models.checked_item'))) }
         format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
         format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
       else
@@ -93,8 +92,7 @@ class CheckedItemsController < ApplicationController
 
     respond_to do |format|
       if @checked_item.update_attributes(params[:checked_item])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checked_item'))
-        format.html { redirect_to @checked_item }
+        format.html { redirect_to @checked_item, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

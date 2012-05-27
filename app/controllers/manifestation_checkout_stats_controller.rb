@@ -52,8 +52,7 @@ class ManifestationCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.manifestation_checkout_stat'))
-        format.html { redirect_to @manifestation_checkout_stat }
+        format.html { redirect_to @manifestation_checkout_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render :json => @manifestation_checkout_stat, :status => :created, :location => @manifestation_checkout_stat }
       else
         format.html { render :action => "new" }
@@ -67,8 +66,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   def update
     respond_to do |format|
       if @manifestation_checkout_stat.update_attributes(params[:manifestation_checkout_stat])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.manifestation_checkout_stat'))
-        format.html { redirect_to @manifestation_checkout_stat }
+        format.html { redirect_to @manifestation_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

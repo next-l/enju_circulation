@@ -1,4 +1,7 @@
 class ReserveStatHasManifestation < ActiveRecord::Base
+  attr_accessible
+  attr_accessible :manifestation_reserve_stat_id, :manifestation_id,
+    :as => :admin
   belongs_to :manifestation_reserve_stat
   belongs_to :manifestation
 

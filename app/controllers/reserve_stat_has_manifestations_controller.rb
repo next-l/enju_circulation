@@ -39,7 +39,8 @@ class ReserveStatHasManifestationsController < ApplicationController
   # POST /reserve_stat_has_manifestations
   # POST /reserve_stat_has_manifestations.json
   def create
-    @reserve_stat_has_manifestation = ReserveStatHasManifestation.new(params[:reserve_stat_has_manifestation])
+    @reserve_stat_has_manifestation = ReserveStatHasManifestation.new
+    @reserve_stat_has_manifestation.assign_attributes(params[:reserve_stat_has_manifestation], :as => :admin)
 
     respond_to do |format|
       if @reserve_stat_has_manifestation.save
@@ -55,8 +56,9 @@ class ReserveStatHasManifestationsController < ApplicationController
   # PUT /reserve_stat_has_manifestations/1
   # PUT /reserve_stat_has_manifestations/1.json
   def update
+    @reserve_stat_has_manifestation.assign_attributes(params[:reserve_stat_has_manifestation], :as => :admin)
     respond_to do |format|
-      if @reserve_stat_has_manifestation.update_attributes(params[:reserve_stat_has_manifestation])
+      if @reserve_stat_has_manifestation.save
         format.html { redirect_to @reserve_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.reserve_stat_has_manifestation')) }
         format.json { head :no_content }
       else

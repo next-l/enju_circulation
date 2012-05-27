@@ -46,11 +46,11 @@ class ItemHasUseRestrictionsController < ApplicationController
   # POST /item_has_use_restrictions.json
   def create
     @item_has_use_restriction = ItemHasUseRestriction.new(params[:item_has_use_restriction])
+    @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction], :as => :admin)
 
     respond_to do |format|
       if @item_has_use_restriction.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.item_has_use_restriction'))
-        format.html { redirect_to @item_has_use_restriction }
+        format.html { redirect_to @item_has_use_restriction, :notice => t('controller.successfully_created', :model => t('activerecord.models.item_has_use_restriction')) }
         format.json { render :json => @item_has_use_restriction, :status => :created, :location => @item_has_use_restriction }
       else
         @use_restrictions = UseRestriction.all
@@ -63,10 +63,10 @@ class ItemHasUseRestrictionsController < ApplicationController
   # PUT /item_has_use_restrictions/1
   # PUT /item_has_use_restrictions/1.json
   def update
+    @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction], :as => :admin)
     respond_to do |format|
-      if @item_has_use_restriction.update_attributes(params[:item_has_use_restriction])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.item_has_use_restriction'))
-        format.html { redirect_to @item_has_use_restriction }
+      if @item_has_use_restriction.save
+        format.html { redirect_to @item_has_use_restriction, :notice => t('controller.successfully_updated', :model => t('activerecord.models.item_has_use_restriction')) }
         format.json { head :no_content }
       else
         @use_restrictions = UseRestriction.all

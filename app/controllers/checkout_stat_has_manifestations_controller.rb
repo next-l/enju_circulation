@@ -44,8 +44,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_manifestation'))
-        format.html { redirect_to @checkout_stat_has_manifestation }
+        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
         format.json { render :json => @checkout_stat_has_manifestation, :status => :created, :location => @checkout_stat_has_manifestation }
       else
         format.html { render :action => "new" }
@@ -60,8 +59,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
     @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], :as => :admin)
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation'))
-        format.html { redirect_to @checkout_stat_has_manifestation }
+        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

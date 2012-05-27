@@ -1,6 +1,7 @@
 class UserReserveStat < ActiveRecord::Base
+  attr_accessible :start_date, :end_date, :note
   include CalculateStat
-  default_scope :order => 'id DESC'
+  default_scope :order => 'user_reserve_stats.id DESC'
   scope :not_calculated, where(:state => 'pending')
   has_many :reserve_stat_has_users
   has_many :users, :through => :reserve_stat_has_users

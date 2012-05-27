@@ -39,12 +39,12 @@ class CheckoutStatHasUsersController < ApplicationController
   # POST /checkout_stat_has_users
   # POST /checkout_stat_has_users.json
   def create
-    @checkout_stat_has_user = CheckoutStatHasUser.new(params[:checkout_stat_has_user])
+    @checkout_stat_has_user = CheckoutStatHasUser.new
+    @checkout_stat_has_user.assign_attributes(params[:checkout_stat_has_user], :as => :admin)
 
     respond_to do |format|
       if @checkout_stat_has_user.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_user'))
-        format.html { redirect_to @checkout_stat_has_user }
+        format.html { redirect_to @checkout_stat_has_user, :notice => t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_user')) }
         format.json { render :json => @checkout_stat_has_user, :status => :created, :location => @checkout_stat_has_user }
       else
         format.html { render :action => "new" }
@@ -56,10 +56,10 @@ class CheckoutStatHasUsersController < ApplicationController
   # PUT /checkout_stat_has_users/1
   # PUT /checkout_stat_has_users/1.json
   def update
+    @checkout_stat_has_user.assign_attributes(params[:checkout_stat_has_user], :as => :admin)
     respond_to do |format|
-      if @checkout_stat_has_user.update_attributes(params[:checkout_stat_has_user])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_user'))
-        format.html { redirect_to @checkout_stat_has_user }
+      if @checkout_stat_has_user.save
+        format.html { redirect_to @checkout_stat_has_user, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_user')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
