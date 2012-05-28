@@ -12,6 +12,6 @@ require "enju_event"
 require "acts_as_list"
 
 module EnjuCirculation
-  class Engine < Rails::Engine
+  class Engine < ::Rails::Engine
   end
 end
