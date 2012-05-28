@@ -32,7 +32,6 @@ class UserReserveStat < ActiveRecord::Base
     self.completed_at = Time.zone.now
   end
 end
-
 # == Schema Information
 #
 # Table name: user_reserve_stats
@@ -42,8 +41,8 @@ end
 #  end_date     :datetime
 #  note         :text
 #  state        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
 #  started_at   :datetime
 #  completed_at :datetime
 #

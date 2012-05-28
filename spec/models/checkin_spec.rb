@@ -33,7 +33,6 @@ describe Checkin do
     user.checkouts.count.should eq checkouts_count - 1
   end
 end
-
 # == Schema Information
 #
 # Table name: checkins
@@ -42,7 +41,7 @@ end
 #  item_id      :integer         not null
 #  librarian_id :integer
 #  basket_id    :integer
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
 #
 

@@ -55,7 +55,6 @@ describe Checkout do
     Checkout.count.should eq old_count
   end
 end
-
 # == Schema Information
 #
 # Table name: checkouts
@@ -69,7 +68,7 @@ end
 #  due_date               :datetime
 #  checkout_renewal_count :integer         default(0), not null
 #  lock_version           :integer         default(0), not null
-#  created_at             :datetime
-#  updated_at             :datetime
+#  created_at             :datetime        not null
+#  updated_at             :datetime        not null
 #
 
