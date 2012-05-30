@@ -97,11 +97,6 @@ class Reserve < ActiveRecord::Base
     end
   end
 
-  def do_request
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first}, :as => :admin)
-    self.save!
-  end
-
   def manifestation_must_include_item
     unless item_id.blank?
       item = Item.find(item_id) rescue nil
@@ -232,15 +227,20 @@ class Reserve < ActiveRecord::Base
   end
 
   private
+  def do_request
+    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first}, :as => :admin)
+    save!
+  end
+
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :checked_out_at => Time.zone.now}, :as => :admin)
-    self.save!
+    save!
   end
 
   def expire
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now}, :as => :admin)
-    self.save!
+    save!
     logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
     reserve = next_reservation
     if reserve
@@ -252,7 +252,7 @@ class Reserve < ActiveRecord::Base
 
   def cancel
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, :as => :admin)
-    self.save!
+    save!
     reserve = next_reservation
     if reserve
       reserve.item = item
@@ -263,7 +263,7 @@ class Reserve < ActiveRecord::Base
 
   def checkout
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now}, :as => :admin)
-    self.save!
+    save!
   end
 
   if defined?(EnjuInterLibraryLoan)
