@@ -12,6 +12,10 @@ gem "jquery-rails"
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
+gem 'enju_biblio', :git => 'git://github.com/next-l/enju_biblio.git'
+gem 'enju_library', :git => 'git://github.com/next-l/enju_library.git'
+gem 'enju_manifestation_viewer', :git => 'git://github.com/nabeta/enju_manifestation_viewer.git'
+gem 'isbn-tools', :git => 'git://github.com/nabeta/isbn-tools.git', :require => 'isbn/tools'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'

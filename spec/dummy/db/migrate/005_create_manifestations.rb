@@ -1,5 +1,5 @@
 class CreateManifestations < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :manifestations do |t|
       t.text :original_title, :null => false
       t.text :title_alternative
@@ -27,9 +27,6 @@ class CreateManifestations < ActiveRecord::Migration
       t.string :oclc_number
       t.string :issn
       t.integer :price # TODO: 通貨単位
-      #t.text :filename
-      #t.string :content_type
-      #t.integer :size
       t.text :fulltext
       t.string :volume_number_list
       t.string :issue_number_list
@@ -60,9 +57,5 @@ class CreateManifestations < ActiveRecord::Migration
     add_index :manifestations, :frequency_id
     add_index :manifestations, :manifestation_identifier
     add_index :manifestations, :updated_at
-  end
-
-  def self.down
-    drop_table :manifestations
   end
 end

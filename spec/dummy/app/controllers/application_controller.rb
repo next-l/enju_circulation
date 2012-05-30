@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
 
+  enju_biblio
+  enju_library
+  enju_circulation
+
   private
   def render_403
     return if performed?
@@ -44,14 +48,6 @@ class ApplicationController < ActionController::Base
     @user = User.where(:username => params[:user_id]).first if params[:user_id]
   end
 
-  def get_basket
-    @basket = Basket.find(params[:basket_id]) if params[:basket_id]
-  end
-
-  def get_checkout_type
-    @checkout_type = CheckoutType.find(params[:checkout_type_id]) if params[:checkout_type_id]
-  end
-
   def get_manifestation
     @manifestation = Manifestation.find(params[:manifestation_id]) if params[:manifestation_id]
     authorize! :show, @manifestation if @manifestation
@@ -59,11 +55,6 @@ class ApplicationController < ActionController::Base
 
   def get_user_group
     @user_group = UserGroup.find(params[:user_group_id]) if params[:user_group_id]
-  end
-
-  def get_item
-    @item = Item.find(params[:item_id]) if params[:item_id]
-    authorize! :show, @item if @item
   end
 
   def set_locale
