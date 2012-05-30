@@ -5,6 +5,7 @@ class Ability
     case user.try(:role).try(:name)
     when 'Administrator'
       can :manage, [
+        Accept,
         Basket,
         CarrierTypeHasCheckoutType,
         CheckedItem,
@@ -42,6 +43,7 @@ class Ability
       end
     when 'Librarian'
       can :manage, [
+        Accept,
         Basket,
         CheckedItem,
         Checkin,

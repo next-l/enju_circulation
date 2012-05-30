@@ -39,4 +39,9 @@ Rails.application.routes.draw do
   resources :checkout_stat_has_users
   resources :reserve_stat_has_manifestations
   resources :reserve_stat_has_users
+
+  resources :baskets do
+    resources :accepts, :except => [:edit, :update]
+  end
+  resources :accepts, :except => [:edit, :update]
 end
