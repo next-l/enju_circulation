@@ -223,7 +223,6 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
   create_table "exemplifies", :force => true do |t|
     t.integer  "manifestation_id", :null => false
     t.integer  "item_id",          :null => false
-    t.string   "type"
     t.integer  "position"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
@@ -231,7 +230,6 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
 
   add_index "exemplifies", ["item_id"], :name => "index_exemplifies_on_item_id", :unique => true
   add_index "exemplifies", ["manifestation_id"], :name => "index_exemplifies_on_manifestation_id"
-  add_index "exemplifies", ["type"], :name => "index_exemplifies_on_type"
 
   create_table "item_has_use_restrictions", :force => true do |t|
     t.integer  "item_id",            :null => false
@@ -252,7 +250,6 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
     t.datetime "updated_at",                                     :null => false
     t.datetime "deleted_at"
     t.integer  "shelf_id",                    :default => 1,     :null => false
-    t.integer  "basket_id"
     t.boolean  "include_supplements",         :default => false, :null => false
     t.integer  "checkouts_count",             :default => 0,     :null => false
     t.integer  "owns_count",                  :default => 0,     :null => false
@@ -446,10 +443,6 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
     t.integer  "required_score",                  :default => 0,     :null => false
     t.integer  "frequency_id",                    :default => 1,     :null => false
     t.boolean  "subscription_master",             :default => false, :null => false
-    t.integer  "volume_number"
-    t.integer  "issue_number"
-    t.integer  "serial_number"
-    t.string   "pub_date"
     t.text     "title_alternative_transcription"
     t.text     "description"
     t.text     "abstract"
@@ -458,7 +451,11 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
     t.datetime "date_submitted"
     t.datetime "date_accepted"
     t.datetime "date_caputured"
+    t.string   "pub_date"
     t.string   "edition_string"
+    t.integer  "volume_number"
+    t.integer  "issue_number"
+    t.integer  "serial_number"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
