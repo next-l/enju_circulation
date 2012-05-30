@@ -10,4 +10,6 @@ class Manifestation < ActiveRecord::Base
       items.for_checkout.exists?
     end
   end
+
+  enju_circulation_model
 end
