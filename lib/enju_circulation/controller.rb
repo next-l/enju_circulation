@@ -11,6 +11,8 @@ module EnjuCirculation
     end
 
     module InstanceMethods
+      private
+
       def get_basket
         @basket = Basket.find(params[:basket_id]) if params[:basket_id]
       end
