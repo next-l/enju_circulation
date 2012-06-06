@@ -11,6 +11,12 @@ class CheckoutsController < ApplicationController
   # GET /checkouts.json
 
   def index
+    if params[:format] == 'csv'
+      per_page = 65534
+    else
+      per_page = Checkout.per_page
+    end
+
     if params[:icalendar_token].present?
       icalendar_user = User.where(:checkout_icalendar_token => params[:icalendar_token]).first
       if icalendar_user.blank?
@@ -27,7 +33,7 @@ class CheckoutsController < ApplicationController
     unless icalendar_user
       if current_user.try(:has_role?, 'Librarian')
         if @user
-          checkouts = @user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page])
+          checkouts = @user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
         else
           if params[:view] == 'overdue'
             if params[:days_overdue]
@@ -35,9 +41,9 @@ class CheckoutsController < ApplicationController
             else
               date = 1.days.ago.beginning_of_day
             end
-            checkouts = Checkout.overdue(date).order('checkouts.id DESC').page(params[:page])
+            checkouts = Checkout.overdue(date).order('checkouts.id DESC').page(params[:page]).per_page(per_page)
           else
-            checkouts = Checkout.not_returned.order('checkouts.id DESC').page(params[:page])
+            checkouts = Checkout.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
           end
         end
       else
@@ -50,7 +56,7 @@ class CheckoutsController < ApplicationController
             access_denied
             return
           else
-            checkouts = current_user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page])
+            checkouts = current_user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
           end
         end
       end
