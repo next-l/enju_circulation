@@ -42,7 +42,7 @@
       </li>
     <%- else -%>
       <li>
-        <%= link_to 'RSS', user_checkouts_path(:format => :rss) -%>
+        <%= link_to 'RSS', user_checkouts_path(user, :format => :rss) -%>
         <%= link_to (image_tag 'icons/feed.png', :size => '16x16', :alt => 'RSS', :class => 'icon'), user_checkouts_path(user, :format => :rss) -%>
       </li>
       <li>
