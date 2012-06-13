@@ -16,7 +16,7 @@
     <td><%= reserve_stat_has_user.reserves_count -%></td>
     <td><%= link_to t('page.show'), reserve_stat_has_user -%></td>
     <td><%= link_to t('page.edit'), edit_reserve_stat_has_user_path(reserve_stat_has_user) -%></td>
-    <td><%= link_to t('page.destroy'), reserve_stat_has_user, :confirm => 'Are you sure?', :method => :delete -%></td>
+    <td><%= link_to t('page.destroy'), reserve_stat_has_user, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></td>
   </tr>
 <%- end -%>
 </table>
