@@ -110,9 +110,11 @@ class CheckoutsController < ApplicationController
     end
     @checkout.reload
     @checkout.checkout_renewal_count += 1
+    @checkout.assign_attributes(params[:checkout])
+    @checkout.due_date = @checkout.due_date.end_of_day
 
     respond_to do |format|
-      if @checkout.update_attributes(params[:checkout])
+      if @checkout.save
         format.html { redirect_to @checkout, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout')) }
         format.json { head :no_content }
       else
