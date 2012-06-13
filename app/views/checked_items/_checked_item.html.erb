@@ -13,7 +13,7 @@
     </td>
     <td><%= link_to checked_item.item.item_identifier, checked_item.item -%></td>
     <td><%= l(checked_item.due_date, :format => :only_date) -%></td>
-    <td><%= link_to t('page.destroy'), checked_item, :confirm => t('page.are_you_sure'), :method => :delete -%></td>
+    <td><%= link_to t('page.destroy'), checked_item, :data => {:data => {:confirm => t('page.are_you_sure')}}, :method => :delete -%></td>
   </tr>
 <%- end -%>
 </table>
