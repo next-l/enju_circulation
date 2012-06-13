@@ -17,7 +17,7 @@
     <td><%= carrier_type_has_checkout_type.note -%></td>
     <td>
       <%= link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(carrier_type_has_checkout_type) -%>
-      <%= link_to t('page.destroy'), carrier_type_has_checkout_type, :confirm => t('page.are_you_sure'), :method => :delete -%>
+      <%= link_to t('page.destroy'), carrier_type_has_checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
     </td>
   </tr>
 <%- end -%>

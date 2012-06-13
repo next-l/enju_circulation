@@ -16,7 +16,7 @@
     <td><%= reserve_stat_has_manifestation.reserves_count -%></td>
     <td><%= link_to t('page.show'), reserve_stat_has_manifestation -%></td>
     <td><%= link_to t('page.edit'), edit_reserve_stat_has_manifestation_path(reserve_stat_has_manifestation) -%></td>
-    <td><%= link_to t('page.destroy'), reserve_stat_has_manifestation, :confirm => t('page.are_you_sure'), :method => :delete -%></td>
+    <td><%= link_to t('page.destroy'), reserve_stat_has_manifestation, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></td>
   </tr>
 <%- end -%>
 </table>

@@ -18,7 +18,7 @@
     <td>
       <%= link_to t('page.show'), user_checkout_stat -%>
       <%= link_to t('page.edit'), edit_user_checkout_stat_path(user_checkout_stat) -%>
-      <%= link_to t('page.destroy'), user_checkout_stat, :confirm => t('page.are_you_sure'), :method => :delete -%>
+      <%= link_to t('page.destroy'), user_checkout_stat, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
     </td>
   </tr>
 <%- end -%>

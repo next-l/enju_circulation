@@ -18,7 +18,7 @@
     <td>
       <%= link_to t('page.show'), user_reserve_stat -%>
       <%= link_to t('page.edit'), edit_user_reserve_stat_path(user_reserve_stat) -%>
-      <%= link_to t('page.destroy'), user_reserve_stat, :confirm => t('page.are_you_sure'), :method => :delete -%>
+      <%= link_to t('page.destroy'), user_reserve_stat, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
     </td>
   </tr>
 <%- end -%>

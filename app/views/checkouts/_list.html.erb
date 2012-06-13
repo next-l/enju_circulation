@@ -34,7 +34,7 @@
         <% end %>
       <%- end -%>
       <%- if can? :destroy, checkout -%>
-        <%= link_to t('page.destroy'), checkout, :confirm => t('page.are_you_sure'), :method => :delete -%>
+        <%= link_to t('page.destroy'), checkout, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>
   </tr>

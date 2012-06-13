@@ -28,10 +28,10 @@
         <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>
           <br />
-          <%= link_to t('page.cancel'), reserve_path(reserve, :mode => 'cancel'), :confirm => t('page.are_you_sure'), :method => :put -%>
+          <%= link_to t('page.cancel'), reserve_path(reserve, :mode => 'cancel'), :data => {:confirm => t('page.are_you_sure')}, :method => :put -%>
         <%- else -%>
           <br />
-          <%= link_to t('page.destroy'), reserve, :confirm => t('page.are_you_sure'), :method => :delete -%>
+          <%= link_to t('page.destroy'), reserve, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
         <%- end -%>
       </td>
     <%- end -%>

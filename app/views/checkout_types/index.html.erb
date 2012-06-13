@@ -28,7 +28,7 @@
         <%= link_to t('page.edit'), edit_checkout_type_path(checkout_type) -%>
       <% end %>
       <%- if can? :destroy, checkout_type -%>
-        <%= link_to t('page.destroy'), checkout_type, :confirm => t('page.are_you_sure'), :method => :delete -%>
+        <%= link_to t('page.destroy'), checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <% end %>
     </td>
   </tr>

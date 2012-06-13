@@ -18,7 +18,7 @@
     <td>
       <%= link_to t('page.show'), manifestation_reserve_stat -%>
       <%= link_to t('page.edit'), edit_manifestation_reserve_stat_path(manifestation_reserve_stat) -%>
-      <%= link_to t('page.destroy'), manifestation_reserve_stat, :confirm => t('page.are_you_sure'), :method => :delete -%>
+      <%= link_to t('page.destroy'), manifestation_reserve_stat, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
     </td>
   </tr>
 <%- end -%>
