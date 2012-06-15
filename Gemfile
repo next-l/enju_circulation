@@ -14,7 +14,7 @@ gem "jquery-rails"
 # your gem to rubygems.org.
 gem 'enju_biblio', :git => 'git://github.com/next-l/enju_biblio.git'
 gem 'enju_library', :git => 'git://github.com/next-l/enju_library.git'
-gem 'sunspot-rails-tester', :git => 'git://github.com/nabeta/sunspot-rails-tester.git'
+gem 'sunspot-rails-tester', :git => 'git://github.com/justinko/sunspot-rails-tester.git'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
