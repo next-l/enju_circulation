@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     resources :checked_items
     resources :item_has_use_restrictions
     resources :lending_policies
+    resources :checkouts
   end
   resources :checkout_stat_has_manifestations
   resources :checkout_stat_has_users

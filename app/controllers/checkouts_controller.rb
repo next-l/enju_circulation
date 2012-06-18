@@ -3,7 +3,7 @@ class CheckoutsController < ApplicationController
   load_and_authorize_resource :except => [:index, :remove_all]
   authorize_resource :only => [:index, :remove_all]
   before_filter :get_user, :only => [:index, :remove_all]
-  helper_method :get_item
+  before_filter :get_item, :only => :index
   after_filter :convert_charset, :only => :index
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
@@ -35,15 +35,19 @@ class CheckoutsController < ApplicationController
         if @user
           @checkouts = @user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
         else
-          if params[:view] == 'overdue'
-            if params[:days_overdue]
-              date = params[:days_overdue].to_i.days.ago.beginning_of_day
-            else
-              date = 1.days.ago.beginning_of_day
-            end
-            @checkouts = Checkout.overdue(date).order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+          if @item
+            @checkouts = @item.checkouts.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
           else
-            @checkouts = Checkout.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+            if params[:view] == 'overdue'
+              if params[:days_overdue]
+                date = params[:days_overdue].to_i.days.ago.beginning_of_day
+              else
+                date = 1.days.ago.beginning_of_day
+              end
+              @checkouts = Checkout.overdue(date).order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+            else
+              @checkouts = Checkout.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+            end
           end
         end
       else

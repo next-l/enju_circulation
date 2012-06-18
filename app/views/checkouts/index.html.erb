@@ -1,11 +1,19 @@
-<%- if @user -%>
-  <%= render 'index_user', :user => @user -%>
-<%- elsif !current_user.has_role?('Librarian') -%>
-  <%= render 'index_user', :user => current_user -%>
-<%- else -%>
+<%- if current_user.has_role?('Librarian') -%>
+  <%- if @user -%>
+    <%= render 'index_user', :user => @user -%>
+  <% elsif @item %>
+    <%= render 'index_item', :item => @item -%>
+  <% else %>
+    <%- if params[:view] == 'overdue' -%>
+      <%= render 'index_overdue' -%>
+    <%- else -%>
+      <%= render 'index' -%>
+    <% end %>
+  <% end %>
+<% else %>
   <%- if params[:view] == 'overdue' -%>
     <%= render 'index_overdue' -%>
   <%- else -%>
-    <%= render 'index' -%>
+    <%= render 'index_user', :user => current_user -%>
   <%- end -%>
 <%- end -%>

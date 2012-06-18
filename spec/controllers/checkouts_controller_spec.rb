@@ -64,6 +64,12 @@ describe CheckoutsController do
         response.should be_success
         assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
       end
+
+      it "should get index with item_id" do
+        get :index, :item_id => 1
+        response.should be_success
+        assigns(:checkouts).should eq items(:item_00001).checkouts.order('checkouts.id DESC').page(1)
+      end
     end
 
     describe "When logged in as User" do
