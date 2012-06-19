@@ -13,8 +13,8 @@ class Basket < ActiveRecord::Base
   attr_accessor :user_number
 
   def check_suspended
-    if self.user
-      errors[:base] << I18n.t('basket.this_account_is_suspended') if self.user.locked_at?
+    if user
+      errors[:base] << I18n.t('basket.this_account_is_suspended') if user.locked_at
     else
       errors[:base] << I18n.t('user.not_found')
     end
@@ -34,8 +34,8 @@ class Basket < ActiveRecord::Base
     def basket_checkout(librarian)
       return nil if checked_items.size == 0
       Item.transaction do
-        self.checked_items.each do |checked_item|
-          checkout = self.user.checkouts.new
+        checked_items.each do |checked_item|
+          checkout = user.checkouts.new
           checkout.librarian = librarian
           checkout.item = checked_item.item
           checkout.basket = self
