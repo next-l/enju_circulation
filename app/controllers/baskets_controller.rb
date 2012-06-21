@@ -46,8 +46,8 @@ class BasketsController < ApplicationController
   # POST /baskets
   # POST /baskets.json
   def create
-    @basket = Basket.new
-    @user = User.where(:user_number => params[:basket][:user_number]).first rescue nil
+    @basket = Basket.new(params[:basket])
+    @user = User.where(:user_number => @basket.user_number).first if @basket.user_number
     if @user
       if @user.user_number?
         @basket.user = @user
@@ -81,7 +81,6 @@ class BasketsController < ApplicationController
       return
     end
 
-    #@checkout_count = @basket.user.checkouts.count
     respond_to do |format|
       #if @basket.update_attributes({})
       if @basket.save(:validate => false)
