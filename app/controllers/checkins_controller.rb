@@ -100,9 +100,11 @@ class CheckinsController < ApplicationController
       item = Item.where(:item_identifier => @checkin.item_identifier.to_s.strip).first
     end
     @checkin.item = item
+    @checkin.assign_attributes(params[:checkin])
+    @checkin.librarian = current_user
 
     respond_to do |format|
-      if @checkin.update_attributes(params[:checkin])
+      if @checkin.save
         format.html { redirect_to @checkin, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkin')) }
         format.json { head :no_content }
       else

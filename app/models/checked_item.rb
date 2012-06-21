@@ -1,5 +1,5 @@
 class CheckedItem < ActiveRecord::Base
-  attr_accessible
+  attr_accessible :item_identifier, :ignore_restriction
   belongs_to :item #, :validate => true
   belongs_to :basket #, :validate => true
   belongs_to :librarian, :class_name => 'User' #, :validate => true

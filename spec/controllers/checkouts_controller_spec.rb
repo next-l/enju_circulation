@@ -237,7 +237,7 @@ describe CheckoutsController do
     before(:each) do
       @checkout = checkouts(:checkout_00003)
       @attrs = {:due_date => 1.day.from_now}
-      @invalid_attrs = {:item_id => ''}
+      @invalid_attrs = {:item_identifier => 'invalid'}
     end
 
     describe "When logged in as Administrator" do

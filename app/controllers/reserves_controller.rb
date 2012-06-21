@@ -62,16 +62,16 @@ class ReservesController < ApplicationController
   # GET /reserves/new.json
   def new
     @reserve = Reserve.new(params[:reserve])
-    if @user
+
+    if current_user.has_role?('Librarian')
       @reserve.user = @user
     else
-      @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
-    end
-
-    unless current_user.has_role?('Librarian')
-      if @reserve.user and @reserve.user != current_user
-        access_denied; return
+      if @user.present?
+        if @user != current_user
+          access_denied; return
+        end
       end
+      @reserve.user = current_user
     end
 
     get_manifestation
@@ -98,10 +98,17 @@ class ReservesController < ApplicationController
     @reserve = Reserve.new(params[:reserve])
     @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
 
-    unless current_user.has_role?('Librarian')
-      if @reserve.user != current_user
-        access_denied; return
+    if current_user.has_role?('Librarian')
+      unless @reserve.user
+        @reserve.user = @user
       end
+    else
+      if @reserve.user != current_user
+        if @user != current_user
+          access_denied; return
+        end
+      end
+      @reserve.user = current_user
     end
 
     respond_to do |format|
@@ -121,6 +128,7 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
+    @reserve.assign_attributes(params[:reserve])
     @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
 
     unless current_user.has_role?('Librarian')
@@ -134,7 +142,7 @@ class ReservesController < ApplicationController
     end
 
     respond_to do |format|
-      if @reserve.update_attributes(params[:reserve])
+      if @reserve.save
         if @reserve.state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
           @reserve.send_message
