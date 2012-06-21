@@ -108,7 +108,6 @@ class ReservesController < ApplicationController
           access_denied; return
         end
       end
-      #@reserve.user = current_user
     end
 
     respond_to do |format|
