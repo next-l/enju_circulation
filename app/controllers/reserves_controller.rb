@@ -71,7 +71,7 @@ class ReservesController < ApplicationController
           access_denied; return
         end
       end
-      @reserve.user = current_user
+      @reserve.user_number = current_user.user_number
     end
 
     get_manifestation
@@ -108,7 +108,7 @@ class ReservesController < ApplicationController
           access_denied; return
         end
       end
-      @reserve.user = current_user
+      #@reserve.user = current_user
     end
 
     respond_to do |format|
