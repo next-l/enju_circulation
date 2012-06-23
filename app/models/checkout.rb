@@ -2,6 +2,7 @@ class Checkout < ActiveRecord::Base
   attr_accessible :due_date
   default_scope :order => 'checkouts.id DESC'
   scope :not_returned, where(:checkin_id => nil)
+  scope :returned, where('checkin_id IS NOT NULL')
   scope :overdue, lambda {|date| {:conditions => ['checkin_id IS NULL AND due_date < ?', date]}}
   scope :due_date_on, lambda {|date| where(:checkin_id => nil, :due_date => date.beginning_of_day .. date.end_of_day)}
   scope :completed, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
@@ -108,7 +109,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.remove_all_history(user)
-    user.checkouts.update_all(:user_id => nil)
+    user.checkouts.returned.update_all(:user_id => nil)
   end
 end
 # == Schema Information

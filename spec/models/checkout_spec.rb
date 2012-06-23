@@ -51,7 +51,7 @@ describe Checkout do
     user = users(:user1)
     old_count = Checkout.count
     Checkout.remove_all_history(user)
-    user.checkouts.count.should eq 0
+    user.checkouts.returned.count.should eq 0
     Checkout.count.should eq old_count
   end
 end
