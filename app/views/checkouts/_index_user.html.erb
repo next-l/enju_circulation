@@ -53,7 +53,7 @@
   </ul>
   <ul>
     <% if @user == current_user %>
-      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), :method => :put %></li>
+      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), :method => :put, :data => {:confirm => t('page.are_you_sure')} %></li>
     <% end %>
   </ul>
 </div>
