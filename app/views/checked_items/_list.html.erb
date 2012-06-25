@@ -9,7 +9,12 @@
     <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%>
   </p>
 <%- end -%>
-<%= javascript_tag("$('#checked_item_item_identifier').focus()") -%>
+
+<script>
+$(document).ready(function(){
+  $('#checked_item_item_identifier').focus().select();
+});
+</script>
 </div>
 
 <%= render 'checked_item' %>

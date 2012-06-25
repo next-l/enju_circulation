@@ -36,4 +36,8 @@
 <%- end -%>
 </table>
 
-<%= javascript_tag("$('#checkin_item_identifier').focus()") -%>
+<script>
+$(document).ready(function(){
+  $('#checkin_item_identifier').focus().select();
+});
+</script>

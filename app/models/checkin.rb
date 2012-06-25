@@ -7,9 +7,8 @@ class Checkin < ActiveRecord::Base
   belongs_to :librarian, :class_name => 'User'
   belongs_to :basket
 
-  validates_uniqueness_of :item_id, :scope => :basket_id, :message => I18n.t('checkin.already_checked_in')
-  validates_presence_of :item_id, :message => I18n.t('checkin.item_not_found')
-  validates_presence_of :basket_id
+  validates_uniqueness_of :item_id, :scope => :basket_id
+  validates_presence_of :item_id, :basket_id
   validate :available_for_checkin?, :on => :create
 
   attr_accessor :item_identifier

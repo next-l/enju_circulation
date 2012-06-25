@@ -5,7 +5,7 @@
   <%= f.error_messages %>
   <p>
     <%= t('activerecord.attributes.item.item_identifier') -%>:
-    <%= f.search_field :item_identifier, :class => 'resource_item_identifier', :value => nil -%>
+    <%= f.search_field :item_identifier, :class => 'resource_item_identifier' -%>
     <%= f.submit t('checkin.checkin'), 'data-disable-with' => t('page.saving') -%>
   </p>
 <%- end -%>
