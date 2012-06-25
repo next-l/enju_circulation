@@ -10,11 +10,23 @@ class Checkin < ActiveRecord::Base
   validates_uniqueness_of :item_id, :scope => :basket_id, :message => I18n.t('checkin.already_checked_in')
   validates_presence_of :item_id, :message => I18n.t('checkin.item_not_found')
   validates_presence_of :basket_id
+  validate :available_for_checkin?, :on => :create
 
   attr_accessor :item_identifier
 
   def self.per_page
     10
+  end
+
+  def available_for_checkin?
+    if item.blank?
+      errors[:base] << I18n.t('checkin.item_not_found')
+      return
+    end
+
+    if basket.items.where('item_id = ?', item.id).first
+      errors[:base] << I18n.t('checkin.already_checked_in')
+    end
   end
 
   def item_checkin(current_user)
