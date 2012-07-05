@@ -101,7 +101,7 @@ module EnjuCirculation
       end
 
       def retain(librarian)
-        Item.transaction do
+        self.class.transaction do
           reservation = manifestation.next_reservation
           unless reservation.nil?
             reservation.item = self
