@@ -57,6 +57,7 @@ module EnjuCirculation
       end
 
       def checkout_status(user)
+        return nil unless user
          user.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
       end
 
