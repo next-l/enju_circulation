@@ -23,6 +23,23 @@ class Checkout < ActiveRecord::Base
   validate :is_not_checked?, :on => :create
   validates_date :due_date
 
+  searchable do
+    string :username do
+      user.try(:username)
+    end
+    string :user_number do
+      user.try(:user_number)
+    end
+    time :due_date
+    time :created_at
+    time :checked_in_at do
+      checkin.try(:created_at)
+    end
+    boolean :reserved do
+      reserved?
+    end
+  end
+
   def self.per_page
     10
   end
