@@ -30,7 +30,9 @@ class Checkout < ActiveRecord::Base
     string :user_number do
       user.try(:user_number)
     end
-    string :item_identifier
+    string :item_identifier do
+      item.item_identifier
+    end
     time :due_date
     time :created_at
     time :checked_in_at do
