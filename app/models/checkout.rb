@@ -30,6 +30,7 @@ class Checkout < ActiveRecord::Base
     string :user_number do
       user.try(:user_number)
     end
+    string :item_identifier
     time :due_date
     time :created_at
     time :checked_in_at do
@@ -52,20 +53,21 @@ class Checkout < ActiveRecord::Base
   end
 
   def checkout_renewable?
-    return false if self.overdue?
-    if self.item
-      return false if self.over_checkout_renewal_limit?
-      return false if self.reserved?
+    return false if overdue?
+    if item
+      return false if over_checkout_renewal_limit?
+      return false if reserved?
     end
     true
   end
 
   def reserved?
-    return true if self.item.reserved?
+    return true if item.try(:reserved?)
+    false
   end
 
   def over_checkout_renewal_limit?
-    return true if self.item.checkout_status(self.user).checkout_renewal_limit <= self.checkout_renewal_count
+    return true if item.checkout_status(user).checkout_renewal_limit <= checkout_renewal_count
   end
 
   def overdue?
@@ -77,7 +79,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def is_today_due_date?
-    if Time.zone.now.beginning_of_day == self.due_date.beginning_of_day
+    if Time.zone.now.beginning_of_day == due_date.beginning_of_day
       return true
     else
       return false
@@ -86,17 +88,17 @@ class Checkout < ActiveRecord::Base
 
   def get_new_due_date
     return nil unless user
-    if self.item
-      if self.checkout_renewal_count <= self.item.checkout_status(user).checkout_renewal_limit
-        new_due_date = Time.zone.now.advance(:days => self.item.checkout_status(user).checkout_period).beginning_of_day
+    if item
+      if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
+        new_due_date = Time.zone.now.advance(:days => item.checkout_status(user).checkout_period).beginning_of_day
       else
-        new_due_date = self.due_date
+        new_due_date = due_date
       end
     end
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    self.completed(start_date, end_date).where(:item_id => manifestation.items.collect(&:id)).count
+    completed(start_date, end_date).where(:item_id => manifestation.items.collect(&:id)).count
   end
 
   def self.send_due_date_notification

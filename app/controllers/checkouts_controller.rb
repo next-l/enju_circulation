@@ -31,39 +31,78 @@ class CheckoutsController < ApplicationController
     end
 
     unless icalendar_user
-      if current_user.try(:has_role?, 'Librarian')
-        if @user
-          @checkouts = @user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+      search = Checkout.search
+      if @user
+        user = @user
+        if current_user.try(:has_role?, 'Librarian')
+          search.build do
+            with(:username).equal_to user.username
+            with(:checked_in_at).equal_to nil unless user.save_checkout_history
+          end
         else
-          if @item
-            @checkouts = @item.checkouts.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+          if current_user == user
+            redirect_to checkouts_url(:format => params[:format])
+            return
           else
-            if params[:view] == 'overdue'
-              if params[:days_overdue]
-                date = params[:days_overdue].to_i.days.ago.beginning_of_day
-              else
-                date = 1.days.ago.beginning_of_day
-              end
-              @checkouts = Checkout.overdue(date).order('checkouts.id DESC').page(params[:page]).per_page(per_page)
-            else
-              @checkouts = Checkout.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
-            end
+            access_denied
+            return
           end
         end
       else
-        # 一般ユーザ
-        if current_user == @user
-          redirect_to checkouts_url(:format => params[:format])
-          return
-        else
-          if @user
-            access_denied
-            return
-          else
-            @checkouts = current_user.checkouts.not_returned.order('checkouts.id DESC').page(params[:page]).per_page(per_page)
+        unless current_user.try(:has_role?, 'Librarian')
+          search.build do
+            with(:username).equal_to current_user.username
+          end
+
+          unless current_user.save_checkout_history
+            with(:checked_in_at).equal_to nil
           end
         end
       end
+
+      if current_user.try(:has_role?, 'Librarian')
+        if @item
+          item = @item
+          search.build do
+            with(:item_identifier).equal_to item.item_identifier
+          end
+        end
+      else
+        if @item
+          access_denied; return
+        end
+      end
+
+      if params[:view] == 'overdue'
+        if params[:days_overdue]
+          date = params[:days_overdue].to_i.days.ago.beginning_of_day
+        else
+          date = 1.days.ago.beginning_of_day
+        end
+        search.build do
+          with(:due_date).less_than date
+        end
+      end
+
+      if params[:reserved].present?
+        if params[:reserved] == 'true'
+          @reserved = reserved = true
+        elsif params[:reserved] == 'false'
+          @reserved = reserved = false
+        end
+        search.build do
+          with(:reserved).equal_to reserved
+        end
+      end
+
+      search.build do
+        order_by :created_at, :desc
+        facet :reserved
+      end
+      page = params[:page] || 1
+      search.query.paginate(page.to_i, Checkout.per_page)
+      @checkouts = search.execute!.results
+      @checkouts_facet = search.facet(:reserved).rows
     end
 
     @days_overdue = params[:days_overdue] ||= 1

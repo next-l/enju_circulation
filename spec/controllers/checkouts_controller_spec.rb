@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CheckoutsController do
   fixtures :all
 
-  describe "GET index" do
+  describe "GET index", :solr => true do
     before(:each) do
       FactoryGirl.create(:admin)
     end
