@@ -81,6 +81,7 @@ class CheckoutsController < ApplicationController
         end
         search.build do
           with(:due_date).less_than date
+          with(:checked_in_at).equal_to nil
         end
       end
 
