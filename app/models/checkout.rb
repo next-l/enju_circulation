@@ -100,7 +100,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    completed(start_date, end_date).where(:item_id => manifestation.items.collect(&:id)).count
+    completed(start_date, end_date).where(:item_id => manifestation.items.pluck('items.id')).count
   end
 
   def self.send_due_date_notification
