@@ -32,7 +32,7 @@ class Checkin < ActiveRecord::Base
     message = ''
     Checkin.transaction do
       checkouts = Checkout.not_returned.where(:item_id => item_id).select(
-        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version]
+        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at]
       )
       item.checkin!
       checkouts.each do |checkout|
