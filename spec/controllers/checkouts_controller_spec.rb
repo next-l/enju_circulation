@@ -13,7 +13,7 @@ describe CheckoutsController do
 
       it "assigns all checkouts as @checkouts" do
         get :index
-        assigns(:checkouts).should eq(Checkout.not_returned.order('checkouts.id DESC').page(1))
+        assigns(:checkouts).should eq Checkout.not_returned.order('checkouts.id DESC').page(1)
       end
 
       it "should get other user's index" do

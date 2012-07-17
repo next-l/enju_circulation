@@ -53,10 +53,10 @@ class CheckoutsController < ApplicationController
           search.build do
             with(:username).equal_to current_user.username
           end
+        end
 
-          unless current_user.save_checkout_history
-            with(:checked_in_at).equal_to nil
-          end
+        search.build do
+          with(:checked_in_at).equal_to nil
         end
       end
 
