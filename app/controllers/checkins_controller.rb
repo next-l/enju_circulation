@@ -1,7 +1,6 @@
 class CheckinsController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user
   before_filter :get_basket, :only => [:index, :create]
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
@@ -17,7 +16,7 @@ class CheckinsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @checkins }
-      format.js { @checkin = Checkin.new }
+      format.js
     end
   end
 
@@ -43,7 +42,7 @@ class CheckinsController < ApplicationController
       @basket.save!
     end
     @checkin = Checkin.new
-    @checkins = []
+    @checkins = [].paginate(:page => 1)
     flash[:checkin_basket_id] = @basket.id
 
     respond_to do |format|
@@ -67,12 +66,11 @@ class CheckinsController < ApplicationController
     @checkin.librarian = current_user
 
     flash[:message] = ''
-    if @checkin.item_identifier.blank?
-      flash[:message] << t('checkin.enter_item_identifier') if @checkin.item_identifier.blank?
-    else
-      item = Item.where(:item_identifier => @checkin.item_identifier.to_s.strip).first
+    item_identifier = @checkin.item_identifier.to_s.strip
+    unless item_identifier.blank?
+      item = Item.where(:item_identifier => item_identifier).first
     end
-    @checkin.item = item
+    @checkin.item = item if item
 
     respond_to do |format|
       if @checkin.save
@@ -83,7 +81,7 @@ class CheckinsController < ApplicationController
         format.json { render :json => @checkin, :status => :created, :location => @checkin }
         format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
       else
-        @checkins = @basket.checkins
+        @checkins = @basket.checkins.paginate(:page => 1)
         format.html { render :action => "new" }
         format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
         format.js { render :action => "index" }
