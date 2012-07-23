@@ -46,4 +46,12 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def patron
+    LocalPatron.new(self)
+  end
+
+  def full_name
+    username
+  end
 end

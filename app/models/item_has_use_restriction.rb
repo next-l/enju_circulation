@@ -8,9 +8,7 @@ class ItemHasUseRestriction < ActiveRecord::Base
   validates_presence_of :use_restriction
   validates_presence_of :item, :on => :update
 
-  def self.per_page
-    10
-  end
+  paginates_per 10
 end
 
 # == Schema Information

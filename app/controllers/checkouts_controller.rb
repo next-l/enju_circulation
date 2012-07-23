@@ -27,7 +27,7 @@ class CheckoutsController < ApplicationController
     if params[:format] == 'csv'
       per_page = 65534
     else
-      per_page = Checkout.per_page
+      per_page = Checkout.default_per_page
     end
 
     unless icalendar_user
@@ -101,7 +101,7 @@ class CheckoutsController < ApplicationController
         facet :reserved
       end
       page = params[:page] || 1
-      search.query.paginate(page.to_i, Checkout.per_page)
+      search.query.paginate(page.to_i, Checkout.default_per_page)
       @checkouts = search.execute!.results
       @checkouts_facet = search.facet(:reserved).rows
     end

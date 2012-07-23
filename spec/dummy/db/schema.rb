@@ -13,17 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20120424103932) do
 
-  create_table "accepts", :force => true do |t|
-    t.integer  "basket_id"
-    t.integer  "item_id"
-    t.integer  "librarian_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "accepts", ["basket_id"], :name => "index_accepts_on_basket_id"
-  add_index "accepts", ["item_id"], :name => "index_accepts_on_item_id"
-
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
     t.text     "note"

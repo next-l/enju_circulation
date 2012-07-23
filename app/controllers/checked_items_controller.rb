@@ -6,9 +6,9 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items.json
   def index
     if @basket
-      @checked_items = @basket.checked_items.paginate(:page => params[:page])
+      @checked_items = @basket.checked_items.page(params[:page])
     else
-      @checked_items = CheckedItem.paginate(:page => params[:page])
+      @checked_items = CheckedItem.page(params[:page])
     end
 
     respond_to do |format|

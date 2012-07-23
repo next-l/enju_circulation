@@ -8,9 +8,9 @@ class CheckinsController < ApplicationController
   # GET /checkins.json
   def index
     if @basket
-      @checkins = @basket.checkins.paginate(:page => params[:page])
+      @checkins = @basket.checkins.page(params[:page])
     else
-      @checkins = Checkin.paginate(:page => params[:page])
+      @checkins = Checkin.page(params[:page])
     end
 
     respond_to do |format|
@@ -42,7 +42,7 @@ class CheckinsController < ApplicationController
       @basket.save!
     end
     @checkin = Checkin.new
-    @checkins = [].paginate(:page => 1)
+    @checkins = Kaminari::paginate_array([]).page(1)
     flash[:checkin_basket_id] = @basket.id
 
     respond_to do |format|
@@ -81,7 +81,7 @@ class CheckinsController < ApplicationController
         format.json { render :json => @checkin, :status => :created, :location => @checkin }
         format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
       else
-        @checkins = @basket.checkins.paginate(:page => 1)
+        @checkins = @basket.checkins.page(1)
         format.html { render :action => "new" }
         format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
         format.js { render :action => "index" }

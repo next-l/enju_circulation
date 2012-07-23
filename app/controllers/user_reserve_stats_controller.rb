@@ -19,9 +19,9 @@ class UserReserveStatsController < ApplicationController
     if params[:format] == 'csv'
       per_page = 65534
     else
-      per_page = ReserveStatHasUser.per_page
+      per_page = ReserveStatHasUser.default_per_page
     end
-    @stats = @user_reserve_stat.reserve_stat_has_users.order('reserves_count DESC, user_id').page(params[:page]).per_page(per_page)
+    @stats = @user_reserve_stat.reserve_stat_has_users.order('reserves_count DESC, user_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

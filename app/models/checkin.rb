@@ -13,9 +13,7 @@ class Checkin < ActiveRecord::Base
 
   attr_accessor :item_identifier
 
-  def self.per_page
-    10
-  end
+  paginates_per 10
 
   def available_for_checkin?
     if item.blank?

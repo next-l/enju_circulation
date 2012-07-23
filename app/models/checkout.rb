@@ -43,9 +43,7 @@ class Checkout < ActiveRecord::Base
     end
   end
 
-  def self.per_page
-    10
-  end
+  paginates_per 10
 
   def is_not_checked?
     checkout = Checkout.not_returned.where(:item_id => item_id)

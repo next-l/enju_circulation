@@ -19,9 +19,9 @@ class ManifestationReserveStatsController < ApplicationController
     if params[:format] == 'csv'
       per_page = 65534
     else
-      per_page = ReserveStatHasManifestation.per_page
+      per_page = ReserveStatHasManifestation.default_per_page
     end
-    @stats = @manifestation_reserve_stat.reserve_stat_has_manifestations.order('reserves_count DESC, manifestation_id').page(params[:page]).per_page(per_page)
+    @stats = @manifestation_reserve_stat.reserve_stat_has_manifestations.order('reserves_count DESC, manifestation_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

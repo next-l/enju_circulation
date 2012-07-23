@@ -19,9 +19,9 @@ class ManifestationCheckoutStatsController < ApplicationController
     if params[:format] == 'csv'
       per_page = 65534
     else
-      per_page = CheckoutStatHasManifestation.per_page
+      per_page = CheckoutStatHasManifestation.default_per_page
     end
-    @stats = @manifestation_checkout_stat.checkout_stat_has_manifestations.order('checkouts_count DESC, manifestation_id').page(params[:page]).per_page(per_page)
+    @stats = @manifestation_checkout_stat.checkout_stat_has_manifestations.order('checkouts_count DESC, manifestation_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

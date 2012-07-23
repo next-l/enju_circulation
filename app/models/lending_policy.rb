@@ -9,9 +9,7 @@ class LendingPolicy < ActiveRecord::Base
   validates_uniqueness_of :user_group_id, :scope => :item_id
   validates_date :fixed_due_date, :allow_blank => true
 
-  def self.per_page
-    10
-  end
+  paginates_per 10
 
   acts_as_list :scope => :item_id
 end
