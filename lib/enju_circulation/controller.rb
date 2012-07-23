@@ -13,10 +13,6 @@ module EnjuCirculation
     module InstanceMethods
       private
 
-      def get_basket
-        @basket = Basket.find(params[:basket_id]) if params[:basket_id]
-      end
-
       def get_checkout_type
         @checkout_type = CheckoutType.find(params[:checkout_type_id]) if params[:checkout_type_id]
       end

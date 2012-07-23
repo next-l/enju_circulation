@@ -1,5 +1,0 @@
-require 'nkf'
-require 'enju_leaf/calculate_stat'
-require 'enju_biblio'
-require 'enju_library'
-require 'enju_manifestation_viewer'
