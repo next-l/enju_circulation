@@ -4,8 +4,8 @@ class Notifier < ActionMailer::Base
     default_url_options[:host] = uri.host
     default_url_options[:port] = uri.port if configatron.enju.web_port_number != 80
   else
-    default_url_options[:host] = configatron.enju.web_hostname
-    default_url_options[:port] = configatron.enju.web_port_number if configatron.enju.web_port_number != 80
+    default_url_options[:host] = 'library.example.jp'
+    default_url_options[:port] = 80
   end
 
   def message_notification(message_id)
