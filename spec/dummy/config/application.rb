@@ -55,6 +55,6 @@ module Dummy
 end
 
 require 'nkf'
-#require 'enju_biblio'
+require 'enju_biblio'
 require 'enju_library'
 require 'enju_manifestation_viewer'
