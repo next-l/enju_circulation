@@ -18,6 +18,7 @@ module EnjuCirculation
           lending_policies
           manifestation_checkout_stats
           manifestation_reserve_stats
+          my_accounts
           reserve_stat_has_manifestations
           reserve_stat_has_users
           reserves
@@ -25,6 +26,7 @@ module EnjuCirculation
           user_checkout_stats
           user_group_has_checkout_types
           user_reserve_stats
+          users
         )
 
         directories.each do |dir|
