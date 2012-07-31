@@ -21,7 +21,7 @@
       (<%= link_to checkout.item.item_identifier, checkout.item -%>)
     </td>
     <td>
-      <%= l(checkout.due_date, :formats => :only_date) -%>
+      <%= l(checkout.due_date, :format => :only_date) -%>
       <br />
       <% if checkout.checkin %>
         <strong><%= t('checkout.returned') %></strong>
