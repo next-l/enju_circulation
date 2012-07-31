@@ -172,7 +172,8 @@ class Reserve < ActiveRecord::Base
       request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
       request.save_message_body(:manifestations => options[:manifestations])
       self.not_sent_expiration_notice_to_library.each do |reserve|
-        reserve.update_attribute(:expiration_notice_to_library, true)
+        reserve.expiration_notice_to_library = true
+        reserve.save(:validate => false)
       end
     #when 'canceled'
     #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', sender.locale)
