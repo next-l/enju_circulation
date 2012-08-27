@@ -9,7 +9,6 @@ class CheckoutsController < ApplicationController
 
   # GET /checkouts
   # GET /checkouts.json
-
   def index
     if params[:icalendar_token].present?
       icalendar_user = User.where(:checkout_icalendar_token => params[:icalendar_token]).first
