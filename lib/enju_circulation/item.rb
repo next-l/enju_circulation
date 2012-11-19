@@ -50,7 +50,7 @@ module EnjuCirculation
         accepts_nested_attributes_for :item_has_use_restriction
 
         after_create :create_lending_policy
-        before_update :delete_lending_policy
+        before_update :update_lending_policy
       end
     end
 
@@ -128,8 +128,8 @@ module EnjuCirculation
         end
       end
 
-      def delete_lending_policy
-        return nil unless changes[:circulation_status_id]
+      def update_lending_policy
+        return nil unless changes[:checkout_type_id]
         self.transaction do
           lending_policies.delete_all
           create_lending_policy

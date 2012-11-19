@@ -143,20 +143,21 @@ checkout_00013:
   created_at: 2007-09-08 01:39:13.210081 +09:00
   basket_id: 8
   checkin_id: 4
+
 # == Schema Information
 #
 # Table name: checkouts
 #
-#  id                     :integer         not null, primary key
+#  id                     :integer          not null, primary key
 #  user_id                :integer
-#  item_id                :integer         not null
+#  item_id                :integer          not null
 #  checkin_id             :integer
 #  librarian_id           :integer
 #  basket_id              :integer
 #  due_date               :datetime
-#  checkout_renewal_count :integer         default(0), not null
-#  lock_version           :integer         default(0), not null
-#  created_at             :datetime        not null
-#  updated_at             :datetime        not null
+#  checkout_renewal_count :integer          default(0), not null
+#  lock_version           :integer          default(0), not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 

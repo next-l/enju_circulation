@@ -13,13 +13,13 @@ end
 #
 # Table name: manifestation_checkout_stats
 #
-#  id           :integer         not null, primary key
+#  id           :integer          not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
 #  state        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
 #

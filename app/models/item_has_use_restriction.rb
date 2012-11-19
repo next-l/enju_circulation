@@ -15,10 +15,10 @@ end
 #
 # Table name: item_has_use_restrictions
 #
-#  id                 :integer         not null, primary key
-#  item_id            :integer         not null
-#  use_restriction_id :integer         not null
-#  created_at         :datetime
-#  updated_at         :datetime
+#  id                 :integer          not null, primary key
+#  item_id            :integer          not null
+#  use_restriction_id :integer          not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 

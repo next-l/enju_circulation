@@ -269,23 +269,24 @@ class Reserve < ActiveRecord::Base
     has_one :inter_library_loan
   end
 end
+
 # == Schema Information
 #
 # Table name: reserves
 #
-#  id                           :integer         not null, primary key
-#  user_id                      :integer         not null
-#  manifestation_id             :integer         not null
+#  id                           :integer          not null, primary key
+#  user_id                      :integer          not null
+#  manifestation_id             :integer          not null
 #  item_id                      :integer
-#  request_status_type_id       :integer         not null
+#  request_status_type_id       :integer          not null
 #  checked_out_at               :datetime
-#  created_at                   :datetime        not null
-#  updated_at                   :datetime        not null
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
 #  state                        :string(255)
-#  expiration_notice_to_patron  :boolean         default(FALSE)
-#  expiration_notice_to_library :boolean         default(FALSE)
+#  expiration_notice_to_patron  :boolean          default(FALSE)
+#  expiration_notice_to_library :boolean          default(FALSE)
 #
 
