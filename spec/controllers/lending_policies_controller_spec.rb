@@ -28,7 +28,7 @@ describe LendingPoliciesController do
 
       it "assigns all lending_policies as @lending_policies" do
         get :index
-        assigns(:lending_policies).should eq(LendingPolicy.all)
+        assigns(:lending_policies).should eq(LendingPolicy.page(1))
       end
     end
 
