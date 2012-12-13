@@ -4,7 +4,7 @@
 <%= form_for :checkin, :html => {:method => :post}, :url => basket_checkins_path(@basket), :remote => true do |f| -%>
   <%= f.error_messages %>
   <p>
-    <%= t('activerecord.attributes.item.item_identifier') -%>:
+    <%= label_tag :item_identifier, t('activerecord.attributes.item.item_identifier') -%>:
     <%= f.search_field :item_identifier, :class => 'resource_item_identifier' -%>
     <%= f.submit t('checkin.checkin'), 'data-disable-with' => t('page.saving') -%>
   </p>

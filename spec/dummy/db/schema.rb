@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424103932) do
+ActiveRecord::Schema.define(:version => 20121119153944) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -260,6 +260,7 @@ ActiveRecord::Schema.define(:version => 20120424103932) do
     t.string   "state"
     t.integer  "required_score",              :default => 0,     :null => false
     t.datetime "acquired_at"
+    t.integer  "manifestation_id"
   end
 
   add_index "items", ["checkout_type_id"], :name => "index_items_on_checkout_type_id"
