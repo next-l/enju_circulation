@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = EnjuCirculation::VERSION
   s.authors     = ["Kosuke Tanabe"]
   s.email       = ["tanabe@mwr.mediacom.keio.ac.jp"]
-  s.homepage    = "https://github.com/nabeta/enju_circulation"
+  s.homepage    = "https://github.com/next-l/enju_circulation"
   s.summary     = "enju_circulation plugin"
   s.description = "Circulation management for Next-L Enju"
 
