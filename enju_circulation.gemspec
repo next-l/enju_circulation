@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "enju_export", "~> 0.1.1.pre"
   s.add_development_dependency "enju_manifestation_viewer"
   s.add_development_dependency "mobile-fu"
+  s.add_development_dependency "simplecov"
 end
