@@ -149,6 +149,7 @@ ja:
     already_checked_in: "この資料はすでに返却されています。"
     checkin: "返却（取り消しはできません）"
     successfully_checked_in: "この資料は正常に返却されました。"
+    missing_item_found: "行方不明だった資料が見つかりました。"
   reserve:
     user_reserve: "%{login_name} さんの予約資料"
     library_group_reserve: "%{library_group_name} での予約資料"

@@ -27,7 +27,7 @@ FactoryGirl.define do
     f.role {Role.find_by_name('User')}
     f.password 'userpassword'
     f.password_confirmation 'userpassword'
-    f.user_group {UserGroup.first}
+    f.user_group {UserGroup.find(2)}
     f.required_role {Role.find_by_name('User')}
     f.sequence(:user_number){|n| "user_number_#{n}"}
   end

@@ -72,6 +72,13 @@ lending_policy_00008:
   fixed_due_date: 
   renewal: 1
   fine: 10
+lending_policy_00009:
+  item_id: 24
+  user_group_id: 2
+  loan_period: 1
+  fixed_due_date: 
+  renewal: 1
+  fine: 10
 
 # == Schema Information
 #

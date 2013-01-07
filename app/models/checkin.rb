@@ -55,6 +55,10 @@ class Checkin < ActiveRecord::Base
         message << I18n.t('item.this_item_include_supplement')
       end
 
+      if item.circulation_status.name == 'Missing'
+        message << I18n.t('checkout.missing_item_found')
+      end
+
       # メールとメッセージの送信
       #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
       #Message.create(:sender => current_user, :receiver => item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => item.manifestation.next_reservation.user)

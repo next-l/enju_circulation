@@ -6,8 +6,8 @@ describe UserGroupHasCheckoutType do
 
   it "should create lending_policy" do
     old_count = LendingPolicy.count
-    user_group_has_checkout_types(:user_group_has_checkout_type_00004).create_lending_policy
-    user_group_has_checkout_types(:user_group_has_checkout_type_00004).checkout_type.items.count.should eq old_count
+    user_group_has_checkout_types(:user_group_has_checkout_type_00005).create_lending_policy
+    (user_group_has_checkout_types(:user_group_has_checkout_type_00005).checkout_type.items.count + old_count).should eq LendingPolicy.count
   end
 
   it "should update lending_policy" do

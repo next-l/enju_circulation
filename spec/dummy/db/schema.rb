@@ -455,10 +455,12 @@ ActiveRecord::Schema.define(:version => 20121119153944) do
     t.integer  "volume_number"
     t.integer  "issue_number"
     t.integer  "serial_number"
+    t.string   "doi"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
   add_index "manifestations", ["carrier_type_id"], :name => "index_manifestations_on_carrier_type_id"
+  add_index "manifestations", ["doi"], :name => "index_manifestations_on_doi"
   add_index "manifestations", ["frequency_id"], :name => "index_manifestations_on_frequency_id"
   add_index "manifestations", ["isbn"], :name => "index_manifestations_on_isbn"
   add_index "manifestations", ["issn"], :name => "index_manifestations_on_issn"

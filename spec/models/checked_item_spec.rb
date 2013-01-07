@@ -7,6 +7,15 @@ describe CheckedItem do
   it "should respond to available_for_checkout?" do
     checked_items(:checked_item_00001).available_for_checkout?.should_not be_true
   end
+
+  it "should change circulation_status when a missing item is found" do
+    basket = FactoryGirl.create(:basket)
+    checked_item = CheckedItem.new
+    checked_item.item = items(:item_00024)
+    checked_item.basket = basket
+    checked_item.save!
+    items(:item_00024).circulation_status.name.should eq 'Available On Shelf'
+  end
 end
 
 # == Schema Information
