@@ -10,7 +10,7 @@
   </p>
 <%- end -%>
 
-<%= javascript_tag("$('#checked_item_item_identifier').focus().select();") %>
+<%= javascript_tag("$(function(){$('#checked_item_item_identifier').focus().select()})") %>
 </div>
 
 <%= render 'checked_item' %>

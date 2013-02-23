@@ -9,7 +9,7 @@
     <%= f.submit t('checkin.checkin'), 'data-disable-with' => t('page.saving') -%>
   </p>
 <%- end -%>
-<%= javascript_tag("$('#checkin_item_identifier').focus().select();") %>
+<%= javascript_tag("$(function(){$('#checkin_item_identifier').focus().select()})") %>
 </div>
 
 <%= render 'checkin' %>
