@@ -209,8 +209,18 @@ class Reserve < ActiveRecord::Base
   #  logger.info "#{Time.zone.now} expiring reservations failed!"
   end
 
+  def checked_out_now?
+    if user and manifestation
+      true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck(:item_id)).empty?
+    end
+  end
+
   def available_for_reservation?
     if manifestation
+      if checked_out_now?
+        errors[:base] << I18n.t('reserve.this_manifestation_is_already_checked_out')
+      end
+
       if manifestation.is_reserved_by?(user)
         errors[:base] << I18n.t('reserve.this_manifestation_is_already_reserved')
       end

@@ -156,6 +156,7 @@ ja:
     my_reservation: "自分の予約"
     all_reservation: "全ての予約"
     this_manifestation_is_already_reserved: "この資料はすでに予約されています。"
+    this_manifestation_is_already_checked_out: "この資料はすでに貸し出されています。"
     excessed_reservation_limit: "予約できる資料数の上限を超えています。"
     this_patron_cannot_reserve: "この利用者はこの資料を予約できません。"
     reservation_was_canceled: "予約は取り消されました。"
