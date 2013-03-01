@@ -32,7 +32,8 @@ class Reserve < ActiveRecord::Base
   validates_date :expired_at, :allow_blank => true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, :on => :create
-  before_validation :set_item_and_manifestation, :on => :create
+  before_validation :set_manifestation, :on => :create
+  before_validation :set_item
   before_validation :set_expired_at
   before_validation :set_request_status, :on => :create
 
@@ -73,9 +74,34 @@ class Reserve < ActiveRecord::Base
 
   paginates_per 10
 
-  def set_item_and_manifestation
-    item = Item.where(:item_identifier => item_identifier).first
-    manifestation = item.manifestation if item
+  searchable do
+    string :username do
+      user.try(:username)
+    end
+    string :user_number do
+      user.try(:user_number)
+    end
+    time :created_at
+    text :item_identifier do
+      item.try(:item_identifier)
+    end
+    text :title do
+      manifestation.try(:titles)
+    end
+    boolean :hold do |reserve|
+      self.hold.include?(reserve)
+    end
+    string :state
+  end
+
+  def set_manifestation
+    self.manifestation = item.manifestation if item
+  end
+
+  def set_item
+    if item_identifier
+      self.item = Item.where(:item_identifier => item_identifier).first
+    end
   end
 
   def set_request_status
@@ -92,13 +118,6 @@ class Reserve < ActiveRecord::Base
           errors[:base] << I18n.t('reserve.invalid_date')
         end
       end
-    end
-  end
-
-  def manifestation_must_include_item
-    unless item_id.blank?
-      item = Item.find(item_id) rescue nil
-      errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
     end
   end
 
@@ -235,6 +254,13 @@ class Reserve < ActiveRecord::Base
     end
   end
 
+  def retain_item
+    return unless item_id_change
+    unless item_id_change.first
+      sm_retain!
+    end
+  end
+
   private
   def do_request
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first}, :as => :admin)
@@ -273,6 +299,13 @@ class Reserve < ActiveRecord::Base
   def checkout
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now}, :as => :admin)
     save!
+  end
+
+  def manifestation_must_include_item
+    unless item_id.blank?
+      item = Item.find(item_id) rescue nil
+      errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
+    end
   end
 
   if defined?(EnjuInterLibraryLoan)

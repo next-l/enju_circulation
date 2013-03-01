@@ -3,7 +3,11 @@ require 'spec_helper'
 describe ReservesController do
   fixtures :all
 
-  describe "GET index" do
+  describe "GET index", :solr => true do
+    before do
+      Reserve.reindex
+    end
+
     describe "When logged in as Administrator" do
       login_fixture_admin
 
@@ -30,13 +34,13 @@ describe ReservesController do
       it "should get index feed without user_id" do
         get :index, :format => 'rss'
         response.should be_success
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).collect(&:id).should eq Reserve.order('reserves.id DESC').includes(:manifestation).page(1).collect(&:id)
       end
 
       it "should get index csv without user_id" do
         get :index, :format => 'csv'
         response.should be_success
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
       end
 
       it "should get index feed with user_id" do
@@ -48,7 +52,7 @@ describe ReservesController do
       it "should get index csv with user_id" do
         get :index, :user_id => users(:user1).username, :format => 'csv'
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation))
       end
 
       it "should get other user's index" do

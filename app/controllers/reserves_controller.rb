@@ -7,6 +7,7 @@ class ReservesController < ApplicationController
   before_filter :store_page
   helper_method :get_manifestation
   helper_method :get_item
+  after_filter :convert_charset, :only => :index
 
   # GET /reserves
   # GET /reserves.json
@@ -22,23 +23,55 @@ class ReservesController < ApplicationController
       end
     end
 
+    search = Reserve.search
+    query = @query = params[:query].to_s.strip
+    if params[:format].to_s.downcase == 'csv'
+      page = 1
+      per_page = 65534
+    else
+      page ||= params[:page] || 1
+      per_page ||= Reserve.default_per_page
+    end
+
     if params[:mode] == 'hold' and current_user.has_role?('Librarian')
-      @reserves = Reserve.hold.order('reserves.id DESC').page(params[:page])
+      search.build do
+        with(:hold).equal_to true
+      end
     else
       if @user
+        user = @user
         if current_user.has_role?('Librarian')
-          @reserves = @user.reserves.order('reserves.id DESC').page(params[:page])
+          search.build do
+            with(:username).equal_to user.username
+          end
         else
           access_denied; return
         end
       else
-        if current_user.has_role?('Librarian')
-          @reserves = Reserve.order('reserves.id DESC').includes(:manifestation).page(params[:page])
-        else
-          @reserves = current_user.reserves.order('reserves.id DESC').includes(:manifestation).page(params[:page])
+        unless current_user.has_role?('Librarian')
+          search.build do
+            with(:username).equal_to current_user.username
+          end
         end
       end
     end
+
+    begin
+      reserved_at = Time.zone.parse(params[:reserved_at])
+      @reserved_at = params[:reserved_at].to_s.strip
+    rescue
+      reserved_at = nil
+    end
+
+    search.build do
+      fulltext query
+      with(:created_at).greater_than_or_equal_to reserved_at if reserved_at
+      with(:created_at).less_than reserved_at.tomorrow.beginning_of_day if reserved_at
+      order_by :created_at, :desc
+      paginate :page => page, :per_page => per_page
+    end
+
+    @reserves = search.execute.results
 
     respond_to do |format|
       format.html # index.html.erb
