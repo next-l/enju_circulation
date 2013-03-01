@@ -177,13 +177,10 @@ class ReservesController < ApplicationController
     end
 
     if params[:mode] == 'cancel'
-      @reserve.sm_cancel!
+      @reserve.sm_cancel
     else
       unless(!@reserve.retained? and @reserve.item_identifier.blank?)
-        begin
-          @reserve.sm_retain!
-        rescue StateMachine::InvalidTransition
-        end
+        @reserve.sm_retain
       end
     end
 

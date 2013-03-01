@@ -32,6 +32,11 @@ class Reserve < ActiveRecord::Base
   validates_date :expired_at, :allow_blank => true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, :on => :create
+  validates :item_id, :presence => true, :if => Proc.new{|reserve|
+    if item_id_changed?
+      true if reserve.completed? or reserve.retained?
+    end
+  }
   before_validation :set_manifestation, :on => :create
   before_validation :set_item
   before_validation :set_expired_at
@@ -259,12 +264,17 @@ class Reserve < ActiveRecord::Base
   def retain_item
     return unless item_id_change
     unless item_id_change.first
-      sm_retain!
+      sm_retain! if item_id_change.last
     end
   end
 
   def completed?
-    ['canceled', 'completed'].include?(state)
+    ['canceled', 'completed', 'expired'].include?(state)
+  end
+
+  def retained?
+    return true if state == 'retained'
+    false
   end
 
   private
