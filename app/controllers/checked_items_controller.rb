@@ -57,11 +57,6 @@ class CheckedItemsController < ApplicationController
     @checked_item.librarian = current_user
 
     flash[:message] = ''
-    item_identifier = @checked_item.item_identifier.to_s.strip
-    unless item_identifier.blank?
-      item = Item.where(:item_identifier => item_identifier).first
-    end
-    @checked_item.item = item if item
 
     respond_to do |format|
       if @checked_item.save

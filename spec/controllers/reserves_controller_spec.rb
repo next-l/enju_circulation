@@ -523,7 +523,7 @@ describe ReservesController do
     before(:each) do
       @reserve = FactoryGirl.create(:reserve)
       @attrs = FactoryGirl.attributes_for(:reserve)
-      @invalid_attrs = {:manifestation_id => ''}
+      @invalid_attrs = {:manifestation_id => 'invalid'}
     end
 
     describe "When logged in as Administrator" do

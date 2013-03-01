@@ -68,10 +68,12 @@ class ReservesController < ApplicationController
       with(:created_at).greater_than_or_equal_to reserved_at if reserved_at
       with(:created_at).less_than reserved_at.tomorrow.beginning_of_day if reserved_at
       order_by :created_at, :desc
-      paginate :page => page, :per_page => per_page
+      facet :state
+      paginate :page => page.to_i, :per_page => per_page
     end
 
     @reserves = search.execute.results
+    @reserves_facet = search.facet(:state).rows
 
     respond_to do |format|
       format.html # index.html.erb
@@ -123,6 +125,7 @@ class ReservesController < ApplicationController
 
   # GET /reserves/1/edit
   def edit
+    @reserve.item_identifier = @reserve.item.try(:item_identifier)
   end
 
   # POST /reserves
@@ -160,7 +163,11 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    @reserve.assign_attributes(params[:reserve])
+    if current_user.has_role?('Librarian')
+      @reserve.assign_attributes(params[:reserve], :as => :admin)
+    else
+      @reserve.assign_attributes(params[:reserve])
+    end
     @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
 
     unless current_user.has_role?('Librarian')
@@ -171,6 +178,13 @@ class ReservesController < ApplicationController
 
     if params[:mode] == 'cancel'
       @reserve.sm_cancel!
+    else
+      unless(!@reserve.retained? and @reserve.item_identifier.blank?)
+        begin
+          @reserve.sm_retain!
+        rescue StateMachine::InvalidTransition
+        end
+      end
     end
 
     respond_to do |format|

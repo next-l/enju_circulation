@@ -22,6 +22,11 @@
 </p>
 
 <p>
+  <strong><%= t('activerecord.attributes.item.item_identifier') -%>:</strong>
+  <%= link_to @reserve.item.item_identifier, @reserve.item if @reserve.item -%>
+</p>
+
+<p>
   <strong><%= t('activerecord.attributes.reserve.created_at') -%>:</strong>
   <%= l(@reserve.created_at) -%>
 </p>

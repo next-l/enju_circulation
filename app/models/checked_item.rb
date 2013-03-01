@@ -9,6 +9,7 @@ class CheckedItem < ActiveRecord::Base
   validates_uniqueness_of :item_id, :scope => :basket_id
   validate :available_for_checkout?, :on => :create
  
+  before_validation :set_item
   before_validation :set_due_date, :on => :create
   normalize_attributes :item_identifier
 
@@ -100,6 +101,14 @@ class CheckedItem < ActiveRecord::Base
       end
     end
     return self.due_date
+  end
+
+  def set_item
+    identifier = item_identifier.to_s.strip
+    if identifier.present?
+      item = Item.where(:item_identifier => identifier).first
+      self.item = item
+    end
   end
 end
 

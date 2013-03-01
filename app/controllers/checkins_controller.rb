@@ -66,11 +66,6 @@ class CheckinsController < ApplicationController
     @checkin.librarian = current_user
 
     flash[:message] = ''
-    item_identifier = @checkin.item_identifier.to_s.strip
-    unless item_identifier.blank?
-      item = Item.where(:item_identifier => item_identifier).first
-    end
-    @checkin.item = item if item
 
     respond_to do |format|
       if @checkin.save
@@ -92,12 +87,6 @@ class CheckinsController < ApplicationController
   # PUT /checkins/1
   # PUT /checkins/1.json
   def update
-    #@checkin = Checkin.find(params[:id])
-    @checkin.item_identifier = params[:checkin][:item_identifier] rescue nil
-    unless @checkin.item_identifier.blank?
-      item = Item.where(:item_identifier => @checkin.item_identifier.to_s.strip).first
-    end
-    @checkin.item = item
     @checkin.assign_attributes(params[:checkin])
     @checkin.librarian = current_user
 

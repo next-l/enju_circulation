@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
-  attr_accessible :manifestation_id, :item_identifier, :user_number, :expired_at
+  attr_accessible :manifestation_id, :user_number, :expired_at
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library,
@@ -99,8 +99,10 @@ class Reserve < ActiveRecord::Base
   end
 
   def set_item
-    if item_identifier
-      self.item = Item.where(:item_identifier => item_identifier).first
+    identifier = item_identifier.to_s.strip
+    if identifier.present?
+      item = Item.where(:item_identifier => identifier).first
+      self.item = item
     end
   end
 
@@ -259,6 +261,10 @@ class Reserve < ActiveRecord::Base
     unless item_id_change.first
       sm_retain!
     end
+  end
+
+  def completed?
+    ['canceled', 'completed'].include?(state)
   end
 
   private

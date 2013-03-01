@@ -343,8 +343,8 @@ describe CheckinsController do
 
         it "should not update checkin without item_identifier" do
           put :update, :id => @checkin.id, :checkin => @attrs.merge(:item_identifier => nil)
-          assigns(:checkin).should_not be_valid
-          response.should be_success
+          assigns(:checkin).should be_valid
+          response.should redirect_to(@checkin)
         end
       end
 

@@ -10,12 +10,17 @@ class Checkin < ActiveRecord::Base
   validates_uniqueness_of :item_id, :scope => :basket_id
   validates_presence_of :item_id, :basket_id
   validate :available_for_checkin?, :on => :create
+  before_validation :set_item
 
   attr_accessor :item_identifier
 
   paginates_per 10
 
   def available_for_checkin?
+    unless basket
+      return nil
+    end
+
     if item.blank?
       errors[:base] << I18n.t('checkin.item_not_found')
       return
@@ -67,6 +72,14 @@ class Checkin < ActiveRecord::Base
       message
     else
       nil
+    end
+  end
+
+  def set_item
+    identifier = item_identifier.to_s.strip
+    if identifier.present?
+      item = Item.where(:item_identifier => identifier).first
+      self.item = item
     end
   end
 end

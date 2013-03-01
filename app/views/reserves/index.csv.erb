@@ -1,4 +1,4 @@
-title,isbn,item_identifier,call_number,username,created_at
+manifestation_id,title,isbn,item_identifier,call_number,username,created_at,expired_at
 <%- @reserves.each do |reserve| -%>
-"<%=h reserve.manifestation.original_title.gsub(/"/, '""') -%>",<%=h reserve.manifestation.isbn %>,<%=h reserve.item.try(:item_identifier) -%>,<%=h reserve.item.try(:call_number) -%>,<%= reserve.user.try(:username) %>,<%=h reserve.item.try(:created_at) %><%= "\n" -%>
+<%= manifestation.id %>,"<%= reserve.manifestation.original_title.gsub(/"/, '""') -%>",<%= reserve.manifestation.isbn %>,<%= reserve.item.try(:item_identifier) -%>,<%= reserve.item.try(:call_number) -%>,<%= reserve.user.try(:username) %>,<%= reserve.created_at %>,<%= reserve.expired_at %><%= "\n" -%>
 <%- end -%>
