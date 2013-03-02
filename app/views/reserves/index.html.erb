@@ -33,7 +33,7 @@
       <%= t('activerecord.models.user') -%>: <%= link_to reserve.user.username, reserve.user -%>
       <%= t('activerecord.attributes.reserve.created_at') %>: <%= l(reserve.created_at, :format => :short) -%>
       <br />
-      <%= t('activerecord.attributes.reserve.expire_at') %>: <%= l(reserve.expired_at, :format => :short) -%>
+      <%= t('activerecord.attributes.reserve.expired_at') %>: <%= l(reserve.expired_at, :format => :short) -%>
     </td>
     <td>
       <%= i18n_state(reserve.state) -%>
