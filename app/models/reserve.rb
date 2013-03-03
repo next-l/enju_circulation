@@ -34,10 +34,17 @@ class Reserve < ActiveRecord::Base
   validate :manifestation_must_include_item
   validate :available_for_reservation?, :on => :create
   validates :item_id, :presence => true, :if => Proc.new{|reserve|
-    return false unless reserve.state_changed?
     if item_id_changed?
       if reserve.completed? or reserve.retained?
-        return true
+        unless item_id_change[0]
+          return false
+        else
+          unless item_id_change[1]
+            return false
+          else
+            return true
+          end
+        end
       end
     else
       if reserve.retained?
@@ -325,15 +332,17 @@ class Reserve < ActiveRecord::Base
   end
 
   def cancel
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, :as => :admin)
-    save!
-    reserve = next_reservation
-    reserved_item = item
-    self.update_column(:item_id, nil)
-    if reserve
-      reserve.item = reserved_item
-      reserve.sm_retain!
-      reserve.send_message
+    Reserve.transaction do
+      self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, :as => :admin)
+      reserve = next_reservation
+      send_message
+      if reserve
+        reserve.item = item
+        self.item = nil
+        save!
+        reserve.sm_retain!
+        reserve.send_message
+      end
     end
   end
 

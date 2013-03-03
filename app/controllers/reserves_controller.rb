@@ -187,19 +187,18 @@ class ReservesController < ApplicationController
       end
     end
 
-    if params[:mode] == 'cancel'
-      @reserve.sm_cancel!
-    else
-      unless(!@reserve.retained? and @reserve.item_identifier.blank?)
-        @reserve.sm_retain!
-      end
-    end
-
     respond_to do |format|
       if @reserve.save
+        if params[:mode] == 'cancel'
+          @reserve.sm_cancel!
+        else
+          unless @reserve.retained?
+            @reserve.sm_retain! if @reserve.item
+          end
+        end
+
         if @reserve.state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
-          @reserve.send_message
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
         end
