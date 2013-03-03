@@ -34,7 +34,11 @@
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <% if @reserve.retained? %>
+      <%= f.submit :confirm => "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}" %>
+    <% else %>
+      <%= f.submit %>
+    <% end %>
   </div>
 <%- end -%>
 

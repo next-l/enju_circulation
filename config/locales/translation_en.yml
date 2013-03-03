@@ -175,6 +175,6 @@ en:
     completed: "Completed"
     reserved_from: "From"
     reserved_to: "To"
-    item_is_retained_by_user: "This item (Item identifier %{item_identifier}) is retained for user %{username}."
+    attempt_to_update_retained_reservation: "You are attemping to update a retained reservation."
   page:
     saving: "Saving..."
