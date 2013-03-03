@@ -361,7 +361,6 @@ class Reserve < ActiveRecord::Base
 
   def manifestation_must_include_item
     unless item_id.blank?
-      item = Item.where(:id => item_id).first
       errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
     end
   end
