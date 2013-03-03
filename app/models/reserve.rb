@@ -4,7 +4,7 @@ class Reserve < ActiveRecord::Base
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-    :retained_at,
+    :retained_at, :force_retaining,
     :as => :admin
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
@@ -59,12 +59,13 @@ class Reserve < ActiveRecord::Base
       return true if reserve.completed? or reserve.retained?
     }
   validate :valid_item?
+  validate :retained_by_other_user?
   before_validation :set_manifestation, :on => :create
   before_validation :set_item
   before_validation :set_expired_at
   before_validation :set_request_status, :on => :create
 
-  attr_accessor :user_number, :item_identifier
+  attr_accessor :user_number, :item_identifier, :force_retaining
 
   state_machine :initial => :pending do
     before_transition [:pending, :retained] => :requested, :do => :do_request
@@ -145,6 +146,14 @@ class Reserve < ActiveRecord::Base
     if item_identifier.present?
       item = Item.where(:item_identifier => item_identifier).first
       errors[:base] << I18n.t('reserve.invalid_item') unless item
+    end
+  end
+
+  def retained_by_other_user?
+    if item
+      if Reserve.retained.where(:item_id => item.item_identifier).first
+        errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
+      end
     end
   end
 
