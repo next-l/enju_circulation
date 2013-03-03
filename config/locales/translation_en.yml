@@ -173,5 +173,7 @@ en:
     canceled: "Canceled"
     expired: "Expired"
     completed: "Completed"
+    reserved_from: "From"
+    reserved_to: "To"
   page:
     saving: "Saving..."
