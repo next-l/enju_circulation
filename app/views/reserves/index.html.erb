@@ -80,6 +80,9 @@
       <li><%= link_to t('page.listing', :model => t('activerecord.models.checkout')), user_checkouts_path(@user) -%></li>
     <%- end -%>
   </ul>
+
+  <%= render 'state_facet' %>
+
   <p>
     <%- if @user -%>
       <%= link_to (image_tag 'icons/feed.png', :size => '16x16', :alt => t('page.feed'), :class => 'icon'), user_reserves_path(@user, :format => :rss) -%>
