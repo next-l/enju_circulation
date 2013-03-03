@@ -57,6 +57,7 @@ class Reserve < ActiveRecord::Base
       return false unless reserve.state_changed?
       return true if reserve.completed? or reserve.retained?
     }
+  validate :valid_item?
   before_validation :set_manifestation, :on => :create
   before_validation :set_item
   before_validation :set_expired_at
@@ -136,6 +137,13 @@ class Reserve < ActiveRecord::Base
     if identifier.present?
       item = Item.where(:item_identifier => identifier).first
       self.item = item
+    end
+  end
+
+  def valid_item?
+    if item_identifier.present?
+      item = Item.where(:item_identifier => item_identifier).first
+      errors[:base] << I18n.t('reserve.invalid_item') unless item
     end
   end
 
@@ -353,7 +361,7 @@ class Reserve < ActiveRecord::Base
 
   def manifestation_must_include_item
     unless item_id.blank?
-      item = Item.find(item_id) rescue nil
+      item = Item.where(:id => item_id).first
       errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
     end
   end

@@ -76,6 +76,13 @@ describe Reserve do
     old_reservation.reload
     assert old_reservation.item.should be_nil
   end
+
+  it "should not be valid if item_identifier is invalid" do
+    reservation = reserves(:reserve_00014)
+    reservation.item_identifier = 'invalid'
+    reservation.save
+    assert reservation.valid?.should eq false
+  end
 end
 
 # == Schema Information

@@ -563,6 +563,12 @@ describe ReservesController do
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
+
+      it "should not update retained reservations if item_identifier is invalid" do
+        put :update, :id => 14, :reserve => {:item_identifier => 'invalid'}
+        assigns(:reserve).should_not be_valid
+        response.should be_success
+      end
     end
 
     describe "When logged in as Librarian" do
