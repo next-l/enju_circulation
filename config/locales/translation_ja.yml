@@ -173,5 +173,6 @@ ja:
     completed: "貸出済み"
     reserved_from: "この日から"
     reserved_to: "この日まで"
+    item_is_retained_by_user: "この資料（個別資料ID %{item_identifier}） は利用>者 %{username} さんのために取り置きされています。"
   page:
     saving: "保存中..."
