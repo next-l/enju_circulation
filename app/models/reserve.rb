@@ -3,7 +3,7 @@ class Reserve < ActiveRecord::Base
   attr_accessible :manifestation_id, :user_number, :expired_at
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
-    :expiration_notice_to_patron, :expiration_notice_to_library,
+    :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
     :as => :admin
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
@@ -34,15 +34,21 @@ class Reserve < ActiveRecord::Base
   validate :manifestation_must_include_item
   validate :available_for_reservation?, :on => :create
   validates :item_id, :presence => true, :if => Proc.new{|reserve|
+    return false unless reserve.state_changed?
     if item_id_changed?
       if reserve.completed? or reserve.retained?
+        return true
+      end
+    else
+      if reserve.retained?
         return true
       end
     end
   }
   validates :item_id, :uniqueness => {:scope => :state, :allow_blank => true},
     :if => Proc.new{|reserve|
-      return true if reserve.retained?
+      return false unless reserve.state_changed?
+      return true if reserve.completed? or reserve.retained?
     }
   before_validation :set_manifestation, :on => :create
   before_validation :set_item
@@ -52,7 +58,7 @@ class Reserve < ActiveRecord::Base
   attr_accessor :user_number, :item_identifier
 
   state_machine :initial => :pending do
-    before_transition :pending => :requested, :do => :do_request
+    before_transition [:pending, :retained] => :requested, :do => :do_request
     before_transition [:pending, :requested, :retained] => :retained, :do => :retain
     before_transition [:pending ,:requested, :retained] => :canceled, :do => :cancel
     before_transition [:pending, :requested, :retained] => :expired, :do => :expire
@@ -63,8 +69,13 @@ class Reserve < ActiveRecord::Base
       end
     end
 
+    after_transition :any => :retained do |reserve|
+      reserve.item.next_reservation.item = nil
+      reserve.item.next_reservation.sm_request!
+    end
+
     event :sm_request do
-      transition :pending => :requested
+      transition [:pending, :requested, :retained] => :requested
     end
 
     event :sm_retain do
@@ -271,13 +282,6 @@ class Reserve < ActiveRecord::Base
     end
   end
 
-  def retain_item
-    return unless item_id_change
-    unless item_id_change.first
-      sm_retain! if item_id_change.last
-    end
-  end
-
   def completed?
     ['canceled', 'expired', 'completed'].include?(state)
   end
@@ -289,30 +293,35 @@ class Reserve < ActiveRecord::Base
 
   private
   def do_request
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first}, :as => :admin)
+    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil}, :as => :admin)
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :checked_out_at => Time.zone.now}, :as => :admin)
-    save!
+    Reserve.transaction do
+      if item.next_reservation
+        reservation = item.next_reservation
+        reservation.sm_request!
+      end
+      save!
+    end
   end
 
   def expire
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now}, :as => :admin)
-    save!
-    reserve = next_reservation
-    reserved_item = item
-    self.update_column(:item_id, nil)
-    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
-    if reserve
-      Reserve.transaction do
-        reserve.item = reserved_item
+    Reserve.transaction do
+      self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now}, :as => :admin)
+      reserve = next_reservation
+      if reserve
+        reserve.item = item
+        self.item = nil
+        save!
         reserve.sm_retain!
+        reserve.send_message
       end
-      reserve.send_message
     end
+    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
   end
 
   def cancel

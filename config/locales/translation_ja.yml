@@ -41,6 +41,7 @@ ja:
         expired_at: 有効期限（この日以降は不要）
         deleted_at: 削除時刻
         created_at: 予約日時
+        retaind_at: 確保日時
         state: 状態
       checkout_type:
         name: 名前

@@ -135,6 +135,10 @@ module EnjuCirculation
           create_lending_policy
         end
       end
+
+      def next_reservation
+        Reserve.waiting.where(:item_id => id).first
+      end
     end
   end
 end

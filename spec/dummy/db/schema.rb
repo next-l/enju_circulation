@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303104849) do
+ActiveRecord::Schema.define(:version => 20130303124821) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -713,6 +713,7 @@ ActiveRecord::Schema.define(:version => 20130303104849) do
     t.string   "state"
     t.boolean  "expiration_notice_to_patron",  :default => false
     t.boolean  "expiration_notice_to_library", :default => false
+    t.datetime "retained_at"
   end
 
   add_index "reserves", ["item_id"], :name => "index_reserves_on_item_id"

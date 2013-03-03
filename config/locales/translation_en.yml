@@ -43,6 +43,7 @@ en:
         expired_at: Expired at
         deleted_at: Deleted at
         created_at: Reserved at
+        retaind_at: Retained at
         state: State
       checkout_type:
         name: Name

@@ -32,6 +32,11 @@
 </p>
 
 <p>
+  <strong><%= t('activerecord.attributes.reserve.retained_at') -%>:</strong>
+  <%= l(@reserve.retained_at) if @reserve.retained_at -%>
+</p>
+
+<p>
   <strong><%= t('activerecord.attributes.reserve.canceled_at') -%>:</strong>
   <%= l(@reserve.canceled_at) if @reserve.canceled_at -%>
 </p>

@@ -67,6 +67,15 @@ describe Reserve do
   it "should send accepted notification" do
     assert Reserve.expire.should be_true
   end
+
+  it "should nullify the first reservation's item_id if the second reservation is retained" do
+    reservation = reserves(:reserve_00015)
+    old_reservation = reserves(:reserve_00014)
+    reservation.item = old_reservation.item
+    reservation.sm_retain!
+    old_reservation.reload
+    assert old_reservation.item.should be_nil
+  end
 end
 
 # == Schema Information
