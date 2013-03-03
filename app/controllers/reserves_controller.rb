@@ -70,6 +70,10 @@ class ReservesController < ApplicationController
       reserved_to = nil
     end
 
+    if params[:state].present?
+      state = params[:state].downcase
+    end
+
     search.build do
       fulltext query
       if reserved_from
@@ -79,6 +83,7 @@ class ReservesController < ApplicationController
         with(:created_at).less_than reserved_to.tomorrow.beginning_of_day
       end
       order_by :created_at, :desc
+      with(:state).equal_to state if state
       facet :state
       paginate :page => page.to_i, :per_page => per_page
     end
