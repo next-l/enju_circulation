@@ -11,9 +11,10 @@ describe Reserve do
   it "should notify a next reservation" do
     old_count = Message.count
     reserve = reserves(:reserve_00014)
+    item = reserve.next_reservation.item
     reserve.sm_expire!
     reserve.state.should eq 'expired'
-    reserve.next_reservation.item.should eq reserve.item
+    item.should eq reserve.item
     Message.count.should eq old_count + 2
   end
 

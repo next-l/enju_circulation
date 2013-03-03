@@ -57,16 +57,27 @@ class ReservesController < ApplicationController
     end
 
     begin
-      reserved_at = Time.zone.parse(params[:reserved_at])
-      @reserved_at = params[:reserved_at].to_s.strip
+      reserved_from = Time.zone.parse(params[:reserved_from])
+      @reserved_from = params[:reserved_from].to_s.strip
     rescue
-      reserved_at = nil
+      reserved_from = nil
+    end
+
+    begin
+      reserved_to = Time.zone.parse(params[:reserved_to])
+      @reserved_to = params[:reserved_to].to_s.strip
+    rescue
+      reserved_to = nil
     end
 
     search.build do
       fulltext query
-      with(:created_at).greater_than_or_equal_to reserved_at if reserved_at
-      with(:created_at).less_than reserved_at.tomorrow.beginning_of_day if reserved_at
+      if reserved_from
+        with(:created_at).greater_than_or_equal_to reserved_from.beginning_of_day
+      end
+      if reserved_to
+        with(:created_at).less_than reserved_to.tomorrow.beginning_of_day
+      end
       order_by :created_at, :desc
       facet :state
       paginate :page => page.to_i, :per_page => per_page
@@ -177,10 +188,10 @@ class ReservesController < ApplicationController
     end
 
     if params[:mode] == 'cancel'
-      @reserve.sm_cancel
+      @reserve.sm_cancel!
     else
       unless(!@reserve.retained? and @reserve.item_identifier.blank?)
-        @reserve.sm_retain
+        @reserve.sm_retain!
       end
     end
 

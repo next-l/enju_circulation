@@ -8,6 +8,7 @@ class Reserve < ActiveRecord::Base
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
   scope :waiting, where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')
+  scope :retained, where(:state => 'retained')
   scope :completed, where('checked_out_at IS NOT NULL')
   scope :canceled, where('canceled_at IS NOT NULL')
   scope :will_expire_retained, lambda {|datetime| {:conditions => ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained'], :order => 'expired_at'}}
@@ -34,9 +35,15 @@ class Reserve < ActiveRecord::Base
   validate :available_for_reservation?, :on => :create
   validates :item_id, :presence => true, :if => Proc.new{|reserve|
     if item_id_changed?
-      true if reserve.completed? or reserve.retained?
+      if reserve.completed? or reserve.retained?
+        return true
+      end
     end
   }
+  validates :item_id, :uniqueness => {:scope => :state, :allow_blank => true},
+    :if => Proc.new{|reserve|
+      return true if reserve.retained?
+    }
   before_validation :set_manifestation, :on => :create
   before_validation :set_item
   before_validation :set_expired_at
@@ -80,6 +87,9 @@ class Reserve < ActiveRecord::Base
   paginates_per 10
 
   searchable do
+    text :username do
+      user.try(:username)
+    end
     string :username do
       user.try(:username)
     end
@@ -88,7 +98,7 @@ class Reserve < ActiveRecord::Base
     end
     time :created_at
     text :item_identifier do
-      item.try(:item_identifier)
+      manifestation.items.pluck(:item_identifier)
     end
     text :title do
       manifestation.try(:titles)
@@ -269,7 +279,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def completed?
-    ['canceled', 'completed', 'expired'].include?(state)
+    ['canceled', 'expired', 'completed'].include?(state)
   end
 
   def retained?
@@ -292,11 +302,15 @@ class Reserve < ActiveRecord::Base
   def expire
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now}, :as => :admin)
     save!
-    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
     reserve = next_reservation
+    reserved_item = item
+    self.update_column(:item_id, nil)
+    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
     if reserve
-      reserve.item = item
-      reserve.sm_retain!
+      Reserve.transaction do
+        reserve.item = reserved_item
+        reserve.sm_retain!
+      end
       reserve.send_message
     end
   end
@@ -305,8 +319,10 @@ class Reserve < ActiveRecord::Base
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, :as => :admin)
     save!
     reserve = next_reservation
+    reserved_item = item
+    self.update_column(:item_id, nil)
     if reserve
-      reserve.item = item
+      reserve.item = reserved_item
       reserve.sm_retain!
       reserve.send_message
     end

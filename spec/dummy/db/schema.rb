@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119153944) do
+ActiveRecord::Schema.define(:version => 20130303104849) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -718,6 +718,7 @@ ActiveRecord::Schema.define(:version => 20121119153944) do
   add_index "reserves", ["item_id"], :name => "index_reserves_on_item_id"
   add_index "reserves", ["manifestation_id"], :name => "index_reserves_on_manifestation_id"
   add_index "reserves", ["request_status_type_id"], :name => "index_reserves_on_request_status_type_id"
+  add_index "reserves", ["state"], :name => "index_reserves_on_state"
   add_index "reserves", ["user_id"], :name => "index_reserves_on_user_id"
 
   create_table "roles", :force => true do |t|
