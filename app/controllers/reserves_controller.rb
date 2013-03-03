@@ -197,7 +197,9 @@ class ReservesController < ApplicationController
         @reserve.sm_cancel!
       else
         unless @reserve.retained?
-          @reserve.sm_retain! if @reserve.item
+          if @reserve.item and @reserve.force_retaining
+            @reserve.sm_retain!
+          end
         end
       end
     end
