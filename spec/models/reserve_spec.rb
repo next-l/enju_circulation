@@ -75,6 +75,8 @@ describe Reserve do
     reservation.sm_retain!
     old_reservation.reload
     assert old_reservation.item.should be_nil
+    assert reservation.retained_at.should be_true
+    assert old_reservation.retained_at.should be_nil
   end
 
   it "should not be valid if item_identifier is invalid" do

@@ -4,6 +4,7 @@ class Reserve < ActiveRecord::Base
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+    :retained_at,
     :as => :admin
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
@@ -308,13 +309,13 @@ class Reserve < ActiveRecord::Base
 
   private
   def do_request
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil}, :as => :admin)
+    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil, :retained_at => nil}, :as => :admin)
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :checked_out_at => Time.zone.now}, :as => :admin)
+    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :retained_at => Time.zone.now}, :as => :admin)
     Reserve.transaction do
       if item.try(:next_reservation)
         reservation = item.next_reservation
