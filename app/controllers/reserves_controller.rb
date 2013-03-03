@@ -84,7 +84,7 @@ class ReservesController < ApplicationController
     end
 
     @reserves = search.execute.results
-    @reserves_facet = search.facet(:state).rows
+    @state_facet = search.facet(:state).rows
 
     respond_to do |format|
       format.html # index.html.erb
