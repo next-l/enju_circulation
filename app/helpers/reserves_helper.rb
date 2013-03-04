@@ -12,6 +12,8 @@ module ReservesHelper
       t('reserve.canceled')
     when 'expired'
       t('reserve.expired')
+    when 'postponed'
+      t('reserve.postponed')
     when 'completed'
       t('reserve.completed')
     end
