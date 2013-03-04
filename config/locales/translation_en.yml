@@ -43,7 +43,7 @@ en:
         expired_at: Expired at
         deleted_at: Deleted at
         created_at: Reserved at
-        retaind_at: Retained at
+        retained_at: Retained at
         postponed_at: Postponed at
         state: State
         force_retaining: Force retaining
