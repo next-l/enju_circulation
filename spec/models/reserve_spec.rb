@@ -71,12 +71,17 @@ describe Reserve do
   it "should nullify the first reservation's item_id if the second reservation is retained" do
     reservation = reserves(:reserve_00015)
     old_reservation = reserves(:reserve_00014)
+    old_count = MessageRequest.count
+
     reservation.item = old_reservation.item
     reservation.sm_retain!
     old_reservation.reload
     assert old_reservation.item.should be_nil
     assert reservation.retained_at.should be_true
     assert old_reservation.retained_at.should be_nil
+    assert old_reservation.postponed_at.should be_true
+    assert old_reservation.state.should eq 'postponed'
+    assert MessageRequest.count.should eq old_count + 4
   end
 
   it "should not be valid if item_identifier is invalid" do

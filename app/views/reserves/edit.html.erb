@@ -33,6 +33,13 @@
     <%= f.text_field :expired_at, :value => @reserve.expired_at.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
   </div>
 
+  <% unless @reserve.errors[:force_retaining].empty? %>
+    <div class="field">
+      <%= f.label :force_retaining %><br />
+      <%= f.check_box :force_retaining %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <% if @reserve.retained? %>
       <%= f.submit :confirm => "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}" %>

@@ -40,9 +40,11 @@ ja:
         canceled_at: 取消時刻
         expired_at: 有効期限（この日以降は不要）
         deleted_at: 削除時刻
-        created_at: 予約日時
-        retaind_at: 確保日時
+        created_at: 予約時刻
+        retained_at: 確保時刻
+        postponed_at: 取置取消時刻
         state: 状態
+        force_retaining: 強制的に取り置きを行う
       checkout_type:
         name: 名前
         display_name: 表示名

@@ -148,7 +148,7 @@ class ReservesController < ApplicationController
   # POST /reserves.json
   def create
     @reserve = Reserve.new(params[:reserve])
-    @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
+    @reserve.set_user
 
     if current_user.has_role?('Librarian')
       unless @reserve.user
@@ -165,7 +165,6 @@ class ReservesController < ApplicationController
     respond_to do |format|
       if @reserve.save
         @reserve.sm_request!
-        @reserve.send_message
 
         format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }
         format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
@@ -182,14 +181,10 @@ class ReservesController < ApplicationController
     if current_user.has_role?('Librarian')
       @reserve.assign_attributes(params[:reserve], :as => :admin)
     else
-      @reserve.assign_attributes(params[:reserve])
-    end
-    @reserve.user = User.where(:user_number => @reserve.user_number).first if @reserve.user_number.to_s.strip.present?
-
-    unless current_user.has_role?('Librarian')
       if @reserve.user != current_user
         access_denied; return
       end
+      @reserve.assign_attributes(params[:reserve], :as => :user_update)
     end
 
     if @reserve.valid?
@@ -197,7 +192,7 @@ class ReservesController < ApplicationController
         @reserve.sm_cancel!
       else
         unless @reserve.retained?
-          if @reserve.item and @reserve.force_retaining
+          if @reserve.item and @reserve.force_retaining == '1'
             @reserve.sm_retain!
           end
         end

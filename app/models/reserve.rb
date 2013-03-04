@@ -1,17 +1,19 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
   attr_accessible :manifestation_id, :user_number, :expired_at
+  attr_accessible :expired_at, :as => :user_update
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-    :retained_at, :force_retaining,
+    :retained_at, :postponed_at, :force_retaining,
     :as => :admin
   scope :hold, where('item_id IS NOT NULL')
   scope :not_hold, where(:item_id => nil)
   scope :waiting, where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')
-  scope :retained, where(:state => 'retained')
-  scope :completed, where('checked_out_at IS NOT NULL')
-  scope :canceled, where('canceled_at IS NOT NULL')
+  scope :retained, where('retained_at IS NOT NULL AND state = ?', 'retained')
+  scope :completed, where('checked_out_at IS NOT NULL AND state = ?', 'completed')
+  scope :canceled, where('canceled_at IS NOT NULL AND state = ?', 'canceled')
+  scope :postponed, where('postponed_at IS NOT NULL AND state = ?', 'postponed')
   scope :will_expire_retained, lambda {|datetime| {:conditions => ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained'], :order => 'expired_at'}}
   scope :will_expire_pending, lambda {|datetime| {:conditions => ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'pending'], :order => 'expired_at'}}
   scope :created, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
@@ -61,17 +63,18 @@ class Reserve < ActiveRecord::Base
   validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, :on => :create
-  before_validation :set_item
-  before_validation :set_expired_at
+  before_validation :set_item, :set_expired_at
+  before_validation :set_user, :on => :update
   before_validation :set_request_status, :on => :create
 
   attr_accessor :user_number, :item_identifier, :force_retaining
 
   state_machine :initial => :pending do
-    before_transition [:pending, :retained] => :requested, :do => :do_request
-    before_transition [:pending, :requested, :retained] => :retained, :do => :retain
-    before_transition [:pending ,:requested, :retained] => :canceled, :do => :cancel
-    before_transition [:pending, :requested, :retained] => :expired, :do => :expire
+    before_transition :pending => :requested, :do => :do_request
+    before_transition :retained => :postponed, :do => :postpone
+    before_transition [:pending, :requested, :retained, :postponed] => :retained, :do => :retain
+    before_transition [:pending ,:requested, :retained, :postponed] => :canceled, :do => :cancel
+    before_transition [:pending, :requested, :retained, :postponed] => :expired, :do => :expire
     before_transition :retained => :completed, :do => :checkout
     after_transition any => any do |reserve, transition|
       if Rails.env == 'production'
@@ -79,9 +82,8 @@ class Reserve < ActiveRecord::Base
       end
     end
 
-    after_transition :any => :retained do |reserve|
-      reserve.item.next_reservation.item = nil
-      reserve.item.next_reservation.sm_request!
+    after_transition any => [:requested, :canceled, :retained, :postponed] do |reserve, transition|
+      reserve.send_message
     end
 
     event :sm_request do
@@ -98,6 +100,10 @@ class Reserve < ActiveRecord::Base
 
     event :sm_expire do
       transition [:pending, :requested, :retained] => :expired
+    end
+
+    event :sm_postpone do
+      transition :retained => :postponed
     end
 
     event :sm_complete do
@@ -142,6 +148,14 @@ class Reserve < ActiveRecord::Base
     end
   end
 
+  def set_user
+    number = user_number.to_s.strip
+    if number.present?
+      user = User.where(:user_number => number).first
+      self.user = user
+    end
+  end
+
   def valid_item?
     if item_identifier.present?
       item = Item.where(:item_identifier => item_identifier).first
@@ -150,6 +164,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def retained_by_other_user?
+    return nil if force_retaining == '1'
     if item
       if Reserve.retained.where(:item_id => item.item_identifier).first
         errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
@@ -228,6 +243,17 @@ class Reserve < ActiveRecord::Base
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
+        request.sm_send_message!
+      when 'postponed'
+        message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.locale)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_for_patron}, :as => :admin)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
+        request.sm_send_message!
+        message_template_for_library = MessageTemplate.localized_template('reservation_postponed_for_library', user.locale)
+        request = MessageRequest.new
+        request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library}, :as => :admin)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message!
       else
         raise 'status not defined'
@@ -328,7 +354,7 @@ class Reserve < ActiveRecord::Base
     Reserve.transaction do
       if item.try(:next_reservation)
         reservation = item.next_reservation
-        reservation.sm_request!
+        reservation.sm_postpone!
       end
       save!
     end
@@ -343,7 +369,6 @@ class Reserve < ActiveRecord::Base
         self.item = nil
         save!
         reserve.sm_retain!
-        reserve.send_message
       end
     end
     logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
@@ -352,20 +377,29 @@ class Reserve < ActiveRecord::Base
   def cancel
     Reserve.transaction do
       self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, :as => :admin)
+      save!
       reserve = next_reservation
-      send_message
       if reserve
         reserve.item = item
         self.item = nil
         save!
         reserve.sm_retain!
-        reserve.send_message
       end
     end
   end
 
   def checkout
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now}, :as => :admin)
+    save!
+  end
+
+  def postpone
+    self.assign_attributes({
+      :request_status_type => RequestStatusType.where(:name => 'In Process').first,
+      :item_id => nil,
+      :retained_at => nil,
+      :postponed_at => Time.zone.now
+    }, :as => :admin)
     save!
   end
 
