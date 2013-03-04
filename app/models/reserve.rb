@@ -24,14 +24,15 @@ class Reserve < ActiveRecord::Base
   scope :not_sent_cancel_notice_to_patron, where(:state => 'canceled', :expiration_notice_to_patron => false)
   scope :not_sent_cancel_notice_to_library, where(:state => 'canceled', :expiration_notice_to_library => false)
 
-  belongs_to :user, :validate => true
-  belongs_to :manifestation, :validate => true
-  belongs_to :librarian, :class_name => 'User', :validate => true
-  belongs_to :item, :validate => true
+  belongs_to :user #, :validate => true
+  belongs_to :manifestation #, :validate => true
+  belongs_to :librarian, :class_name => 'User' #, :validate => true
+  belongs_to :item #, :validate => true
   belongs_to :request_status_type
 
-  validates_associated :user, :librarian, :item, :request_status_type, :manifestation
-  validates_presence_of :user, :manifestation, :request_status_type #, :expired_at
+  validates_associated :user, :librarian, :request_status_type
+  validates :manifestation, :associated => true #, :on => :create
+  validates_presence_of :user, :manifestation, :request_status_type
   #validates_uniqueness_of :manifestation_id, :scope => :user_id
   validates_date :expired_at, :allow_blank => true
   validate :manifestation_must_include_item

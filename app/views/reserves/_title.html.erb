@@ -1,5 +1,6 @@
-<strong><%= link_to title_with_volume_number(reserve.manifestation), reserve -%></strong>
-(<%= link_to t('reserve.bibliographic_detail'), reserve.manifestation %>)
+<% if reserve.manifestation %>
+  <strong><%= link_to title_with_volume_number(reserve.manifestation), reserve -%></strong>
+  (<%= link_to t('reserve.bibliographic_detail'), reserve.manifestation %>)
     <br />
     <%- if reserve.manifestation.creators.readable_by(current_user).exists? -%>
       <%= t('patron.creator') -%>: <%= patrons_list(reserve.manifestation.creators.readable_by(current_user)) -%>
@@ -18,3 +19,4 @@
       <%= link_to reserve.manifestation.access_address, reserve.manifestation.access_address -%>
       <%= link_to image_tag('icons/world_go.png', :size => '16x16', :alt => 'Web'), reserve.manifestation.access_address -%>
     <%- end -%>
+<% end %>

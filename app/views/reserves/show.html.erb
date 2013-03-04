@@ -3,11 +3,11 @@
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 
-<%= render 'manifestations/title', :manifestation => @reserve.manifestation -%>
+<%= render 'manifestations/title', :manifestation => @reserve.manifestation if @reserve.manifestation -%>
 
 <p>
   <strong><%= t('activerecord.models.manifestation') -%>:</strong>
-  <%= link_to @reserve.manifestation.original_title, @reserve.manifestation -%>
+  <%= link_to @reserve.manifestation.original_title, @reserve.manifestation if @reserve.manifestation -%>
 </p>
 
 <p>
@@ -60,7 +60,7 @@
 </div>
 
 <div id="submenu" class="ui-corner-all">
-  <%= render 'manifestations/book_jacket', :manifestation => @reserve.manifestation -%>
+  <%= render 'manifestations/book_jacket', :manifestation => @reserve.manifestation if @reserve.manifestation -%>
   <ul>
     <li><%= link_to t('page.edit'), edit_reserve_path(@reserve) -%></li>
     <%- if @reserve.user.reserves.waiting.include?(@reserve) -%>
