@@ -617,6 +617,19 @@ ActiveRecord::Schema.define(:version => 20130304015019) do
   add_index "patrons", ["required_role_id"], :name => "index_patrons_on_required_role_id"
   add_index "patrons", ["user_id"], :name => "index_patrons_on_user_id", :unique => true
 
+  create_table "picture_files", :force => true do |t|
+    t.integer  "picture_attachable_id"
+    t.string   "picture_attachable_type"
+    t.string   "content_type"
+    t.text     "title"
+    t.string   "thumbnail"
+    t.integer  "position"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "picture_files", ["picture_attachable_id", "picture_attachable_type"], :name => "index_picture_files_on_picture_attachable_id_and_type"
+
   create_table "produce_types", :force => true do |t|
     t.string   "name"
     t.text     "display_name"

@@ -32,7 +32,10 @@ class Reserve < ActiveRecord::Base
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, :associated => true #, :on => :create
-  validates_presence_of :user, :manifestation, :request_status_type
+  validates_presence_of :user, :request_status_type
+  validates :manifestation, :presence => true, :unless => Proc.new{|reserve|
+    reserve.completed?
+  }
   #validates_uniqueness_of :manifestation_id, :scope => :user_id
   validates_date :expired_at, :allow_blank => true
   validate :manifestation_must_include_item
@@ -183,8 +186,10 @@ class Reserve < ActiveRecord::Base
         if self.expired_at.blank?
           expired_period = self.manifestation.reservation_expired_period(self.user)
           self.expired_at = (expired_period + 1).days.from_now.beginning_of_day
-        elsif self.expired_at.beginning_of_day < Time.zone.now
-          errors[:base] << I18n.t('reserve.invalid_date')
+        elsif !completed?
+          if self.expired_at.beginning_of_day < Time.zone.now
+            errors[:base] << I18n.t('reserve.invalid_date')
+          end
         end
       end
     end
@@ -405,7 +410,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def manifestation_must_include_item
-    unless item_id.blank?
+    if item_id.present? and !completed?
       errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
     end
   end

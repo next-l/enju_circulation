@@ -145,6 +145,12 @@ exemplify_00024:
   manifestation_id: 3
   id: 24
   created_at: 2008-01-11 02:44:37.135721 +09:00
+exemplify_00025: 
+  updated_at: 2008-01-11 02:44:37.135721 +09:00
+  item_id: 25
+  manifestation_id: 8
+  id: 25
+  created_at: 2008-01-11 02:44:37.135721 +09:00
 
 
 # == Schema Information

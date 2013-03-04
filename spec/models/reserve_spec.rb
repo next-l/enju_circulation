@@ -90,6 +90,13 @@ describe Reserve do
     reservation.save
     assert reservation.valid?.should eq false
   end
+
+  it "should be valid if the reservation is completed and its item is destroyed" do
+    reservation = reserves(:reserve_00010)
+    reservation.item.destroy
+    reservation.reload
+    assert reservation.should be_valid
+  end
 end
 
 # == Schema Information

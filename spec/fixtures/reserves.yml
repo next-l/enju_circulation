@@ -90,6 +90,7 @@ reserve_00010:
   expired_at: <%= 1.hour.ago %>
   checked_out_at: <%= 1.week.ago %>
   state: completed
+  item_id: 25
 reserve_00011: 
   updated_at: 2007-09-03 14:20:05.530854 +09:00
   manifestation_id: 7
