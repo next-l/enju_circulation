@@ -33,7 +33,7 @@
 
 <p>
   <strong><%= t('activerecord.attributes.reserve.retained_at') -%>:</strong>
-  <%= l(@reserve.retained_at) -%>
+  <%= l(@reserve.retained_at) if @reserve.retained_at -%>
 </p>
 
 <p>
@@ -48,7 +48,7 @@
 
 <p>
   <strong><%= t('activerecord.attributes.reserve.postponed_at') -%>:</strong>
-  <%= l(@reserve.postponed_at) -%>
+  <%= l(@reserve.postponed_at) if @reserve.postponed_at -%>
 </p>
 
 <p>
