@@ -178,5 +178,6 @@ en:
     reserved_from: "From"
     reserved_to: "To"
     attempt_to_update_retained_reservation: "You are attemping to update a retained reservation."
+    bibliographic_detail: "Bibliographic details"
   page:
     saving: "Saving..."

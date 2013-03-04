@@ -176,5 +176,6 @@ ja:
     reserved_from: "この日から"
     reserved_to: "この日まで"
     attempt_to_update_retained_reservation: "取り置き済みの予約を変更しようとしています。"
+    bibliographic_detail: "書誌詳細"
   page:
     saving: "保存中..."
