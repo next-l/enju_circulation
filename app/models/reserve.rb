@@ -87,19 +87,19 @@ class Reserve < ActiveRecord::Base
     end
 
     event :sm_request do
-      transition [:pending, :requested, :retained] => :requested
+      transition [:pending, :requested] => :requested
     end
 
     event :sm_retain do
-      transition [:pending, :requested, :retained] => :retained
+      transition [:pending, :requested, :retained, :postponed] => :retained
     end
 
     event :sm_cancel do
-      transition [:pending, :requested, :retained] => :canceled
+      transition [:pending, :requested, :retained, :postponed] => :canceled
     end
 
     event :sm_expire do
-      transition [:pending, :requested, :retained] => :expired
+      transition [:pending, :requested, :retained, :postponed] => :expired
     end
 
     event :sm_postpone do
