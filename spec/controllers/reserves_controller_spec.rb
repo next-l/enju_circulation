@@ -574,12 +574,14 @@ describe ReservesController do
         put :update, :id => 15, :reserve => {:item_identifier => '00021'}
         assigns(:reserve).should_not be_valid
         response.should be_success
+        assigns(:reserve).state.should eq 'requested'
         reserves(:reserve_00014).state.should eq 'retained'
       end
 
       it "should update retained reservations if force_retaining is enabled" do
         put :update, :id => 15, :reserve => {:item_identifier => '00021', :force_retaining => '1'}
         assigns(:reserve).should be_valid
+        assigns(:reserve).state.should eq 'retained'
         response.should redirect_to reserve_url(assigns(:reserve))
         reserves(:reserve_00014).state.should eq 'postponed'
       end

@@ -25,6 +25,16 @@ class ReservesController < ApplicationController
 
     search = Reserve.search
     query = @query = params[:query].to_s.strip
+    sort_by = params[:sort_by].to_s.downcase
+    if sort_by == 'title'
+      @sort_by = :title
+      sort_column = :title_transcription
+      order = :asc
+    else
+      @sort_by = :created_at
+      sort_column = :created_at
+      order = :desc
+    end
     if params[:format].to_s.downcase == 'csv'
       page = 1
       per_page = 65534
@@ -82,7 +92,7 @@ class ReservesController < ApplicationController
       if reserved_to
         with(:created_at).less_than reserved_to.tomorrow.beginning_of_day
       end
-      order_by :created_at, :desc
+      order_by sort_column, order
       with(:state).equal_to state if state
       facet :state
       paginate :page => page.to_i, :per_page => per_page
@@ -191,10 +201,12 @@ class ReservesController < ApplicationController
       if params[:mode] == 'cancel'
         @reserve.sm_cancel!
       else
-        unless @reserve.retained?
+        if @reserve.retained?
           if @reserve.item and @reserve.force_retaining == '1'
             @reserve.sm_retain!
           end
+        else
+          @reserve.sm_retain! if @reserve.item
         end
       end
     end
