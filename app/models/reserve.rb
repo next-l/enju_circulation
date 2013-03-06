@@ -138,6 +138,9 @@ class Reserve < ActiveRecord::Base
       self.hold.include?(reserve)
     end
     string :state
+    string :title_transcription do
+      manifestation.try(:title_transcription)
+    end
   end
 
   def set_manifestation
