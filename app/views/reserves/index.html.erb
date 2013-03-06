@@ -16,6 +16,20 @@
 <%- end -%>
 </div>
 
+<p>
+  <%= t('page.sort_by') -%>:
+  <%- if @sort_by == :created_at -%>
+    <strong><%= t('activerecord.attributes.reserve.created_at') -%></strong>
+  <%- else -%>
+    <%= link_to t('activerecord.attributes.reserve.created_at'), url_for(params.merge(:sort_by => nil, :only_path => true)) -%>
+  <% end %>
+  <%- if @sort_by == :title -%>
+    <strong><%= t('page.title') -%></strong>
+  <%- else -%>
+    <%= link_to t('page.title'), url_for(params.merge(:sort_by => 'title', :only_path => true)) -%>
+  <%- end -%>
+</p>
+
 <table class="table table-striped index">
   <tr>
     <th style="width: 30px">ID</th>

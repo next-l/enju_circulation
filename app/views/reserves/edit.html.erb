@@ -33,6 +33,11 @@
     <%= f.text_field :expired_at, :value => @reserve.expired_at.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
   </div>
 
+  <p>
+    <strong><%= t('activerecord.attributes.reserve.state') -%>:</strong>
+    <%= i18n_state(@reserve.state) -%>
+  </p>
+
   <% unless @reserve.errors[:base].empty? %>
     <div class="field">
       <%= f.label :force_retaining %><br />
