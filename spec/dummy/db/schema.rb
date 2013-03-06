@@ -260,7 +260,6 @@ ActiveRecord::Schema.define(:version => 20130304015019) do
     t.string   "state"
     t.integer  "required_score",              :default => 0,     :null => false
     t.datetime "acquired_at"
-    t.integer  "manifestation_id"
   end
 
   add_index "items", ["checkout_type_id"], :name => "index_items_on_checkout_type_id"
