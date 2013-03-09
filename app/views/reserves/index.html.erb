@@ -9,8 +9,8 @@
     <%= t('page.search_term') -%>: <%= search_field_tag 'query', h(@query), {:id => 'search_form_top', :class => 'search_form', :placeholder => t('page.search_term')} -%>
     <br />
     <%= t('activerecord.attributes.reserve.created_at') %>:
-    <%= t('reserve.reserved_from') %>: <%= text_field_tag 'reserved_from', @reserved_from, {:class => 'date_field', :placeholder => "#{t('page.example')}: 2012-04-12"} -%>
-    <%= t('reserve.reserved_to') %>: <%= text_field_tag 'reserved_to', @reserved_to, {:class => 'date_field', :placeholder => "#{t('page.example')}: 2012-05-11"} -%>
+    <%= t('reserve.reserved_from') %> <%= text_field_tag 'reserved_from', @reserved_from, {:class => 'date_field', :placeholder => "#{t('page.example')}: 2012-04-12"} -%>
+    <%= t('reserve.reserved_to') %> <%= text_field_tag 'reserved_to', @reserved_to, {:class => 'date_field', :placeholder => "#{t('page.example')}: 2012-05-11"} -%>
     <%= submit_tag t('page.search') -%>
   </p>
 <%- end -%>

@@ -174,8 +174,8 @@ ja:
     expired: "期限切れ"
     postponed: "取置延期"
     completed: "貸出済み"
-    reserved_from: "この日から"
-    reserved_to: "この日まで"
+    reserved_from: ""
+    reserved_to: "から"
     attempt_to_update_retained_reservation: "取り置き済みの予約を変更しようとしています。"
     bibliographic_detail: "書誌詳細"
   page:
