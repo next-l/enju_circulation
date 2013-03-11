@@ -3,6 +3,7 @@ require "enju_circulation/manifestation"
 require "enju_circulation/item"
 require "enju_circulation/user"
 require "enju_circulation/controller"
+require "enju_circulation/helper"
 
 module EnjuCirculation
 end
