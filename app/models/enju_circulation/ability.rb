@@ -9,7 +9,11 @@ module EnjuCirculation
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
         end
         can [:destroy, :delete], User do |u|
-          u.deletable? and u != user
+          if u != user
+            true if checkouts.not_returned.empty? and id != 1
+          else
+            false
+          end
         end
         can :manage, [
           Basket,
@@ -47,7 +51,11 @@ module EnjuCirculation
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
         end
         can [:destroy, :delete], User do |u|
-          u.deletable? and u.role.name == 'User' and u != user
+          if u.role.name == 'User' and u != user
+            true if checkouts.not_returned.empty? and id != 1
+          else
+            false
+          end
         end
         can :manage, [
           Basket,
