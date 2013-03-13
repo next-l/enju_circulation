@@ -23,7 +23,7 @@
       <%- if can? :update, circulation_status -%>
         <%= link_to t('page.edit'), edit_circulation_status_path(circulation_status) -%>
       <% end %>
-      <%- if can? :destroy, circulation_status -%>
+      <%- if can? :delete, circulation_status -%>
         <%= link_to t('page.destroy'), circulation_status, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>

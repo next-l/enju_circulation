@@ -58,7 +58,7 @@
         (<%= link_to reserve.item.item_identifier, reserve.item %>)
       <% end %>
     </td>
-    <%- if can? :destroy, reserve -%>
+    <%- if can? :delete, reserve -%>
       <td>
         <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>

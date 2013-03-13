@@ -33,7 +33,7 @@
           <%= link_to t('checkout.extend'), edit_checkout_path(checkout) -%>
         <% end %>
       <%- end -%>
-      <%- if can? :destroy, checkout -%>
+      <%- if can? :delete, checkout -%>
         <%= link_to t('page.destroy'), checkout, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>
