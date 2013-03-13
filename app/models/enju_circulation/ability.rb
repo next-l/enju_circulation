@@ -8,12 +8,8 @@ module EnjuCirculation
         can :destroy, Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
         end
-        can :destroy, Patron do |patron|
-          if patron.user
-            patron.user.checkouts.not_returned.empty?
-          else
-            true
-          end
+        can :destroy, User do |u|
+          u.deletable? and u != user
         end
         can :manage, [
           Basket,
@@ -44,6 +40,15 @@ module EnjuCirculation
         ]
         can :destroy, LendingPolicy
       when 'Librarian'
+        can :destroy, Item do |item|
+          item.checkouts.not_returned.empty?
+        end
+        can :destroy, Manifestation do |manifestation|
+          manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
+        end
+        can :destroy, User do |u|
+          u.deletable? and u.role.name == 'User' and u != user
+        end
         can :manage, [
           Basket,
           CheckedItem,
@@ -104,6 +109,5 @@ module EnjuCirculation
         ]
       end
     end
-
   end
 end
