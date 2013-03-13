@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :username
-  enju_circulation_user
+  enju_circulation_user_model
 
   def has_role?(role_in_question)
     return false unless role

@@ -5,7 +5,7 @@ module EnjuCirculation
     end
 
     module ClassMethods
-      def enju_circulation_user
+      def enju_circulation_user_model
         include InstanceMethods
         attr_accessible :save_checkout_history, :checkout_icalendar_token
         attr_accessible :save_checkout_history, :checkout_icalendar_token,
