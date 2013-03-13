@@ -39,7 +39,7 @@
           UseRestriction
         ]
         can :destroy, LendingPolicy
-        can :read, Item
+        can :read, [Item, Manifestation]
       when 'Librarian'
         can :destroy, Item do |item|
           item.checkouts.not_returned.empty?
@@ -77,7 +77,7 @@
           UseRestriction,
           UserGroupHasCheckoutType
         ]
-        can :read, Item
+        can :read, [Item, Manifestation]
       when 'User'
         can [:index, :create, :remove_all], Checkout
         can [:show, :update], Checkout do |checkout|
@@ -100,6 +100,7 @@
           UserCheckoutStat,
           UserReserveStat,
         ]
+        can :read, [Item, Manifestation]
       else
         can :index, Checkout
         can :read, [

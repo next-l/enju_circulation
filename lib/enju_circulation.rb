@@ -12,3 +12,4 @@ ActionController::Base.send :include, EnjuCirculation::Controller
 ActiveRecord::Base.send :include, EnjuCirculation::Manifestation
 ActiveRecord::Base.send :include, EnjuCirculation::Item
 ActiveRecord::Base.send :include, EnjuCirculation::User
+ActionView::Base.send :include, EnjuCirculation::ManifestationsHelper
