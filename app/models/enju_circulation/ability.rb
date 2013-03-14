@@ -10,7 +10,7 @@ module EnjuCirculation
         end
         can [:destroy, :delete], User do |u|
           if u != user
-            true if checkouts.not_returned.empty? and id != 1
+            true if u.checkouts.not_returned.empty? and id != 1
           else
             false
           end
