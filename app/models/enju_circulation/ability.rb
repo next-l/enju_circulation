@@ -8,13 +8,6 @@ module EnjuCirculation
         can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
         end
-        can [:destroy, :delete], User do |u|
-          if u != user
-            true if u.checkouts.not_returned.empty? and id != 1
-          else
-            false
-          end
-        end
         can :manage, [
           Basket,
           CarrierTypeHasCheckoutType,
@@ -49,13 +42,6 @@ module EnjuCirculation
         end
         can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
-        end
-        can [:destroy, :delete], User do |u|
-          if u.role.name == 'User' and u != user
-            true if checkouts.not_returned.empty? and id != 1
-          else
-            false
-          end
         end
         can :manage, [
           Basket,

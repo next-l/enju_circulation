@@ -9,7 +9,7 @@ module EnjuCirculation
 end
 
 ActionController::Base.send :include, EnjuCirculation::Controller
-ActiveRecord::Base.send :include, EnjuCirculation::Manifestation
-ActiveRecord::Base.send :include, EnjuCirculation::Item
-ActiveRecord::Base.send :include, EnjuCirculation::User
+ActiveRecord::Base.send :include, EnjuCirculation::EnjuManifestation
+ActiveRecord::Base.send :include, EnjuCirculation::EnjuItem
+ActiveRecord::Base.send :include, EnjuCirculation::EnjuUser
 ActionView::Base.send :include, EnjuCirculation::ManifestationsHelper

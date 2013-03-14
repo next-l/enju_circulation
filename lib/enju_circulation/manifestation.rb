@@ -1,5 +1,5 @@
 module EnjuCirculation
-  module Manifestation
+  module EnjuManifestation
     def self.included(base)
       base.extend ClassMethods
     end

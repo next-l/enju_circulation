@@ -1,5 +1,5 @@
 module EnjuCirculation
-  module Item
+  module EnjuItem
     def self.included(base)
       base.extend ClassMethods
     end

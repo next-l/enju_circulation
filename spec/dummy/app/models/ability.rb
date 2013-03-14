@@ -5,11 +5,8 @@
     def initialize(user, ip_address = nil)
       case user.try(:role).try(:name)
       when 'Administrator'
-        can [:delete, :destroy], Manifestation do |manifestation|
+        can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
-        end
-        can [:delete, :destroy], User do |u|
-          u.deletable? and u != user
         end
         can :manage, [
           Basket,
@@ -30,7 +27,7 @@
           UserReserveStat
         ]
         can [:read, :create, :update, :remove_all], Checkout
-        can [:delete, :destroy], Checkout do |checkout|
+        can [:destroy, :delete], Checkout do |checkout|
           checkout.checkin
         end
         can [:read, :update], [
@@ -38,17 +35,14 @@
           LendingPolicy,
           UseRestriction
         ]
-        can [:delete, :destroy], LendingPolicy
+        can [:destroy, :delete], LendingPolicy
         can :read, [Item, Manifestation]
       when 'Librarian'
-        can [:delete, :destroy], Item do |item|
+        can [:destroy, :delete], Item do |item|
           item.checkouts.not_returned.empty?
         end
-        can [:delete, :destroy], Manifestation do |manifestation|
+        can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
-        end
-        can [:delete, :destroy], User do |u|
-          u.deletable? and u.role.name == 'User' and u != user
         end
         can :manage, [
           Basket,
@@ -59,7 +53,7 @@
           Reserve
         ]
         can [:read, :create, :update, :remove_all], Checkout
-        can [:delete, :destroy], Checkout do |checkout|
+        can [:destroy, :delete], Checkout do |checkout|
           checkout.checkin
         end
         can [:read, :create, :update], UserCheckoutStat
@@ -83,14 +77,14 @@
         can [:show, :update], Checkout do |checkout|
           checkout.user == user
         end
-        can [:delete, :destroy], Checkout do |checkout|
+        can [:destroy, :delete], Checkout do |checkout|
           checkout.user == user && checkout.checkin
         end
         can :index, Reserve
         can :create, Reserve do |reserve|
           user.user_number.present?
         end
-        can [:show, :update, :delete, :destroy], Reserve do |reserve|
+        can [:show, :update, :destroy, :delete], Reserve do |reserve|
           reserve.user == user
         end
         can :read, [
@@ -110,6 +104,7 @@
           UserCheckoutStat,
           UserReserveStat
         ]
+        can :read, [Item, Manifestation]
       end
     end
   end
