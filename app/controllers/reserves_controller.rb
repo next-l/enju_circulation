@@ -194,7 +194,7 @@ class ReservesController < ApplicationController
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(params[:reserve], :as => :user_update)
+      @reserve.assign_attributes(params[:reserve], :as => :user)
     end
 
     if @reserve.valid?
