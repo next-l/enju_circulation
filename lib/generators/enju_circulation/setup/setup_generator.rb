@@ -6,5 +6,7 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     rake("enju_circulation_engine:install:migrations")
     generate("enju_event:setup")
     generate("enju_message:setup")
+    inject_into_file 'app/controllers/application_controller.rb',
+      "  enju_circulation\n", :after => "enju_library\n"
   end
 end
