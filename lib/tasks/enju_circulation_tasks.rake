@@ -5,5 +5,10 @@ namespace :enju_circulation do
     Dir.glob(Rails.root.to_s + '/db/fixtures/enju_circulation/*.yml').each do |file|
       ActiveRecord::Fixtures.create_fixtures('db/fixtures/enju_circulation', File.basename(file, '.*'))
     end
+
+    Rake::Task['enju_event:setup'].invoke
+    Rake::Task['enju_message:setup'].invoke
+
+    puts 'initial fixture files loaded.'
   end
 end
