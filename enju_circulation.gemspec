@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency "validates_timeliness"
   s.add_dependency "inherited_resources"
   s.add_dependency "state_machine"
-  s.add_dependency "enju_message", "~> 0.1.14.pre5"
-  s.add_dependency "enju_event", "~> 0.1.17.pre7"
+  s.add_dependency "enju_message", "~> 0.1.14.pre6"
+  s.add_dependency "enju_event", "~> 0.1.17.pre8"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
