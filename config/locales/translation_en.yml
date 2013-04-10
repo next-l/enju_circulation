@@ -47,6 +47,7 @@ en:
         postponed_at: Postponed at
         state: State
         force_retaining: Force retaining
+        item_identifier: Item identifier
       checkout_type:
         name: Name
         display_name: Display name
