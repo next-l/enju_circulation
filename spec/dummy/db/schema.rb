@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(:version => 20130304015019) do
     t.text     "my_networks"
     t.text     "login_banner"
     t.text     "note"
+    t.integer  "valid_period_for_new_user",   :default => 365,                      :null => false
     t.boolean  "post_to_union_catalog",       :default => false,                    :null => false
     t.integer  "country_id"
     t.datetime "created_at",                                                        :null => false
@@ -857,8 +858,6 @@ ActiveRecord::Schema.define(:version => 20130304015019) do
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
     t.datetime "deleted_at"
-    t.integer  "valid_period_for_new_user",        :default => 0, :null => false
-    t.datetime "expired_at"
     t.integer  "number_of_day_to_notify_overdue",  :default => 1, :null => false
     t.integer  "number_of_day_to_notify_due_date", :default => 7, :null => false
     t.integer  "number_of_time_to_notify_overdue", :default => 3, :null => false
