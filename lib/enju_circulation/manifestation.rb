@@ -5,7 +5,7 @@ module EnjuCirculation
     end
 
     module ClassMethods
-      def enju_circulation_model
+      def enju_circulation_manifestation_model
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
