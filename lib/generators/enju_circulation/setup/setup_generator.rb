@@ -8,6 +8,8 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     generate("enju_message:setup")
     inject_into_file 'app/controllers/application_controller.rb',
       "  enju_circulation\n", :after => "enju_library\n"
+    inject_into_file 'app/models/user.rb',
+      "  enju_circulation_user_model\n", :after => "enju_leaf_user_model\n"
     append_to_file("config/schedule.rb", File.open(File.expand_path('../templates', __FILE__) + '/config/schedule.rb').read)
   end
 end
