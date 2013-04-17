@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
-  attr_accessible :manifestation_id, :user_number, :expired_at, :as => :user
+  attr_accessible :manifestation_id, :user_number, :expired_at
+  attr_accessible :expired_at, :as => :user_update
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
