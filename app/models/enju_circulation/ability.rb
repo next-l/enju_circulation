@@ -6,7 +6,7 @@ module EnjuCirculation
       case user.try(:role).try(:name)
       when 'Administrator'
         can [:destroy, :delete], Manifestation do |manifestation|
-          manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
+          manifestation.items.empty? and !manifestation.series_master? and !manifestation.is_reserved?
         end
         can :manage, [
           Basket,
@@ -41,7 +41,7 @@ module EnjuCirculation
           item.checkouts.not_returned.empty?
         end
         can [:destroy, :delete], Manifestation do |manifestation|
-          manifestation.items.empty? and !manifestation.periodical_master? and !manifestation.is_reserved?
+          manifestation.items.empty? and !manifestation.series_master? and !manifestation.is_reserved?
         end
         can :manage, [
           Basket,
