@@ -80,6 +80,7 @@ en:
       carrier_type_has_checkout_type:
         note: Note
         position: Position
+        checkout_type_id: Checkout type
       manifestation_checkout_stat:
         start_date: Start date
         end_date: End date
