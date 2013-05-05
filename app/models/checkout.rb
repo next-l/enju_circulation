@@ -21,6 +21,7 @@ class Checkout < ActiveRecord::Base
   validates_presence_of :item_id, :basket_id, :due_date
   validates_uniqueness_of :item_id, :scope => [:basket_id, :user_id]
   validate :is_not_checked?, :on => :create
+  validate :renewable?, :on => :update
   validates_date :due_date
 
   searchable do
@@ -43,6 +44,8 @@ class Checkout < ActiveRecord::Base
     end
   end
 
+  attr_accessor :operator
+
   paginates_per 10
 
   def is_not_checked?
@@ -52,13 +55,16 @@ class Checkout < ActiveRecord::Base
     end
   end
 
-  def checkout_renewable?
-    return false if overdue?
-    if item
-      return false if over_checkout_renewal_limit?
-      return false if reserved?
+  def renewable?
+    if !operator and overdue?
+      errors[:base] << I18n.t('checkout.you_have_overdue_item')
     end
-    true
+    if !operator and reserved?
+      errors[:base] << I18n.t('checkout.this_item_is_reserved')
+    end
+    if !operator and over_checkout_renewal_limit?
+      errors[:base] << I18n.t('checkout.excessed_renewal_limit')
+    end
   end
 
   def reserved?
@@ -67,7 +73,8 @@ class Checkout < ActiveRecord::Base
   end
 
   def over_checkout_renewal_limit?
-    return true if item.checkout_status(user).checkout_renewal_limit <= checkout_renewal_count
+    return nil unless item.checkout_status(user)
+    return true if item.checkout_status(user).checkout_renewal_limit < checkout_renewal_count
   end
 
   def overdue?

@@ -134,27 +134,10 @@ class CheckoutsController < ApplicationController
   # PUT /checkouts/1
   # PUT /checkouts/1.json
   def update
-    if @checkout.reserved?
-      flash[:notice] = t('checkout.this_item_is_reserved')
-      redirect_to edit_checkout_url(@checkout)
-      return
-    end
-    if @checkout.over_checkout_renewal_limit?
-      flash[:notice] = t('checkout.excessed_renewal_limit')
-      redirect_to edit_checkout_url(@checkout)
-      return
-    end
-    if @checkout.overdue?
-      flash[:notice] = t('checkout.you_have_overdue_item')
-      unless current_user.has_role?('Librarian')
-        redirect_to edit_checkout_url(@checkout)
-        return
-      end
-    end
-    @checkout.reload
-    @checkout.checkout_renewal_count += 1
     @checkout.assign_attributes(params[:checkout])
     @checkout.due_date = @checkout.due_date.end_of_day
+#    @checkout.operator = current_user if current_user.has_role?('Librarian')
+    @checkout.checkout_renewal_count += 1
 
     respond_to do |format|
       if @checkout.save
@@ -171,6 +154,7 @@ class CheckoutsController < ApplicationController
   # DELETE /checkouts/1.json
   def destroy
     user = @checkout.user
+    @checkout.operator = current_user
     @checkout.user_id = nil
     @checkout.save!
 

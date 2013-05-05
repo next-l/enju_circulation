@@ -5,9 +5,11 @@ describe Checkout do
   #pending "add some examples to (or delete) #{__FILE__}"
   fixtures :all
 
-  it "should respond to checkout_renewable?" do
-    checkouts(:checkout_00001).checkout_renewable?.should be_true
-    checkouts(:checkout_00002).checkout_renewable?.should be_false
+  it "should respond to renewable?" do
+    checkouts(:checkout_00001).save
+    checkouts(:checkout_00001).errors[:base].should eq []
+    checkouts(:checkout_00002).save
+    checkouts(:checkout_00002).errors[:base].should eq [I18n.t('checkout.this_item_is_reserved')]
   end
 
   it "should respond to reserved?" do

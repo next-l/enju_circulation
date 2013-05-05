@@ -320,8 +320,8 @@ describe CheckoutsController do
   
       it "should update checkout item that is reserved" do
         put :update, :id => 8, :checkout => { }
-        flash[:notice].should eq I18n.t('checkout.this_item_is_reserved')
-        response.should redirect_to edit_checkout_url(assigns(:checkout))
+        assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_true
+        response.should be_success
       end
   
       it "should update other user's checkout" do
@@ -371,8 +371,8 @@ describe CheckoutsController do
   
       it "should not update checkout already renewed" do
         put :update, :id => 9, :checkout => { }
-        flash[:notice].should eq I18n.t('checkout.excessed_renewal_limit')
-        response.should redirect_to edit_checkout_url(assigns(:checkout))
+        assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_true
+        response.should be_success
       end
 
       it "should update my checkout" do
