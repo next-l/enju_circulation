@@ -136,7 +136,6 @@ class CheckoutsController < ApplicationController
   def update
     @checkout.assign_attributes(params[:checkout])
     @checkout.due_date = @checkout.due_date.end_of_day
-#    @checkout.operator = current_user if current_user.has_role?('Librarian')
     @checkout.checkout_renewal_count += 1
 
     respond_to do |format|
