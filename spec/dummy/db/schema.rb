@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416054135) do
+ActiveRecord::Schema.define(:version => 20130509185724) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -228,6 +228,28 @@ ActiveRecord::Schema.define(:version => 20130416054135) do
 
   add_index "exemplifies", ["item_id"], :name => "index_exemplifies_on_item_id", :unique => true
   add_index "exemplifies", ["manifestation_id"], :name => "index_exemplifies_on_manifestation_id"
+
+  create_table "identifier_types", :force => true do |t|
+    t.string   "name"
+    t.text     "display_name"
+    t.text     "note"
+    t.integer  "position"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "identifiers", :force => true do |t|
+    t.string   "body",               :null => false
+    t.integer  "identifier_type_id", :null => false
+    t.integer  "manifestation_id"
+    t.boolean  "primary"
+    t.integer  "position"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "identifiers", ["body", "identifier_type_id"], :name => "index_identifiers_on_body_and_identifier_type_id"
+  add_index "identifiers", ["manifestation_id"], :name => "index_identifiers_on_manifestation_id"
 
   create_table "item_has_use_restrictions", :force => true do |t|
     t.integer  "item_id",            :null => false
@@ -456,6 +478,7 @@ ActiveRecord::Schema.define(:version => 20130416054135) do
     t.integer  "issue_number"
     t.integer  "serial_number"
     t.string   "doi"
+    t.text     "statement_of_responsibility"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"

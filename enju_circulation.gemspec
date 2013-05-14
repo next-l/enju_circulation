@@ -16,11 +16,8 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids}/*"]
 
-  s.add_dependency "enju_core", "~> 0.1.0.pre4"
-  s.add_dependency "simple_form"
-  s.add_dependency "validates_timeliness"
-  s.add_dependency "inherited_resources"
-  s.add_dependency "state_machine"
+  s.add_dependency "enju_biblio", "~> 0.1.0.pre40"
+  s.add_dependency "enju_library", "~> 0.1.0.pre23"
   s.add_dependency "enju_message", "~> 0.1.14.pre8"
   s.add_dependency "enju_event", "~> 0.1.17.pre12"
 
@@ -28,8 +25,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "sunspot_solr", "~> 2.0.0"
-  s.add_development_dependency "enju_biblio", "~> 0.1.0.pre38"
-  s.add_development_dependency "enju_library", "~> 0.1.0.pre22"
   s.add_development_dependency "enju_export", "~> 0.1.1.pre4"
   s.add_development_dependency "mobylette"
   s.add_development_dependency "simplecov"
