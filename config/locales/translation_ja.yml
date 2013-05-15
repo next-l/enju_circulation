@@ -114,6 +114,9 @@ ja:
         fine: 罰金
         note: 注記
         position: 位置
+      item:
+        checkout_type: 貸出種別
+        circulation_status: 貸出状態
 
   basket:
     this_account_is_suspended: "このアカウントは停止されています。"

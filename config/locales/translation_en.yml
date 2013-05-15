@@ -116,6 +116,9 @@ en:
         fine: Fine
         note: Note
         position: Position
+      item:
+        checkout_type: Checkout type
+        circulation_status: Circulation status
 
   basket:
     this_account_is_suspended: "This account is suspended."
