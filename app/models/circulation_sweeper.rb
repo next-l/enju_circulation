@@ -1,5 +1,5 @@
 class CirculationSweeper < ActionController::Caching::Sweeper
-  observe Basket, Checkin, Checkout
+  observe Basket, Checkin, Checkout, Reserve
   include ExpireEditableFragment
 
   def after_save(record)
@@ -13,6 +13,8 @@ class CirculationSweeper < ActionController::Caching::Sweeper
       expire_editable_fragment(record.item.manifestation)
     when record.is_a?(Checkout)
       expire_editable_fragment(record.item.manifestation)
+    when record.is_a?(Reserve)
+      expire_editable_fragment(record.manifestation)
     end
   end
 

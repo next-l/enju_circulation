@@ -8,6 +8,7 @@ class ReservesController < ApplicationController
   helper_method :get_manifestation
   helper_method :get_item
   after_filter :convert_charset, :only => :index
+  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /reserves
   # GET /reserves.json
