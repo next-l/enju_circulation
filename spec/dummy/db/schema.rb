@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130509185724) do
+ActiveRecord::Schema.define(:version => 20130519065837) do
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"
@@ -57,11 +57,12 @@ ActiveRecord::Schema.define(:version => 20130509185724) do
   add_index "checked_items", ["item_id"], :name => "index_checked_items_on_item_id"
 
   create_table "checkins", :force => true do |t|
-    t.integer  "item_id",      :null => false
+    t.integer  "item_id",                     :null => false
     t.integer  "librarian_id"
     t.integer  "basket_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "lock_version", :default => 0, :null => false
   end
 
   add_index "checkins", ["basket_id"], :name => "index_checkins_on_basket_id"
@@ -751,6 +752,7 @@ ActiveRecord::Schema.define(:version => 20130509185724) do
     t.boolean  "expiration_notice_to_library", :default => false
     t.datetime "retained_at"
     t.datetime "postponed_at"
+    t.integer  "lock_version",                 :default => 0,     :null => false
   end
 
   add_index "reserves", ["item_id"], :name => "index_reserves_on_item_id"

@@ -8,6 +8,7 @@ reserve_00001:
   created_at: 2007-09-01 14:14:52.356803 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00002: 
   updated_at: 2007-09-01 14:20:05.530854 +09:00
   manifestation_id: 5
@@ -17,6 +18,7 @@ reserve_00002:
   created_at: 2007-09-01 14:20:05.530854 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00003: 
   updated_at: 2007-09-02 17:46:52.791614 +09:00
   manifestation_id: 6
@@ -26,6 +28,7 @@ reserve_00003:
   created_at: 2007-09-02 17:46:52.791614 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00004: 
   updated_at: 2007-09-02 18:37:25.576087 +09:00
   manifestation_id: 7
@@ -35,6 +38,7 @@ reserve_00004:
   created_at: 2007-09-02 18:37:25.576087 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00005: 
   updated_at: 2007-09-02 19:16:55.714812 +09:00
   manifestation_id: 8
@@ -44,6 +48,7 @@ reserve_00005:
   created_at: 2007-09-02 19:16:55.714812 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00006: 
   updated_at: 2007-09-02 19:20:06.530854 +09:00
   manifestation_id: 4
@@ -53,6 +58,7 @@ reserve_00006:
   created_at: 2007-09-02 19:20:06.530854 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00007: 
   updated_at: 2007-09-02 19:20:07.530854 +09:00
   manifestation_id: 2
@@ -62,6 +68,7 @@ reserve_00007:
   created_at: 2007-09-02 19:20:07.530854 +09:00
   expired_at: <%= 1.week.from_now %>
   state: requested
+  lock_version: 0
 reserve_00008: 
   updated_at: 2007-09-02 19:46:53.791614 +09:00
   manifestation_id: 6
@@ -71,6 +78,7 @@ reserve_00008:
   created_at: 2007-09-02 19:46:53.791614 +09:00
   expired_at: <%= 1.week.ago %>
   state: expired
+  lock_version: 0
 reserve_00009: 
   updated_at: 2007-09-02 19:46:54.791614 +09:00
   manifestation_id: 7
@@ -80,6 +88,7 @@ reserve_00009:
   created_at: 2007-09-02 19:46:54.791614 +09:00
   expired_at: <%= 1.day.ago %>
   state: requested
+  lock_version: 0
 reserve_00010: 
   updated_at: 2007-09-02 19:46:55.791614 +09:00
   manifestation_id: 8
@@ -91,6 +100,7 @@ reserve_00010:
   checked_out_at: <%= 1.week.ago %>
   state: completed
   item_id: 25
+  lock_version: 0
 reserve_00011: 
   updated_at: 2007-09-03 14:20:05.530854 +09:00
   manifestation_id: 7
@@ -100,6 +110,7 @@ reserve_00011:
   created_at: 2007-09-03 14:20:05.530854 +09:00
   expired_at: <%= 1.day.ago %>
   state: expired
+  lock_version: 0
 reserve_00012: 
   updated_at: 2007-09-03 14:20:06.530854 +09:00
   manifestation_id: 8
@@ -109,6 +120,7 @@ reserve_00012:
   created_at: 2007-09-03 14:20:06.530854 +09:00
   expired_at: <%= 1.day.ago %>
   state: retained
+  lock_version: 0
 reserve_00013: 
   updated_at: 2007-09-03 14:20:07.530854 +09:00
   manifestation_id: 11
@@ -118,6 +130,7 @@ reserve_00013:
   created_at: 2007-09-03 14:20:07.530854 +09:00
   expired_at: <%= 1.day.ago %>
   state: requested
+  lock_version: 0
 reserve_00014: 
   updated_at: 2007-09-03 14:20:08.530854 +09:00
   manifestation_id: 11
@@ -129,6 +142,7 @@ reserve_00014:
   expired_at: <%= 1.day.from_now %>
   state: retained
   item_id: 21
+  lock_version: 0
 reserve_00015: 
   updated_at: 2007-09-03 14:20:09.530854 +09:00
   manifestation_id: 11
@@ -138,6 +152,7 @@ reserve_00015:
   created_at: 2007-09-03 14:20:09.530854 +09:00
   expired_at: <%= 1.day.from_now %>
   state: requested
+  lock_version: 0
 
 # == Schema Information
 #
@@ -159,5 +174,6 @@ reserve_00015:
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
+#  lock_version                 :integer          default(0), not null
 #
 

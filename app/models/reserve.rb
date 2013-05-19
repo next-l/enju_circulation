@@ -443,5 +443,6 @@ end
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
+#  lock_version                 :integer          default(0), not null
 #
 
