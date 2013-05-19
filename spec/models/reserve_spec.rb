@@ -117,5 +117,7 @@ end
 #  state                        :string(255)
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  retained_at                  :datetime
+#  postponed_at                 :datetime
 #
 
