@@ -180,11 +180,6 @@ describe CheckoutsController do
         response.should be_forbidden
         assigns(:checkout).should eq checkouts(:checkout_00001)
       end
-
-      it "should not show missing checkout" do
-        get :show, :id => 'missing'
-        response.should be_missing
-      end
     end
 
     describe "When not logged in" do
@@ -271,11 +266,6 @@ describe CheckoutsController do
           response.should redirect_to(assigns(:checkout))
           assigns(:checkout).changed?.should be_false
         end
-      end
-
-      it "should not update missing checkout" do
-        put :update, :id => 'missing', :checkout => { }
-        response.should be_missing
       end
 
       it "should remove its own checkout history" do
@@ -443,11 +433,6 @@ describe CheckoutsController do
       it "redirects to the checkouts list" do
         delete :destroy, :id => @returned_checkout.id
         response.should redirect_to(user_checkouts_url(@returned_checkout.user))
-      end
-
-      it "should not destroy missing checkout" do
-        delete :destroy, :id => 'missing'
-        response.should be_missing
       end
     end
 

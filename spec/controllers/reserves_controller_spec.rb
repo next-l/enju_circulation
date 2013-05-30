@@ -146,11 +146,6 @@ describe ReservesController do
         assigns(:reserve).should eq(reserve)
       end
 
-      it "should not show missing reserve" do
-        get :show, :id => 'missing'
-        response.should be_missing
-      end
-
       it "should show other user's reservation" do
         get :show, :id => 3
         response.should be_success
@@ -288,11 +283,6 @@ describe ReservesController do
         reserve = FactoryGirl.create(:reserve)
         get :edit, :id => reserve.id
         assigns(:reserve).should eq(reserve)
-      end
-  
-      it "should not edit missing reserve" do
-        get :edit, :id => 'missing'
-        response.should be_missing
       end
   
       it "should edit other user's reservation" do
@@ -667,11 +657,6 @@ describe ReservesController do
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
-      it "should not update missing reserve" do
-        put :update, :id => 'missing', :reserve => {:user_number => users(:user1).user_number}
-        response.should be_missing
-      end
-  
       it "should update my reservation" do
         put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}
         flash[:notice].should eq I18n.t('controller.successfully_updated', :model => I18n.t('activerecord.models.reserve'))
@@ -730,11 +715,6 @@ describe ReservesController do
       it "should destroy other user's reservation" do
         delete :destroy, :id => 3
         response.should redirect_to reserves_url
-      end
-
-      it "should not destroy missing reserve" do
-        delete :destroy, :id => 'missing'
-        response.should be_missing
       end
     end
 

@@ -45,7 +45,7 @@ class Checkin < ActiveRecord::Base
         unless checkout.user.try(:save_checkout_history)
           checkout.user = nil
         end
-        checkout.save!
+        checkout.save(:validate => false)
         unless checkout.item.shelf.library == current_user.library
           message << I18n.t('checkin.other_library_item')
         end

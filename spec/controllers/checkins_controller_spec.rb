@@ -66,11 +66,6 @@ describe CheckinsController do
         get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
       end
-
-      it "should not show missing checkin" do
-        get :show, :id => 'missing'
-        response.should be_missing
-      end
     end
 
     describe "When logged in as Librarian" do
@@ -150,11 +145,6 @@ describe CheckinsController do
         checkin = checkins(:checkin_00001)
         get :edit, :id => checkin.id
         assigns(:checkin).should eq(checkin)
-      end
-  
-      it "should not edit missing checkin" do
-        get :edit, :id => 'missing'
-        response.should be_missing
       end
     end
 
@@ -347,11 +337,6 @@ describe CheckinsController do
           response.should redirect_to(@checkin)
         end
       end
-
-      it "should not update missing checkin" do
-        put :update, :id => 'missing', :checkin => { }
-        response.should be_missing
-      end
     end
 
     describe "When logged in as Librarian" do
@@ -441,11 +426,6 @@ describe CheckinsController do
       it "redirects to the checkins list" do
         delete :destroy, :id => @checkin.id
         response.should redirect_to(checkins_url)
-      end
-
-      it "should not destroy missing checkin" do
-        delete :destroy, :id => 'missing'
-        response.should be_missing
       end
     end
 

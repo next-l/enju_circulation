@@ -16,7 +16,7 @@ end
 #  loan_period    :integer          default(0), not null
 #  fixed_due_date :datetime
 #  renewal        :integer          default(0), not null
-#  fine           :decimal(, )      default(0.0), not null
+#  fine           :integer          default(0), not null
 #  note           :text
 #  position       :integer
 #  created_at     :datetime         not null

@@ -3,7 +3,6 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 Bundler.require
-require "enju_circulation"
 
 module Dummy
   class Application < Rails::Application
@@ -55,6 +54,7 @@ module Dummy
 end
 
 require 'nkf'
+require 'enju_leaf'
 require 'enju_biblio'
 require 'enju_library'
 require 'mobylette'

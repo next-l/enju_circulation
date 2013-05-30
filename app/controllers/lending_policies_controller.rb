@@ -4,7 +4,7 @@ class LendingPoliciesController < InheritedResources::Base
   before_filter :prepare_options, :only => [:edit, :update]
 
   def index
-    @lending_policies = @lending_policies.page(params[:page])
+    @lending_policies = LendingPolicy.page(params[:page])
   end
 
   private

@@ -308,16 +308,16 @@ ActiveRecord::Schema.define(:version => 20130519065837) do
   add_index "languages", ["name"], :name => "index_languages_on_name", :unique => true
 
   create_table "lending_policies", :force => true do |t|
-    t.integer  "item_id",                         :null => false
-    t.integer  "user_group_id",                   :null => false
-    t.integer  "loan_period",    :default => 0,   :null => false
+    t.integer  "item_id",                       :null => false
+    t.integer  "user_group_id",                 :null => false
+    t.integer  "loan_period",    :default => 0, :null => false
     t.datetime "fixed_due_date"
-    t.integer  "renewal",        :default => 0,   :null => false
-    t.decimal  "fine",           :default => 0.0, :null => false
+    t.integer  "renewal",        :default => 0, :null => false
+    t.integer  "fine",           :default => 0, :null => false
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "lending_policies", ["item_id", "user_group_id"], :name => "index_lending_policies_on_item_id_and_user_group_id", :unique => true
