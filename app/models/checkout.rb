@@ -56,14 +56,23 @@ class Checkout < ActiveRecord::Base
   end
 
   def renewable?
+    messages = []
     if !operator and overdue?
-      errors[:base] << I18n.t('checkout.you_have_overdue_item')
+      messages << I18n.t('checkout.you_have_overdue_item')
     end
     if !operator and reserved?
-      errors[:base] << I18n.t('checkout.this_item_is_reserved')
+      messages << I18n.t('checkout.this_item_is_reserved')
     end
     if !operator and over_checkout_renewal_limit?
-      errors[:base] << I18n.t('checkout.excessed_renewal_limit')
+      messages << I18n.t('checkout.excessed_renewal_limit')
+    end
+    if messages.empty?
+      true
+    else
+      messages.each do |message|
+        errors[:base] << message
+      end
+      false
     end
   end
 
