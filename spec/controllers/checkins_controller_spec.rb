@@ -203,6 +203,13 @@ describe CheckinsController do
             response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
+
+          it "should checkin the overdue item" do
+            post :create, :checkin => {:item_identifier => '00014'}, :basket_id => 9
+            response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
+            assigns(:checkin).checkout.should be_valid
+            assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
+          end
         end
       end
 

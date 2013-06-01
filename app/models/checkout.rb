@@ -56,6 +56,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def renewable?
+    return nil if checkin
     messages = []
     if !operator and overdue?
       messages << I18n.t('checkout.you_have_overdue_item')
