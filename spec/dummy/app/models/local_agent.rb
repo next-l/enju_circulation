@@ -1,4 +1,4 @@
-class LocalPatron
+class LocalAgent
   def initialize(user)
     @user = user
   end

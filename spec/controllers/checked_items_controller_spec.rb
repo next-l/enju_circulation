@@ -258,11 +258,25 @@ describe CheckedItemsController do
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
       end
 
-      it "should create checked_item" do
+      it "should create checked_item with item_identifier" do
         post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 3
         assigns(:checked_item).should be_true
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+      end 
+
+      it "should override due_date" do
+        post :create, :checked_item => {:item_identifier => '00011', :due_date_string => 1.year.from_now.strftime('%Y-%m-%d')}, :basket_id => 3
+        assigns(:checked_item).should be_true
+        assigns(:checked_item).due_date.should eq 1.year.from_now.end_of_day
+        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+      end 
+
+      it "should not create checked_item with an invalid due_date" do
+        post :create, :checked_item => {:item_identifier => '00011', :due_date_string => "invalid"}, :basket_id => 3
+        assigns(:checked_item).should_not be_valid
+        assigns(:checked_item).due_date.should be_nil
+        response.should be_success
       end 
 
       it "should not create checked_item if excessed checkout_limit" do

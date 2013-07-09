@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
 
   def patron
-    LocalPatron.new(self)
+    LocalAgent.new(self)
   end
 
   def full_name

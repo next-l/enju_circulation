@@ -6,7 +6,8 @@
   <p>
     <%= label_tag :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
     <%= t('checked_item.ignore_restriction') -%>: <%= f.check_box :ignore_restriction -%>
-    <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%>
+    <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%><br />
+    <%= f.text_field :due_date_string, :class => 'date_text_field', :placeholder => "#{t('page.example')}: 2012-05-11" %>
   </p>
 <%- end -%>
 
