@@ -4,10 +4,11 @@
 <%= form_for :checked_item, :html => {:method => :post}, :url => basket_checked_items_path(@basket), :remote => true do |f| -%>
   <%= f.error_messages -%>
   <p>
-    <%= label_tag :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
-    <%= t('checked_item.ignore_restriction') -%>: <%= f.check_box :ignore_restriction -%>
+    <%= f.label :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
     <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%><br />
-    <%= f.text_field :due_date_string, :class => 'date_text_field', :placeholder => "#{t('page.example')}: 2012-05-11" %>
+    <%= f.label :due_date %>
+    <%= f.text_field :due_date_string, :class => 'date_text_field', :placeholder => "#{t('page.example')}: #{1.month.from_now.strftime('%Y-%m-%d')}" %>
+    <%= t('checked_item.ignore_restriction') -%>: <%= f.check_box :ignore_restriction -%>
   </p>
 <%- end -%>
 
