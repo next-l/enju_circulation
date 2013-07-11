@@ -10,6 +10,7 @@ class CheckedItemsController < ApplicationController
     else
       @checked_items = CheckedItem.page(params[:page])
     end
+    @checked_item = CheckedItem.new
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,7 +36,7 @@ class CheckedItemsController < ApplicationController
       return
     end
     @checked_item = CheckedItem.new
-    @checked_items = []
+    @checked_items = @basket.checked_items
 
     respond_to do |format|
       format.html # new.html.erb
