@@ -60,12 +60,9 @@ class CheckedItem < ActiveRecord::Base
     end
 
     checkout_count = basket.user.checked_item_count
-    CheckoutType.all.each do |checkout_type|
-      #carrier_type = self.item.manifestation.carrier_type
-      if checkout_count[:"#{checkout_type.name}"] + self.basket.checked_items.count(:id) >= self.item_checkout_type.checkout_limit
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
-        break
-      end
+    checkout_type = item_checkout_type.checkout_type
+    if checkout_count[:"#{checkout_type.name}"] + basket.checked_items.count(:id) >= item_checkout_type.checkout_limit
+      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
     end
     
     if errors[:base].empty?
