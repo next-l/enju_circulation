@@ -61,7 +61,7 @@ class CheckedItem < ActiveRecord::Base
 
     checkout_count = basket.user.checked_item_count
     checkout_type = item_checkout_type.checkout_type
-    if checkout_count[:"#{checkout_type.name}"] + basket.checked_items.count(:id) >= item_checkout_type.checkout_limit
+    if checkout_count[:"#{checkout_type.name}"] >= item_checkout_type.checkout_limit
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
     end
     
