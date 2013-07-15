@@ -160,6 +160,7 @@ en:
     checkin: "Checkin!"
     successfully_checked_in: "This items was successfully checked in."
     missing_item_found: "A missing item is found."
+    not_checked_out: "This item is not checked out."
   reserve:
     user_reserve: "%{login_name}'s reservations"
     library_group_reserve: "Reservations in %{library_group_name}"

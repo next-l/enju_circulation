@@ -69,8 +69,12 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       if @checkin.save
-        flash[:message] << t('checkin.successfully_checked_in', :model => t('activerecord.models.checkin'))
         message = @checkin.item_checkin(current_user)
+        if @checkin.checkout
+          flash[:message] << t('checkin.successfully_checked_in')
+        else
+          flash[:message] << t('checkin.not_checked_out')
+        end
         flash[:message] << message if message
         format.html { redirect_to basket_checkins_url(@checkin.basket) }
         format.json { render :json => @checkin, :status => :created, :location => @checkin }
