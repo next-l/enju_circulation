@@ -114,6 +114,14 @@ module EnjuCirculation
         end
       end
 
+      def retained?
+        if manifestation.next_reservation.try(:state) == 'retained' and  manifestation.next_reservation.item == self
+          return true
+        else
+          false
+        end
+      end
+
       def lending_rule(user)
         lending_policies.where(:user_group_id => user.user_group.id).first
       end

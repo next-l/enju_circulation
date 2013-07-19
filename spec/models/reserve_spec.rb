@@ -74,14 +74,16 @@ describe Reserve do
     old_count = MessageRequest.count
 
     reservation.item = old_reservation.item
+    reservation.item.retained?.should be_false
     reservation.sm_retain!
     old_reservation.reload
-    assert old_reservation.item.should be_nil
-    assert reservation.retained_at.should be_true
-    assert old_reservation.retained_at.should be_nil
-    assert old_reservation.postponed_at.should be_true
-    assert old_reservation.state.should eq 'postponed'
-    assert MessageRequest.count.should eq old_count + 4
+    old_reservation.item.should be_nil
+    reservation.retained_at.should be_true
+    old_reservation.retained_at.should be_nil
+    old_reservation.postponed_at.should be_true
+    old_reservation.state.should eq 'postponed'
+    MessageRequest.count.should eq old_count + 4
+    reservation.item.retained?.should be_true
   end
 
   it "should not be valid if item_identifier is invalid" do
