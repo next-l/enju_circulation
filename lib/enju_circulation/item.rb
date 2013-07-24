@@ -147,6 +147,10 @@ module EnjuCirculation
       def next_reservation
         Reserve.waiting.where(:item_id => id).first
       end
+
+      def latest_checkout
+        checkouts.order('checkouts.id').first
+      end
     end
   end
 end
