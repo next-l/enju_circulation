@@ -234,7 +234,7 @@ class ReservesController < ApplicationController
     @reserve.destroy
     #flash[:notice] = t('reserve.reservation_was_canceled')
 
-    if @reserve.manifestation.is_reserved?
+    if @reserve.manifestation.try(:is_reserved?)
       if @reserve.item
         retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
         if retain.nil?
