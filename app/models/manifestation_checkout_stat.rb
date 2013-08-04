@@ -1,8 +1,8 @@
 class ManifestationCheckoutStat < ActiveRecord::Base
   attr_accessible :start_date, :end_date, :note
   include CalculateStat
-  default_scope :order => 'manifestation_checkout_stats.id DESC'
-  scope :not_calculated, where(:state => 'pending')
+  default_scope {order('manifestation_checkout_stats.id DESC')}
+  scope :not_calculated, -> {where(:state => 'pending')}
   has_many :checkout_stat_has_manifestations
   has_many :manifestations, :through => :checkout_stat_has_manifestations
 
