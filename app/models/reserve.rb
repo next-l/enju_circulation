@@ -17,12 +17,12 @@ class Reserve < ActiveRecord::Base
   scope :will_expire_retained, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained').order('expired_at')}
   scope :will_expire_pending, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'pending').order('expired_at')}
   scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :not_sent_expiration_notice_to_patron, where(:state => 'expired', :expiration_notice_to_patron => false)
-  scope :not_sent_expiration_notice_to_library, where(:state => 'expired', :expiration_notice_to_library => false)
-  scope :sent_expiration_notice_to_patron, where(:state => 'expired', :expiration_notice_to_patron => true)
-  scope :sent_expiration_notice_to_library, where(:state => 'expired', :expiration_notice_to_library => true)
-  scope :not_sent_cancel_notice_to_agent, where(:state => 'canceled', :expiration_notice_to_patron => false)
-  scope :not_sent_cancel_notice_to_library, where(:state => 'canceled', :expiration_notice_to_library => false)
+  scope :not_sent_expiration_notice_to_patron, {where(:state => 'expired', :expiration_notice_to_patron => false)}
+  scope :not_sent_expiration_notice_to_library, {where(:state => 'expired', :expiration_notice_to_library => false)}
+  scope :sent_expiration_notice_to_patron, {where(:state => 'expired', :expiration_notice_to_patron => true)}
+  scope :sent_expiration_notice_to_library, {where(:state => 'expired', :expiration_notice_to_library => true)}
+  scope :not_sent_cancel_notice_to_agent, {where(:state => 'canceled', :expiration_notice_to_patron => false)}
+  scope :not_sent_cancel_notice_to_library, {where(:state => 'canceled', :expiration_notice_to_library => false)}
 
   belongs_to :user #, :validate => true
   belongs_to :manifestation #, :validate => true
