@@ -7,13 +7,13 @@ class Reserve < ActiveRecord::Base
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
     :retained_at, :postponed_at, :force_retaining,
     :as => :admin
-  scope :hold, where('item_id IS NOT NULL')
-  scope :not_hold, where(:item_id => nil)
-  scope :waiting, where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')
-  scope :retained, where('retained_at IS NOT NULL AND state = ?', 'retained')
-  scope :completed, where('checked_out_at IS NOT NULL AND state = ?', 'completed')
-  scope :canceled, where('canceled_at IS NOT NULL AND state = ?', 'canceled')
-  scope :postponed, where('postponed_at IS NOT NULL AND state = ?', 'postponed')
+  scope :hold, -> {where('item_id IS NOT NULL')}
+  scope :not_hold, -> {where(:item_id => nil)}
+  scope :waiting, -> {where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')}
+  scope :retained, -> {where('retained_at IS NOT NULL AND state = ?', 'retained')}
+  scope :completed, -> {where('checked_out_at IS NOT NULL AND state = ?', 'completed')}
+  scope :canceled, -> {where('canceled_at IS NOT NULL AND state = ?', 'canceled')}
+  scope :postponed, -> {where('postponed_at IS NOT NULL AND state = ?', 'postponed')}
   scope :will_expire_retained, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained').order('expired_at')}
   scope :will_expire_pending, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'pending').order('expired_at')}
   scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
