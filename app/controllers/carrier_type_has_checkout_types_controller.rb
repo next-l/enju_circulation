@@ -1,7 +1,7 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_checkout_type
-  before_filter :prepare_options, :only => [:new, :edit]
+  before_action :get_checkout_type
+  before_action :prepare_options, :only => [:new, :edit]
 
   # GET /carrier_type_has_checkout_types
   # GET /carrier_type_has_checkout_types.json

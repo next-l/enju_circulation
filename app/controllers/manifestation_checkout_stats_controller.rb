@@ -1,6 +1,6 @@
 class ManifestationCheckoutStatsController < ApplicationController
   load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_action :convert_charset, :only => :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json

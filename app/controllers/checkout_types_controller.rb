@@ -1,6 +1,6 @@
 class CheckoutTypesController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_user_group
+  before_action :get_user_group
 
   # GET /checkout_types
   # GET /checkout_types.json

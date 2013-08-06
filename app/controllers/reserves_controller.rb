@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
-  before_filter :store_location, :only => [:index, :new]
+  before_action :store_location, :only => [:index, :new]
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user, :only => [:index, :new]
-  before_filter :store_page
+  before_action :get_user, :only => [:index, :new]
+  before_action :store_page
   helper_method :get_manifestation
   helper_method :get_item
-  after_filter :convert_charset, :only => :index
+  after_action :convert_charset, :only => :index
   cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /reserves

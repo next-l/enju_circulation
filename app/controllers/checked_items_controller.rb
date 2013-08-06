@@ -1,6 +1,6 @@
 class CheckedItemsController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_basket, :only => [:index, :new, :create, :update]
+  before_action :get_basket, :only => [:index, :new, :create, :update]
 
   # GET /checked_items
   # GET /checked_items.json

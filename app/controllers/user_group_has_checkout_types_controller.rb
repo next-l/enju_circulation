@@ -1,7 +1,7 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
   load_and_authorize_resource
   helper_method :get_user_group, :get_checkout_type
-  before_filter :prepare_options, :only => [:new, :edit]
+  before_action :prepare_options, :only => [:new, :edit]
 
   # GET /user_group_has_checkout_types
   # GET /user_group_has_checkout_types.json

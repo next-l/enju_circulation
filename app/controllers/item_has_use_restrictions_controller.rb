@@ -1,6 +1,6 @@
 class ItemHasUseRestrictionsController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_item
+  before_action :get_item
 
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
