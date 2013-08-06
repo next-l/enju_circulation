@@ -1,6 +1,7 @@
 class UseRestriction < ActiveRecord::Base
   attr_accessible :name, :display_name, :note
   include MasterModel
+  validates :name, :presence => true, :format => {:with => /\A[0-9A-Za-z][0-9A-Za-z_\-\s,]*[0-9a-z]\Z/}
   default_scope {order('use_restrictions.position')}
   scope :available, -> {where(:name => ['Not For Loan', 'Limited Circulation, Normal Loan Period'])}
   has_many :item_has_use_restrictions
