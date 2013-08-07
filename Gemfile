@@ -19,7 +19,6 @@ gem "enju_library", github: "next-l/enju_library", branch: "rails4"
 gem "enju_message", github: "next-l/enju_message", branch: "rails4"
 gem "enju_event", github: "next-l/enju_event", branch: "rails4"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "rails4"
-gem "acts_as_list", github: "swanandp/acts_as_list"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
