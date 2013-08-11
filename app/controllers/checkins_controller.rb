@@ -2,7 +2,7 @@ class CheckinsController < ApplicationController
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
   before_action :get_basket, :only => [:index, :create]
-  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
+  #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkins
   # GET /checkins.json
