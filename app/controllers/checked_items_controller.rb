@@ -6,9 +6,9 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items.json
   def index
     if @basket
-      @checked_items = @basket.checked_items.page(params[:page])
+      @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
     else
-      @checked_items = CheckedItem.page(params[:page])
+      @checked_items = CheckedItem.order('created_at DESC').page(params[:page])
     end
     @checked_item = CheckedItem.new
 
@@ -68,7 +68,7 @@ class CheckedItemsController < ApplicationController
         format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
         format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
       else
-        @checked_items = @basket.checked_items
+        @checked_items = @basket.checked_items.order('created_at DESC').page(1)
         format.html { render :action => "index" }
         format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
         format.js { render :action => "index" }
