@@ -34,11 +34,11 @@ describe Reserve do
   end
 
   it "should send accepted message" do
-    old_admin_count = User.find('admin').received_messages.count
+    old_admin_count = User.friendly.find('admin').received_messages.count
     old_user_count = reserves(:reserve_00002).user.received_messages.count
     reserves(:reserve_00002).send_message.should be_true
     # 予約者と図書館の両方に送られる
-    User.find('admin').received_messages.count.should eq old_admin_count + 1
+    User.friendly.find('admin').received_messages.count.should eq old_admin_count + 1
     reserves(:reserve_00002).user.received_messages.count.should eq old_user_count + 1
   end
 
