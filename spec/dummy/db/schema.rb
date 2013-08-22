@@ -412,8 +412,6 @@ ActiveRecord::Schema.define(:version => 20130519065837) do
   add_index "lending_policies", ["item_id", "user_group_id"], :name => "index_lending_policies_on_item_id_and_user_group_id", :unique => true
 
   create_table "libraries", :force => true do |t|
-    t.integer  "agent_id"
-    t.string   "agent_type"
     t.string   "name",                                   :null => false
     t.text     "display_name"
     t.string   "short_display_name",                     :null => false
@@ -437,7 +435,6 @@ ActiveRecord::Schema.define(:version => 20130519065837) do
     t.string   "isil"
   end
 
-  add_index "libraries", ["agent_id"], :name => "index_libraries_on_agent_id", :unique => true
   add_index "libraries", ["library_group_id"], :name => "index_libraries_on_library_group_id"
   add_index "libraries", ["name"], :name => "index_libraries_on_name", :unique => true
 
