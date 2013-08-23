@@ -20,8 +20,8 @@ gem "enju_message", github: "next-l/enju_message", branch: "rails4"
 gem "enju_event", github: "next-l/enju_event", branch: "rails4"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "rails4"
 gem "enju_export", github: "next-l/enju_export", branch: "rails4"
-gem "sunspot_rails", github: "sunspot/sunspot", branch: "rails4"
-gem "sunspot_solr", github: "sunspot/sunspot", branch: "rails4"
+gem "sunspot_rails", github: "sunspot/sunspot"
+gem "sunspot_solr", github: "sunspot/sunspot"
 gem "paper_trail", github: "airblade/paper_trail", branch: "rails4"
 
 # To use debugger
