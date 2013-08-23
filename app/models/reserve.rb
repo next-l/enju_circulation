@@ -337,7 +337,7 @@ class Reserve < ActiveRecord::Base
 
       expired_period = manifestation.try(:reservation_expired_period, user)
       if expired_period.nil?
-        errors[:base] << I18n.t('reserve.this_agent_cannot_reserve')
+        errors[:base] << I18n.t('reserve.this_patron_cannot_reserve')
       end
     end
   end
