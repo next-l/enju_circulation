@@ -8,6 +8,9 @@ module EnjuCirculation
         can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.series_master? and !manifestation.is_reserved?
         end
+        can [:destroy, :delete], Item do |item|
+          true if item.removable?
+        end
         can :manage, [
           Basket,
           CarrierTypeHasCheckoutType,
@@ -38,7 +41,7 @@ module EnjuCirculation
         can [:destroy, :delete], LendingPolicy
       when 'Librarian'
         can [:destroy, :delete], Item do |item|
-          item.checkouts.not_returned.empty?
+          true if item.removable?
         end
         can [:destroy, :delete], Manifestation do |manifestation|
           manifestation.items.empty? and !manifestation.series_master? and !manifestation.is_reserved?
