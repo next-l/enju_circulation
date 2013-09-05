@@ -22,7 +22,6 @@ gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", bra
 gem "enju_export", github: "next-l/enju_export", branch: "rails4"
 gem "sunspot_rails", github: "sunspot/sunspot"
 gem "sunspot_solr", github: "sunspot/sunspot"
-gem "paper_trail", github: "airblade/paper_trail"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
