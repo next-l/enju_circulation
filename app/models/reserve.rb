@@ -318,7 +318,7 @@ class Reserve < ActiveRecord::Base
 
   def checked_out_now?
     if user and manifestation
-      true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck(:item_id)).empty?
+      true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
     end
   end
 
