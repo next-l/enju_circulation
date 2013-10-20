@@ -19,7 +19,7 @@ describe ItemHasUseRestrictionsController do
 
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC'))
+        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC').page(1))
       end
     end
 
@@ -28,7 +28,7 @@ describe ItemHasUseRestrictionsController do
 
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC'))
+        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC').page(1))
       end
     end
 

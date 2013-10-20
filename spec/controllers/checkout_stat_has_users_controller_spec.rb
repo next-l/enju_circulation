@@ -13,7 +13,7 @@ describe CheckoutStatHasUsersController do
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.all)
+        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe CheckoutStatHasUsersController do
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.all)
+        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.page(1))
       end
     end
 
