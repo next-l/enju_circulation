@@ -352,31 +352,30 @@ ActiveRecord::Schema.define(version: 20130519065837) do
   add_index "item_has_use_restrictions", ["use_restriction_id"], name: "index_item_has_use_restrictions_on_use_restriction_id"
 
   create_table "items", force: true do |t|
+    t.integer  "manifestation_id"
     t.string   "call_number"
     t.string   "item_identifier"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.integer  "shelf_id",                    default: 1,     null: false
-    t.boolean  "include_supplements",         default: false, null: false
-    t.integer  "checkouts_count",             default: 0,     null: false
-    t.integer  "owns_count",                  default: 0,     null: false
-    t.integer  "resource_has_subjects_count", default: 0,     null: false
+    t.integer  "shelf_id",              default: 1,     null: false
+    t.boolean  "include_supplements",   default: false, null: false
     t.text     "note"
     t.string   "url"
     t.integer  "price"
-    t.integer  "lock_version",                default: 0,     null: false
-    t.integer  "required_role_id",            default: 1,     null: false
+    t.integer  "lock_version",          default: 0,     null: false
+    t.integer  "required_role_id",      default: 1,     null: false
     t.string   "state"
-    t.integer  "required_score",              default: 0,     null: false
+    t.integer  "required_score",        default: 0,     null: false
     t.datetime "acquired_at"
-    t.integer  "circulation_status_id",       default: 5,     null: false
-    t.integer  "checkout_type_id",            default: 1,     null: false
+    t.integer  "circulation_status_id", default: 5,     null: false
+    t.integer  "checkout_type_id",      default: 1,     null: false
   end
 
   add_index "items", ["checkout_type_id"], name: "index_items_on_checkout_type_id"
   add_index "items", ["circulation_status_id"], name: "index_items_on_circulation_status_id"
   add_index "items", ["item_identifier"], name: "index_items_on_item_identifier"
+  add_index "items", ["manifestation_id"], name: "index_items_on_manifestation_id"
   add_index "items", ["required_role_id"], name: "index_items_on_required_role_id"
   add_index "items", ["shelf_id"], name: "index_items_on_shelf_id"
 

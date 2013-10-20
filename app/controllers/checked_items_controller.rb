@@ -1,5 +1,6 @@
 class CheckedItemsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
   before_action :get_basket, :only => [:index, :new, :create, :update]
 
   # GET /checked_items

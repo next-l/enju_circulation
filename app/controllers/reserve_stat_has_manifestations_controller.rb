@@ -1,5 +1,6 @@
 class ReserveStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
 
   # GET /reserve_stat_has_manifestations
   # GET /reserve_stat_has_manifestations.json

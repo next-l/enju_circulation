@@ -31,7 +31,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should be_empty
+        assigns(:reserve_stat_has_users).should be_nil
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe ReserveStatHasUsersController do
     describe "When not logged in" do
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should be_empty
+        assigns(:reserve_stat_has_users).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
