@@ -2,7 +2,7 @@
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.checked_item')) -%></h1>
 <div id="content_list">
   <%= render 'checked_item' %>
-  <%= paginate @checked_items %>
+  <%= paginate(@checked_items, :theme => 'enju_leaf') %>
 </div>
 </div>
 
