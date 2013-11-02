@@ -1,5 +1,6 @@
 class UserReserveStatsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
   after_action :convert_charset, :only => :show
 
   # GET /user_reserve_stats

@@ -358,21 +358,18 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.integer  "shelf_id",                    default: 1,     null: false
-    t.boolean  "include_supplements",         default: false, null: false
-    t.integer  "checkouts_count",             default: 0,     null: false
-    t.integer  "owns_count",                  default: 0,     null: false
-    t.integer  "resource_has_subjects_count", default: 0,     null: false
+    t.integer  "shelf_id",              default: 1,     null: false
+    t.boolean  "include_supplements",   default: false, null: false
     t.text     "note"
     t.string   "url"
     t.integer  "price"
-    t.integer  "lock_version",                default: 0,     null: false
-    t.integer  "required_role_id",            default: 1,     null: false
+    t.integer  "lock_version",          default: 0,     null: false
+    t.integer  "required_role_id",      default: 1,     null: false
     t.string   "state"
-    t.integer  "required_score",              default: 0,     null: false
+    t.integer  "required_score",        default: 0,     null: false
     t.datetime "acquired_at"
-    t.integer  "circulation_status_id",       default: 5,     null: false
-    t.integer  "checkout_type_id",            default: 1,     null: false
+    t.integer  "circulation_status_id", default: 5,     null: false
+    t.integer  "checkout_type_id",      default: 1,     null: false
   end
 
   add_index "items", ["checkout_type_id"], name: "index_items_on_checkout_type_id"
