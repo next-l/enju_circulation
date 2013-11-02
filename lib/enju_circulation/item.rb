@@ -27,11 +27,11 @@ module EnjuCirculation
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
-        scope :for_checkout, includes(:circulation_status, :use_restriction).where(
+        scope :for_checkout, -> {includes(:circulation_status, :use_restriction).where(
             'circulation_statuses.name' => FOR_CHECKOUT_CIRCULATION_STATUS,
             'use_restrictions.name' => FOR_CHECKOUT_USE_RESTRICTION
-          ).where('item_identifier IS NOT NULL')
-        scope :removed, includes(:circulation_status).where('circulation_statuses.name' => 'Removed')
+          ).where('item_identifier IS NOT NULL')}
+        scope :removed, -> {includes(:circulation_status).where('circulation_statuses.name' => 'Removed')}
         has_many :checkouts
         has_many :reserves
         has_many :checked_items

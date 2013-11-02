@@ -19,7 +19,7 @@ describe UseRestrictionsController do
 
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should eq(UseRestriction.all)
+        assigns(:use_restrictions).should eq(UseRestriction.page(1))
       end
     end
 
@@ -28,7 +28,7 @@ describe UseRestrictionsController do
 
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should eq(UseRestriction.all)
+        assigns(:use_restrictions).should eq(UseRestriction.page(1))
       end
     end
 

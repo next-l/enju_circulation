@@ -2,6 +2,10 @@ class CirculationStatusesController < InheritedResources::Base
   respond_to :html, :json
   load_and_authorize_resource
 
+  def index
+    @circulation_statuses = CirculationStatus.page(params[:page])
+  end
+
   def update
     @circulation_status = CirculationStatus.find(params[:id])
     if params[:move]

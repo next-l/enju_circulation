@@ -2,6 +2,10 @@ class UseRestrictionsController < InheritedResources::Base
   respond_to :html, :json
   load_and_authorize_resource
 
+  def index
+    @use_restrictions = UseRestriction.page(params[:page])
+  end
+
   def update
     @use_restriction = UseRestriction.find(params[:id])
     if params[:move]

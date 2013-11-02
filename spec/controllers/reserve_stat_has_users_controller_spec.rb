@@ -13,7 +13,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.all)
+        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.all)
+        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.page(1))
       end
     end
 

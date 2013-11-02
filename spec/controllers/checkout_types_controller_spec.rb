@@ -13,7 +13,7 @@ describe CheckoutTypesController do
 
       it "assigns all checkout_types as @checkout_types" do
         get :index
-        assigns(:checkout_types).should eq(CheckoutType.all)
+        assigns(:checkout_types).should eq(CheckoutType.order(:position).page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe CheckoutTypesController do
 
       it "assigns all checkout_types as @checkout_types" do
         get :index
-        assigns(:checkout_types).should eq(CheckoutType.all)
+        assigns(:checkout_types).should eq(CheckoutType.order(:position).page(1))
       end
     end
 

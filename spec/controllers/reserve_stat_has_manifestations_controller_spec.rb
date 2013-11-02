@@ -13,7 +13,7 @@ describe ReserveStatHasManifestationsController do
 
       it "assigns all reserve_stat_has_manifestations as @reserve_stat_has_manifestations" do
         get :index
-        assigns(:reserve_stat_has_manifestations).should eq(ReserveStatHasManifestation.all)
+        assigns(:reserve_stat_has_manifestations).should eq(ReserveStatHasManifestation.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe ReserveStatHasManifestationsController do
 
       it "assigns all reserve_stat_has_manifestations as @reserve_stat_has_manifestations" do
         get :index
-        assigns(:reserve_stat_has_manifestations).should eq(ReserveStatHasManifestation.all)
+        assigns(:reserve_stat_has_manifestations).should eq(ReserveStatHasManifestation.page(1))
       end
     end
 
@@ -31,7 +31,7 @@ describe ReserveStatHasManifestationsController do
 
       it "assigns all reserve_stat_has_manifestations as @reserve_stat_has_manifestations" do
         get :index
-        assigns(:reserve_stat_has_manifestations).should be_empty
+        assigns(:reserve_stat_has_manifestations).should be_nil
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe ReserveStatHasManifestationsController do
     describe "When not logged in" do
       it "assigns all reserve_stat_has_manifestations as @reserve_stat_has_manifestations" do
         get :index
-        assigns(:reserve_stat_has_manifestations).should be_empty
+        assigns(:reserve_stat_has_manifestations).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

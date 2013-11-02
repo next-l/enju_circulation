@@ -13,7 +13,7 @@ describe UserReserveStatsController do
 
       it "assigns all user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.all)
+        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe UserReserveStatsController do
 
       it "assigns all user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.all)
+        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
       end
     end
 
@@ -31,14 +31,14 @@ describe UserReserveStatsController do
 
       it "assigns all user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.all)
+        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
       end
     end
 
     describe "When not logged in" do
       it "should not assign user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.all)
+        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
       end
     end
   end

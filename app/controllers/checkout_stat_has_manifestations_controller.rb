@@ -1,5 +1,6 @@
 class CheckoutStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
 
   # GET /checkout_stat_has_manifestations
   # GET /checkout_stat_has_manifestations.json
