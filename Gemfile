@@ -15,3 +15,5 @@ gem "jquery-rails"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem 'enju_leaf', github: 'nabeta/enju_leaf', branch: 'gem'
