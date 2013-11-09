@@ -1,10 +1,20 @@
 class UseRestriction < ActiveRecord::Base
   attr_accessible :name, :display_name, :note
-  include MasterModel
-  default_scope :order => 'use_restrictions.position'
-  scope :available, where(:name => ['Not For Loan', 'Limited Circulation, Normal Loan Period'])
+  #include MasterModel
+  acts_as_list
+  validates :name, :presence => true, :format => {:with => /\A[0-9A-Za-z][0-9A-Za-z_\-\s,]*[0-9a-z]\Z/}
+  validates :display_name, :presence => true
+  before_validation :set_display_name, :on => :create
+  normalize_attributes :name
+
+  default_scope {order('use_restrictions.position')}
+  scope :available, -> {where(:name => ['Not For Loan', 'Limited Circulation, Normal Loan Period'])}
   has_many :item_has_use_restrictions
   has_many :items, :through => :item_has_use_restrictions
+
+  def set_display_name
+    self.display_name = "#{I18n.locale}: #{self.name}" if self.display_name.blank?
+  end
 end
 
 # == Schema Information
