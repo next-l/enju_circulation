@@ -32,7 +32,7 @@ class Checkout < ActiveRecord::Base
       user.try(:user_number)
     end
     string :item_identifier do
-      item.item_identifier
+      item.try(:item_identifier)
     end
     time :due_date
     time :created_at
