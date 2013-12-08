@@ -12,7 +12,7 @@ namespace :enju_circulation do
     puts 'initial fixture files loaded.'
   end
 
-  desc 'Batch processing for circulation'
+  desc 'Calculate stats'
   task :stat => :environment do
     UserCheckoutStat.calculate_stat
     UserReserveStat.calculate_stat
@@ -20,11 +20,13 @@ namespace :enju_circulation do
     ManifestationReserveStat.calculate_stat
   end
 
+  desc 'Expire circulations and reservations'
   task :expire => :environment do
     Reserve.expire
     Basket.expire
   end
 
+  desc 'Sending due date notifications'
   task :send_notification => :environment do
     Checkout.send_due_date_notification
     Checkout.send_overdue_notification
