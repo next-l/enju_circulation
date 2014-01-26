@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "enju_circulation"
   s.version     = EnjuCirculation::VERSION
   s.authors     = ["Kosuke Tanabe"]
-  s.email       = ["tanabe@mwr.mediacom.keio.ac.jp"]
+  s.email       = ["kosuke@e23.jp"]
   s.homepage    = "https://github.com/next-l/enju_circulation"
   s.summary     = "enju_circulation plugin"
   s.description = "Circulation management for Next-L Enju"
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids}/*"]
 
-  s.add_dependency "enju_biblio", "~> 0.1.0.pre48"
+  s.add_dependency "enju_biblio", "~> 0.1.0.pre49"
   s.add_dependency "enju_library", "~> 0.1.0.pre28"
   s.add_dependency "enju_message", "~> 0.1.14.pre11"
   s.add_dependency "enju_event", "~> 0.1.17.pre13"
