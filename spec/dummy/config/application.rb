@@ -56,4 +56,3 @@ end
 
 require 'nkf'
 require 'enju_leaf'
-require 'mobylette'
