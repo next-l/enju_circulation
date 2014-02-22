@@ -564,8 +564,8 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.integer  "issue_number"
     t.integer  "serial_number"
     t.string   "doi"
-    t.text     "statement_of_responsibility"
     t.boolean  "periodical"
+    t.text     "statement_of_responsibility"
   end
 
   add_index "manifestations", ["access_address"], name: "index_manifestations_on_access_address"
