@@ -1,7 +1,7 @@
 class CheckoutsController < ApplicationController
   before_action :store_location, :only => :index
-  load_and_authorize_resource :except => [:index, :remove_all]
-  authorize_resource :only => [:index, :remove_all]
+  load_and_authorize_resource :except => [:index, :create, :remove_all]
+  authorize_resource :only => [:index, :create, :remove_all]
   before_action :get_user, :only => [:index, :remove_all]
   before_action :get_item, :only => :index
   after_action :convert_charset, :only => :index
@@ -134,7 +134,7 @@ class CheckoutsController < ApplicationController
   # PUT /checkouts/1
   # PUT /checkouts/1.json
   def update
-    @checkout.assign_attributes(params[:checkout])
+    @checkout.assign_attributes(checkout_params)
     @checkout.due_date = @checkout.due_date.end_of_day
     @checkout.checkout_renewal_count += 1
 
@@ -177,5 +177,10 @@ class CheckoutsController < ApplicationController
       format.html { redirect_to checkouts_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def checkout_params
+    params.require(:checkout).permit(:due_date)
   end
 end

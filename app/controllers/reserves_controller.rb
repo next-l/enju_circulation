@@ -158,7 +158,7 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    @reserve = Reserve.new(params[:reserve])
+    @reserve = Reserve.new(reserve_params)
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
@@ -190,12 +190,12 @@ class ReservesController < ApplicationController
   # PUT /reserves/1.json
   def update
     if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(params[:reserve], :as => :admin)
+      @reserve.assign_attributes(admin_reserve_params)
     else
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(params[:reserve], :as => :user_update)
+      @reserve.assign_attributes(user_reserve_params)
     end
 
     if @reserve.valid?
@@ -247,5 +247,27 @@ class ReservesController < ApplicationController
       format.html { redirect_to reserves_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.reserve')) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def reserve_params
+    params.require(:reserve).permit(
+      :manifestation_id, :user_number, :expired_at
+    )
+  end
+
+  def user_reserve_params
+    params.require(:reserve).permit(
+      :expired_at
+    )
+  end
+
+  def admin_reserve_params
+    params.require(:reserve).permit(
+      :manifestation_id, :item_identifier, :user_number,
+      :expired_at, :request_status_type, :canceled_at, :checked_out_at,
+      :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+      :retained_at, :postponed_at, :force_retaining
+    )
   end
 end

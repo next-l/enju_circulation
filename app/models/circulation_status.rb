@@ -1,5 +1,5 @@
 class CirculationStatus < ActiveRecord::Base
-  attr_accessible :name, :display_name, :note
+  #attr_accessible :name, :display_name, :note
   include MasterModel
   default_scope {order("circulation_statuses.position")}
   scope :available_for_checkout, -> {where(:name => 'Available On Shelf')}
