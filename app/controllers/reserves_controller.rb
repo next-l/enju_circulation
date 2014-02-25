@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
   before_action :store_location, :only => [:index, :new]
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   before_action :get_user, :only => [:index, :new]
   before_action :store_page
   helper_method :get_manifestation

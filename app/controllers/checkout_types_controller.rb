@@ -1,6 +1,6 @@
 class CheckoutTypesController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   before_action :get_user_group
 
   # GET /checkout_types

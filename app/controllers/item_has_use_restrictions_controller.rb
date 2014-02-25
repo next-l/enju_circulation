@@ -1,5 +1,6 @@
 class ItemHasUseRestrictionsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   before_action :get_item
 
   # GET /item_has_use_restrictions

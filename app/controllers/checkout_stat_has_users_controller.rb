@@ -1,6 +1,6 @@
 class CheckoutStatHasUsersController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
 
   # GET /checkout_stat_has_users
   # GET /checkout_stat_has_users.json

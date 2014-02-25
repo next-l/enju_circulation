@@ -1,5 +1,6 @@
 class BasketsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /baskets
@@ -46,7 +47,7 @@ class BasketsController < ApplicationController
   # POST /baskets
   # POST /baskets.json
   def create
-    @basket = Basket.new(params[:basket])
+    @basket = Basket.new(basket_params)
     @user = User.where(:user_number => @basket.user_number).first if @basket.user_number
     if @user
       if @user.user_number?
@@ -105,5 +106,12 @@ class BasketsController < ApplicationController
       format.html { redirect_to user_checkouts_url(@basket.user) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def basket_params
+    params.require(:basket).permit(
+      :note, :user_number, :username
+    )
   end
 end

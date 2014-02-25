@@ -1,5 +1,6 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   helper_method :get_user_group, :get_checkout_type
   before_action :prepare_options, :only => [:new, :edit]
 

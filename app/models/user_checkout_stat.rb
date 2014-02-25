@@ -1,5 +1,4 @@
 class UserCheckoutStat < ActiveRecord::Base
-  #attr_accessible :start_date, :end_date, :note
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {where(:state => 'pending')}

@@ -1,6 +1,6 @@
 class UserCheckoutStatsController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   after_action :convert_charset, :only => :show
 
   # GET /user_checkout_stats
@@ -49,7 +49,7 @@ class UserCheckoutStatsController < ApplicationController
   # POST /user_checkout_stats
   # POST /user_checkout_stats.json
   def create
-    @user_checkout_stat = UserCheckoutStat.new(params[:user_checkout_stat])
+    @user_checkout_stat = UserCheckoutStat.new(user_checkout_stat_params)
 
     respond_to do |format|
       if @user_checkout_stat.save
@@ -66,7 +66,7 @@ class UserCheckoutStatsController < ApplicationController
   # PUT /user_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @user_checkout_stat.update_attributes(params[:user_checkout_stat])
+      if @user_checkout_stat.update_attributes(user_checkout_stat_params)
         format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
       else
@@ -85,5 +85,12 @@ class UserCheckoutStatsController < ApplicationController
       format.html { redirect_to user_checkout_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def user_checkout_stat_params
+    params.require(:user_checkout_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

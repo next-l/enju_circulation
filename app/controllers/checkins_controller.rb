@@ -1,6 +1,6 @@
 class CheckinsController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   before_action :get_basket, :only => [:index, :create]
   #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 

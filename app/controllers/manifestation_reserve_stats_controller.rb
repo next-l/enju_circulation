@@ -1,6 +1,6 @@
 class ManifestationReserveStatsController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
   after_action :convert_charset, :only => :show
 
   # GET /manifestation_reserve_stats
@@ -49,7 +49,7 @@ class ManifestationReserveStatsController < ApplicationController
   # POST /manifestation_reserve_stats
   # POST /manifestation_reserve_stats.json
   def create
-    @manifestation_reserve_stat = ManifestationReserveStat.new(params[:manifestation_reserve_stat])
+    @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
@@ -66,7 +66,7 @@ class ManifestationReserveStatsController < ApplicationController
   # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_reserve_stat.update_attributes(params[:manifestation_reserve_stat])
+      if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
         format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
@@ -85,5 +85,12 @@ class ManifestationReserveStatsController < ApplicationController
       format.html { redirect_to manifestation_reserve_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def manifestation_reserve_stat_params
+    params.require(:manifestation_reserve_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

@@ -1,7 +1,7 @@
 class UseRestrictionsController < InheritedResources::Base
   respond_to :html, :json
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
+  load_and_authorize_resource :except => [:index, :create]
+  authorize_resource :only => [:index, :create]
 
   def index
     @use_restrictions = UseRestriction.page(params[:page])
@@ -14,5 +14,12 @@ class UseRestrictionsController < InheritedResources::Base
       return
     end
     update!
+  end
+
+  private
+  def permitted_params
+    params.permit(
+      :name, :display_name, :note
+    )
   end
 end
