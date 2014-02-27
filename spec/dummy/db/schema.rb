@@ -13,6 +13,17 @@
 
 ActiveRecord::Schema.define(version: 20130519065837) do
 
+  create_table "accepts", force: true do |t|
+    t.integer  "basket_id"
+    t.integer  "item_id"
+    t.integer  "librarian_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "accepts", ["basket_id"], name: "index_accepts_on_basket_id"
+  add_index "accepts", ["item_id"], name: "index_accepts_on_item_id"
+
   create_table "agent_import_files", force: true do |t|
     t.integer  "parent_id"
     t.string   "content_type"
@@ -141,45 +152,6 @@ ActiveRecord::Schema.define(version: 20130519065837) do
   end
 
   add_index "baskets", ["user_id"], name: "index_baskets_on_user_id"
-
-  create_table "bookmark_stat_has_manifestations", force: true do |t|
-    t.integer  "bookmark_stat_id", null: false
-    t.integer  "manifestation_id", null: false
-    t.integer  "bookmarks_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "bookmark_stat_has_manifestations", ["bookmark_stat_id"], name: "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
-  add_index "bookmark_stat_has_manifestations", ["manifestation_id"], name: "index_bookmark_stat_has_manifestations_on_manifestation_id"
-
-  create_table "bookmark_stats", force: true do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.datetime "started_at"
-    t.datetime "completed_at"
-    t.text     "note"
-    t.string   "state"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "bookmark_stats", ["state"], name: "index_bookmark_stats_on_state"
-
-  create_table "bookmarks", force: true do |t|
-    t.integer  "user_id",          null: false
-    t.integer  "manifestation_id"
-    t.text     "title"
-    t.string   "url"
-    t.text     "note"
-    t.boolean  "shared"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "bookmarks", ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
-  add_index "bookmarks", ["url"], name: "index_bookmarks_on_url"
-  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
   create_table "bookstores", force: true do |t|
     t.text     "name",             null: false
@@ -312,32 +284,6 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "updated_at"
   end
 
-  create_table "classification_types", force: true do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
-    t.text     "note"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "classifications", force: true do |t|
-    t.integer  "parent_id"
-    t.string   "category",               null: false
-    t.text     "note"
-    t.integer  "classification_type_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.integer  "manifestation_id"
-  end
-
-  add_index "classifications", ["category"], name: "index_classifications_on_category"
-  add_index "classifications", ["classification_type_id"], name: "index_classifications_on_classification_type_id"
-  add_index "classifications", ["manifestation_id"], name: "index_classifications_on_manifestation_id"
-  add_index "classifications", ["parent_id"], name: "index_classifications_on_parent_id"
-
   create_table "content_types", force: true do |t|
     t.string   "name",         null: false
     t.text     "display_name"
@@ -382,22 +328,6 @@ ActiveRecord::Schema.define(version: 20130519065837) do
 
   add_index "creates", ["agent_id"], name: "index_creates_on_agent_id"
   add_index "creates", ["work_id"], name: "index_creates_on_work_id"
-
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "queue"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "donates", force: true do |t|
     t.integer  "agent_id",   null: false
@@ -539,34 +469,6 @@ ActiveRecord::Schema.define(version: 20130519065837) do
   add_index "import_requests", ["manifestation_id"], name: "index_import_requests_on_manifestation_id"
   add_index "import_requests", ["user_id"], name: "index_import_requests_on_user_id"
 
-  create_table "inventories", force: true do |t|
-    t.integer  "item_id"
-    t.integer  "inventory_file_id"
-    t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "inventories", ["inventory_file_id"], name: "index_inventories_on_inventory_file_id"
-  add_index "inventories", ["item_id"], name: "index_inventories_on_item_id"
-
-  create_table "inventory_files", force: true do |t|
-    t.string   "filename"
-    t.string   "content_type"
-    t.integer  "size"
-    t.integer  "user_id"
-    t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "inventory_file_name"
-    t.string   "inventory_content_type"
-    t.integer  "inventory_file_size"
-    t.datetime "inventory_updated_at"
-    t.string   "inventory_fingerprint"
-  end
-
-  add_index "inventory_files", ["user_id"], name: "index_inventory_files_on_user_id"
-
   create_table "item_has_use_restrictions", force: true do |t|
     t.integer  "item_id",            null: false
     t.integer  "use_restriction_id", null: false
@@ -660,16 +562,19 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.text     "opening_hour"
     t.string   "isil"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "libraries", ["library_group_id"], name: "index_libraries_on_library_group_id"
   add_index "libraries", ["name"], name: "index_libraries_on_name", unique: true
 
   create_table "library_groups", force: true do |t|
-    t.string   "name",                                                           null: false
+    t.string   "name",                                              null: false
     t.text     "display_name"
-    t.string   "short_name",                                                     null: false
+    t.string   "short_name",                                        null: false
     t.string   "email"
     t.text     "my_networks"
     t.text     "login_banner"
@@ -679,8 +584,7 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "admin_networks"
-    t.boolean  "allow_bookmark_external_url", default: false,                    null: false
-    t.string   "url",                         default: "http://localhost:3000/"
+    t.string   "url",            default: "http://localhost:3000/"
   end
 
   add_index "library_groups", ["short_name"], name: "index_library_groups_on_short_name"
@@ -1049,12 +953,13 @@ ActiveRecord::Schema.define(version: 20130519065837) do
   add_index "resource_import_results", ["resource_import_file_id"], name: "index_resource_import_results_on_resource_import_file_id"
 
   create_table "roles", force: true do |t|
-    t.string   "name"
-    t.text     "display_name"
+    t.string   "name",                     null: false
+    t.string   "display_name"
     t.text     "note"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score",        default: 0, null: false
+    t.integer  "position"
   end
 
   create_table "search_engines", force: true do |t|
@@ -1111,78 +1016,31 @@ ActiveRecord::Schema.define(version: 20130519065837) do
 
   add_index "shelves", ["library_id"], name: "index_shelves_on_library_id"
 
-  create_table "subject_heading_type_has_subjects", force: true do |t|
-    t.integer  "subject_id",              null: false
-    t.string   "subject_type"
-    t.integer  "subject_heading_type_id", null: false
+  create_table "subscribes", force: true do |t|
+    t.integer  "subscription_id", null: false
+    t.integer  "work_id",         null: false
+    t.datetime "start_at",        null: false
+    t.datetime "end_at",          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "subject_heading_type_has_subjects", ["subject_id"], name: "index_subject_heading_type_has_subjects_on_subject_id"
+  add_index "subscribes", ["subscription_id"], name: "index_subscribes_on_subscription_id"
+  add_index "subscribes", ["work_id"], name: "index_subscribes_on_work_id"
 
-  create_table "subject_heading_types", force: true do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
+  create_table "subscriptions", force: true do |t|
+    t.text     "title",                        null: false
     t.text     "note"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "subject_types", force: true do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
-    t.text     "note"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "subjects", force: true do |t|
-    t.integer  "parent_id"
-    t.integer  "use_term_id"
-    t.string   "term"
-    t.text     "term_transcription"
-    t.integer  "subject_type_id",                     null: false
-    t.text     "scope_note"
-    t.text     "note"
-    t.integer  "required_role_id",        default: 1, null: false
-    t.integer  "lock_version",            default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "order_list_id"
     t.datetime "deleted_at"
-    t.string   "url"
-    t.integer  "manifestation_id"
-    t.integer  "subject_heading_type_id"
-  end
-
-  add_index "subjects", ["manifestation_id"], name: "index_subjects_on_manifestation_id"
-  add_index "subjects", ["parent_id"], name: "index_subjects_on_parent_id"
-  add_index "subjects", ["required_role_id"], name: "index_subjects_on_required_role_id"
-  add_index "subjects", ["subject_type_id"], name: "index_subjects_on_subject_type_id"
-  add_index "subjects", ["term"], name: "index_subjects_on_term"
-  add_index "subjects", ["use_term_id"], name: "index_subjects_on_use_term_id"
-
-  create_table "taggings", force: true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context"
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", force: true do |t|
-    t.string   "name"
-    t.string   "name_transcription"
+    t.integer  "subscribes_count", default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "subscriptions", ["order_list_id"], name: "index_subscriptions_on_order_list_id"
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
 
   create_table "use_restrictions", force: true do |t|
     t.string   "name",         null: false
@@ -1228,18 +1086,17 @@ ActiveRecord::Schema.define(version: 20130519065837) do
 
   create_table "user_groups", force: true do |t|
     t.string   "name"
-    t.text     "string"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.integer  "valid_period_for_new_user",        default: 0, null: false
-    t.datetime "expired_at"
     t.integer  "number_of_day_to_notify_overdue",  default: 1, null: false
     t.integer  "number_of_day_to_notify_due_date", default: 7, null: false
     t.integer  "number_of_time_to_notify_overdue", default: 3, null: false
+    t.integer  "valid_period_for_new_user",        default: 0, null: false
+    t.datetime "expired_at"
   end
 
   create_table "user_has_roles", force: true do |t|
@@ -1248,6 +1105,9 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "user_has_roles", ["role_id"], name: "index_user_has_roles_on_role_id"
+  add_index "user_has_roles", ["user_id"], name: "index_user_has_roles_on_user_id"
 
   create_table "user_reserve_stats", force: true do |t|
     t.datetime "start_date"
@@ -1277,7 +1137,6 @@ ActiveRecord::Schema.define(version: 20130519065837) do
     t.datetime "updated_at"
     t.boolean  "save_checkout_history",    default: false, null: false
     t.string   "checkout_icalendar_token"
-    t.boolean  "share_bookmarks"
     t.string   "username"
     t.string   "user_number"
     t.string   "state"
@@ -1302,28 +1161,5 @@ ActiveRecord::Schema.define(version: 20130519065837) do
   add_index "users", ["user_group_id"], name: "index_users_on_user_group_id"
   add_index "users", ["user_number"], name: "index_users_on_user_number", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
-
-  create_table "versions", force: true do |t|
-    t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false
-    t.string   "event",      null: false
-    t.string   "whodunnit"
-    t.text     "object"
-    t.datetime "created_at"
-  end
-
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-
-  create_table "work_has_subjects", force: true do |t|
-    t.integer  "subject_id"
-    t.string   "subject_type"
-    t.integer  "work_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "work_has_subjects", ["subject_id"], name: "index_work_has_subjects_on_subject_id"
-  add_index "work_has_subjects", ["work_id"], name: "index_work_has_subjects_on_work_id"
 
 end

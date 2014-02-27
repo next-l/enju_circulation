@@ -91,7 +91,7 @@ class CheckinsController < ApplicationController
   # PUT /checkins/1
   # PUT /checkins/1.json
   def update
-    @checkin.assign_attributes(params[:checkin])
+    @checkin.assign_attributes(checkin_params)
     @checkin.librarian = current_user
 
     respond_to do |format|
@@ -115,5 +115,10 @@ class CheckinsController < ApplicationController
       format.html { redirect_to checkins_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def checkin_params
+    params.require(:checkin).permit(:item_identifier)
   end
 end
