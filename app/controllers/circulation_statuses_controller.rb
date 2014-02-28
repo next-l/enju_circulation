@@ -15,4 +15,13 @@ class CirculationStatusesController < InheritedResources::Base
     end
     update!
   end
+
+  private
+  def permitted_params
+    params.permit(
+      circulation_status: [
+        :name, :display_name, :note
+      ]
+    )
+  end
 end

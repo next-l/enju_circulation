@@ -46,7 +46,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   # POST /item_has_use_restrictions
   # POST /item_has_use_restrictions.json
   def create
-    @item_has_use_restriction = ItemHasUseRestriction.new(params[:item_has_use_restriction])
+    @item_has_use_restriction = ItemHasUseRestriction.new(item_has_use_restriction_params)
     @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction])
 
     respond_to do |format|
@@ -64,7 +64,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   # PUT /item_has_use_restrictions/1
   # PUT /item_has_use_restrictions/1.json
   def update
-    @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction])
+    @item_has_use_restriction.assign_attributes(item_has_use_restriction_params)
     respond_to do |format|
       if @item_has_use_restriction.save
         format.html { redirect_to @item_has_use_restriction, :notice => t('controller.successfully_updated', :model => t('activerecord.models.item_has_use_restriction')) }
@@ -86,5 +86,12 @@ class ItemHasUseRestrictionsController < ApplicationController
       format.html { redirect_to item_has_use_restrictions_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def item_has_use_restriction_params
+    params.require(:item_has_use_restriction).permit(
+      :item_id, :use_restriction_id
+    )
   end
 end

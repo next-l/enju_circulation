@@ -13,7 +13,7 @@ class LendingPoliciesController < InheritedResources::Base
     @user_groups = UserGroup.order(:position)
   end
 
-  def lending_policy_params
+  def permitted_params
     params.permit(
       lending_policy: [
         :item_id, :user_group_id, :loan_period, :fixed_due_date,
