@@ -19,7 +19,7 @@ class UseRestrictionsController < InheritedResources::Base
   private
   def permitted_params
     params.permit(
-      :name, :display_name, :note
+      :use_restriction => [:name, :display_name, :note]
     )
   end
 end

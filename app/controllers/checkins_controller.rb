@@ -116,4 +116,9 @@ class CheckinsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def checkin_params
+    params.require(:checkin).permit(:item_identifier)
+  end
 end
