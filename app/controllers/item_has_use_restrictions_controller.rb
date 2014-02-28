@@ -47,7 +47,6 @@ class ItemHasUseRestrictionsController < ApplicationController
   # POST /item_has_use_restrictions.json
   def create
     @item_has_use_restriction = ItemHasUseRestriction.new(item_has_use_restriction_params)
-    @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction])
 
     respond_to do |format|
       if @item_has_use_restriction.save

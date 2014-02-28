@@ -1,6 +1,4 @@
 class ReserveStatHasUser < ActiveRecord::Base
-  #attr_accessible :user_reserve_stat_id, :user_id,
-  #  :as => :admin
   belongs_to :user_reserve_stat
   belongs_to :user
 
