@@ -109,4 +109,9 @@ class CheckoutTypesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def checkout_type_params
+    params.require(:checkout_type).permit(
+    )
+  end
 end
