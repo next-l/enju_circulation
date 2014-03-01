@@ -55,6 +55,7 @@ class CheckedItemsController < ApplicationController
     unless @basket
       access_denied; return
     end
+    @checked_item = CheckedItem.new(checked_item_params)
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
@@ -88,7 +89,7 @@ class CheckedItemsController < ApplicationController
     end
 
     respond_to do |format|
-      if @checked_item.update_attributes(params[:checked_item])
+      if @checked_item.update_attributes(checked_item_params)
         format.html { redirect_to @checked_item, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
@@ -107,5 +108,12 @@ class CheckedItemsController < ApplicationController
       format.html { redirect_to basket_checked_items_url(@checked_item.basket) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def checked_item_params
+    params.require(:checkin).permit(
+      :item_identifier, :ignore_restriction, :due_date_string
+    )
   end
 end

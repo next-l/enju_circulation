@@ -14,7 +14,8 @@ class LendingPoliciesController < InheritedResources::Base
   end
 
   def permitted_params
-    params.permit(:lending_policy => [
+    params.permit(
+      lending_policy: [
         :item_id, :user_group_id, :loan_period, :fixed_due_date,
         :renewal, :fine, :note, :position
       ]

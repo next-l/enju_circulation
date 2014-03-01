@@ -1,5 +1,4 @@
 class CheckedItem < ActiveRecord::Base
-  #attr_accessible :item_identifier, :ignore_restriction, :due_date_string
   belongs_to :item, touch: true #, :validate => true
   belongs_to :basket #, :validate => true
   belongs_to :librarian, :class_name => 'User' #, :validate => true
