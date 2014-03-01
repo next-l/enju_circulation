@@ -82,7 +82,7 @@ class CheckoutStatHasUsersController < ApplicationController
   private
   def checkout_stat_has_user_params
     params.require(:checkout_stat_has_user).permit(
-      :manifestation_checkout_stat_id, :manifestation_id
+      :manifestation_checkout_stat_id, :user_id
     )
   end
 end
