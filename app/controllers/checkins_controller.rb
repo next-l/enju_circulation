@@ -62,6 +62,7 @@ class CheckinsController < ApplicationController
     unless @basket
       access_denied; return
     end
+    @checkin = Checkin.new(checkin_params)
     @checkin.basket = @basket
     @checkin.librarian = current_user
 
