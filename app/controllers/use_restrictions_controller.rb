@@ -51,7 +51,7 @@ class UseRestrictionsController < ApplicationController
   # DELETE /use_restrictions/1
   def destroy
     @use_restriction.destroy
-    redirect_to use_restrictions_url, notice: 'Use restriction was successfully destroyed.'
+    redirect_to use_restrictions_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.use_restriction'))
   end
 
   private
