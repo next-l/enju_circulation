@@ -31,6 +31,8 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/new
   def new
+    @checkin = Checkin.new
+    authorize @checkin
     flash[:message] = nil
     if flash[:checkin_basket_id]
       @basket = Basket.find(flash[:checkin_basket_id])
@@ -39,8 +41,6 @@ class CheckinsController < ApplicationController
       @basket.user = current_user
       @basket.save!
     end
-    @checkin = Checkin.new
-    authorize @checkin
     @checkins = Kaminari::paginate_array([]).page(1)
     flash[:checkin_basket_id] = @basket.id
 

@@ -33,12 +33,12 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/new
   # GET /checked_items/new.json
   def new
+    @checked_item = CheckedItem.new
+    authorize @checked_item
     unless @basket
       redirect_to new_basket_url
       return
     end
-    @checked_item = CheckedItem.new
-    authorize @checked_item
     @checked_items = @basket.checked_items
 
     respond_to do |format|

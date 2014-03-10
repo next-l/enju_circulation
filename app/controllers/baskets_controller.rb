@@ -7,7 +7,7 @@ class BasketsController < ApplicationController
   def index
     authorize Basket
     if current_user.has_role?('Librarian')
-     @baskets = Basket.page(params[:page])
+     @baskets = Basket.order('baskets.id DESC').page(params[:page])
     else
       redirect_to new_basket_url
       return
@@ -85,7 +85,6 @@ class BasketsController < ApplicationController
     end
 
     respond_to do |format|
-      #if @basket.update_attributes({})
       if @basket.save(:validate => false)
         # 貸出完了時
         format.html { redirect_to user_checkouts_url(@basket.user), :notice => t('basket.checkout_completed') }

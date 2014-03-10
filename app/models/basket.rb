@@ -1,5 +1,4 @@
 class Basket < ActiveRecord::Base
-  default_scope {order('baskets.id DESC')}
   scope :will_expire, lambda {|date| {:conditions => ['created_at < ?', date]}}
   belongs_to :user, :validate => true
   has_many :accepts
