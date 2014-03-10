@@ -259,10 +259,10 @@ describe ReservesController do
         response.should be_forbidden
       end
 
-      it "should not get new reservation when user_number is not set" do
+      it "should get new reservation when user_number is not set" do
         sign_in users(:user2)
         get :new, :user_id => users(:user2).username, :manifestation_id => 3
-        response.should be_forbidden
+        response.should be_success
       end
     end
 

@@ -1,4 +1,12 @@
 class CheckoutPolicy < AdminPolicy
+  def show?
+    if user.try(:has_role?, 'Librarian')
+      true
+    elsif user and user == record.user
+      true
+    end
+  end
+
   def create?
     user.try(:has_role?, 'Librarian')
   end
