@@ -13,14 +13,14 @@
 <%- @use_restrictions.each do |use_restriction| -%>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
-      <%- if can? :update, use_restriction -%>
+      <%- if policy(use_restriction).update? -%>
         <%= move_position(use_restriction) -%>
       <%- end -%>
     </td>
     <td><%= link_to use_restriction.name, use_restriction -%></td>
     <td><%= link_to use_restriction.display_name.localize, use_restriction -%></td>
     <td>
-      <%- if can? :update, use_restriction -%>
+      <%- if policy(use_restriction).update? -%>
         <%= link_to t('page.edit'), edit_use_restriction_path(use_restriction) -%>
       <% end %>
       <%- if can? :delete, use_restriction -%>
