@@ -1,6 +1,6 @@
 class ManifestationCheckoutStatsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
   after_action :convert_charset, :only => :show
 
   # GET /manifestation_checkout_stats
@@ -35,6 +35,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/new.json
   def new
     @manifestation_checkout_stat = ManifestationCheckoutStat.new
+    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,6 +51,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # POST /manifestation_checkout_stats.json
   def create
     @manifestation_checkout_stat = ManifestationCheckoutStat.new(manifestation_checkout_stat_params)
+    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
@@ -88,6 +90,11 @@ class ManifestationCheckoutStatsController < ApplicationController
   end
 
   private
+  def set_manifestation_checkout_stat
+    @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
+    authorize @manifestation_checkout_stat
+  end
+
   def manifestation_checkout_stat_params
     params.require(:manifestation_checkout_stat).permit(
       :start_date, :end_date, :note

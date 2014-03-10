@@ -1,11 +1,11 @@
 class BasketsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
-  #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
+  before_action :set_basket, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /baskets
   # GET /baskets.json
   def index
+    authorize Basket
     if current_user.has_role?('Librarian')
      @baskets = Basket.page(params[:page])
     else
@@ -32,6 +32,7 @@ class BasketsController < ApplicationController
   # GET /baskets/new.json
   def new
     @basket = Basket.new
+    authorize @basket
     @basket.user_number = params[:user_number]
 
     respond_to do |format|
@@ -48,6 +49,7 @@ class BasketsController < ApplicationController
   # POST /baskets.json
   def create
     @basket = Basket.new(basket_params)
+    authorize @basket
     @user = User.where(:user_number => @basket.user_number).first if @basket.user_number
     if @user
       if @user.user_number?
@@ -109,6 +111,11 @@ class BasketsController < ApplicationController
   end
 
   private
+  def set_basket
+    @basket = Basket.find(params[:id])
+    authorize @basket
+  end
+
   def basket_params
     params.require(:basket).permit(
       :note, :user_number, :username

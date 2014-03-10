@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
+  before_action :set_reserve, only: [:show, :edit, :update, :destroy]
   before_action :store_location, :only => [:index, :new]
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
   before_action :get_user, :only => [:index, :new]
   before_action :store_page
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :index
   helper_method :get_manifestation
   helper_method :get_item
-  after_action :convert_charset, :only => :index
-  #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /reserves
   # GET /reserves.json
   def index
+    authorize Reserve
     unless current_user.has_role?('Librarian')
       if @user
         if current_user == @user
@@ -123,7 +123,8 @@ class ReservesController < ApplicationController
   # GET /reserves/new
   # GET /reserves/new.json
   def new
-    @reserve = Reserve.new(params[:reserve])
+    @reserve = Reserve.new
+    authorize @reserve
 
     if current_user.has_role?('Librarian')
       @reserve.user = @user
@@ -160,6 +161,7 @@ class ReservesController < ApplicationController
   def create
     @reserve = Reserve.new(reserve_params)
     @reserve.set_user
+    authorize @reserve
 
     if current_user.has_role?('Librarian')
       unless @reserve.user
@@ -250,6 +252,11 @@ class ReservesController < ApplicationController
   end
 
   private
+  def set_reserve
+    @reserve = Reserve.find(params[:id])
+    authorize @reserve
+  end
+
   def reserve_params
     params.require(:reserve).permit(
       :manifestation_id, :user_number, :expired_at

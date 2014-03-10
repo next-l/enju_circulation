@@ -1,0 +1,17 @@
+class UserReserveStatPolicy < AdminPolicy
+  def index?
+    true
+  end
+
+  def create?
+    user.try(:has_role?, 'Librarian')
+  end
+
+  def update?
+    user.try(:has_role?, 'Librarian')
+  end
+
+  def destroy?
+    user.try(:has_role?, 'Administrator')
+  end
+end

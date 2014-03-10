@@ -1,11 +1,12 @@
 class CheckedItemsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
   before_action :get_basket, :only => [:index, :new, :create, :update]
+  after_action :verify_authorized
 
   # GET /checked_items
   # GET /checked_items.json
   def index
+    authorize CheckedItem
     if @basket
       @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
     else
@@ -37,6 +38,7 @@ class CheckedItemsController < ApplicationController
       return
     end
     @checked_item = CheckedItem.new
+    authorize @checked_item
     @checked_items = @basket.checked_items
 
     respond_to do |format|
@@ -56,6 +58,7 @@ class CheckedItemsController < ApplicationController
       access_denied; return
     end
     @checked_item = CheckedItem.new(checked_item_params)
+    authorize @checked_item
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
@@ -111,8 +114,13 @@ class CheckedItemsController < ApplicationController
   end
 
   private
+  def set_checked_item
+    @checked_item = CheckedItem.find(params[:id])
+    authorize @checked_item
+  end
+
   def checked_item_params
-    params.require(:checkin).permit(
+    params.require(:checked_item).permit(
       :item_identifier, :ignore_restriction, :due_date_string
     )
   end

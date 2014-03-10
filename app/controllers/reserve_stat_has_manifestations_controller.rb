@@ -1,10 +1,11 @@
 class ReserveStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_reserve_stat_has_manifestation, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /reserve_stat_has_manifestations
   # GET /reserve_stat_has_manifestations.json
   def index
+    authorize ReserveStatHasManifestation
     @reserve_stat_has_manifestations = ReserveStatHasManifestation.page(params[:page])
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class ReserveStatHasManifestationsController < ApplicationController
   # GET /reserve_stat_has_manifestations/new.json
   def new
     @reserve_stat_has_manifestation = ReserveStatHasManifestation.new
+    authorize @reserve_stat_has_manifestation
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,6 +43,7 @@ class ReserveStatHasManifestationsController < ApplicationController
   # POST /reserve_stat_has_manifestations.json
   def create
     @reserve_stat_has_manifestation = ReserveStatHasManifestation.new(reserve_stat_has_manifestation_params)
+    authorize @reserve_stat_has_manifestation
 
     respond_to do |format|
       if @reserve_stat_has_manifestation.save
@@ -80,6 +83,11 @@ class ReserveStatHasManifestationsController < ApplicationController
   end
 
   private
+  def set_reserve_stat_has_manifestation
+    @reserve_stat_has_manifestation = ReserveStatHasManifestation.find(params[:id])
+    authorize @reserve_stat_has_manifestation
+  end
+
   def reserve_stat_has_manifestation_params
     params.require(:reserve_stat_has_manifestation).permit(
       :manifestation_reserve_stat_id, :manifestation_id

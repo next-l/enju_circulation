@@ -1,6 +1,6 @@
 class ManifestationReserveStatsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
   after_action :convert_charset, :only => :show
 
   # GET /manifestation_reserve_stats
@@ -35,6 +35,7 @@ class ManifestationReserveStatsController < ApplicationController
   # GET /manifestation_reserve_stats/new.json
   def new
     @manifestation_reserve_stat = ManifestationReserveStat.new
+    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,6 +51,7 @@ class ManifestationReserveStatsController < ApplicationController
   # POST /manifestation_reserve_stats.json
   def create
     @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
+    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
@@ -88,6 +90,11 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   private
+  def set_manifestation_reserve_stat
+    @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
+    authorize @manifestation_reserve_stat
+  end
+
   def manifestation_reserve_stat_params
     params.require(:manifestation_reserve_stat).permit(
       :start_date, :end_date, :note

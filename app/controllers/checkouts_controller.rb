@@ -1,11 +1,10 @@
 class CheckoutsController < ApplicationController
+  before_action :set_checkout, only: [:show, :edit, :update, :destroy]
   before_action :store_location, :only => :index
-  load_and_authorize_resource :except => [:index, :create, :remove_all]
-  authorize_resource :only => [:index, :create, :remove_all]
   before_action :get_user, :only => [:index, :remove_all]
   before_action :get_item, :only => :index
   after_action :convert_charset, :only => :index
-  #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /checkouts
   # GET /checkouts.json
@@ -180,6 +179,11 @@ class CheckoutsController < ApplicationController
   end
 
   private
+  def set_checkout
+    @checkout = Checkout.find(params[:id])
+    authorize @checkout
+  end
+
   def checkout_params
     params.require(:checkout).permit(:due_date)
   end

@@ -205,7 +205,7 @@ describe CheckoutStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_manifestation as @checkout_stat_has_manifestation" do
           post :create, :checkout_stat_has_manifestation => @attrs
-          assigns(:checkout_stat_has_manifestation).should_not be_valid
+          assigns(:checkout_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe CheckoutStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_manifestation as @checkout_stat_has_manifestation" do
           post :create, :checkout_stat_has_manifestation => @attrs
-          assigns(:checkout_stat_has_manifestation).should_not be_valid
+          assigns(:checkout_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe CheckoutStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_manifestation as @checkout_stat_has_manifestation" do
           post :create, :checkout_stat_has_manifestation => @attrs
-          assigns(:checkout_stat_has_manifestation).should_not be_valid
+          assigns(:checkout_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do

@@ -32,17 +32,17 @@ describe BasketsController do
     describe "When logged in as User" do
       login_user
 
-      it "assigns all baskets as @baskets" do
+      it "assigns nil as @baskets" do
         get :index, :user_id => users(:user1).username
-        assigns(:baskets).should be_empty
+        assigns(:baskets).should be_nil
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
-      it "assigns all baskets as @baskets" do
+      it "assigns nil as @baskets" do
         get :index, :user_id => users(:user1).username
-        assigns(:baskets).should be_empty
+        assigns(:baskets).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

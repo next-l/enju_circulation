@@ -1,12 +1,12 @@
 class CheckinsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_checkin, only: [:show, :edit, :update, :destroy]
   before_action :get_basket, :only => [:index, :create]
-  #cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /checkins
   # GET /checkins.json
   def index
+    authorize Checkin
     if @basket
       @checkins = @basket.checkins.page(params[:page])
     else
@@ -23,8 +23,6 @@ class CheckinsController < ApplicationController
   # GET /checkins/1
   # GET /checkins/1.json
   def show
-    #@checkin = Checkin.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @checkin }
@@ -42,6 +40,7 @@ class CheckinsController < ApplicationController
       @basket.save!
     end
     @checkin = Checkin.new
+    authorize @checkin
     @checkins = Kaminari::paginate_array([]).page(1)
     flash[:checkin_basket_id] = @basket.id
 
@@ -53,16 +52,16 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/1/edit
   def edit
-    #@checkin = Checkin.find(params[:id])
   end
 
   # POST /checkins
   # POST /checkins.json
   def create
+    @checkin = Checkin.new(checkin_params)
+    authorize @checkin
     unless @basket
       access_denied; return
     end
-    @checkin = Checkin.new(checkin_params)
     @checkin.basket = @basket
     @checkin.librarian = current_user
 
@@ -109,7 +108,6 @@ class CheckinsController < ApplicationController
   # DELETE /checkins/1
   # DELETE /checkins/1.json
   def destroy
-    #@checkin = Checkin.find(params[:id])
     @checkin.destroy
 
     respond_to do |format|
@@ -119,6 +117,11 @@ class CheckinsController < ApplicationController
   end
 
   private
+  def set_checkin
+    @checkin = Checkin.find(params[:id])
+    authorize @checkin
+  end
+
   def checkin_params
     params.require(:checkin).permit(:item_identifier)
   end

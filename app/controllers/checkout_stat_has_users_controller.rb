@@ -1,10 +1,11 @@
 class CheckoutStatHasUsersController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_checkout_stat_has_user, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /checkout_stat_has_users
   # GET /checkout_stat_has_users.json
   def index
+    authorize CheckoutStatHasUser
     @checkout_stat_has_users = CheckoutStatHasUser.page(params[:page])
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class CheckoutStatHasUsersController < ApplicationController
   # GET /checkout_stat_has_users/new.json
   def new
     @checkout_stat_has_user = CheckoutStatHasUser.new
+    authorize @checkout_stat_has_user
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,6 +43,7 @@ class CheckoutStatHasUsersController < ApplicationController
   # POST /checkout_stat_has_users.json
   def create
     @checkout_stat_has_user = CheckoutStatHasUser.new(checkout_stat_has_user_params)
+    authorize @checkout_stat_has_user
 
     respond_to do |format|
       if @checkout_stat_has_user.save
@@ -80,6 +83,11 @@ class CheckoutStatHasUsersController < ApplicationController
   end
 
   private
+  def set_checkout_stat_has_user
+    @checkout_stat_has_user = CheckoutStatHasUser.find(params[:id])
+    authorize @checkout_stat_has_user
+  end
+
   def checkout_stat_has_user_params
     params.require(:checkout_stat_has_user).permit(
       :user_checkout_stat_id, :user_id

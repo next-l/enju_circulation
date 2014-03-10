@@ -1,10 +1,11 @@
 class ReserveStatHasUsersController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_reserve_stat_has_user, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /reserve_stat_has_users
   # GET /reserve_stat_has_users.json
   def index
+    authorize ReserveStatHasUser
     @reserve_stat_has_users = ReserveStatHasUser.page(params[:page])
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class ReserveStatHasUsersController < ApplicationController
   # GET /reserve_stat_has_users/new.json
   def new
     @reserve_stat_has_user = ReserveStatHasUser.new
+    authorize @reserve_stat_has_user
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,6 +43,7 @@ class ReserveStatHasUsersController < ApplicationController
   # POST /reserve_stat_has_users.json
   def create
     @reserve_stat_has_user = ReserveStatHasUser.new(reserve_stat_has_user_params)
+    authorize @reserve_stat_has_user
 
     respond_to do |format|
       if @reserve_stat_has_user.save
@@ -80,6 +83,11 @@ class ReserveStatHasUsersController < ApplicationController
   end
 
   private
+  def set_reserve_stat_has_user
+    @reserve_stat_has_user = ReserveStatHasUser.find(params[:id])
+    authorize @reserve_stat_has_user
+  end
+
   def reserve_stat_has_user_params
     params.require(:reserve_stat_has_user).permit(
       :user_reserve_stat_id, :user_id

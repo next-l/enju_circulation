@@ -1,11 +1,12 @@
 class CheckoutTypesController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :get_user_group
+  after_action :verify_authorized
 
   # GET /checkout_types
   # GET /checkout_types.json
   def index
+    authorize CheckoutType
     if @user_group
       @checkout_types = @user_group.checkout_types.order('checkout_types.position').page(params[:page])
     else
@@ -39,6 +40,7 @@ class CheckoutTypesController < ApplicationController
     else
       @checkout_type = CheckoutType.new
     end
+    authorize @checkout_type
 
     respond_to do |format|
       format.html # new.html.erb
@@ -61,6 +63,7 @@ class CheckoutTypesController < ApplicationController
     else
       @checkout_type = CheckoutType.new(checkout_type_params)
     end
+    authorize @checkout_type
 
     respond_to do |format|
       if @checkout_type.save
@@ -111,6 +114,11 @@ class CheckoutTypesController < ApplicationController
   end
 
   private
+  def set_checkout_type
+    @checkout_type = CheckoutType.find(params[:id])
+    authorize @checkout_type
+  end
+
   def checkout_type_params
     params.require(:checkout_type).permit(
       :name, :display_name, :note

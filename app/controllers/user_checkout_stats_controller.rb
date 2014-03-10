@@ -1,11 +1,12 @@
 class UserCheckoutStatsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_user_checkout_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
   after_action :convert_charset, :only => :show
 
   # GET /user_checkout_stats
   # GET /user_checkout_stats.json
   def index
+    authorize UserCheckoutStat
     @user_checkout_stats = UserCheckoutStat.order('id DESC').page(params[:page])
 
     respond_to do |format|
@@ -35,6 +36,7 @@ class UserCheckoutStatsController < ApplicationController
   # GET /user_checkout_stats/new.json
   def new
     @user_checkout_stat = UserCheckoutStat.new
+    authorize @user_checkout_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,6 +52,7 @@ class UserCheckoutStatsController < ApplicationController
   # POST /user_checkout_stats.json
   def create
     @user_checkout_stat = UserCheckoutStat.new(user_checkout_stat_params)
+    authorize @user_checkout_stat
 
     respond_to do |format|
       if @user_checkout_stat.save
@@ -88,6 +91,11 @@ class UserCheckoutStatsController < ApplicationController
   end
 
   private
+  def set_user_checkout_stat
+    @user_checkout_stat = UserCheckoutStat.find(params[:id])
+    authorize @user_checkout_stat
+  end
+
   def user_checkout_stat_params
     params.require(:user_checkout_stat).permit(
       :start_date, :end_date, :note

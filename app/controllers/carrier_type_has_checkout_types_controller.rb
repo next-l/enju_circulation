@@ -1,12 +1,13 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  before_action :set_carrier_type_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :get_checkout_type
   before_action :prepare_options, :only => [:new, :edit]
+  after_action :verify_authorized
 
   # GET /carrier_type_has_checkout_types
   # GET /carrier_type_has_checkout_types.json
   def index
+    authorize CarrierTypeHasCheckoutType
     @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.all
 
     respond_to do |format|
@@ -28,6 +29,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # GET /carrier_type_has_checkout_types/new.json
   def new
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.new
+    authorize @carrier_type_has_checkout_type
     @carrier_type_has_checkout_type.carrier_type = @carrier_type
     @carrier_type_has_checkout_type.checkout_type = @checkout_type
 
@@ -45,6 +47,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # POST /carrier_type_has_checkout_types.json
   def create
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.new(carrier_type_has_checkout_type_params)
+    authorize @carrier_type_has_checkout_type
 
     respond_to do |format|
       if @carrier_type_has_checkout_type.save
@@ -87,14 +90,19 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
-  def prepare_options
-    @checkout_types = CheckoutType.all
-    @carrier_types = CarrierType.all
+  def set_carrier_type_has_checkout_type
+    @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.find(params[:id])
+    authorize @carrier_type_has_checkout_type
   end
 
   def carrier_type_has_checkout_type_params
     params.require(:carrier_type_has_checkout_type).permit(
       :carrier_type_id, :checkout_type_id, :note
     )
+  end
+
+  def prepare_options
+    @checkout_types = CheckoutType.all
+    @carrier_types = CarrierType.all
   end
 end

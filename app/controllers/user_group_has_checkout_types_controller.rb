@@ -1,12 +1,13 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
-  helper_method :get_user_group, :get_checkout_type
+  before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :prepare_options, :only => [:new, :edit]
+  after_action :verify_authorized
+  helper_method :get_user_group, :get_checkout_type
 
   # GET /user_group_has_checkout_types
   # GET /user_group_has_checkout_types.json
   def index
+    authorize UserGroupHasCheckoutType
     @user_group_has_checkout_types = UserGroupHasCheckoutType.includes([:user_group, :checkout_type]).order('user_groups.position, checkout_types.position').page(params[:page])
 
     respond_to do |format|
@@ -31,6 +32,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
       :checkout_type => get_checkout_type,
       :user_group => get_user_group
     )
+    authorize @user_group_has_checkout_type
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,6 +48,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # POST /user_group_has_checkout_types.json
   def create
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(user_group_has_checkout_type_params)
+    authorize @user_group_has_checkout_type
 
     respond_to do |format|
       if @user_group_has_checkout_type.save
@@ -86,12 +89,11 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   end
 
   private
-  def prepare_options
-    @checkout_types = CheckoutType.all
-    @user_groups = UserGroup.all
+  def set_user_group_has_checkout_type
+    @user_group_has_checkout_type = UserGroupHasCheckoutType.find(params[:id])
+    authorize @user_group_has_checkout_type
   end
 
-  private
   def user_group_has_checkout_type_params
     params.require(:user_group_has_checkout_type).permit(
       :user_group_id, :checkout_type_id,
@@ -100,5 +102,10 @@ class UserGroupHasCheckoutTypesController < ApplicationController
       :set_due_date_before_closing_day, :fixed_due_date, :note, :position,
       :user_group, :checkout_type
     )
+  end
+
+  def prepare_options
+    @checkout_types = CheckoutType.all
+    @user_groups = UserGroup.all
   end
 end

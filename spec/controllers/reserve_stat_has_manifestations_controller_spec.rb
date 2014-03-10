@@ -205,7 +205,7 @@ describe ReserveStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_manifestation as @reserve_stat_has_manifestation" do
           post :create, :reserve_stat_has_manifestation => @attrs
-          assigns(:reserve_stat_has_manifestation).should_not be_valid
+          assigns(:reserve_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe ReserveStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_manifestation as @reserve_stat_has_manifestation" do
           post :create, :reserve_stat_has_manifestation => @attrs
-          assigns(:reserve_stat_has_manifestation).should_not be_valid
+          assigns(:reserve_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe ReserveStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_manifestation as @reserve_stat_has_manifestation" do
           post :create, :reserve_stat_has_manifestation => @attrs
-          assigns(:reserve_stat_has_manifestation).should_not be_valid
+          assigns(:reserve_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
