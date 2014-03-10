@@ -23,7 +23,7 @@
       <%- if policy(use_restriction).update? -%>
         <%= link_to t('page.edit'), edit_use_restriction_path(use_restriction) -%>
       <% end %>
-      <%- if can? :delete, use_restriction -%>
+      <%- if policy(use_restriction).destroy? -%>
         <%= link_to t('page.destroy'), use_restriction, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>
@@ -36,7 +36,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- if can? :create, UseRestriction -%>
+    <%- if policy(UseRestriction).create? -%>
       <li><%= link_to t('page.new', :model => t('activerecord.models.use_restriction')), new_use_restriction_path -%></li >
     <%- end -%>
   </ul>

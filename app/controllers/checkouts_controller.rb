@@ -17,9 +17,7 @@ class CheckoutsController < ApplicationController
         @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
       end
     else
-      unless current_user
-        access_denied; return
-      end
+      authorize Checkout
     end
 
     if params[:format] == 'csv'

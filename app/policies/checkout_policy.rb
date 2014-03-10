@@ -1,4 +1,8 @@
 class CheckoutPolicy < AdminPolicy
+  def index?
+    user.try(:has_role?, 'User')
+  end
+
   def show?
     if user.try(:has_role?, 'Librarian')
       true

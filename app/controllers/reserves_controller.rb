@@ -191,13 +191,12 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(admin_reserve_params)
-    else
-      if @reserve.user != current_user
-        access_denied; return
+    if params[:mode] != 'cancel'
+      if current_user.has_role?('Librarian')
+        @reserve.assign_attributes(admin_reserve_params)
+      else
+        @reserve.assign_attributes(user_reserve_params)
       end
-      @reserve.assign_attributes(user_reserve_params)
     end
 
     if @reserve.valid?
