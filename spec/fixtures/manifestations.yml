@@ -1581,7 +1581,6 @@ manifestation_00201:
   width:
   created_at: 2007-11-19 17:55:41 UTC
   frequency_id: 3
-  issn: 12345678
 manifestation_00202:
   carrier_type_id: 1
   language_id: 1
@@ -1597,7 +1596,6 @@ manifestation_00202:
   width:
   created_at: 2007-11-19 17:55:41 UTC
   frequency_id: 3
-  issn: 12345678
   serial_number: 2
   volume_number: 1
   issue_number: 2
@@ -1842,7 +1840,6 @@ manifestation_00216:
 #  nbn                             :string(255)
 #  lccn                            :string(255)
 #  oclc_number                     :string(255)
-#  issn                            :string(255)
 #  price                           :integer
 #  fulltext                        :text
 #  volume_number_string            :string(255)
