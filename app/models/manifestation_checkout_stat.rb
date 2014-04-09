@@ -23,7 +23,7 @@ class ManifestationCheckoutStat < ActiveRecord::Base
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE checkout_stat_has_manifestations SET checkouts_count = ? WHERE manifestation_checkout_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
-        ActiveRecord::Base.connection.execute(
+        ManifestationCheckoutStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end

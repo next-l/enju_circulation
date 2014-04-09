@@ -21,7 +21,7 @@ class UserReserveStat < ActiveRecord::Base
       if daily_count > 0
         self.users << user
         sql = ['UPDATE reserve_stat_has_users SET reserves_count = ? WHERE user_reserve_stat_id = ? AND user_id = ?', daily_count, id, user.id]
-        ActiveRecord::Base.connection.execute(
+        UserReserveStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end
