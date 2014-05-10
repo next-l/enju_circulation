@@ -42,6 +42,9 @@ class Checkout < ActiveRecord::Base
     boolean :reserved do
       reserved?
     end
+    boolean :returned do
+      checkin.nil?
+    end
   end
 
   attr_accessor :operator

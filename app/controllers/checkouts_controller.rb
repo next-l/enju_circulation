@@ -54,9 +54,9 @@ class CheckoutsController < ApplicationController
           end
         end
 
-        search.build do
-          with(:checked_in_at).equal_to nil
-        end
+        #search.build do
+        #  with(:checked_in_at).equal_to nil
+        #end
       end
 
       if current_user.try(:has_role?, 'Librarian')
@@ -92,11 +92,13 @@ class CheckoutsController < ApplicationController
         end
         search.build do
           with(:reserved).equal_to reserved
+          with(:checked_in_at).equal_to nil
         end
       end
 
       search.build do
-        order_by :created_at, :desc
+        order_by :returned, :desc
+        order_by :due_date, :desc
         facet :reserved
       end
       page = params[:page] || 1
