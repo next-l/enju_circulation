@@ -13,11 +13,11 @@ gem "jquery-rails"
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem "enju_leaf", github: "next-l/enju_leaf"
-gem "enju_biblio", github: "next-l/enju_biblio", branch: "rails4"
-gem "enju_library", github: "next-l/enju_library", branch: "rails4"
-gem "enju_message", github: "next-l/enju_message", branch: "rails4"
-gem "enju_event", github: "next-l/enju_event", branch: "rails4"
-gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "rails4"
+gem "enju_biblio", github: "next-l/enju_biblio"
+gem "enju_library", github: "next-l/enju_library"
+gem "enju_message", github: "next-l/enju_message"
+gem "enju_event", github: "next-l/enju_event"
+gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer"
 gem "enju_export", github: "next-l/enju_export", branch: "rails4"
 gem "state_machine", github: "seuros/state_machine"
 
