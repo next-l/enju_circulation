@@ -1,8 +1,7 @@
 class UserCheckoutStat < ActiveRecord::Base
-  attr_accessible :start_date, :end_date, :note
   include CalculateStat
-  default_scope :order => 'user_checkout_stats.id DESC'
-  scope :not_calculated, where(:state => 'pending')
+  default_scope {order('user_checkout_stats.id DESC')}
+  scope :not_calculated, -> {where(:state => 'pending')}
   has_many :checkout_stat_has_users
   has_many :users, :through => :checkout_stat_has_users
 
@@ -18,11 +17,11 @@ class UserCheckoutStat < ActiveRecord::Base
   def calculate_count
     self.started_at = Time.zone.now
     User.find_each do |user|
-      daily_count = user.checkouts.completed(self.start_date, self.end_date).size
+      daily_count = user.checkouts.completed(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
       if daily_count > 0
         self.users << user
-        sql = ['UPDATE checkout_stat_has_users SET checkouts_count = ? WHERE user_checkout_stat_id = ? AND user_id = ?', daily_count, self.id, user.id]
-        ActiveRecord::Base.connection.execute(
+        sql = ['UPDATE checkout_stat_has_users SET checkouts_count = ? WHERE user_checkout_stat_id = ? AND user_id = ?', daily_count, id, user.id]
+        UserCheckoutStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end

@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.manifestation_reserve_stat')) -%></h1>
 <div id="content_list">
 
@@ -24,11 +24,11 @@
 <%- end -%>
 </table>
 
-<%= paginate(@manifestation_reserve_stats) -%>
+<%= paginate(@manifestation_reserve_stats, :theme => 'enju_leaf') -%>
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <li><%= link_to t('page.new', :model => t('activerecord.models.manifestation_reserve_stat')), new_manifestation_reserve_stat_path -%></li>
   </ul>

@@ -1,9 +1,11 @@
 class CheckoutStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_checkout_stat_has_manifestation, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /checkout_stat_has_manifestations
   # GET /checkout_stat_has_manifestations.json
   def index
+    authorize CheckoutStatHasManifestation
     @checkout_stat_has_manifestations = CheckoutStatHasManifestation.page(params[:page])
 
     respond_to do |format|
@@ -25,6 +27,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # GET /checkout_stat_has_manifestations/new.json
   def new
     @checkout_stat_has_manifestation = CheckoutStatHasManifestation.new
+    authorize @checkout_stat_has_manifestation
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,8 +42,8 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # POST /checkout_stat_has_manifestations
   # POST /checkout_stat_has_manifestations.json
   def create
-    @checkout_stat_has_manifestation = CheckoutStatHasManifestation.new
-    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], :as => :admin)
+    @checkout_stat_has_manifestation = CheckoutStatHasManifestation.new(checkout_stat_has_manifestation_params)
+    authorize @checkout_stat_has_manifestation
 
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
@@ -56,7 +59,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # PUT /checkout_stat_has_manifestations/1
   # PUT /checkout_stat_has_manifestations/1.json
   def update
-    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], :as => :admin)
+    @checkout_stat_has_manifestation.assign_attributes(checkout_stat_has_manifestation_params)
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
         format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
@@ -77,5 +80,17 @@ class CheckoutStatHasManifestationsController < ApplicationController
       format.html { redirect_to checkout_stat_has_manifestations_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_checkout_stat_has_manifestation
+    @checkout_stat_has_manifestation = CheckoutStatHasManifestation.find(params[:id])
+    authorize @checkout_stat_has_manifestation
+  end
+
+  def checkout_stat_has_manifestation_params
+    params.require(:checkout_stat_has_manifestation).permit(
+      :manifestation_checkout_stat_id, :manifestation_id
+    )
   end
 end

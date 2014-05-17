@@ -1,16 +1,15 @@
 class Checkout < ActiveRecord::Base
-  attr_accessible :due_date
-  default_scope :order => 'checkouts.id DESC'
-  scope :not_returned, where(:checkin_id => nil)
-  scope :returned, where('checkin_id IS NOT NULL')
-  scope :overdue, lambda {|date| {:conditions => ['checkin_id IS NULL AND due_date < ?', date]}}
+  #default_scope {order('checkouts.id DESC')}
+  scope :not_returned, -> {where(:checkin_id => nil)}
+  scope :returned, -> {where('checkin_id IS NOT NULL')}
+  scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
   scope :due_date_on, lambda {|date| where(:checkin_id => nil, :due_date => date.beginning_of_day .. date.end_of_day)}
-  scope :completed, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
-  scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
+  scope :completed, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
+  scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
   belongs_to :user #, :counter_cache => true #, :validate => true
   delegate :username, :user_number, :to => :user, :prefix => true
-  belongs_to :item #, :counter_cache => true #, :validate => true
+  belongs_to :item, touch: true #, :counter_cache => true #, :validate => true
   belongs_to :checkin #, :validate => true
   belongs_to :librarian, :class_name => 'User' #, :validate => true
   belongs_to :basket #, :validate => true

@@ -1,10 +1,12 @@
 class UserReserveStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  before_action :set_user_reserve_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :show
 
   # GET /user_reserve_stats
   # GET /user_reserve_stats.json
   def index
+    authorize UserReserveStat
     @user_reserve_stats = UserReserveStat.order('id DESC').page(params[:page])
 
     respond_to do |format|
@@ -34,6 +36,7 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/new.json
   def new
     @user_reserve_stat = UserReserveStat.new
+    authorize @user_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,7 +51,8 @@ class UserReserveStatsController < ApplicationController
   # POST /user_reserve_stats
   # POST /user_reserve_stats.json
   def create
-    @user_reserve_stat = UserReserveStat.new(params[:user_reserve_stat])
+    @user_reserve_stat = UserReserveStat.new(user_reserve_stat_params)
+    authorize @user_reserve_stat
 
     respond_to do |format|
       if @user_reserve_stat.save
@@ -65,7 +69,7 @@ class UserReserveStatsController < ApplicationController
   # PUT /user_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @user_reserve_stat.update_attributes(params[:user_reserve_stat])
+      if @user_reserve_stat.update_attributes(user_reserve_stat_params)
         format.html { redirect_to @user_reserve_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_reserve_stat')) }
         format.json { head :no_content }
       else
@@ -84,5 +88,17 @@ class UserReserveStatsController < ApplicationController
       format.html { redirect_to user_reserve_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_user_reserve_stat
+    @user_reserve_stat = UserReserveStat.find(params[:id])
+    authorize @user_reserve_stat
+  end
+
+  def user_reserve_stat_params
+    params.require(:user_reserve_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

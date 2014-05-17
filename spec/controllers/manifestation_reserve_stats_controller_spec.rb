@@ -13,7 +13,7 @@ describe ManifestationReserveStatsController do
 
       it "assigns all manifestation_reserve_stats as @manifestation_reserve_stats" do
         get :index
-        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.all)
+        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe ManifestationReserveStatsController do
 
       it "assigns all manifestation_reserve_stats as @manifestation_reserve_stats" do
         get :index
-        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.all)
+        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.page(1))
       end
     end
 
@@ -31,14 +31,14 @@ describe ManifestationReserveStatsController do
 
       it "assigns all manifestation_reserve_stats as @manifestation_reserve_stats" do
         get :index
-        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.all)
+        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.page(1))
       end
     end
 
     describe "When not logged in" do
       it "should not assign manifestation_reserve_stats as @manifestation_reserve_stats" do
         get :index
-        assigns(:manifestation_reserve_stats).should eq(ManifestationReserveStat.all)
+        assigns(:manifestation_reserve_stats).should be_nil
       end
     end
   end

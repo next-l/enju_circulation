@@ -309,13 +309,13 @@ describe CheckoutsController do
       end
   
       it "should update checkout item that is reserved" do
-        put :update, :id => 8, :checkout => { }
+        put :update, :id => 8, :checkout => {:checkout_renewal_count => 1}
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_true
         response.should be_success
       end
   
       it "should update other user's checkout" do
-        put :update, :id => 1, :checkout => { }
+        put :update, :id => 1, :checkout => {:checkout_renewal_count => 1}
         response.should redirect_to checkout_url(assigns(:checkout))
       end
 
@@ -355,18 +355,18 @@ describe CheckoutsController do
       end
 
       it "should not update other user's checkout" do
-        put :update, :id => 1, :checkout => { }
+        put :update, :id => 1, :checkout => {:checkout_renewal_count => 1}
         response.should be_forbidden
       end
   
       it "should not update checkout already renewed" do
-        put :update, :id => 9, :checkout => { }
+        put :update, :id => 9, :checkout => {:checkout_renewal_count => 1}
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_true
         response.should be_success
       end
 
       it "should update my checkout" do
-        put :update, :id => 3, :checkout => { }
+        put :update, :id => 3, :checkout => {:checkout_renewal_count => 1}
         assigns(:checkout).should be_valid
         response.should redirect_to checkout_url(assigns(:checkout))
       end

@@ -1,9 +1,11 @@
 class CheckoutStatHasUsersController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_checkout_stat_has_user, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
 
   # GET /checkout_stat_has_users
   # GET /checkout_stat_has_users.json
   def index
+    authorize CheckoutStatHasUser
     @checkout_stat_has_users = CheckoutStatHasUser.page(params[:page])
 
     respond_to do |format|
@@ -25,6 +27,7 @@ class CheckoutStatHasUsersController < ApplicationController
   # GET /checkout_stat_has_users/new.json
   def new
     @checkout_stat_has_user = CheckoutStatHasUser.new
+    authorize @checkout_stat_has_user
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,8 +42,8 @@ class CheckoutStatHasUsersController < ApplicationController
   # POST /checkout_stat_has_users
   # POST /checkout_stat_has_users.json
   def create
-    @checkout_stat_has_user = CheckoutStatHasUser.new
-    @checkout_stat_has_user.assign_attributes(params[:checkout_stat_has_user], :as => :admin)
+    @checkout_stat_has_user = CheckoutStatHasUser.new(checkout_stat_has_user_params)
+    authorize @checkout_stat_has_user
 
     respond_to do |format|
       if @checkout_stat_has_user.save
@@ -56,7 +59,7 @@ class CheckoutStatHasUsersController < ApplicationController
   # PUT /checkout_stat_has_users/1
   # PUT /checkout_stat_has_users/1.json
   def update
-    @checkout_stat_has_user.assign_attributes(params[:checkout_stat_has_user], :as => :admin)
+    @checkout_stat_has_user.assign_attributes(checkout_stat_has_user_params)
     respond_to do |format|
       if @checkout_stat_has_user.save
         format.html { redirect_to @checkout_stat_has_user, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_user')) }
@@ -77,5 +80,17 @@ class CheckoutStatHasUsersController < ApplicationController
       format.html { redirect_to checkout_stat_has_users_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_checkout_stat_has_user
+    @checkout_stat_has_user = CheckoutStatHasUser.find(params[:id])
+    authorize @checkout_stat_has_user
+  end
+
+  def checkout_stat_has_user_params
+    params.require(:checkout_stat_has_user).permit(
+      :user_checkout_stat_id, :user_id
+    )
   end
 end

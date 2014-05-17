@@ -1,9 +1,8 @@
 class Checkin < ActiveRecord::Base
-  attr_accessible :item_identifier
-  default_scope :order => 'checkins.id DESC'
-  scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
+  default_scope {order('checkins.id DESC')}
+  scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
   has_one :checkout
-  belongs_to :item
+  belongs_to :item, touch: true
   belongs_to :librarian, :class_name => 'User'
   belongs_to :basket
 
@@ -35,7 +34,7 @@ class Checkin < ActiveRecord::Base
     message = ''
     Checkin.transaction do
       checkouts = Checkout.not_returned.where(:item_id => item_id).select(
-        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count]
+        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count, :librarian_id]
       )
       item.checkin!
       checkouts.each do |checkout|

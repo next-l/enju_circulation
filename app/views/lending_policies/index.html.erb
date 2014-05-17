@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.lending_policy')) -%></h1>
 <div id="content_list">
 
@@ -33,10 +33,10 @@
 <%- end -%>
 </table>
 
-<%= paginate(@lending_policies) -%>
+<%= paginate(@lending_policies, :theme => 'enju_leaf') -%>
 
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
 </div>

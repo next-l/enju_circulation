@@ -1,10 +1,12 @@
 class CheckoutTypesController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_user_group
+  before_action :set_checkout_type, only: [:show, :edit, :update, :destroy]
+  before_action :get_user_group
+  after_action :verify_authorized
 
   # GET /checkout_types
   # GET /checkout_types.json
   def index
+    authorize CheckoutType
     if @user_group
       @checkout_types = @user_group.checkout_types.order('checkout_types.position').page(params[:page])
     else
@@ -38,6 +40,7 @@ class CheckoutTypesController < ApplicationController
     else
       @checkout_type = CheckoutType.new
     end
+    authorize @checkout_type
 
     respond_to do |format|
       format.html # new.html.erb
@@ -56,10 +59,11 @@ class CheckoutTypesController < ApplicationController
   # POST /checkout_types.json
   def create
     if @user_group
-      @checkout_type = @user_group.checkout_types.new(params[:checkout_type])
+      @checkout_type = @user_group.checkout_types.new(checkout_type_params)
     else
-      @checkout_type = CheckoutType.new(params[:checkout_type])
+      @checkout_type = CheckoutType.new(checkout_type_params)
     end
+    authorize @checkout_type
 
     respond_to do |format|
       if @checkout_type.save
@@ -85,7 +89,7 @@ class CheckoutTypesController < ApplicationController
     end
 
     respond_to do |format|
-      if @checkout_type.update_attributes(params[:checkout_type])
+      if @checkout_type.update_attributes(checkout_type_params)
         format.html { redirect_to @checkout_type, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_type')) }
         format.json { head :no_content }
       else
@@ -107,5 +111,17 @@ class CheckoutTypesController < ApplicationController
       format.html { redirect_to checkout_types_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_checkout_type
+    @checkout_type = CheckoutType.find(params[:id])
+    authorize @checkout_type
+  end
+
+  def checkout_type_params
+    params.require(:checkout_type).permit(
+      :name, :display_name, :note
+    )
   end
 end

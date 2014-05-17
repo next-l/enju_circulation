@@ -128,7 +128,7 @@ describe ReservesController do
     end
 
     describe "When not logged in" do
-      it "assigns empty as @reserves" do
+      it "assigns nil as @reserves" do
         get :index
         assigns(:reserves).should be_nil
         response.should redirect_to(new_user_session_url)
@@ -259,10 +259,10 @@ describe ReservesController do
         response.should be_forbidden
       end
 
-      it "should not get new reservation when user_number is not set" do
+      it "should get new reservation when user_number is not set" do
         sign_in users(:user2)
         get :new, :user_id => users(:user2).username, :manifestation_id => 3
-        response.should be_forbidden
+        response.should be_success
       end
     end
 
@@ -485,7 +485,7 @@ describe ReservesController do
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
           post :create, :reserve => @attrs
-          assigns(:reserve).should_not be_valid
+          assigns(:reserve).should be_valid
         end
 
         it "redirects to the login page" do

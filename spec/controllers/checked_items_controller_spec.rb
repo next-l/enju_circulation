@@ -23,7 +23,7 @@ describe CheckedItemsController do
     describe "When logged in as Librarian" do
       login_fixture_librarian
 
-      it "should be forbidden" do
+      it "should get index without basket_id" do
         get :index
         assigns(:checked_items).should_not be_empty
         response.should be_success
@@ -41,9 +41,9 @@ describe CheckedItemsController do
     describe "When logged in as User" do
       login_fixture_user
 
-      it "assigns empty as @checked_items" do
+      it "assigns nil as @checked_items" do
         get :index
-        assigns(:checked_items).should be_empty
+        assigns(:checked_items).should be_nil
         response.should be_forbidden
       end
 
@@ -54,15 +54,15 @@ describe CheckedItemsController do
     end
 
     describe "When not logged in" do
-      it "assigns empty as @checked_items" do
+      it "assigns nil as @checked_items" do
         get :index
-        assigns(:checked_items).should be_empty
+        assigns(:checked_items).should be_nil
         response.should redirect_to(new_user_session_url)
       end
 
       it "should not get index with basket_id and item_id" do
         get :index, :basket_id => 1, :item_id => 1
-        assigns(:checked_items).should be_empty
+        assigns(:checked_items).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

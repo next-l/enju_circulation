@@ -35,16 +35,16 @@ describe LendingPoliciesController do
     describe "When logged in as User" do
       login_user
 
-      it "assigns empty as @lending_policies" do
+      it "assigns nil as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_empty
+        assigns(:lending_policies).should be_nil
       end
     end
 
     describe "When not logged in" do
-      it "assigns empty lending_policies as @lending_policies" do
+      it "assigns nil lending_policies as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_empty
+        assigns(:lending_policies).should be_nil
       end
     end
   end

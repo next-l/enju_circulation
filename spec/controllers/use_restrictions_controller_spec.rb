@@ -19,7 +19,7 @@ describe UseRestrictionsController do
 
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should eq(UseRestriction.all)
+        assigns(:use_restrictions).should eq(UseRestriction.order(:position))
       end
     end
 
@@ -28,7 +28,7 @@ describe UseRestrictionsController do
 
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should eq(UseRestriction.all)
+        assigns(:use_restrictions).should eq(UseRestriction.order(:position))
       end
     end
 
@@ -37,7 +37,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :index
-        assigns(:use_restrictions).should be_empty
+        assigns(:use_restrictions).should be_nil
         response.should be_forbidden
       end
     end
@@ -45,7 +45,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should be_empty
+        assigns(:use_restrictions).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

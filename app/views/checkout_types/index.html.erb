@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.checkout_type')) -%></h1>
 <div id="content_list">
 
@@ -15,7 +15,7 @@
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
       <%- unless @user_group -%>
-        <%- if can? :update, checkout_type -%>
+        <%- if policy(checkout_type).update? -%>
           <%= move_position(checkout_type) -%>
         <%- end -%>
       <%- end -%>
@@ -24,10 +24,10 @@
     <td><%= link_to checkout_type.display_name.localize, checkout_type -%></td>
     <td><%= checkout_type.note -%></td>
     <td>
-      <%- if can? :update, checkout_type -%>
+      <%- if policy(checkout_type).update? -%>
         <%= link_to t('page.edit'), edit_checkout_type_path(checkout_type) -%>
       <% end %>
-      <%- if can? :delete, checkout_type -%>
+      <%- if policy(checkout_type).destroy? -%>
         <%= link_to t('page.destroy'), checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <% end %>
     </td>
@@ -35,11 +35,11 @@
 <%- end -%>
 </table>
 
-<%= paginate(@checkout_types) -%>
+<%= paginate(@checkout_types, :theme => 'enju_leaf') -%>
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <%- if @user_group -%>
       <li><%= link_to t('page.new', :model => t('activerecord.models.user_group_has_checkout_type')), new_user_group_user_group_has_checkout_type_path(@user_group) -%></li>

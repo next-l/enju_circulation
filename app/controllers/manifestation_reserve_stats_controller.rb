@@ -1,10 +1,12 @@
 class ManifestationReserveStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :show
 
   # GET /manifestation_reserve_stats
   # GET /manifestation_reserve_stats.json
   def index
+    authorize ManifestationReserveStat
     @manifestation_reserve_stats = ManifestationReserveStat.page(params[:page])
 
     respond_to do |format|
@@ -34,6 +36,7 @@ class ManifestationReserveStatsController < ApplicationController
   # GET /manifestation_reserve_stats/new.json
   def new
     @manifestation_reserve_stat = ManifestationReserveStat.new
+    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,7 +51,8 @@ class ManifestationReserveStatsController < ApplicationController
   # POST /manifestation_reserve_stats
   # POST /manifestation_reserve_stats.json
   def create
-    @manifestation_reserve_stat = ManifestationReserveStat.new(params[:manifestation_reserve_stat])
+    @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
+    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
@@ -65,7 +69,7 @@ class ManifestationReserveStatsController < ApplicationController
   # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_reserve_stat.update_attributes(params[:manifestation_reserve_stat])
+      if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
         format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
@@ -84,5 +88,17 @@ class ManifestationReserveStatsController < ApplicationController
       format.html { redirect_to manifestation_reserve_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_manifestation_reserve_stat
+    @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
+    authorize @manifestation_reserve_stat
+  end
+
+  def manifestation_reserve_stat_params
+    params.require(:manifestation_reserve_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

@@ -29,17 +29,17 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When logged in as User" do
       login_user
 
-      it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
+      it "assigns nil as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should be_empty
+        assigns(:carrier_type_has_checkout_types).should be_nil
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
-      it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
+      it "assigns nil as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should be_empty
+        assigns(:carrier_type_has_checkout_types).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

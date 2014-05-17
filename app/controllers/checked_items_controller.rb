@@ -1,10 +1,12 @@
 class CheckedItemsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_basket, :only => [:index, :new, :create, :update]
+  before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
+  before_action :get_basket, :only => [:index, :new, :create, :update]
+  after_action :verify_authorized
 
   # GET /checked_items
   # GET /checked_items.json
   def index
+    authorize CheckedItem
     if @basket
       @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
     else
@@ -31,11 +33,12 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/new
   # GET /checked_items/new.json
   def new
+    @checked_item = CheckedItem.new
+    authorize @checked_item
     unless @basket
       redirect_to new_basket_url
       return
     end
-    @checked_item = CheckedItem.new
     @checked_items = @basket.checked_items
 
     respond_to do |format|
@@ -54,6 +57,8 @@ class CheckedItemsController < ApplicationController
     unless @basket
       access_denied; return
     end
+    @checked_item = CheckedItem.new(checked_item_params)
+    authorize @checked_item
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
@@ -87,7 +92,7 @@ class CheckedItemsController < ApplicationController
     end
 
     respond_to do |format|
-      if @checked_item.update_attributes(params[:checked_item])
+      if @checked_item.update_attributes(checked_item_params)
         format.html { redirect_to @checked_item, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
@@ -106,5 +111,17 @@ class CheckedItemsController < ApplicationController
       format.html { redirect_to basket_checked_items_url(@checked_item.basket) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_checked_item
+    @checked_item = CheckedItem.find(params[:id])
+    authorize @checked_item
+  end
+
+  def checked_item_params
+    params.require(:checked_item).permit(
+      :item_identifier, :ignore_restriction, :due_date_string
+    )
   end
 end

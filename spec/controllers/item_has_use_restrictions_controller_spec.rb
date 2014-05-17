@@ -19,7 +19,7 @@ describe ItemHasUseRestrictionsController do
 
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.all(:order => 'id DESC'))
+        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC').page(1))
       end
     end
 
@@ -28,24 +28,24 @@ describe ItemHasUseRestrictionsController do
 
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.all(:order => 'id DESC'))
+        assigns(:item_has_use_restrictions).should eq(ItemHasUseRestriction.order('id DESC').page(1))
       end
     end
 
     describe "When logged in as User" do
       login_user
 
-      it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
+      it "assigns nil as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should be_empty
+        assigns(:item_has_use_restrictions).should be_nil
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
-      it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
+      it "assigns nil as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should be_empty
+        assigns(:item_has_use_restrictions).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

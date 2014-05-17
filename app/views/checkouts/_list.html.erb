@@ -17,10 +17,8 @@
       <% end %>
     </td>
     <td>
-      <% if checkout.item %>
-        <%= render 'manifestations/show_index', :manifestation => checkout.item.manifestation -%>
-        (<%= link_to checkout.item.item_identifier, checkout.item -%>)
-      <% end %>
+      <%= render 'manifestations/show_index', :manifestation => checkout.item.manifestation -%>
+      (<%= link_to checkout.item.item_identifier, checkout.item -%>)
     </td>
     <td>
       <%= l(checkout.due_date, :format => :only_date) -%>
@@ -30,12 +28,12 @@
       <% end %>
     </td>
     <td>
-      <%- if can? :update, checkout -%>
+      <%- if policy(checkout).update? -%>
         <% unless checkout.checkin %>
           <%= link_to t('checkout.extend'), edit_checkout_path(checkout) -%>
         <% end %>
       <%- end -%>
-      <%- if can? :delete, checkout -%>
+      <%- if policy(checkout).destroy? -%>
         <%= link_to t('page.destroy'), checkout, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>
@@ -44,4 +42,4 @@
 <%- end -%>
 </table>
 
-<%= paginate(@checkouts) %>
+<%= paginate(@checkouts, :theme => 'enju_leaf') %>

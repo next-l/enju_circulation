@@ -25,17 +25,17 @@ describe UserGroupHasCheckoutTypesController do
     describe "When logged in as User" do
       login_user
 
-      it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
+      it "assigns nil as @user_group_has_checkout_types" do
         get :index
-        assigns(:user_group_has_checkout_types).should be_empty
+        assigns(:user_group_has_checkout_types).should be_nil
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
-      it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
+      it "assigns nil as @user_group_has_checkout_types" do
         get :index
-        assigns(:user_group_has_checkout_types).should be_empty
+        assigns(:user_group_has_checkout_types).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

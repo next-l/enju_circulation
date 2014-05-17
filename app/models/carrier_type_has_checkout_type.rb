@@ -1,5 +1,4 @@
 class CarrierTypeHasCheckoutType < ActiveRecord::Base
-  attr_accessible :carrier_type_id, :checkout_type_id, :note
   scope :available_for_carrier_type, lambda {|carrier_type| {:include => :carrier_type, :conditions => ['carrier_types.name = ?', carrier_type.name]}}
   scope :available_for_user_group, lambda {|user_group| {:include => {:checkout_type => :user_groups}, :conditions => ['user_groups.name = ?', user_group.name]}}
 

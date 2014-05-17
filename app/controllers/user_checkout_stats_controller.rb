@@ -1,10 +1,12 @@
 class UserCheckoutStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  before_action :set_user_checkout_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :show
 
   # GET /user_checkout_stats
   # GET /user_checkout_stats.json
   def index
+    authorize UserCheckoutStat
     @user_checkout_stats = UserCheckoutStat.order('id DESC').page(params[:page])
 
     respond_to do |format|
@@ -34,6 +36,7 @@ class UserCheckoutStatsController < ApplicationController
   # GET /user_checkout_stats/new.json
   def new
     @user_checkout_stat = UserCheckoutStat.new
+    authorize @user_checkout_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,7 +51,8 @@ class UserCheckoutStatsController < ApplicationController
   # POST /user_checkout_stats
   # POST /user_checkout_stats.json
   def create
-    @user_checkout_stat = UserCheckoutStat.new(params[:user_checkout_stat])
+    @user_checkout_stat = UserCheckoutStat.new(user_checkout_stat_params)
+    authorize @user_checkout_stat
 
     respond_to do |format|
       if @user_checkout_stat.save
@@ -65,7 +69,7 @@ class UserCheckoutStatsController < ApplicationController
   # PUT /user_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @user_checkout_stat.update_attributes(params[:user_checkout_stat])
+      if @user_checkout_stat.update_attributes(user_checkout_stat_params)
         format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
       else
@@ -84,5 +88,17 @@ class UserCheckoutStatsController < ApplicationController
       format.html { redirect_to user_checkout_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_user_checkout_stat
+    @user_checkout_stat = UserCheckoutStat.find(params[:id])
+    authorize @user_checkout_stat
+  end
+
+  def user_checkout_stat_params
+    params.require(:user_checkout_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

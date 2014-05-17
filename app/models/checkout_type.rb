@@ -1,9 +1,8 @@
 class CheckoutType < ActiveRecord::Base
-  attr_accessible :name, :display_name, :note
   include MasterModel
-  default_scope :order => "checkout_types.position"
-  scope :available_for_carrier_type, lambda {|carrier_type| {:include => :carrier_types, :conditions => ['carrier_types.name = ?', carrier_type.name], :order => 'carrier_types.position'}}
-  scope :available_for_user_group, lambda {|user_group| {:include => :user_groups, :conditions => ['user_groups.name = ?', user_group.name], :order => 'user_group.position'}}
+  default_scope {order("checkout_types.position")}
+  scope :available_for_carrier_type, lambda {|carrier_type| includes(:carrier_types).where('carrier_types.name = ?', carrier_type.name).references(:carrier_types).order('carrier_types.position')}
+  scope :available_for_user_group, lambda {|user_group| includes(:user_groups).where('user_groups.name = ?', user_group.name).references(:user_groups).order('user_group.position')}
 
   has_many :user_group_has_checkout_types, :dependent => :destroy
   has_many :user_groups, :through => :user_group_has_checkout_types

@@ -1,7 +1,6 @@
 require "enju_biblio"
 require "enju_library"
 require "validates_timeliness"
-require "inherited_resources"
 require "state_machine"
 require "enju_message"
 require "enju_event"

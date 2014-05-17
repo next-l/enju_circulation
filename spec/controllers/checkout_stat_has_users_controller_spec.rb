@@ -13,7 +13,7 @@ describe CheckoutStatHasUsersController do
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.all)
+        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe CheckoutStatHasUsersController do
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.all)
+        assigns(:checkout_stat_has_users).should eq(CheckoutStatHasUser.page(1))
       end
     end
 
@@ -31,7 +31,7 @@ describe CheckoutStatHasUsersController do
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should be_empty
+        assigns(:checkout_stat_has_users).should be_nil
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe CheckoutStatHasUsersController do
     describe "When not logged in" do
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
-        assigns(:checkout_stat_has_users).should be_empty
+        assigns(:checkout_stat_has_users).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -205,7 +205,7 @@ describe CheckoutStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
           post :create, :checkout_stat_has_user => @attrs
-          assigns(:checkout_stat_has_user).should_not be_valid
+          assigns(:checkout_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe CheckoutStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
           post :create, :checkout_stat_has_user => @attrs
-          assigns(:checkout_stat_has_user).should_not be_valid
+          assigns(:checkout_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe CheckoutStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
           post :create, :checkout_stat_has_user => @attrs
-          assigns(:checkout_stat_has_user).should_not be_valid
+          assigns(:checkout_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do

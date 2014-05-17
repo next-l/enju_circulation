@@ -1,10 +1,12 @@
 class ManifestationCheckoutStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json
   def index
+    authorize ManifestationCheckoutStat
     @manifestation_checkout_stats = ManifestationCheckoutStat.page(params[:page])
 
     respond_to do |format|
@@ -34,6 +36,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/new.json
   def new
     @manifestation_checkout_stat = ManifestationCheckoutStat.new
+    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,7 +51,8 @@ class ManifestationCheckoutStatsController < ApplicationController
   # POST /manifestation_checkout_stats
   # POST /manifestation_checkout_stats.json
   def create
-    @manifestation_checkout_stat = ManifestationCheckoutStat.new(params[:manifestation_checkout_stat])
+    @manifestation_checkout_stat = ManifestationCheckoutStat.new(manifestation_checkout_stat_params)
+    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
@@ -65,7 +69,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # PUT /manifestation_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_checkout_stat.update_attributes(params[:manifestation_checkout_stat])
+      if @manifestation_checkout_stat.update_attributes(manifestation_checkout_stat_params)
         format.html { redirect_to @manifestation_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }
       else
@@ -84,5 +88,17 @@ class ManifestationCheckoutStatsController < ApplicationController
       format.html { redirect_to manifestation_checkout_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_manifestation_checkout_stat
+    @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
+    authorize @manifestation_checkout_stat
+  end
+
+  def manifestation_checkout_stat_params
+    params.require(:manifestation_checkout_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

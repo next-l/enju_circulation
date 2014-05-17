@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.showing', :model => t('activerecord.models.user_checkout_stat')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
@@ -38,12 +38,12 @@
   <%- end -%>
 </table>
 
-<%= paginate(@stats) -%>
+<%= paginate(@stats, :theme => 'enju_leaf') -%>
 
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <li><%= link_to t('page.edit'), edit_user_checkout_stat_path(@user_checkout_stat) -%></li>
     <li><%= back_to_index(flash[:page_info]) -%></li>

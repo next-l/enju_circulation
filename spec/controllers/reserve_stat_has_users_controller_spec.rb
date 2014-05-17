@@ -13,7 +13,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.all)
+        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.all)
+        assigns(:reserve_stat_has_users).should eq(ReserveStatHasUser.page(1))
       end
     end
 
@@ -31,7 +31,7 @@ describe ReserveStatHasUsersController do
 
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should be_empty
+        assigns(:reserve_stat_has_users).should be_nil
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe ReserveStatHasUsersController do
     describe "When not logged in" do
       it "assigns all reserve_stat_has_users as @reserve_stat_has_users" do
         get :index
-        assigns(:reserve_stat_has_users).should be_empty
+        assigns(:reserve_stat_has_users).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -205,7 +205,7 @@ describe ReserveStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_user as @reserve_stat_has_user" do
           post :create, :reserve_stat_has_user => @attrs
-          assigns(:reserve_stat_has_user).should_not be_valid
+          assigns(:reserve_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe ReserveStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_user as @reserve_stat_has_user" do
           post :create, :reserve_stat_has_user => @attrs
-          assigns(:reserve_stat_has_user).should_not be_valid
+          assigns(:reserve_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe ReserveStatHasUsersController do
       describe "with valid params" do
         it "assigns a newly created reserve_stat_has_user as @reserve_stat_has_user" do
           post :create, :reserve_stat_has_user => @attrs
-          assigns(:reserve_stat_has_user).should_not be_valid
+          assigns(:reserve_stat_has_user).should be_valid
         end
 
         it "should be forbidden" do

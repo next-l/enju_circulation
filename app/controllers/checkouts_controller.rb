@@ -1,11 +1,10 @@
 class CheckoutsController < ApplicationController
-  before_filter :store_location, :only => :index
-  load_and_authorize_resource :except => [:index, :remove_all]
-  authorize_resource :only => [:index, :remove_all]
-  before_filter :get_user, :only => [:index, :remove_all]
-  before_filter :get_item, :only => :index
-  after_filter :convert_charset, :only => :index
-  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
+  before_action :set_checkout, only: [:show, :edit, :update, :destroy]
+  before_action :store_location, :only => :index
+  before_action :get_user, :only => [:index, :remove_all]
+  before_action :get_item, :only => :index
+  after_action :convert_charset, :only => :index
+  after_action :verify_authorized
 
   # GET /checkouts
   # GET /checkouts.json
@@ -18,9 +17,7 @@ class CheckoutsController < ApplicationController
         @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
       end
     else
-      unless current_user
-        access_denied; return
-      end
+      authorize Checkout
     end
 
     if params[:format] == 'csv'
@@ -134,7 +131,7 @@ class CheckoutsController < ApplicationController
   # PUT /checkouts/1
   # PUT /checkouts/1.json
   def update
-    @checkout.assign_attributes(params[:checkout])
+    @checkout.assign_attributes(checkout_params)
     @checkout.due_date = @checkout.due_date.end_of_day
     @checkout.checkout_renewal_count += 1
 
@@ -177,5 +174,15 @@ class CheckoutsController < ApplicationController
       format.html { redirect_to checkouts_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_checkout
+    @checkout = Checkout.find(params[:id])
+    authorize @checkout
+  end
+
+  def checkout_params
+    params.require(:checkout).permit(:due_date)
   end
 end
