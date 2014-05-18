@@ -564,16 +564,16 @@ describe ReservesController do
         put :update, :id => 15, :reserve => {:item_identifier => '00021'}
         assigns(:reserve).should_not be_valid
         response.should be_success
-        assigns(:reserve).state.should eq 'requested'
-        reserves(:reserve_00014).state.should eq 'retained'
+        assigns(:reserve).current_state.should eq 'requested'
+        reserves(:reserve_00014).current_state.should eq 'retained'
       end
 
       it "should update retained reservations if force_retaining is enabled" do
         put :update, :id => 15, :reserve => {:item_identifier => '00021', :force_retaining => '1'}
         assigns(:reserve).should be_valid
-        assigns(:reserve).state.should eq 'retained'
+        assigns(:reserve).current_state.should eq 'retained'
         response.should redirect_to reserve_url(assigns(:reserve))
-        reserves(:reserve_00014).state.should eq 'postponed'
+        reserves(:reserve_00014).current_state.should eq 'postponed'
       end
     end
 
@@ -608,7 +608,7 @@ describe ReservesController do
         old_message_requests_count = MessageRequest.count
         put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
-        assigns(:reserve).state.should eq 'canceled'
+        assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -652,7 +652,7 @@ describe ReservesController do
         old_message_requests_count = MessageRequest.count
         put :update, :id => 3, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
-        assigns(:reserve).state.should eq 'canceled'
+        assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
         response.should redirect_to reserve_url(assigns(:reserve))
       end

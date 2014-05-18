@@ -2,20 +2,20 @@
 class Reserve < ActiveRecord::Base
   scope :hold, -> {where('item_id IS NOT NULL')}
   scope :not_hold, -> {where(:item_id => nil)}
-  scope :waiting, -> {where('canceled_at IS NULL AND expired_at > ? AND state != ?', Time.zone.now, 'completed').order('reserves.id DESC')}
-  scope :retained, -> {where('retained_at IS NOT NULL AND state = ?', 'retained')}
-  scope :completed, -> {where('checked_out_at IS NOT NULL AND state = ?', 'completed')}
-  scope :canceled, -> {where('canceled_at IS NOT NULL AND state = ?', 'canceled')}
-  scope :postponed, -> {where('postponed_at IS NOT NULL AND state = ?', 'postponed')}
-  scope :will_expire_retained, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained').order('expired_at')}
-  scope :will_expire_pending, lambda {|datetime| where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'pending').order('expired_at')}
+  scope :waiting, -> {not_in_state(:completed).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
+  scope :retained, -> {in_state(:retained).where('retained_at IS NOT NULL')}
+  scope :completed, -> {in_state(:completed).where('checked_out_at IS NOT NULL')}
+  #scope :canceled, -> {where('canceled_at IS NOT NULL AND state = ?', 'canceled')}
+  #scope :postponed, -> {where('postponed_at IS NOT NULL AND state = ?', 'postponed')}
+  scope :will_expire_retained, lambda {|datetime| in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
+  scope :will_expire_pending, lambda {|datetime| in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :not_sent_expiration_notice_to_patron, -> {where(:state => 'expired', :expiration_notice_to_patron => false)}
-  scope :not_sent_expiration_notice_to_library, -> {where(:state => 'expired', :expiration_notice_to_library => false)}
-  scope :sent_expiration_notice_to_patron, -> {where(:state => 'expired', :expiration_notice_to_patron => true)}
-  scope :sent_expiration_notice_to_library, -> {where(:state => 'expired', :expiration_notice_to_library => true)}
-  scope :not_sent_cancel_notice_to_agent, -> {where(:state => 'canceled', :expiration_notice_to_patron => false)}
-  scope :not_sent_cancel_notice_to_library, -> {where(:state => 'canceled', :expiration_notice_to_library => false)}
+  scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => false)}
+  scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => false)}
+  #scope :sent_expiration_notice_to_patron, -> {where(:state => 'expired', :expiration_notice_to_patron => true)}
+  #scope :sent_expiration_notice_to_library, -> {where(:state => 'expired', :expiration_notice_to_library => true)}
+  #scope :not_sent_cancel_notice_to_agent, -> {where(:state => 'canceled', :expiration_notice_to_patron => false)}
+  #scope :not_sent_cancel_notice_to_library, -> {where(:state => 'canceled', :expiration_notice_to_library => false)}
 
   belongs_to :user #, :validate => true
   belongs_to :manifestation #, :validate => true
@@ -52,12 +52,6 @@ class Reserve < ActiveRecord::Base
       end
     end
   }
-  validates :item_id, :uniqueness => {:scope => :state, :allow_blank => true},
-    :if => Proc.new{|reserve|
-      false unless reserve.state_changed?
-      true if reserve.completed? or reserve.retained?
-    }
-  validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, :on => :create
   before_validation :set_item, :set_expired_at
@@ -66,47 +60,58 @@ class Reserve < ActiveRecord::Base
 
   attr_accessor :user_number, :item_identifier, :force_retaining
 
-  state_machine :initial => :pending do
-    before_transition [:pending, :postponed] => :requested, :do => :do_request
-    before_transition :retained => :postponed, :do => :postpone
-    before_transition [:pending, :requested, :retained, :postponed] => :retained, :do => :retain
-    before_transition [:pending ,:requested, :retained, :postponed] => :canceled, :do => :cancel
-    before_transition [:pending, :requested, :retained, :postponed] => :expired, :do => :expire
-    before_transition :retained => :completed, :do => :checkout
-    after_transition any => any do |reserve, transition|
-      if Rails.env == 'production'
-        ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
-      end
-    end
+  include Statesman::Adapters::ActiveRecordModel
 
-    after_transition any => [:requested, :canceled, :retained, :postponed] do |reserve, transition|
-      reserve.send_message
-    end
+  has_many :reserve_transitions
 
-    event :sm_request do
-      transition [:pending, :requested] => :requested
-    end
-
-    event :sm_retain do
-      transition [:pending, :requested, :retained, :postponed] => :retained
-    end
-
-    event :sm_cancel do
-      transition [:pending, :requested, :retained, :postponed] => :canceled
-    end
-
-    event :sm_expire do
-      transition [:pending, :requested, :retained, :postponed] => :expired
-    end
-
-    event :sm_postpone do
-      transition :retained => :postponed
-    end
-
-    event :sm_complete do
-      transition [:pending, :requested, :retained] => :completed
-    end
+  def state_machine
+    @state_machine ||= ReserveStateMachine.new(self, transition_class: ReserveTransition)
   end
+
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
+
+  #state_machine :initial => :pending do
+    #before_transition [:pending, :postponed] => :requested, :do => :do_request
+    #before_transition :retained => :postponed, :do => :postpone
+    #before_transition [:pending, :requested, :retained, :postponed] => :retained, :do => :retain
+    #before_transition [:pending ,:requested, :retained, :postponed] => :canceled, :do => :cancel
+    #before_transition [:pending, :requested, :retained, :postponed] => :expired, :do => :expire
+    #before_transition :retained => :completed, :do => :checkout
+  #  after_transition any => any do |reserve, transition|
+  #    if Rails.env == 'production'
+  #      ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
+  #    end
+  #  end
+
+  #  after_transition any => [:requested, :canceled, :retained, :postponed] do |reserve, transition|
+  #    reserve.send_message
+  #  end
+
+  #  event :sm_request do
+  #    transition [:pending, :requested] => :requested
+  #  end
+
+  #  event :sm_retain do
+  #    transition [:pending, :requested, :retained, :postponed] => :retained
+  #  end
+
+  #  event :sm_cancel do
+  #    transition [:pending, :requested, :retained, :postponed] => :canceled
+  #  end
+
+  #  event :sm_expire do
+  #    transition [:pending, :requested, :retained, :postponed] => :expired
+  #  end
+
+  #  event :sm_postpone do
+  #    transition :retained => :postponed
+  #  end
+
+  #  event :sm_complete do
+  #    transition [:pending, :requested, :retained] => :completed
+  #  end
+  #end
 
   paginates_per 10
 
@@ -130,7 +135,9 @@ class Reserve < ActiveRecord::Base
     boolean :hold do |reserve|
       self.hold.include?(reserve)
     end
-    string :state
+    string :state do
+      current_state
+    end
     string :title_transcription do
       manifestation.try(:title_transcription)
     end
@@ -153,13 +160,6 @@ class Reserve < ActiveRecord::Base
     if number.present?
       user = User.where(:user_number => number).first
       self.user = user
-    end
-  end
-
-  def valid_item?
-    if item_identifier.present?
-      item = Item.where(:item_identifier => item_identifier).first
-      errors[:base] << I18n.t('reserve.invalid_item') unless item
     end
   end
 
@@ -200,7 +200,7 @@ class Reserve < ActiveRecord::Base
   def send_message(sender = nil)
     sender = User.find(1) unless sender # TODO: システムからのメッセージの発信者
     Reserve.transaction do
-      case state
+      case current_state
       when 'requested'
         message_template_to_agent = MessageTemplate.localized_template('reservation_accepted_for_patron', user.locale)
         request = MessageRequest.new
@@ -239,12 +239,12 @@ class Reserve < ActiveRecord::Base
         message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_for_patron})
-        request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message!
         message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library})
-        request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
+        request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.sm_send_message!
       when 'postponed'
         message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.locale)
@@ -290,8 +290,8 @@ class Reserve < ActiveRecord::Base
 
   def self.expire
     Reserve.transaction do
-      self.will_expire_retained(Time.zone.now.beginning_of_day).map{|r| r.sm_expire!}
-      self.will_expire_pending(Time.zone.now.beginning_of_day).map{|r| r.sm_expire!}
+      self.will_expire_retained(Time.zone.now.beginning_of_day).map{|r| r.transition_to!(:expired)}
+      self.will_expire_pending(Time.zone.now.beginning_of_day).map{|r| r.transition_to!(:expired)}
 
       # キューに登録した時点では本文は作られないので
       # 予約の連絡をすませたかどうかを識別できるようにしなければならない
@@ -336,15 +336,19 @@ class Reserve < ActiveRecord::Base
   end
 
   def completed?
-    ['canceled', 'expired', 'completed'].include?(state)
+    ['canceled', 'expired', 'completed'].include?(current_state)
   end
 
   def retained?
-    return true if state == 'retained'
+    return true if current_state == 'retained'
     false
   end
 
   private
+  def self.transition_class
+    ReserveTransition
+  end
+
   def do_request
     self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil, :retained_at => nil})
     save!
@@ -356,7 +360,7 @@ class Reserve < ActiveRecord::Base
     Reserve.transaction do
       if item.try(:next_reservation)
         reservation = item.next_reservation
-        reservation.sm_postpone!
+        reservation.transition_to!(:postponed)
       end
       save!
     end
@@ -370,39 +374,26 @@ class Reserve < ActiveRecord::Base
         reserve.item = item
         self.item = nil
         save!
-        reserve.sm_retain!
+        reserve.transition_to!(:retained)
       end
     end
     logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
   end
 
   def cancel
-    Reserve.transaction do
-      self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now})
-      save!
-      reserve = next_reservation
-      if reserve
-        reserve.item = item
-        self.item = nil
-        save!
-        reserve.sm_retain!
-      end
-    end
   end
 
   def checkout
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now})
-    save!
+    assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first, :checked_out_at => Time.zone.now})
   end
 
   def postpone
-    self.assign_attributes({
+    assign_attributes({
       :request_status_type => RequestStatusType.where(:name => 'In Process').first,
       :item_id => nil,
       :retained_at => nil,
       :postponed_at => Time.zone.now
     })
-    save!
   end
 
   def manifestation_must_include_item

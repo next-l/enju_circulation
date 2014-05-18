@@ -54,13 +54,13 @@ class CheckedItemsController < ApplicationController
   # POST /checked_items
   # POST /checked_items.json
   def create
-    unless @basket
-      access_denied; return
-    end
+    #unless @basket
+    #  access_denied; return
+    #end
     @checked_item = CheckedItem.new(checked_item_params)
-    authorize @checked_item
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
+    authorize @checked_item
 
     flash[:message] = ''
 

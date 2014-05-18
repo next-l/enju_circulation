@@ -11,20 +11,21 @@ describe Reserve do
   it "should notify a next reservation" do
     old_count = Message.count
     reserve = reserves(:reserve_00014)
+    reserve.current_state.should eq 'pending'
     item = reserve.next_reservation.item
-    reserve.sm_expire!
-    reserve.state.should eq 'expired'
+    reserve.transition_to!(:expired)
+    reserve.current_state.should eq 'expired'
     item.should eq reserve.item
     Message.count.should eq old_count + 2
   end
 
   it "should expire reservation" do
-    reserves(:reserve_00001).sm_expire!
+    reserves(:reserve_00001).transition_to!(:expired)
     reserves(:reserve_00001).request_status_type.name.should eq 'Expired'
   end
 
   it "should cancel reservation" do
-    reserves(:reserve_00001).sm_cancel!
+    reserves(:reserve_00001).transition_to!(:canceled)
     reserves(:reserve_00001).canceled_at.should be_true
     reserves(:reserve_00001).request_status_type.name.should eq 'Cannot Fulfill Request'
   end
@@ -75,13 +76,14 @@ describe Reserve do
 
     reservation.item = old_reservation.item
     reservation.item.retained?.should be_false
-    reservation.sm_retain!
+    reservation.transition_to!(:retained)
+    reservation.save
     old_reservation.reload
     old_reservation.item.should be_nil
     reservation.retained_at.should be_true
     old_reservation.retained_at.should be_nil
     old_reservation.postponed_at.should be_true
-    old_reservation.state.should eq 'postponed'
+    old_reservation.current_state.should eq 'postponed'
     MessageRequest.count.should eq old_count + 4
     reservation.item.retained?.should be_true
   end

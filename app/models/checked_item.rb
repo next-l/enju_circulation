@@ -52,7 +52,7 @@ class CheckedItem < ActiveRecord::Base
 
     if item.reserved?
       if self.item.manifestation.next_reservation.user == self.basket.user
-        self.item.manifestation.next_reservation.sm_complete
+        self.item.manifestation.next_reservation.transition_to!(:completed)
       else
         errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
       end

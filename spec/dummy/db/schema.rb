@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130519065837) do
+ActiveRecord::Schema.define(version: 20140518050147) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -890,6 +890,16 @@ ActiveRecord::Schema.define(version: 20130519065837) do
 
   add_index "reserve_stat_has_users", ["user_id"], name: "index_reserve_stat_has_users_on_user_id"
   add_index "reserve_stat_has_users", ["user_reserve_stat_id"], name: "index_reserve_stat_has_users_on_user_reserve_stat_id"
+
+  create_table "reserve_transitions", force: true do |t|
+    t.string  "to_state"
+    t.text    "metadata",   default: "{}"
+    t.integer "sort_key"
+    t.integer "reserve_id"
+  end
+
+  add_index "reserve_transitions", ["reserve_id"], name: "index_reserve_transitions_on_reserve_id"
+  add_index "reserve_transitions", ["sort_key", "reserve_id"], name: "index_reserve_transitions_on_sort_key_and_reserve_id", unique: true
 
   create_table "reserves", force: true do |t|
     t.integer  "user_id",                                      null: false

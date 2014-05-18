@@ -4,7 +4,7 @@ class CheckoutsController < ApplicationController
   before_action :get_user, :only => [:index, :remove_all]
   before_action :get_item, :only => :index
   after_action :convert_charset, :only => :index
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :index
 
   # GET /checkouts
   # GET /checkouts.json

@@ -115,7 +115,7 @@ module EnjuCirculation
       end
 
       def retained?
-        if manifestation.next_reservation.try(:state) == 'retained' and  manifestation.next_reservation.item == self
+        if manifestation.next_reservation.try(:current_state) == 'retained' and  manifestation.next_reservation.item == self
           return true
         else
           false

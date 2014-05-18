@@ -20,6 +20,7 @@ gem "enju_event", github: "next-l/enju_event"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer"
 gem "enju_export", github: "next-l/enju_export"
 gem "state_machine", github: "seuros/state_machine"
+gem "statesman"
 
 # To use debugger
 # gem 'debugger'
