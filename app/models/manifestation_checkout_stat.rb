@@ -2,16 +2,9 @@ class ManifestationCheckoutStat < ActiveRecord::Base
   #attr_accessible :start_date, :end_date, :note
   include CalculateStat
   default_scope {order('manifestation_checkout_stats.id DESC')}
-  scope :not_calculated, -> {where(:state => 'pending')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_manifestations
   has_many :manifestations, :through => :checkout_stat_has_manifestations
-
-  state_machine :initial => :pending do
-    before_transition :pending => :completed, :do => :calculate_count
-    event :calculate do
-      transition :pending => :completed
-    end
-  end
 
   paginates_per 10
 

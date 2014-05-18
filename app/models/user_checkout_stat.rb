@@ -1,16 +1,9 @@
 class UserCheckoutStat < ActiveRecord::Base
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
-  scope :not_calculated, -> {where(:state => 'pending')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_users
   has_many :users, :through => :checkout_stat_has_users
-
-  state_machine :initial => :pending do
-    before_transition :pending => :completed, :do => :calculate_count
-    event :calculate do
-      transition :pending => :completed
-    end
-  end
 
   paginates_per 10
 
