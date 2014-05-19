@@ -229,7 +229,7 @@ class Reserve < ActiveRecord::Base
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_agent})
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent)
-        self.update_attribute(:expiration_notice_to_patron, true)
+        self.expiration_notice_to_patron = true
         message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library})
