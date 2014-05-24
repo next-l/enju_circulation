@@ -83,22 +83,22 @@ class Checkout < ActiveRecord::Base
 
   def over_checkout_renewal_limit?
     return nil unless item.checkout_status(user)
-    return true if item.checkout_status(user).checkout_renewal_limit < checkout_renewal_count
+    true if item.checkout_status(user).checkout_renewal_limit < checkout_renewal_count
   end
 
   def overdue?
     if Time.zone.now > due_date.tomorrow.beginning_of_day
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
   def is_today_due_date?
     if Time.zone.now.beginning_of_day == due_date.beginning_of_day
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
@@ -106,9 +106,9 @@ class Checkout < ActiveRecord::Base
     return nil unless user
     if item
       if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
-        new_due_date = Time.zone.now.advance(:days => item.checkout_status(user).checkout_period).beginning_of_day
+        Time.zone.now.advance(:days => item.checkout_status(user).checkout_period).beginning_of_day
       else
-        new_due_date = due_date
+        due_date
       end
     end
   end

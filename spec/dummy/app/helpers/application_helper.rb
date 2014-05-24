@@ -84,13 +84,13 @@ module ApplicationHelper
 
   def patrons_list(patrons = [], options = {})
     return nil if patrons.blank?
-    patrons_list = []
+    list = []
     if options[:nolink]
-      patrons_list = patrons.map{|patron| patron.full_name}
+      list = patrons.map{|patron| patron.full_name}
     else
-      patrons_list = patrons.map{|patron| link_to(patron.full_name, patron, options)}
+      list = patrons.map{|patron| link_to(patron.full_name, patron, options)}
     end
-    patrons_list.join(" ").html_safe
+    list.join(" ").html_safe
   end
 
   def book_jacket(manifestation)
@@ -133,6 +133,8 @@ module ApplicationHelper
       link_to 'SQLite', 'http://www.sqlite.org/'
     when 'jdbcsqlite3'
       link_to 'SQLite', 'http://www.sqlite.org/'
+    else
+      nil
     end
   end
 
@@ -146,6 +148,8 @@ module ApplicationHelper
       t('title.new')
     when 'edit'
       t('title.edit')
+    else
+      nil
     end
   end
 
@@ -189,6 +193,8 @@ module ApplicationHelper
       t('page.boolean.true')
     when "false"
       t('page.boolean.false')
+    else
+      nil
     end
   end
 

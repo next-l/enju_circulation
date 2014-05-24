@@ -140,7 +140,7 @@ describe CheckedItemsController do
 
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should_not be_valid
+        assigns(:checked_item).should_not be_nil
         response.should be_forbidden
       end
     end
@@ -148,7 +148,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should_not be_valid
+        assigns(:checked_item).should_not be_nil
         response.should redirect_to(new_user_session_url)
       end
     end

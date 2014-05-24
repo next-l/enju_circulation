@@ -101,7 +101,7 @@ class CheckedItem < ActiveRecord::Base
         end
       end
     end
-    return due_date
+    due_date
   end
 
   def set_item

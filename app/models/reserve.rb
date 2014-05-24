@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
+  include Statesman::Adapters::ActiveRecordModel
   scope :hold, -> {where('item_id IS NOT NULL')}
   scope :not_hold, -> {where(:item_id => nil)}
   scope :waiting, -> {not_in_state(:completed).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
@@ -36,14 +37,14 @@ class Reserve < ActiveRecord::Base
   validates :item_id, :presence => true, :if => Proc.new{|reserve|
     if item_id_changed?
       if reserve.completed? or reserve.retained?
-        unless item_id_change[0]
-          false
-        else
-          unless item_id_change[1]
-            false
-          else
+        if item_id_change[0]
+          if item_id_change[1]
             true
+          else
+            false
           end
+        else
+          false
         end
       end
     else
@@ -311,7 +312,7 @@ class Reserve < ActiveRecord::Base
 
   def checked_out_now?
     if user and manifestation
-      true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
+      true unless (user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
     end
   end
 
@@ -336,7 +337,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def completed?
-    ['canceled', 'expired', 'completed'].include?(current_state)
+    %w(canceled expired completed).include?(current_state)
   end
 
   def retained?

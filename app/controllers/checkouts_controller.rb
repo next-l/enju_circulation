@@ -97,7 +97,7 @@ class CheckoutsController < ApplicationController
         facet :reserved
       end
       page = params[:page] || 1
-      search.query.paginate(page.to_i, Checkout.default_per_page)
+      search.query.paginate(page.to_i, per_page)
       @checkouts = search.execute!.results
       @checkouts_facet = search.facet(:reserved).rows
     end

@@ -53,7 +53,7 @@ module EnjuCirculation
               AND user_id = ? AND checkin_id IS NULL", checkout_type.id, self.id]
           )
         end
-        return checkout_count
+        checkout_count
       end
 
       def reached_reservation_limit?(manifestation)

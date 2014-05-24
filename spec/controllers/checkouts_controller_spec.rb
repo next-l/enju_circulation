@@ -248,7 +248,6 @@ describe CheckoutsController do
         end
 
         it "assigns the requested checkout as @checkout" do
-          old_due_date = @checkout.due_date
           put :update, :id => @checkout.id, :checkout => @attrs
           assigns(:checkout).should eq(@checkout)
           response.should redirect_to(assigns(:checkout))

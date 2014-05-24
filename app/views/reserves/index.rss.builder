@@ -15,7 +15,7 @@ xml.rss('version' => "2.0",
     xml.ttl "60"
     if @user
       xml.tag! "atom:link", :rel => 'self', :href => user_reserves_url(@user, :format => :rss)
-      xml.tag! "atom:link", :rel => 'alternate', :href => user_reserves_url(@user)
+      xml.tag! 'atom:link', :rel => 'alternate', :href => user_reserves_url(@user)
     else
       xml.tag! "atom:link", :rel => 'self', :href => reserves_url(:format => :rss)
       xml.tag! "atom:link", :rel => 'alternate', :href => reserves_url
