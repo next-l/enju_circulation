@@ -19,10 +19,6 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # GET /carrier_type_has_checkout_types/1
   # GET /carrier_type_has_checkout_types/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @carrier_type_has_checkout_type }
-    end
   end
 
   # GET /carrier_type_has_checkout_types/new

@@ -17,10 +17,6 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # GET /checkout_stat_has_manifestations/1
   # GET /checkout_stat_has_manifestations/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @checkout_stat_has_manifestation }
-    end
   end
 
   # GET /checkout_stat_has_manifestations/new

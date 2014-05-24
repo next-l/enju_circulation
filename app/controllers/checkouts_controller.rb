@@ -117,10 +117,6 @@ class CheckoutsController < ApplicationController
   # GET /checkouts/1
   # GET /checkouts/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @checkout }
-    end
   end
 
   # GET /checkouts/1/edit
@@ -155,7 +151,7 @@ class CheckoutsController < ApplicationController
     @checkout.save!
 
     respond_to do |format|
-      format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end
@@ -171,7 +167,7 @@ class CheckoutsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to checkouts_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to checkouts_url, :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end

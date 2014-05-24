@@ -114,10 +114,6 @@ class ReservesController < ApplicationController
   # GET /reserves/1
   # GET /reserves/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @reserve }
-    end
   end
 
   # GET /reserves/new
@@ -245,7 +241,7 @@ class ReservesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to reserves_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.reserve')) }
+      format.html { redirect_to reserves_url, :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.reserve')) }
       format.json { head :no_content }
     end
   end

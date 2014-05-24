@@ -66,7 +66,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   # DELETE /item_has_use_restrictions/1
   def destroy
     @item_has_use_restriction.destroy
-    redirect_to item_has_use_restrictions_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.item_has_use_restriction'))
+    redirect_to item_has_use_restrictions_url, :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.item_has_use_restriction'))
   end
 
   private

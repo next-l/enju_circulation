@@ -17,10 +17,6 @@ class ReserveStatHasManifestationsController < ApplicationController
   # GET /reserve_stat_has_manifestations/1
   # GET /reserve_stat_has_manifestations/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @reserve_stat_has_manifestation }
-    end
   end
 
   # GET /reserve_stat_has_manifestations/new

@@ -19,10 +19,6 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # GET /user_group_has_checkout_types/1
   # GET /user_group_has_checkout_types/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @user_group_has_checkout_type }
-    end
   end
 
   # GET /user_group_has_checkout_types/new

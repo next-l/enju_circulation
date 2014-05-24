@@ -17,10 +17,6 @@ class CheckoutStatHasUsersController < ApplicationController
   # GET /checkout_stat_has_users/1
   # GET /checkout_stat_has_users/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @checkout_stat_has_user }
-    end
   end
 
   # GET /checkout_stat_has_users/new

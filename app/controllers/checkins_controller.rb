@@ -23,10 +23,6 @@ class CheckinsController < ApplicationController
   # GET /checkins/1
   # GET /checkins/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @checkin }
-    end
   end
 
   # GET /checkins/new
