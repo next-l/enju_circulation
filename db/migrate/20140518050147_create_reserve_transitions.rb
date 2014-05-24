@@ -5,6 +5,7 @@ class CreateReserveTransitions < ActiveRecord::Migration
       t.text :metadata, default: "{}"
       t.integer :sort_key
       t.integer :reserve_id
+      t.timestamps
     end
 
     add_index :reserve_transitions, :reserve_id
