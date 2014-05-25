@@ -51,10 +51,15 @@ class CheckedItem < ActiveRecord::Base
     end
 
     if item.reserved?
-      if self.item.manifestation.next_reservation.user == self.basket.user
-        self.item.manifestation.next_reservation.transition_to!(:completed)
+      if item.manifestation.next_reservation.user == basket.user
+        item.manifestation.next_reservation.transition_to!(:completed)
       else
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
+        reserve = item.manifestation.reserves.order(:id).where(:user_id => basket.user_id).first
+        if reserve
+          reserve.transition_to!(:completed)
+        else
+          errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
+        end
       end
     end
 

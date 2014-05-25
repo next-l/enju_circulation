@@ -90,9 +90,9 @@ describe Reserve do
 
   it "should not be valid if item_identifier is invalid" do
     reservation = reserves(:reserve_00014)
-    reservation.item_identifier = 'invalid'
+    reservation.item_identifier = 'invalid item'
     reservation.save
-    assert reservation.valid?.should eq false
+    reservation.valid?.should eq false
   end
 
   it "should be valid if the reservation is completed and its item is destroyed" do

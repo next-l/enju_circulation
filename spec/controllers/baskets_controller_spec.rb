@@ -193,7 +193,7 @@ describe BasketsController do
 
       describe "with blank params" do
         it "assigns a newly created basket as @basket" do
-          post :create, :basket => { }
+          post :create, :basket => {user_number: ''}
           assigns(:basket).should_not be_valid
         end
       end
@@ -218,7 +218,7 @@ describe BasketsController do
 
       describe "with blank params" do
         it "assigns a newly created basket as @basket" do
-          post :create, :basket => { }
+          post :create, :basket => {user_number: ''}
           assigns(:basket).should_not be_valid
         end
       end
@@ -245,7 +245,7 @@ describe BasketsController do
       end
 
       it "should not create basket without user_number" do
-        post :create, :basket => { }
+        post :create, :basket => {user_number: ''}
         assigns(:basket).should_not be_valid
         response.should be_success
       end
@@ -257,7 +257,7 @@ describe BasketsController do
       end
 
       it "should not create basket without user_number" do
-        post :create, :basket => { }
+        post :create, :basket => {user_number: ''}
         assigns(:basket).should_not be_valid
         response.should be_success
       end
@@ -287,12 +287,12 @@ describe BasketsController do
     describe "When not logged in" do
       describe "with blank params" do
         it "assigns a newly created basket as @basket" do
-          post :create, :basket => { }
+          post :create, :basket => {user_number: ''}
           assigns(:basket).should_not be_valid
         end
 
         it "should be redirected to new_user_session_url" do
-          post :create, :basket => { }
+          post :create, :basket => {user_number: ''}
           assigns(:basket).should_not be_valid
           assert_response :redirect
           response.should redirect_to new_user_session_url

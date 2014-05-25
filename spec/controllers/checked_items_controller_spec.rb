@@ -140,7 +140,7 @@ describe CheckedItemsController do
 
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should_not be_nil
+        assigns(:checked_item).should be_nil
         response.should be_forbidden
       end
     end
@@ -148,7 +148,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should_not be_nil
+        assigns(:checked_item).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -244,7 +244,7 @@ describe CheckedItemsController do
       end
 
       it "should not create checked_item without item_id" do
-        post :create, :checked_item => { }, :basket_id => 1
+        post :create, :checked_item => {:item_identifier => ''}, :basket_id => 1
         response.should be_success
       end
     end
@@ -326,7 +326,7 @@ describe CheckedItemsController do
       login_fixture_admin
 
       it "should not update checked_item without basket_id" do
-        put :update, :id => 1, :checked_item => { }
+        put :update, :id => 1, :checked_item => {:item_identifier => items(:item_00001)}
         response.should be_forbidden
       end
     end
@@ -335,12 +335,12 @@ describe CheckedItemsController do
       login_fixture_librarian
 
       it "should not update checked_item without basket_id" do
-        put :update, :id => 1, :checked_item => {}
+        put :update, :id => 1, :checked_item => {:item_identifier => ''}
         response.should be_forbidden
       end
 
       it "should update checked_item" do
-        put :update, :id => 4, :checked_item => { }, :basket_id => 8
+        put :update, :id => 4, :checked_item => {:item_identifier => ''}, :basket_id => 8
         assigns(:checked_item).should be_valid
         response.should redirect_to checked_item_url(assigns(:checked_item))
       end

@@ -52,6 +52,7 @@ class Reserve < ActiveRecord::Base
       end
     end
   }
+  validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, :on => :create
   before_validation :set_item, :set_expired_at
@@ -160,6 +161,13 @@ class Reserve < ActiveRecord::Base
     if number.present?
       user = User.where(:user_number => number).first
       self.user = user
+    end
+  end
+
+  def valid_item?
+    if item_identifier.present?
+      item = Item.where(:item_identifier => item_identifier).first
+      errors[:base] << I18n.t('reserve.invalid_item') unless item
     end
   end
 
