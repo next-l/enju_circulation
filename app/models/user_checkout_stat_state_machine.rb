@@ -1,4 +1,4 @@
-class UserReserveStatStateMachine
+class UserCheckoutStatStateMachine
   include Statesman::Machine
   state :pending, initial: true
   state :completed
