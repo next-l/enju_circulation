@@ -1,5 +1,5 @@
 class ManifestationCheckoutStat < ActiveRecord::Base
-  #attr_accessible :start_date, :end_date, :note
+  include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
   default_scope {order('manifestation_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
@@ -7,6 +7,15 @@ class ManifestationCheckoutStat < ActiveRecord::Base
   has_many :manifestations, :through => :checkout_stat_has_manifestations
 
   paginates_per 10
+
+  has_many :manifestation_checkout_stat_transitions
+
+  def state_machine
+    ManifestationCheckoutStatStateMachine.new(self, transition_class: ManifestationCheckoutStatTransition)
+  end
+
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
 
   def calculate_count
     self.started_at = Time.zone.now
@@ -22,6 +31,11 @@ class ManifestationCheckoutStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+  end
+  
+  private
+  def self.transition_class
+    ManifestationCheckoutStatTransition
   end
 end
 

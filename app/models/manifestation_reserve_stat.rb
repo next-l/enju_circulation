@@ -1,5 +1,5 @@
 class ManifestationReserveStat < ActiveRecord::Base
-  #attr_accessible :start_date, :end_date, :note
+  include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
@@ -7,6 +7,15 @@ class ManifestationReserveStat < ActiveRecord::Base
   has_many :manifestations, :through => :reserve_stat_has_manifestations
 
   paginates_per 10
+
+  has_many :manifestation_reserve_stat_transitions
+
+  def state_machine
+    ManifestationReserveStatStateMachine.new(self, transition_class: ManifestationReserveStatTransition)
+  end
+
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
 
   def calculate_count
     self.started_at = Time.zone.now
@@ -22,6 +31,11 @@ class ManifestationReserveStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+  end
+  
+  private
+  def self.transition_class
+    ManifestationReserveStatTransition
   end
 end
 

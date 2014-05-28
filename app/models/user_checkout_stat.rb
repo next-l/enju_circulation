@@ -1,4 +1,5 @@
 class UserCheckoutStat < ActiveRecord::Base
+  include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
@@ -6,6 +7,15 @@ class UserCheckoutStat < ActiveRecord::Base
   has_many :users, :through => :checkout_stat_has_users
 
   paginates_per 10
+
+  has_many :user_checkout_stat_transitions
+
+  def state_machine
+    UserCheckoutStatStateMachine.new(self, transition_class: UserCheckoutStatTransition)
+  end
+
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
 
   def calculate_count
     self.started_at = Time.zone.now
@@ -20,6 +30,11 @@ class UserCheckoutStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+  end
+  
+  private
+  def self.transition_class
+    UserCheckoutStatTransition
   end
 end
 

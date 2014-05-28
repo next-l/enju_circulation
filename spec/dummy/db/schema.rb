@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140518135713) do
+ActiveRecord::Schema.define(version: 20140528045617) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -598,6 +598,18 @@ ActiveRecord::Schema.define(version: 20140518135713) do
     t.datetime "updated_at"
   end
 
+  create_table "manifestation_checkout_stat_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                       default: "{}"
+    t.integer  "sort_key"
+    t.integer  "manifestation_checkout_stat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "manifestation_checkout_stat_transitions", ["manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_stat_id"
+  add_index "manifestation_checkout_stat_transitions", ["sort_key", "manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_transition", unique: true
+
   create_table "manifestation_checkout_stats", force: true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
@@ -631,6 +643,18 @@ ActiveRecord::Schema.define(version: 20140518135713) do
 
   add_index "manifestation_relationships", ["child_id"], name: "index_manifestation_relationships_on_child_id"
   add_index "manifestation_relationships", ["parent_id"], name: "index_manifestation_relationships_on_parent_id"
+
+  create_table "manifestation_reserve_stat_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                      default: "{}"
+    t.integer  "sort_key"
+    t.integer  "manifestation_reserve_stat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "manifestation_reserve_stat_transitions", ["manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_stat_id"
+  add_index "manifestation_reserve_stat_transitions", ["sort_key", "manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_transition", unique: true
 
   create_table "manifestation_reserve_stats", force: true do |t|
     t.datetime "start_date"
@@ -912,10 +936,12 @@ ActiveRecord::Schema.define(version: 20140518135713) do
   add_index "reserve_stat_has_users", ["user_reserve_stat_id"], name: "index_reserve_stat_has_users_on_user_reserve_stat_id"
 
   create_table "reserve_transitions", force: true do |t|
-    t.string  "to_state"
-    t.text    "metadata",   default: "{}"
-    t.integer "sort_key"
-    t.integer "reserve_id"
+    t.string   "to_state"
+    t.text     "metadata",   default: "{}"
+    t.integer  "sort_key"
+    t.integer  "reserve_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "reserve_transitions", ["reserve_id"], name: "index_reserve_transitions_on_reserve_id"
@@ -1081,6 +1107,18 @@ ActiveRecord::Schema.define(version: 20140518135713) do
     t.datetime "updated_at"
   end
 
+  create_table "user_checkout_stat_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",              default: "{}"
+    t.integer  "sort_key"
+    t.integer  "user_checkout_stat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_checkout_stat_transitions", ["sort_key", "user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_sort_key_and_stat_id", unique: true
+  add_index "user_checkout_stat_transitions", ["user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_user_checkout_stat_id"
+
   create_table "user_checkout_stats", force: true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
@@ -1138,6 +1176,18 @@ ActiveRecord::Schema.define(version: 20140518135713) do
 
   add_index "user_has_roles", ["role_id"], name: "index_user_has_roles_on_role_id"
   add_index "user_has_roles", ["user_id"], name: "index_user_has_roles_on_user_id"
+
+  create_table "user_reserve_stat_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",             default: "{}"
+    t.integer  "sort_key"
+    t.integer  "user_reserve_stat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_reserve_stat_transitions", ["sort_key", "user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_sort_key_and_stat_id", unique: true
+  add_index "user_reserve_stat_transitions", ["user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_user_reserve_stat_id"
 
   create_table "user_reserve_stats", force: true do |t|
     t.datetime "start_date"
