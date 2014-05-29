@@ -72,48 +72,6 @@ class Reserve < ActiveRecord::Base
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
     to: :state_machine
 
-  #state_machine :initial => :pending do
-    #before_transition [:pending, :postponed] => :requested, :do => :do_request
-    #before_transition :retained => :postponed, :do => :postpone
-    #before_transition [:pending, :requested, :retained, :postponed] => :retained, :do => :retain
-    #before_transition [:pending ,:requested, :retained, :postponed] => :canceled, :do => :cancel
-    #before_transition [:pending, :requested, :retained, :postponed] => :expired, :do => :expire
-    #before_transition :retained => :completed, :do => :checkout
-  #  after_transition any => any do |reserve, transition|
-  #    if Rails.env == 'production'
-  #      ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
-  #    end
-  #  end
-
-  #  after_transition any => [:requested, :canceled, :retained, :postponed] do |reserve, transition|
-  #    reserve.send_message
-  #  end
-
-  #  event :sm_request do
-  #    transition [:pending, :requested] => :requested
-  #  end
-
-  #  event :sm_retain do
-  #    transition [:pending, :requested, :retained, :postponed] => :retained
-  #  end
-
-  #  event :sm_cancel do
-  #    transition [:pending, :requested, :retained, :postponed] => :canceled
-  #  end
-
-  #  event :sm_expire do
-  #    transition [:pending, :requested, :retained, :postponed] => :expired
-  #  end
-
-  #  event :sm_postpone do
-  #    transition :retained => :postponed
-  #  end
-
-  #  event :sm_complete do
-  #    transition [:pending, :requested, :retained] => :completed
-  #  end
-  #end
-
   paginates_per 10
 
   searchable do
@@ -355,11 +313,6 @@ class Reserve < ActiveRecord::Base
   private
   def self.transition_class
     ReserveTransition
-  end
-
-  def do_request
-    self.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil, :retained_at => nil})
-    save!
   end
 
   def retain

@@ -24,6 +24,7 @@ module EnjuCirculation
       ]
 
       def enju_circulation_item_model
+        include Statesman::Adapters::ActiveRecordModel
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
@@ -51,10 +52,23 @@ module EnjuCirculation
 
         after_create :create_lending_policy
         before_update :update_lending_policy
+        has_many :item_transitions
+
+        delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+          to: :state_machine
+      end
+
+      private
+      def transition_class
+        ItemTransition
       end
     end
 
     module InstanceMethods
+      def state_machine
+        @state_machine ||= ItemStateMachine.new(self, transition_class: ItemTransition)
+      end
+
       def set_circulation_status
         self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
       end

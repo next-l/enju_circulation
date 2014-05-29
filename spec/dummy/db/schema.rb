@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528045617) do
+ActiveRecord::Schema.define(version: 20140529014410) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -478,6 +478,18 @@ ActiveRecord::Schema.define(version: 20140528045617) do
 
   add_index "item_has_use_restrictions", ["item_id"], name: "index_item_has_use_restrictions_on_item_id"
   add_index "item_has_use_restrictions", ["use_restriction_id"], name: "index_item_has_use_restrictions_on_use_restriction_id"
+
+  create_table "item_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",   default: "{}"
+    t.integer  "sort_key"
+    t.integer  "item_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "item_transitions", ["item_id"], name: "index_item_transitions_on_item_id"
+  add_index "item_transitions", ["sort_key", "item_id"], name: "index_item_transitions_on_sort_key_and_item_id", unique: true
 
   create_table "items", force: true do |t|
     t.integer  "manifestation_id"
