@@ -35,12 +35,12 @@
     <th style="width: 30px">ID</th>
     <th><%= t('activerecord.models.manifestation') -%></th>
     <th style="width: 80px"><%= t('activerecord.attributes.reserve.state') -%></th>
-    <%- if policy(@reserves.first).update? -%>
+    <%- if policy(Reserve).create? -%>
       <th style="width: 70px"></th>
     <% end %>
   </tr>
 
-<%- @reserves.each_with_index do |reserve, _| -%>
+<%- @reserves.each_with_index do |reserve, i| -%>
   <tr class="line<%= cycle("0", "1") -%>">
     <td><%= link_to reserve.id, reserve -%></td>
     <td>

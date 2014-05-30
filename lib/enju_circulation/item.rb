@@ -24,6 +24,7 @@ module EnjuCirculation
       ]
 
       def enju_circulation_item_model
+        include Statesman::Adapters::ActiveRecordModel
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
@@ -51,12 +52,21 @@ module EnjuCirculation
 
         after_create :create_lending_policy
         before_update :update_lending_policy
+        has_many :item_transitions
+
+        delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+          to: :state_machine
+      end
+
+      private
+      def transition_class
+        ItemTransition
       end
     end
 
     module InstanceMethods
-      def set_circulation_status
-        self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
+      def state_machine
+        @state_machine ||= ItemStateMachine.new(self, transition_class: ItemTransition)
       end
 
       def checkout_status(user)
@@ -70,7 +80,7 @@ module EnjuCirculation
       end
 
       def rent?
-        return true if self.checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
+        return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
         false
       end
 
@@ -82,7 +92,7 @@ module EnjuCirculation
       end
 
       def available_for_checkout?
-        if circulation_status.name == 'On Loan'
+        if current_state == 'on_loan'
           false
         else
           manifestation.items.for_checkout.include?(self)
@@ -90,16 +100,18 @@ module EnjuCirculation
       end
 
       def checkout!(user)
-        self.circulation_status = CirculationStatus.where(:name => 'On Loan').first
-        if self.reserved_by_user?(user)
-          manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
-          manifestation.next_reservation.sm_complete!
+        self.class.transaction do
+          transition_to!(:on_loan)
+          if reserved_by_user?(user)
+            manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
+            manifestation.next_reservation.transition_to!(:completed)
+          end
+          save!
         end
-        save!
       end
 
       def checkin!
-        self.circulation_status = CirculationStatus.where(:name => 'Available On Shelf').first
+        transition_to!(:available_on_shelf)
         save(:validate => false)
       end
 
@@ -108,7 +120,7 @@ module EnjuCirculation
           reservation = manifestation.next_reservation
           unless reservation.nil?
             reservation.item = self
-            reservation.sm_retain!
+            reservation.transition_to!(:retained)
             reservation.send_message(librarian)
           end
         end
@@ -132,7 +144,12 @@ module EnjuCirculation
 
      def create_lending_policy
         UserGroupHasCheckoutType.available_for_item(self).each do |rule|
-          LendingPolicy.create!(:item_id => id, :user_group_id => rule.user_group_id, :fixed_due_date => rule.fixed_due_date, :loan_period => rule.checkout_period, :renewal => rule.checkout_renewal_limit)
+          LendingPolicy.create!(
+            :item_id => id, :user_group_id => rule.user_group_id,
+            :fixed_due_date => rule.fixed_due_date,
+            :loan_period => rule.checkout_period,
+            :renewal => rule.checkout_renewal_limit
+          )
         end
       end
 
