@@ -7,7 +7,6 @@
     <th id="position"></th>
     <th><%= t('activerecord.attributes.checkout_type.name') -%></th>
     <th><%= t('activerecord.attributes.checkout_type.display_name') -%></th>
-    <th><%= t('activerecord.attributes.checkout_type.note') -%></th>
     <th></th>
   </tr>
 
@@ -22,7 +21,6 @@
     </td>
     <td><%= link_to checkout_type.name, checkout_type -%></td>
     <td><%= link_to checkout_type.display_name.localize, checkout_type -%></td>
-    <td><%= checkout_type.note -%></td>
     <td>
       <%- if policy(checkout_type).update? -%>
         <%= link_to t('page.edit'), edit_checkout_type_path(checkout_type) -%>
