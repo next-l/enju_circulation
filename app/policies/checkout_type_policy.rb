@@ -4,6 +4,8 @@ class CheckoutTypePolicy < AdminPolicy
   end
 
   def destroy?
-    user.try(:has_role?, 'Administrator')
+    if user.try(:has_role?, 'Administrator')
+      true if record.items.exists?
+    end
   end
 end
