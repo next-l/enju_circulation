@@ -101,7 +101,7 @@ module EnjuCirculation
 
       def checkout!(user)
         self.class.transaction do
-          transition_to!(:on_loan)
+          transition_to(:on_loan)
           if reserved_by_user?(user)
             manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
             manifestation.next_reservation.transition_to!(:completed)
