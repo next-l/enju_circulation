@@ -6,7 +6,7 @@ class ItemStateMachine
   state :lost
   state :missing
 
-  transition from: :in_process, to: :available_on_shelf
+  transition from: :in_process, to: [:on_loan, :available_on_shelf]
   transition from: :available_on_shelf, to: [:on_loan, :missing]
   transition from: :on_loan, to: [:available_on_shelf, :missing]
   transition from: :missing, to: [:lost, :available_on_shelf, :on_loan]
