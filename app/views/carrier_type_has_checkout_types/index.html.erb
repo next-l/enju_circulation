@@ -16,10 +16,10 @@
     <td><%= link_to carrier_type_has_checkout_type.checkout_type.display_name.localize, carrier_type_has_checkout_type.checkout_type -%></td>
     <td><%= carrier_type_has_checkout_type.note -%></td>
     <td>
-      <%- if can? :update, carrier_type_has_checkout_type -%>
+      <%- if policy(carrier_type_has_checkout_type).update? -%>
         <%= link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(carrier_type_has_checkout_type) -%>
       <% end %>
-      <%- if can? :delete, carrier_type_has_checkout_type -%>
+      <%- if policy(carrier_type_has_checkout_type).destroy? -%>
         <%= link_to t('page.destroy'), carrier_type_has_checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <% end %>
     </td>
@@ -32,7 +32,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- if can? :create, CarrierTypeHasCheckoutType -%>
+    <%- if policy(CarrierTypeHasCheckoutType).create? -%>
       <li><%= link_to t('page.new', :model => t('activerecord.models.carrier_type_has_checkout_type')), new_carrier_type_has_checkout_type_path -%></li>
     <% end %>
   </ul>
