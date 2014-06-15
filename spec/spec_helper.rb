@@ -6,7 +6,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../dummy/config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl'
-require 'sunspot-rails-tester'
+require 'rake'
+require 'elasticsearch/extensions/test/cluster/tasks'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -32,16 +33,12 @@ RSpec.configure do |config|
 
   config.extend ControllerMacros, :type => :controller
 
-  $original_sunspot_session = Sunspot.session
-
-  config.before do
-    Sunspot.session = Sunspot::Rails::StubSessionProxy.new($original_sunspot_session)
+  config.before :suite do
+    Elasticsearch::Extensions::Test::Cluster.start(port: 9200) unless Elasticsearch::Extensions::Test::Cluster.running?(on: 9200)
   end
 
-  config.before :each, :solr => true do
-    Sunspot::Rails::Tester.start_original_sunspot_session
-    Sunspot.session = $original_sunspot_session
-    Sunspot.remove_all!
+  config.after :suite do
+    Elasticsearch::Extensions::Test::Cluster.stop(port: 9200) if Elasticsearch::Extensions::Test::Cluster.running?(on: 9200)
   end
 end
 
