@@ -18,7 +18,7 @@
       <%- if can? :update, user_group_has_checkout_type -%>
         <%= link_to t('page.edit'), edit_user_group_has_checkout_type_path(user_group_has_checkout_type) -%>
       <% end %>
-      <%- if can? :delete, user_gropu_has_checkout_type -%>
+      <%- if can? :delete, user_group_has_checkout_type -%>
         <%= link_to t('page.destroy'), user_group_has_checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <% end %>
     </td>
