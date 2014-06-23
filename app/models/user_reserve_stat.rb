@@ -1,33 +1,41 @@
 class UserReserveStat < ActiveRecord::Base
-  attr_accessible :start_date, :end_date, :note
+  include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
-  default_scope :order => 'user_reserve_stats.id DESC'
-  scope :not_calculated, where(:state => 'pending')
+  attr_accessible :start_date, :end_date, :note
+  default_scope {order('user_reserve_stats.id DESC')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_users
   has_many :users, :through => :reserve_stat_has_users
 
-  state_machine :initial => :pending do
-    before_transition :pending => :completed, :do => :calculate_count
-    event :calculate do
-      transition :pending => :completed
-    end
+  paginates_per 10
+
+  has_many :user_reserve_stat_transitions
+
+  def state_machine
+    UserReserveStatStateMachine.new(self, transition_class: UserReserveStatTransition)
   end
 
-  paginates_per 10
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
 
   def calculate_count
     self.started_at = Time.zone.now
     User.find_each do |user|
-      daily_count = user.reserves.created(self.start_date, self.end_date).size
+      daily_count = user.reserves.created(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
       if daily_count > 0
         self.users << user
-        sql = ['UPDATE reserve_stat_has_users SET reserves_count = ? WHERE user_reserve_stat_id = ? AND user_id = ?', daily_count, self.id, user.id]
-        ActiveRecord::Base.connection.execute(
+        sql = ['UPDATE reserve_stat_has_users SET reserves_count = ? WHERE user_reserve_stat_id = ? AND user_id = ?', daily_count, id, user.id]
+        UserReserveStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end
     end
     self.completed_at = Time.zone.now
+  end
+
+  private
+  def self.transition_class
+    UserReserveStatTransition
   end
 end
 

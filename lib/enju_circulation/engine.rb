@@ -5,6 +5,7 @@ require "inherited_resources"
 require "state_machine"
 require "enju_message"
 require "enju_event"
+require "statesman"
 
 module EnjuCirculation
   class Engine < ::Rails::Engine
