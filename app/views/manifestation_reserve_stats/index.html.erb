@@ -14,7 +14,7 @@
   <tr class="line<%= cycle("0", "1") -%>">
     <td><%= l(manifestation_reserve_stat.start_date) -%></td>
     <td><%= l(manifestation_reserve_stat.end_date) -%></td>
-    <td><%= manifestation_reserve_stat.state -%></td>
+    <td><%= localized_state(manifestation_reserve_stat.state) -%></td>
     <td>
       <%= link_to t('page.show'), manifestation_reserve_stat -%>
       <%= link_to t('page.edit'), edit_manifestation_reserve_stat_path(manifestation_reserve_stat) -%>
