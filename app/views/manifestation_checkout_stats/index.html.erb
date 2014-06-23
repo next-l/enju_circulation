@@ -14,7 +14,7 @@
   <tr class="line<%= cycle("0", "1") -%>">
     <td><%= l(manifestation_checkout_stat.start_date) -%></td>
     <td><%= l(manifestation_checkout_stat.end_date) -%></td>
-    <td><%= manifestation_checkout_stat.current_state -%></td>
+    <td><%= localized_state(manifestation_checkout_stat.current_state) -%></td>
     <td>
       <%= link_to t('page.show'), manifestation_checkout_stat -%>
       <%= link_to t('page.edit'), edit_manifestation_checkout_stat_path(manifestation_checkout_stat) -%>
