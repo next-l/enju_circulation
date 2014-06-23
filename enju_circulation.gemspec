@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "enju_message", "~> 0.1.14.pre13"
   s.add_dependency "enju_event", "~> 0.1.17.pre17"
   s.add_dependency "statesman"
+  s.add_dependency "state_machine"
 
   s.add_development_dependency "enju_leaf", "~> 1.1.0.rc9"
   s.add_development_dependency "sqlite3"
