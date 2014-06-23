@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.checkout')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
@@ -11,7 +11,7 @@
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <li><%= link_to t('checkout.my_checkout'), user_checkouts_path(current_user) -%></li>
     <li><%= link_to t('page.overdue'), checkouts_path(:view => 'overdue') -%></li>
