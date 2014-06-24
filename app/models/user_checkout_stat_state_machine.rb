@@ -5,7 +5,7 @@ class UserCheckoutStatStateMachine
 
   transition from: :pending, to: :completed
 
-  before_transition(to: :completed) do |user_checkout_stat|
-    user_checkout_stat.calculate_count
+  before_transition(to: :started) do |user_checkout_stat|
+    user_checkout_stat.calculate_count!
   end
 end
