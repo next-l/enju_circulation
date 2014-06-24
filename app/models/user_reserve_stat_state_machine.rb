@@ -6,7 +6,7 @@ class UserReserveStatStateMachine
 
   transition from: :pending, to: [:started, :completed]
 
-  before_transition(to: :completed) do |user_reserve_stat|
+  before_transition(to: :started) do |user_reserve_stat|
     user_reserve_stat.calculate_count!
   end
 end
