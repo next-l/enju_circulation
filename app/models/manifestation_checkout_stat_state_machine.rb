@@ -6,7 +6,7 @@ class ManifestationCheckoutStatStateMachine
 
   transition from: :pending, to: [:started, :completed]
 
-  before_transition(to: :completed) do |manifestation_checkout_stat|
+  before_transition(to: :started) do |manifestation_checkout_stat|
     manifestation_checkout_stat.calculate_count!
   end
 end
