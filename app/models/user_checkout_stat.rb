@@ -17,7 +17,7 @@ class UserCheckoutStat < ActiveRecord::Base
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
     to: :state_machine
 
-  def calculate_count
+  def calculate_count!
     self.started_at = Time.zone.now
     User.find_each do |user|
       daily_count = user.checkouts.completed(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
@@ -30,6 +30,7 @@ class UserCheckoutStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+    transition_to!(:completed)
   end
   
   private
