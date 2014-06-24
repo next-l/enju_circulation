@@ -5,6 +5,7 @@ class UserReserveStatStateMachine
   state :completed
 
   transition from: :pending, to: [:started, :completed]
+  transition from: :started, to: :completed
 
   after_transition(to: :started) do |user_reserve_stat|
     user_reserve_stat.calculate_count!
