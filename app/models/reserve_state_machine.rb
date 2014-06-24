@@ -13,11 +13,11 @@ class ReserveStateMachine
   transition from: :retained, to: [:postponed, :canceled, :expired, :completed]
   transition from: :requested, to: [:retained, :canceled, :expired]
 
-  before_transition(to: :requested) do |reserve|
+  after_transition(to: :requested) do |reserve|
     reserve.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :item_id => nil, :retained_at => nil})
   end
 
-  before_transition(to: :retained) do |reserve|
+  after_transition(to: :retained) do |reserve|
     # TODO: 「取り置き中」の状態を正しく表す
     reserve.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'In Process').first, :retained_at => Time.zone.now})
     Reserve.transaction do
@@ -33,7 +33,7 @@ class ReserveStateMachine
     end
   end
 
-  before_transition(to: :canceled) do |reserve|
+  after_transition(to: :canceled) do |reserve|
     Reserve.transaction do
       reserve.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now})
       reserve.save!
@@ -47,7 +47,7 @@ class ReserveStateMachine
     end
   end
 
-  before_transition(to: :expired) do |reserve|
+  after_transition(to: :expired) do |reserve|
     Reserve.transaction do
       reserve.assign_attributes({:request_status_type => RequestStatusType.where(:name => 'Expired').first, :canceled_at => Time.zone.now})
       next_reserve = reserve.next_reservation
@@ -61,11 +61,11 @@ class ReserveStateMachine
     Rails.logger.info "#{Time.zone.now} reserve_id #{reserve.id} expired!"
   end
 
-  before_transition(to: :postponed) do |reserve|
+  after_transition(to: :postponed) do |reserve|
     reserve.update_attributes(item_id: nil, retained_at: nil, postponed_at: Time.zone.now)
   end
 
-  before_transition(to: :completed) do |reserve|
+  after_transition(to: :completed) do |reserve|
     reserve.assign_attributes(
       :request_status_type => RequestStatusType.where(:name => 'Available For Pickup').first,
       :checked_out_at => Time.zone.now
