@@ -6,7 +6,7 @@ class ManifestationReserveStatStateMachine
 
   transition from: :pending, to: [:started, :completed]
 
-  before_transition(to: :started) do |manifestation_reserve_stat|
+  after_transition(to: :started) do |manifestation_reserve_stat|
     manifestation_reserve_stat.calculate_count!
   end
 end
