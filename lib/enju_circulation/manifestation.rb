@@ -14,16 +14,16 @@ module EnjuCirculation
             indexes :reservable, type: 'boolean'
           end
         end
-
-        def as_indexed_json(options={})
-          super.merge(
-            reservable: items.for_checkout.exists?
-          )
-        end
       end
     end
 
     module InstanceMethods
+      def as_indexed_json(options={})
+        super.merge(
+          reservable: items.for_checkout.exists?
+        )
+      end
+
       def next_reservation
         reserves.waiting.order('reserves.created_at ASC').first
       end
