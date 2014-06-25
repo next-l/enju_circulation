@@ -9,10 +9,16 @@ module EnjuCirculation
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
-        searchable do
-          boolean :reservable do
-            items.for_checkout.exists?
+        settings do
+          mappings dynamic: 'false', _routing: {required: false} do
+            indexes :reservable, type: 'boolean'
           end
+        end
+
+        def as_indexed_json(options={})
+          super.merge(
+            reservable: items.for_checkout.exists?
+          )
         end
       end
     end

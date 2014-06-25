@@ -1,4 +1,6 @@
 class Checkout < ActiveRecord::Base
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   #default_scope {order('checkouts.id DESC')}
   scope :not_returned, -> {where(:checkin_id => nil)}
   scope :returned, -> {where('checkin_id IS NOT NULL')}
@@ -23,24 +25,44 @@ class Checkout < ActiveRecord::Base
   validate :renewable?, :on => :update
   validates_date :due_date
 
-  searchable do
-    string :username do
-      user.try(:username)
+  index_name "#{name.downcase.pluralize}-#{Rails.env}"
+
+  settings do
+    mappings dynamic: 'false', _routing: {required: false} do
+      indexes :username
+      indexes :user_number
+      indexes :item_identifier
+      indexes :created_at, type: 'date'
+      indexes :checked_in_at, type: 'date'
+      indexes :reserved, type: 'boolean'
+      indexes :due_date, type: 'date'
     end
-    string :user_number do
-      user.try(:user_number)
-    end
-    string :item_identifier do
-      item.try(:item_identifier)
-    end
-    time :due_date
-    time :created_at
-    time :checked_in_at do
-      checkin.try(:created_at)
-    end
-    boolean :reserved do
-      reserved?
-    end
+  end
+
+  after_commit on: :create do
+    index_document
+  end
+
+  after_commit on: :update do
+    update_document
+  end
+
+  after_commit on: :destroy do
+    delete_document
+  end
+
+  def as_indexed_json(options={})
+    as_json(
+      #include: {
+      #  creators: {only: :full_name},
+      #}
+    ).merge(
+      username: user.try(:username),
+      user_number: user.try(:user_number),
+      item_identifier: item.try(:item_identifier),
+      checked_in_at: checkin.try(:created_at),
+      reserved: reserved?
+    )
   end
 
   attr_accessor :operator

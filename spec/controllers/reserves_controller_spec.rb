@@ -5,7 +5,8 @@ describe ReservesController do
 
   describe "GET index", :solr => true do
     before do
-      Reserve.reindex
+      Reserve.__elasticsearch__.create_index!
+      Reserve.import
     end
 
     describe "When logged in as Administrator" do

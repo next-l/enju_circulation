@@ -44,8 +44,10 @@ module EnjuCirculation
         has_one :use_restriction, :through => :item_has_use_restriction
         validates_associated :circulation_status, :checkout_type
         validates_presence_of :circulation_status, :checkout_type
-        searchable do
-          integer :circulation_status_id
+        settings do
+          mappings dynamic: 'false', _routing: {required: false} do
+            indexes :circulation_status_id, type: 'integer'
+          end
         end
         #attr_accessible :item_has_use_restriction_attributes
         accepts_nested_attributes_for :item_has_use_restriction

@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   scope :hold, -> {where('item_id IS NOT NULL')}
   scope :not_hold, -> {where(:item_id => nil)}
   scope :waiting, -> {not_in_state(:completed).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
@@ -74,32 +76,41 @@ class Reserve < ActiveRecord::Base
 
   paginates_per 10
 
-  searchable do
-    text :username do
-      user.try(:username)
+  index_name "#{name.downcase.pluralize}-#{Rails.env}"
+
+  settings do
+    mappings dynamic: 'false', _routing: {required: false} do
+      indexes :username
+      indexes :user_number
+      indexes :created_at, type: 'date'
+      indexes :item_identifier
+      indexes :title
+      indexes :hold, type: 'boolean'
+      indexes :state
     end
-    string :username do
-      user.try(:username)
-    end
-    string :user_number do
-      user.try(:user_number)
-    end
-    time :created_at
-    text :item_identifier do
-      manifestation.items.pluck(:item_identifier)
-    end
-    text :title do
-      manifestation.try(:titles)
-    end
-    boolean :hold do |reserve|
-      self.hold.include?(reserve)
-    end
-    string :state do
-      current_state
-    end
-    string :title_transcription do
-      manifestation.try(:title_transcription)
-    end
+  end
+
+  def as_indexed_json(options={})
+    as_json.merge(
+      username: user.try(:username),
+      user_number: user.try(:user_number),
+      item_identifier: manifestation.items.pluck(:item_identifier),
+      title: manifestation.try(:titles),
+      hold: Reserve.hold.include?(self),
+      state: current_state
+    )
+  end
+
+  after_commit on: :create do
+    index_document
+  end
+
+  after_commit on: :update do
+    update_document
+  end
+
+  after_commit on: :destroy do
+    delete_document
   end
 
   def set_manifestation

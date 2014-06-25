@@ -5,7 +5,7 @@ describe UserCheckoutStat do
   fixtures :user_checkout_stats
 
   it "calculates user count" do
-    user_checkout_stats(:one).calculate_count.should be_true
+    user_checkout_stats(:one).calculate_count!.should be_true
   end
 end
 

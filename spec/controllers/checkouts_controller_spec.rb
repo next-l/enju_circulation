@@ -5,7 +5,8 @@ describe CheckoutsController do
 
   describe "GET index", :solr => true do
     before do
-      Checkout.reindex
+      Checkout.__elasticsearch__.create_index!
+      Checkout.import
     end
 
     before(:each) do
