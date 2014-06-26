@@ -26,8 +26,7 @@ end
 #  item_id      :integer          not null
 #  basket_id    :integer          not null
 #  due_date     :datetime         not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  librarian_id :integer
 #
-

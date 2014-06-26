@@ -113,8 +113,8 @@ end
 #  item_id                      :integer
 #  request_status_type_id       :integer          not null
 #  checked_out_at               :datetime
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
+#  created_at                   :datetime
+#  updated_at                   :datetime
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
@@ -125,4 +125,3 @@ end
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #
-

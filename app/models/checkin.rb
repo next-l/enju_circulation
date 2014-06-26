@@ -90,8 +90,7 @@ end
 #  item_id      :integer          not null
 #  librarian_id :integer
 #  basket_id    :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  lock_version :integer          default(0), not null
 #
-
