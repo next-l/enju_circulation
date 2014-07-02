@@ -1,13 +1,14 @@
 class UserCheckoutStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
-  attr_accessible :start_date, :end_date, :note
+  attr_accessible :start_date, :end_date, :note, :mode
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_users
   has_many :users, :through => :checkout_stat_has_users
 
   paginates_per 10
+  attr_accessor :mode
 
   has_many :user_checkout_stat_transitions
 

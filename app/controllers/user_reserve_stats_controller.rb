@@ -66,6 +66,9 @@ class UserReserveStatsController < ApplicationController
   def update
     respond_to do |format|
       if @user_reserve_stat.update_attributes(params[:user_reserve_stat])
+        if @user_reserve_stat.mode == 'import'
+          UserReserveStatQueue.perform(@user_reserve_stat.id)
+        end
         format.html { redirect_to @user_reserve_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_reserve_stat')) }
         format.json { head :no_content }
       else

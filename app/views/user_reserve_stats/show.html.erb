@@ -43,10 +43,18 @@
 </div>
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
+  <%= form_for(@user_reserve_stat) do |f| %>
   <ul>
     <li><%= link_to t('page.edit'), edit_user_reserve_stat_path(@user_reserve_stat) -%></li>
     <li><%= back_to_index(flash[:page_info]) -%></li>
+    <% if @user_reserve_stat.current_state == 'pending' %>
+      <li>
+        <%= f.hidden_field :mode, value: 'import' %>
+        <%= f.submit t('page.import') %>
+      </li>
+    <% end %>
   </ul>
+  <% end %>
   <h4><%= t('page.export') -%></h4>
   <ul>
     <li><%= link_to 'CSV', user_reserve_stat_path(@user_reserve_stat, :format => :csv, :locale => @locale.to_s) -%></li>

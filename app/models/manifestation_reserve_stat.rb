@@ -1,13 +1,14 @@
 class ManifestationReserveStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
-  attr_accessible :start_date, :end_date, :note
+  attr_accessible :start_date, :end_date, :note, :mode
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_manifestations
   has_many :manifestations, :through => :reserve_stat_has_manifestations
 
   paginates_per 10
+  attr_accessor :mode
 
   has_many :manifestation_reserve_stat_transitions
 
