@@ -67,7 +67,7 @@ class UserCheckoutStatsController < ApplicationController
     respond_to do |format|
       if @user_checkout_stat.update_attributes(params[:user_checkout_stat])
         if @user_checkout_stat.mode == 'import'
-          UserCheckoutStatQueue.perform(@user_checkout_stat.id)
+          Resque.enqueue(UserCheckoutStatQueue, @user_checkout_stat.id)
         end
         format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
