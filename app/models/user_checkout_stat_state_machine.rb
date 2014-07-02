@@ -11,7 +11,7 @@ class UserCheckoutStatStateMachine
     user_checkout_stat.calculate_count!
   end
 
-  after_transition(to: :started) do |user_checkout_stat|
+  after_transition(to: :completed) do |user_checkout_stat|
     user_checkout_stat.update_column(:completed_at, Time.zone.now)
   end
 end
