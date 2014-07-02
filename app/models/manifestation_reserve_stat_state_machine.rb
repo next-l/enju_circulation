@@ -12,7 +12,7 @@ class ManifestationReserveStatStateMachine
     manifestation_reserve_stat.calculate_count!
   end
 
-  after_transition(to: :started) do |manifestation_reserve_stat|
+  after_transition(to: :completed) do |manifestation_reserve_stat|
     manifestation_reserve_stat.update_column(:completed_at, Time.zone.now)
   end
 end
