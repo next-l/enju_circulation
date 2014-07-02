@@ -70,6 +70,9 @@ class UserCheckoutStatsController < ApplicationController
   def update
     respond_to do |format|
       if @user_checkout_stat.update_attributes(user_checkout_stat_params)
+        if @user_checkout_stat.mode == 'import'
+          UserCheckoutStatQueue.perform(@user_checkout_stat.id)
+        end
         format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
       else

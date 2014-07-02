@@ -7,6 +7,7 @@ class UserReserveStat < ActiveRecord::Base
   has_many :users, :through => :reserve_stat_has_users
 
   paginates_per 10
+  attr_accessor :mode
 
   has_many :user_reserve_stat_transitions
 

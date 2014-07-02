@@ -7,6 +7,10 @@ describe UserCheckoutStat do
   it "calculates user count" do
     user_checkout_stats(:one).calculate_count!.should be_true
   end
+
+  it "should calculate in background" do
+    UserCheckoutStatQueue.perform(user_checkout_stats(:one).id).should be_true
+  end
 end
 
 # == Schema Information

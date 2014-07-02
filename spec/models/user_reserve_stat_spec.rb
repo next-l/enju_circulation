@@ -7,6 +7,10 @@ describe UserReserveStat do
   it "calculates user count" do
     user_reserve_stats(:one).calculate_count!.should be_true
   end
+
+  it "should calculate in background" do
+    UserReserveStatQueue.perform(user_reserve_stats(:one).id).should be_true
+  end
 end
 
 # == Schema Information

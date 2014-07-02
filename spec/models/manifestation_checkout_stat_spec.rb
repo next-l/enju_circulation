@@ -7,6 +7,10 @@ describe ManifestationCheckoutStat do
   it "calculates manifestation count" do
     manifestation_checkout_stats(:one).calculate_count!.should be_true
   end
+
+  it "should calculate in background" do
+    ManifestationCheckoutStatQueue.perform(manifestation_checkout_stats(:one).id).should be_true
+  end
 end
 
 # == Schema Information

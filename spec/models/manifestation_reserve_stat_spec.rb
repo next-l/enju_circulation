@@ -7,6 +7,10 @@ describe ManifestationReserveStat do
   it "calculates manifestation count" do
     manifestation_reserve_stats(:one).calculate_count!.should be_true
   end
+
+  it "should calculate in background" do
+    ManifestationReserveStatQueue.perform(manifestation_reserve_stats(:one).id).should be_true
+  end
 end
 
 # == Schema Information

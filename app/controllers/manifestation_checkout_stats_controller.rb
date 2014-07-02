@@ -70,6 +70,9 @@ class ManifestationCheckoutStatsController < ApplicationController
   def update
     respond_to do |format|
       if @manifestation_checkout_stat.update_attributes(manifestation_checkout_stat_params)
+        if @manifestation_checkout_stat.mode == 'import'
+          ManifestationCheckoutStatQueue.perform(@manifestation_checkout_stat.id)
+        end
         format.html { redirect_to @manifestation_checkout_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }
       else

@@ -7,6 +7,7 @@ class ManifestationCheckoutStat < ActiveRecord::Base
   has_many :manifestations, :through => :checkout_stat_has_manifestations
 
   paginates_per 10
+  attr_accessor :mode
 
   has_many :manifestation_checkout_stat_transitions
 

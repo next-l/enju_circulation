@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140529014410) do
+=======
+ActiveRecord::Schema.define(:version => 20140610123439) do
+>>>>>>> a5d9f1a... added stat worker files
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"

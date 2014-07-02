@@ -7,6 +7,7 @@ class ManifestationReserveStat < ActiveRecord::Base
   has_many :manifestations, :through => :reserve_stat_has_manifestations
 
   paginates_per 10
+  attr_accessor :mode
 
   has_many :manifestation_reserve_stat_transitions
 
