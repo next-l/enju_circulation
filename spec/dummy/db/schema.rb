@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20140529014410) do
-=======
-ActiveRecord::Schema.define(:version => 20140610123439) do
->>>>>>> a5d9f1a... added stat worker files
+ActiveRecord::Schema.define(version: 20140610123439) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -1251,7 +1247,7 @@ ActiveRecord::Schema.define(:version => 20140610123439) do
   end
 
   add_index "users", ["checkout_icalendar_token"], name: "index_users_on_checkout_icalendar_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   add_index "users", ["user_group_id"], name: "index_users_on_user_group_id"
