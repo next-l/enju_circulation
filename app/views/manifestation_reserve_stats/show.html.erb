@@ -48,12 +48,6 @@
   <ul>
     <li><%= link_to t('page.edit'), edit_manifestation_reserve_stat_path(@manifestation_reserve_stat) -%></li>
     <li><%= back_to_index(flash[:page_info]) -%></li>
-    <% if @manifestation_reserve_stat.current_state == 'pending' %>
-      <li>
-        <%= f.hidden_field :mode, value: 'import' %>
-        <%= f.submit t('page.import') %>
-      </li>
-    <% end %>
   </ul>
   <% end %>
   <h4><%= t('page.export') -%></h4>
