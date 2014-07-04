@@ -14,6 +14,7 @@
     <%= f.text_area :note -%>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.hidden_field :mode, value: 'import' %>
+    <%= f.submit t('page.start_import') %>
   </div>
 <%- end -%>
