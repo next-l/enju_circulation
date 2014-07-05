@@ -5,11 +5,11 @@ describe UserCheckoutStat do
   fixtures :user_checkout_stats
 
   it "calculates user count" do
-    user_checkout_stats(:one).transition_to!(:started).should be_true
+    user_checkout_stats(:one).transition_to!(:started).should be_truthy
   end
 
   it "should calculate in background" do
-    UserCheckoutStatQueue.perform(user_checkout_stats(:one).id).should be_true
+    UserCheckoutStatQueue.perform(user_checkout_stats(:one).id).should be_truthy
   end
 end
 

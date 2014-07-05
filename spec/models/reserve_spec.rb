@@ -5,7 +5,7 @@ describe Reserve do
   fixtures :all
 
   it "should have next reservation" do
-    reserves(:reserve_00014).next_reservation.should be_true
+    reserves(:reserve_00014).next_reservation.should be_truthy
   end
 
   it "should notify a next reservation" do
@@ -25,7 +25,7 @@ describe Reserve do
 
   it "should cancel reservation" do
     reserves(:reserve_00001).sm_cancel!
-    reserves(:reserve_00001).canceled_at.should be_true
+    reserves(:reserve_00001).canceled_at.should be_truthy
     reserves(:reserve_00001).request_status_type.name.should eq 'Cannot Fulfill Request'
   end
 
@@ -36,7 +36,7 @@ describe Reserve do
   it "should send accepted message" do
     old_admin_count = User.find('admin').received_messages.count
     old_user_count = reserves(:reserve_00002).user.received_messages.count
-    reserves(:reserve_00002).send_message.should be_true
+    reserves(:reserve_00002).send_message.should be_truthy
     # 予約者と図書館の両方に送られる
     User.find('admin').received_messages.count.should eq old_admin_count + 1
     reserves(:reserve_00002).user.received_messages.count.should eq old_user_count + 1
@@ -44,12 +44,12 @@ describe Reserve do
 
   it "should send expired message" do
     old_count = MessageRequest.count
-    reserves(:reserve_00006).send_message.should be_true
+    reserves(:reserve_00006).send_message.should be_truthy
     MessageRequest.count.should eq old_count + 2
   end
 
   it "should send message to library" do
-    Reserve.send_message_to_library('expired', :manifestations => Reserve.not_sent_expiration_notice_to_library.collect(&:manifestation)).should be_true
+    Reserve.send_message_to_library('expired', :manifestations => Reserve.not_sent_expiration_notice_to_library.collect(&:manifestation)).should be_truthy
   end
 
   it "should have reservations that will be expired" do
@@ -61,11 +61,11 @@ describe Reserve do
   end
 
   it "should expire all reservations" do
-    assert Reserve.expire.should be_true
+    assert Reserve.expire.should be_truthy
   end
 
   it "should send accepted notification" do
-    assert Reserve.expire.should be_true
+    assert Reserve.expire.should be_truthy
   end
 
   it "should nullify the first reservation's item_id if the second reservation is retained" do
@@ -74,16 +74,16 @@ describe Reserve do
     old_count = MessageRequest.count
 
     reservation.item = old_reservation.item
-    reservation.item.retained?.should be_false
+    reservation.item.retained?.should be_falsy
     reservation.sm_retain!
     old_reservation.reload
     old_reservation.item.should be_nil
-    reservation.retained_at.should be_true
+    reservation.retained_at.should be_truthy
     old_reservation.retained_at.should be_nil
-    old_reservation.postponed_at.should be_true
+    old_reservation.postponed_at.should be_truthy
     old_reservation.state.should eq 'postponed'
     MessageRequest.count.should eq old_count + 4
-    reservation.item.retained?.should be_true
+    reservation.item.retained?.should be_truthy
   end
 
   it "should not be valid if item_identifier is invalid" do

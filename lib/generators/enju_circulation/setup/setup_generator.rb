@@ -13,5 +13,10 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     inject_into_file 'app/models/user.rb',
       "  enju_circulation_user_model\n", :after => "enju_leaf_user_model\n"
     append_to_file("config/schedule.rb", File.open(File.expand_path('../templates', __FILE__) + '/config/schedule.rb').read)
+    append_to_file 'config/initializers/inflections.rb',  <<EOS
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'reserve', 'reserves'
+end
+EOS
   end
 end

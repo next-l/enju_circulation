@@ -353,7 +353,7 @@ describe ReservesController do
         it "redirects to the created reserve" do
           post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_true
+          assigns(:reserve).expired_at.should be_truthy
         end
       end
 
@@ -379,7 +379,7 @@ describe ReservesController do
 
       it "should create other user's reserve" do
         post :create, :reserve => {:user_number => users(:user1).user_number, :manifestation_id => 5}
-        assigns(:reserve).expired_at.should be_true
+        assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
@@ -407,7 +407,7 @@ describe ReservesController do
         it "redirects to the created reserve" do
           post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_true
+          assigns(:reserve).expired_at.should be_truthy
         end
 
         it "should send accepted messages" do
@@ -434,13 +434,13 @@ describe ReservesController do
       it "should create other user's reserve" do
         post :create, :reserve => {:user_number => users(:user1).user_number, :manifestation_id => 5}
         assigns(:reserve).should be_valid
-        assigns(:reserve).expired_at.should be_true
+        assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not create reserve over reserve_limit" do
         post :create, :reserve => {:user_number => users(:admin).user_number, :manifestation_id => 5}
-        assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_true
+        assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end
 

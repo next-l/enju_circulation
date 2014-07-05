@@ -5,11 +5,11 @@ describe UserReserveStat do
   fixtures :user_reserve_stats
 
   it "calculates user count" do
-    user_reserve_stats(:one).transition_to!(:started).should be_true
+    user_reserve_stats(:one).transition_to!(:started).should be_truthy
   end
 
   it "should calculate in background" do
-    UserReserveStatQueue.perform(user_reserve_stats(:one).id).should be_true
+    UserReserveStatQueue.perform(user_reserve_stats(:one).id).should be_truthy
   end
 end
 
