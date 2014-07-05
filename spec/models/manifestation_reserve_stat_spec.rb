@@ -5,11 +5,11 @@ describe ManifestationReserveStat do
   fixtures :manifestation_reserve_stats
 
   it "calculates manifestation count" do
-    manifestation_reserve_stats(:one).calculate_count!.should be_true
+    manifestation_reserve_stats(:one).transition_to!(:started).should be_truthy
   end
 
   it "should calculate in background" do
-    ManifestationReserveStatQueue.perform(manifestation_reserve_stats(:one).id).should be_true
+    ManifestationReserveStatQueue.perform(manifestation_reserve_stats(:one).id).should be_truthy
   end
 end
 

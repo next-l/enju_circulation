@@ -208,7 +208,7 @@ describe CheckedItemsController do
         it "assigns a newly created checked_item as @checked_item" do
           post :create, :checked_item => {:item_identifier => 'not found'} , :basket_id => 1
           assigns(:checked_item).should_not be_valid
-          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.item_not_found')).should be_true
+          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.item_not_found')).should be_truthy
         end
       end
 
@@ -216,7 +216,7 @@ describe CheckedItemsController do
         it "assigns a newly created checked_item as @checked_item" do
           post :create, :checked_item => {:item_identifier => '00017'} , :basket_id => 1
           assigns(:checked_item).should_not be_valid
-          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')).should be_true
+          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')).should be_truthy
         end
       end
 
@@ -224,7 +224,7 @@ describe CheckedItemsController do
         it "assigns a newly created checked_item as @checked_item" do
           post :create, :checked_item => {:item_identifier => '00013'} , :basket_id => 8
           assigns(:checked_item).should_not be_valid
-          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.already_checked_out')).should be_true
+          assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.already_checked_out')).should be_truthy
         end
       end
 
@@ -260,14 +260,14 @@ describe CheckedItemsController do
 
       it "should create checked_item with item_identifier" do
         post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 3
-        assigns(:checked_item).should be_true
+        assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
       end 
 
       it "should override due_date" do
         post :create, :checked_item => {:item_identifier => '00011', :due_date_string => 1.year.from_now.strftime('%Y-%m-%d')}, :basket_id => 3
-        assigns(:checked_item).should be_true
+        assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should eq 1.year.from_now.end_of_day
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
       end 
@@ -282,14 +282,14 @@ describe CheckedItemsController do
       it "should not create checked_item if excessed checkout_limit" do
         post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 1
         response.should be_success
-        assigns(:checked_item).errors["base"].include?(I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')).should be_true
+        assigns(:checked_item).errors["base"].include?(I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')).should be_truthy
       end
 
       it "should show message when the item includes supplements" do
         post :create, :checked_item => {:item_identifier => '00006'}, :basket_id => 3
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
-        flash[:message].index(I18n.t('item.this_item_include_supplement')).should be_true
+        flash[:message].index(I18n.t('item.this_item_include_supplement')).should be_truthy
       end 
 
       it "should create checked_item when ignore_restriction is checked" do

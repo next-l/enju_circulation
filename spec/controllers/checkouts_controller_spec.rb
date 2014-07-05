@@ -264,7 +264,7 @@ describe CheckoutsController do
         it "should ignore item_id" do
           put :update, :id => @checkout.id, :checkout => @invalid_attrs
           response.should redirect_to(assigns(:checkout))
-          assigns(:checkout).changed?.should be_false
+          assigns(:checkout).changed?.should be_falsy
         end
       end
 
@@ -310,7 +310,7 @@ describe CheckoutsController do
   
       it "should update checkout item that is reserved" do
         put :update, :id => 8, :checkout => {:checkout_renewal_count => 1}
-        assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_true
+        assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_truthy
         response.should be_success
       end
   
@@ -361,7 +361,7 @@ describe CheckoutsController do
   
       it "should not update checkout already renewed" do
         put :update, :id => 9, :checkout => {:checkout_renewal_count => 1}
-        assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_true
+        assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_truthy
         response.should be_success
       end
 
@@ -375,7 +375,7 @@ describe CheckoutsController do
         put :update, :id => 3, :checkout => {:item_id => nil}
         assigns(:checkout).should be_valid
         response.should redirect_to(assigns(:checkout))
-        assigns(:checkout).changed?.should be_false
+        assigns(:checkout).changed?.should be_falsy
       end
 
       it "should remove its own checkout history" do
