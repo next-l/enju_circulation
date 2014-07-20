@@ -36,7 +36,7 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if params[:format].to_s.downcase == 'csv'
+    if params[:format].to_s.downcase == 'txt'
       page = 1
       per_page = 65534
     else
@@ -107,7 +107,7 @@ class ReservesController < ApplicationController
       format.json { render :json => @reserves }
       format.rss  { render :layout => false }
       format.atom
-      format.csv
+      format.txt
     end
   end
 

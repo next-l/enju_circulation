@@ -46,12 +46,11 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <%= form_for(@manifestation_reserve_stat) do |f| %>
   <ul>
-    <li><%= link_to t('page.edit'), edit_manifestation_reserve_stat_path(@manifestation_reserve_stat) -%></li>
     <li><%= back_to_index(flash[:page_info]) -%></li>
   </ul>
   <% end %>
   <h4><%= t('page.export') -%></h4>
   <ul>
-    <li><%= link_to 'CSV', manifestation_reserve_stat_path(@manifestation_reserve_stat, :format => :csv, :locale => @locale.to_s) -%></li>
+    <li><%= link_to 'TSV', manifestation_reserve_stat_path(@manifestation_reserve_stat, format: :txt, locale: @locale.to_s) -%></li>
   </ul>
 </div>

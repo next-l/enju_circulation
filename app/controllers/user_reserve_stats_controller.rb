@@ -16,7 +16,7 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/1
   # GET /user_reserve_stats/1.json
   def show
-    if params[:format] == 'csv'
+    if params[:format] == 'txt'
       per_page = 65534
     else
       per_page = ReserveStatHasUser.default_per_page
@@ -26,7 +26,7 @@ class UserReserveStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @user_reserve_stat }
-      format.csv
+      format.txt
     end
   end
 

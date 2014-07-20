@@ -1,0 +1,4 @@
+<%= @manifestation_reserve_stat.start_date -%>	<%= @manifestation_reserve_stat.end_date %>
+<%- @stats.each do |stat| -%>
+"<%= stat.manifestation.original_title if stat.manifestation -%>"	"<%=h stat.reserves_count -%>"<%= "\n" -%>
+<%- end -%>

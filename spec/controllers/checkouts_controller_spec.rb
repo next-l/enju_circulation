@@ -35,8 +35,8 @@ describe CheckoutsController do
         response.should be_success
       end
 
-      it "should get index csv" do
-        get :index, :format => 'csv'
+      it "should get index txt" do
+        get :index, :format => 'txt'
         response.should be_success
       end
 
@@ -104,9 +104,9 @@ describe CheckoutsController do
         response.should redirect_to checkouts_url
       end
 
-      it "should get my index in csv format" do
-        get :index, :user_id => users(:user1).username, :format => 'csv'
-        response.should redirect_to checkouts_url(:format => :csv)
+      it "should get my index in txt format" do
+        get :index, :user_id => users(:user1).username, :format => 'txt'
+        response.should redirect_to checkouts_url(:format => :txt)
         assigns(:checkouts).should be_nil
       end
 

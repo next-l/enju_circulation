@@ -23,7 +23,7 @@ class CheckoutsController < ApplicationController
       end
     end
 
-    if params[:format] == 'csv'
+    if params[:format] == 'txt'
       per_page = 65534
     else
       per_page = Checkout.default_per_page
@@ -112,7 +112,7 @@ class CheckoutsController < ApplicationController
       format.json { render :json => @checkouts }
       format.rss  { render :layout => false }
       format.ics
-      format.csv
+      format.txt
       format.atom
     end
   end

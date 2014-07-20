@@ -16,7 +16,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/1
   # GET /manifestation_checkout_stats/1.json
   def show
-    if params[:format] == 'csv'
+    if params[:format] == 'txt'
       per_page = 65534
     else
       per_page = CheckoutStatHasManifestation.default_per_page
@@ -26,7 +26,7 @@ class ManifestationCheckoutStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @manifestation_checkout_stat }
-      format.csv
+      format.txt
     end
   end
 
