@@ -18,7 +18,7 @@ class ManifestationReserveStatsController < ApplicationController
   # GET /manifestation_reserve_stats/1
   # GET /manifestation_reserve_stats/1.json
   def show
-    if params[:format] == 'csv'
+    if params[:format] == 'txt'
       per_page = 65534
     else
       per_page = ReserveStatHasManifestation.default_per_page
@@ -28,7 +28,7 @@ class ManifestationReserveStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @manifestation_reserve_stat }
-      format.csv
+      format.txt
     end
   end
 

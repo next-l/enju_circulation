@@ -38,8 +38,8 @@ describe ReservesController do
         assigns(:reserves).collect(&:id).should eq Reserve.order('reserves.id DESC').includes(:manifestation).page(1).collect(&:id)
       end
 
-      it "should get index csv without user_id" do
-        get :index, :format => 'csv'
+      it "should get index txt without user_id" do
+        get :index, :format => 'txt'
         response.should be_success
         assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
       end
@@ -50,8 +50,8 @@ describe ReservesController do
         assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
       end
 
-      it "should get index csv with user_id" do
-        get :index, :user_id => users(:user1).username, :format => 'csv'
+      it "should get index txt with user_id" do
+        get :index, :user_id => users(:user1).username, :format => 'txt'
         response.should be_success
         assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation))
       end
@@ -88,8 +88,8 @@ describe ReservesController do
         response.should render_template("index")
       end
 
-      it "should get my index csv" do
-        get :index, :format => :csv
+      it "should get my index txt" do
+        get :index, :format => :txt
         response.should be_success
         response.should render_template("index")
       end
@@ -105,9 +105,9 @@ describe ReservesController do
           response.should redirect_to reserves_url(:format => :rss)
         end
 
-        it "should redirect to my reservation csv" do
-          get :index, :user_id => users(:user1).username, :format => 'csv'
-          response.should redirect_to reserves_url(:format => :csv)
+        it "should redirect to my reservation txt" do
+          get :index, :user_id => users(:user1).username, :format => 'txt'
+          response.should redirect_to reserves_url(:format => :txt)
         end
       end
 

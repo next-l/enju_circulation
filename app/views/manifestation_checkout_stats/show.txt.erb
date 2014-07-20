@@ -1,0 +1,4 @@
+<%= @manifestation_checkout_stat.start_date -%>	<%= @manifestation_checkout_stat.end_date %>
+<%- @stats.each do |stat| -%>
+"<%= stat.manifestation.original_title if stat.manifestation -%>"	"<%=h stat.checkouts_count -%>"<%= "\n" -%>
+<%- end -%>
