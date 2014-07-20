@@ -52,6 +52,7 @@ class ManifestationCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
+        Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
         format.html { redirect_to @manifestation_checkout_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render :json => @manifestation_checkout_stat, :status => :created, :location => @manifestation_checkout_stat }
       else

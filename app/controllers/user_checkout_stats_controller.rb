@@ -52,6 +52,7 @@ class UserCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       if @user_checkout_stat.save
+        Resque.enqueue(UserCheckoutStatQueue, @user_checkout_stat.id)
         format.html { redirect_to @user_checkout_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.user_checkout_stat')) }
         format.json { render :json => @user_checkout_stat, :status => :created, :location => @user_checkout_stat }
       else
