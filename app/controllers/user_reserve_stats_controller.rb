@@ -56,6 +56,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       if @user_reserve_stat.save
+        Resque.enqueue(UserReserveStatQueue, @user_reserve_stat.id)
         format.html { redirect_to @user_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.user_reserve_stat')) }
         format.json { render :json => @user_reserve_stat, :status => :created, :location => @user_reserve_stat }
       else

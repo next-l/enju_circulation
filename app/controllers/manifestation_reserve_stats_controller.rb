@@ -56,6 +56,7 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
+        Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
         format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
         format.json { render :json => @manifestation_reserve_stat, :status => :created, :location => @manifestation_reserve_stat }
       else
