@@ -38,6 +38,18 @@ class UserCheckoutStat < ActiveRecord::Base
   def self.transition_class
     UserCheckoutStatTransition
   end
+
+  def send_message
+    message = Message.create(
+      sender: User.find(1),
+      recipient: user.username,
+      subject: 'counting completed',
+      body: <<EOS
+"#{I18n.t('counting.counting_completed')}"
+"#{LibraryGroup.site_config.url}#{self.name.underscore.pluralize}/#{id}"
+EOS
+    )
+  end
 end
 
 # == Schema Information
