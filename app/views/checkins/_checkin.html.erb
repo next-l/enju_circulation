@@ -9,7 +9,7 @@
 <%- @checkins.each_with_index do |checkin, i| -%>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
-      <%= render 'manifestations/show_index', :manifestation => checkin.item.manifestation if checkin.item.try(:manifestation) -%>
+      <%= render 'manifestations/show_index', manifestation: checkin.item.manifestation if checkin.item.try(:manifestation) -%>
     </td>
     <td>
       <% if checkin.item %>
@@ -26,7 +26,7 @@
     </td>
     <td>
       <%- if checkin.checkout -%>
-        <%= l(checkin.checkout.due_date, :format => :only_date) -%>
+        <%= l(checkin.checkout.due_date, format: :only_date) -%>
       <%- end -%>
     </td>
     <td>

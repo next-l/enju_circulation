@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.showing', :model => t('activerecord.models.lending_policy')) -%></h1>
+<h1 class="title"><%= t('page.showing', model: t('activerecord.models.lending_policy')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 
@@ -21,7 +21,7 @@
 
 <p>
   <strong><%= t('activerecord.attributes.lending_policy.fixed_due_date') -%>:</strong>
-  <%= l(@lending_policy.fixed_due_date, :format => :only_date) if @lending_policy.fixed_due_date -%>
+  <%= l(@lending_policy.fixed_due_date, format: :only_date) if @lending_policy.fixed_due_date -%>
 </p>
 
 <p>

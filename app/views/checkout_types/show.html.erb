@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.showing', :model => t('activerecord.models.checkout_type')) -%></h1>
+<h1 class="title"><%= t('page.showing', model: t('activerecord.models.checkout_type')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 
@@ -33,6 +33,6 @@
   <ul>
     <li><%= link_to t('page.edit'), edit_checkout_type_path(@checkout_type) -%></li>
     <li><%= back_to_index(flash[:page_info]) -%></li>
-    <li><%= link_to t('page.new', :model => t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type) -%></li>
+    <li><%= link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type) -%></li>
   </ul>
 </div>

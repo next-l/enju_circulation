@@ -2,10 +2,10 @@
 <h1 class="title"><%= t('checkout.listing_overdue_item') -%></h1>
 <div id="content_list">
 
-  <%= form_for(:checkouts, :url => checkouts_path, :html => {:method => 'get'}) do -%>
+  <%= form_for(:checkouts, url: checkouts_path, html: {method: 'get'}) do -%>
     <p>
       <%= t('checkout.number_of_day_overdue') -%>:
-      <%= text_field_tag 'days_overdue', h(@days_overdue), :class => 'resource_integer' -%>
+      <%= text_field_tag 'days_overdue', h(@days_overdue), class: 'resource_integer' -%>
       <%= hidden_field_tag 'view', 'overdue' -%>
       <%= submit_tag t('page.search') -%>
     </p>
@@ -22,7 +22,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to t('page.back_to', :model => t('activerecord.models.checkout')), checkouts_path -%></li>
+    <li><%= link_to t('page.back_to', model: t('activerecord.models.checkout')), checkouts_path -%></li>
   </ul>
   <%= render 'reserved_facet' %>
   <p>

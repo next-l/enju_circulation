@@ -18,12 +18,12 @@
     </td>
     <td>
       <% if checkout.item %>
-        <%= render 'manifestations/show_index', :manifestation => checkout.item.manifestation -%>
+        <%= render 'manifestations/show_index', manifestation: checkout.item.manifestation -%>
         (<%= link_to checkout.item.item_identifier, checkout.item -%>)
       <% end %>
     </td>
     <td>
-      <%= l(checkout.due_date, :format => :only_date) -%>
+      <%= l(checkout.due_date, format: :only_date) -%>
       <br />
       <% if checkout.checkin %>
         <strong><%= t('checkout.returned') %></strong>
@@ -36,7 +36,7 @@
         <% end %>
       <%- end -%>
       <%- if can? :delete, checkout -%>
-        <%= link_to t('page.destroy'), checkout, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
+        <%= link_to t('page.destroy'), checkout, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <%- end -%>
     </td>
   </tr>

@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.checkout')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.checkout')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 <%= render 'list' -%>
@@ -22,39 +22,39 @@
   </ul>
   <%= render 'reserved_facet' %>
   <ul>
-    <li><%= link_to t('activerecord.models.reserve'), user_reserves_path(user) -%></li>
+    <li><%= link_to t('activerecord.models.reserve'), reserves_path(user_id: user.username) -%></li>
     <%- if current_user.has_role?('Librarian') -%>
       <li><%= link_to t('checkout.all_checkout'), checkouts_path -%></li>
     <%- end -%>
     <% if current_user.checkout_icalendar_token? %>
       <li>
         <%= link_to 'iCalendar', checkouts_path(icalendar_token: user.checkout_icalendar_token, format: :ics) -%>
-        <%= link_to (image_tag 'icons/date.png', size: '16x16', alt: 'iCalendar', class: 'icon'), user_checkouts_path(user, format: :ics) -%>
+        <%= link_to (image_tag 'icons/date.png', size: '16x16', alt: 'iCalendar', class: 'icon'), checkouts_path(user_id: user.username, format: :ics) -%>
       </li>
     <% end %>
     <%- if params[:view] == 'overdue' -%>
       <li>
-        <%= link_to 'RSS', user_checkouts_path(user, format: :rss, view: 'overdue') -%>
-        <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), user_checkouts_path(user, format: :rss, view: 'overdue') -%>
+        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss, view: 'overdue') -%>
+        <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(user_id: user.username, format: :rss, view: 'overdue') -%>
       </li>
       <li>
-        <%= link_to 'TSV', user_checkouts_path(user, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
-        <%= link_to (image_tag 'icons/page_white_excel.png', size:  '16x16', alt: 'TSV', class: 'icon'), user_checkouts_path(user, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
+        <%= link_to 'TSV', checkouts_path(user_id: user.username, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
+        <%= link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), checkouts_path(user_id: user.username, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
       </li>
     <%- else -%>
       <li>
-        <%= link_to 'RSS', user_checkouts_path(user, format: :rss) -%>
-        <%= link_to (image_tag 'icons/feed.png', size:  '16x16', alt: 'RSS', class: 'icon'), user_checkouts_path(user, format: :rss) -%>
+        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss) -%>
+        <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(user_id: user.username, format: :rss) -%>
       </li>
       <li>
-        <%= link_to 'TSV', user_checkouts_path(user, format: :txt, locale: @locale.to_s) -%>
-        <%= link_to (image_tag 'icons/page_white_excel.png', size:  '16x16', alt: 'TSV', class: 'icon'), user_checkouts_path(user, format: :txt, locale: @locale.to_s) -%>
+        <%= link_to 'TSV', checkouts_path(user_id: user.username, format: :txt, locale: @locale.to_s) -%>
+        <%= link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), checkouts_path(user_id: user.username, format: :txt, locale: @locale.to_s) -%>
       </li>
     <%- end -%>
   </ul>
   <ul>
     <% if @user == current_user %>
-      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), method: :put, data: {:confirm => t('page.are_you_sure')} %></li>
+      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), method: :put, data: {confirm: t('page.are_you_sure')} %></li>
     <% end %>
   </ul>
 </div>

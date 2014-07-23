@@ -1,9 +1,9 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.showing', :model => t('activerecord.models.reserve')) -%></h1>
+<h1 class="title"><%= t('page.showing', model: t('activerecord.models.reserve')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 
-<%= render 'manifestations/title', :manifestation => @reserve.manifestation if @reserve.manifestation -%>
+<%= render 'manifestations/title', manifestation: @reserve.manifestation if @reserve.manifestation -%>
 
 <p>
   <strong><%= t('activerecord.models.manifestation') -%>:</strong>
@@ -60,15 +60,15 @@
 </div>
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
-  <%= render 'manifestations/book_jacket', :manifestation => @reserve.manifestation if @reserve.manifestation -%>
+  <%= render 'manifestations/book_jacket', manifestation: @reserve.manifestation if @reserve.manifestation -%>
   <ul>
     <li><%= link_to t('page.edit'), edit_reserve_path(@reserve) -%></li>
     <%- if @reserve.user.reserves.waiting.include?(@reserve) -%>
-      <li><%= link_to t('page.cancel'), reserve_path(@reserve, :mode => 'cancel'), :data => {:confirm => t('page.are_you_sure')}, :method => :put -%></li>
+      <li><%= link_to t('page.cancel'), reserve_path(@reserve, mode: 'cancel'), data: {confirm: t('page.are_you_sure')}, method: :put -%></li>
     <%- else -%>
-      <li><%= link_to t('page.destroy'), @reserve, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></li>
+      <li><%= link_to t('page.destroy'), @reserve, data: {confirm: t('page.are_you_sure')}, method: :delete -%></li>
     <%- end -%>
-    <li><%= link_to t('page.back'), reserves_path(:page => flash[:page] ||= nil) -%></li>
+    <li><%= link_to t('page.back'), reserves_path(page: flash[:page] ||= nil) -%></li>
   </ul>
   <!--
   <p>TODO: 予約取り消し時に、次の予約者に連絡する</p>

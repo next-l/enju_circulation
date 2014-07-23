@@ -1,14 +1,14 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.editing', :model => t('activerecord.models.checkout')) -%></h1>
+<h1 class="title"><%= t('page.editing', model: t('activerecord.models.checkout')) -%></h1>
 <div id="content_list">
 
-  <%= render 'manifestations/title', :manifestation => @checkout.item.manifestation if @checkout.item -%>
+  <%= render 'manifestations/title', manifestation: @checkout.item.manifestation if @checkout.item -%>
 
 <h3><%= t('checkout.renewal') -%></h3>
 <%- if @checkout.renewable? -%>
   <%= form_for(@checkout) do |f| -%>
-    <%= t('checkout.new_due_date') -%>: <%= l(@new_due_date, :format => :only_date) if @new_due_date -%>
-    <%= f.hidden_field :due_date, :value => @new_due_date -%>
+    <%= t('checkout.new_due_date') -%>: <%= l(@new_due_date, format: :only_date) if @new_due_date -%>
+    <%= f.hidden_field :due_date, value: @new_due_date -%>
     <br />
     <%= f.submit %>
   <%- end -%>
@@ -26,10 +26,10 @@
       <%= f.label :due_date -%>
       <%= f.hidden_field :user_id -%>
       <%= f.hidden_field :item_id -%>
-      <%= f.text_field :due_date, :value => @checkout.due_date.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
+      <%= f.text_field :due_date, value: @checkout.due_date.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"-%>
     </div>
     <div class="field">
-      <%= t('checkout.renewal_count') -%>: <%= f.text_field :checkout_renewal_count, :class => 'resource_integer' -%>
+      <%= t('checkout.renewal_count') -%>: <%= f.text_field :checkout_renewal_count, class: 'resource_integer' -%>
     </div>
 
     <div class="actions">
@@ -41,11 +41,11 @@
 </div>
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
-  <%= render 'manifestations/book_jacket', :manifestation => @checkout.item.manifestation if @checkout.item -%>
+  <%= render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation if @checkout.item -%>
   <ul>
     <li><%= link_to t('page.show'), @checkout -%></li>
     <% if @checkout.user %>
-      <li><%= link_to t('page.back'), user_checkouts_path(@checkout.user) -%></li>
+      <li><%= link_to t('page.back'), checkouts_path(user_id: @checkout.user.username) -%></li>
     <% end %>
   </ul>
 </div>
