@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.lending_policy')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.lending_policy')) -%></h1>
 <div id="content_list">
 
 <table class="table table-striped index">
@@ -27,7 +27,7 @@
     <td>
       <%= link_to t('page.show'), lending_policy -%>
       <%= link_to t('page.edit'), edit_lending_policy_path(lending_policy) -%>
-      <%= link_to t('page.destroy'), lending_policy, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
+      <%= link_to t('page.destroy'), lending_policy, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
     </td>
   </tr>
 <%- end -%>

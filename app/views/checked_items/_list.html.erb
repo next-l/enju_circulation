@@ -1,13 +1,13 @@
 <div style="color: red"><%= flash[:message] -%></div>
 
 <div class="search_form">
-<%= form_for :checked_item, :html => {:method => :post}, :url => basket_checked_items_path(@basket), :remote => true do |f| -%>
+<%= form_for :checked_item, html: {method: :post}, url: basket_checked_items_path(@basket), remote: true do |f| -%>
   <%= f.error_messages -%>
   <p>
     <%= f.label :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
     <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%><br />
     <%= f.label :due_date %>
-    <%= f.text_field :due_date_string, :class => 'datepicker' %>
+    <%= f.text_field :due_date_string, class: 'datepicker' %>
     <%= t('checked_item.ignore_restriction') -%>: <%= f.check_box :ignore_restriction -%>
   </p>
 <%- end -%>
@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 <%= render 'checked_item' %>
 
-<%= form_for(:basket, :url => {:controller => 'baskets', :action => 'update', :id => @basket.id}, :html => { :method => :put }) do |f| -%>
+<%= form_for(:basket, url: {controller: 'baskets', action: 'update', id: @basket.id}, html: { method: :put }) do |f| -%>
   <div>
     <%= f.submit t('checked_item.checkout'), 'data-disable-with' => t('page.saving') -%>
   </div>

@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.new', :model => t('activerecord.models.checked_item')) -%></h1>
+<h1 class="title"><%= t('page.new', model: t('activerecord.models.checked_item')) -%></h1>
 <div id="content_list">
 
   <div id="checked_item_list">
@@ -24,6 +24,6 @@
   </ul>
   <ul>
     <li><%= link_to t('activerecord.models.checkin'), checkins_path -%></li>
-    <li><%= link_to t('activerecord.models.reserve'), user_reserves_path(@basket.user) -%></li>
+    <li><%= link_to t('activerecord.models.reserve'), reserves_path(user_id: @basket.user.username) -%></li>
   </ul>
 </div>

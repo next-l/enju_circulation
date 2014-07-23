@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :fixed_due_date -%><br />
-    <%= f.text_field :fixed_due_date, :value => @lending_policy.fixed_due_date.try(:strftime, "%Y-%m-%d"), :class => 'date_field', :placeholder => "#{t('page.example')}: 2011-04-12"-%>
+    <%= f.text_field :fixed_due_date, value: @lending_policy.fixed_due_date.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"-%>
   </div>
   <div class="field">
     <%= f.label :renewal -%><br />

@@ -1,4 +1,4 @@
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.item_has_use_restriction')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.item_has_use_restriction')) -%></h1>
 
 <table>
   <tr>
@@ -16,7 +16,7 @@
     <td><%= link_to item_has_use_restriction.use_restriction.display_name.localize, item_has_use_restriction.use_restriction -%></td>
     <td><%= link_to t('page.show'), item_has_use_restriction -%></td>
     <td><%= link_to t('page.edit'), edit_item_has_use_restriction_path(item_has_use_restriction) -%></td>
-    <td><%= link_to t('page.destroy'), item_has_use_restriction, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></td>
+    <td><%= link_to t('page.destroy'), item_has_use_restriction, data: {confirm: t('page.are_you_sure')}, method: :delete -%></td>
   </tr>
 <%- end -%>
 </table>
@@ -25,8 +25,8 @@
 <br />
 
 <%- if @item -%>
-  <%= link_to t('page.new', :model => t('activerecord.models.item_has_use_restriction')), new_item_item_has_use_restriction_path(@item) -%>
+  <%= link_to t('page.new', model: t('activerecord.models.item_has_use_restriction')), new_item_item_has_use_restriction_path(@item) -%>
 <%- else -%>
-  <%= link_to t('page.new', :model => t('activerecord.models.item_has_use_restriction')), new_item_has_use_restriction_path -%>
+  <%= link_to t('page.new', model: t('activerecord.models.item_has_use_restriction')), new_item_has_use_restriction_path -%>
 <%- end -%>
 

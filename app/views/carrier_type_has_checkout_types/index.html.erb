@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.carrier_type_has_checkout_type')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.carrier_type_has_checkout_type')) -%></h1>
 <div id="content_list">
 
 <table class="table table-striped index">
@@ -21,7 +21,7 @@
         <%= link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(carrier_type_has_checkout_type) -%>
       <% end %>
       <%- if policy(carrier_type_has_checkout_type).destroy? -%>
-        <%= link_to t('page.destroy'), carrier_type_has_checkout_type, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
+        <%= link_to t('page.destroy'), carrier_type_has_checkout_type, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <% end %>
     </td>
   </tr>
@@ -34,7 +34,7 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <%- if policy(CarrierTypeHasCheckoutType).create? -%>
-      <li><%= link_to t('page.new', :model => t('activerecord.models.carrier_type_has_checkout_type')), new_carrier_type_has_checkout_type_path -%></li>
+      <li><%= link_to t('page.new', model: t('activerecord.models.carrier_type_has_checkout_type')), new_carrier_type_has_checkout_type_path -%></li>
     <% end %>
   </ul>
 </div>

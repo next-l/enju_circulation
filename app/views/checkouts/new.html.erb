@@ -1,4 +1,4 @@
-<h1 class="title"><%= t('page.new', :model => t('activerecord.models.checkouts')) -%></h1>
+<h1 class="title"><%= t('page.new', model: t('activerecord.models.checkouts')) -%></h1>
 
 <%= form_for(@checkout) do |f| -%>
   <%= f.error_messages -%>
@@ -17,4 +17,4 @@
   </div>
 <%- end -%>
 
-<%= link_to t('page.back'), user_checkouts_path(@user) -%>
+<%= link_to t('page.back'), checkouts_path(user_id: @user.username) -%>

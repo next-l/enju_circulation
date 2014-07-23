@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.user_reserve_stat')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.user_reserve_stat')) -%></h1>
 <div id="content_list">
 
 <table class="table table-striped index">
@@ -17,7 +17,7 @@
     <td><%= localized_state(user_reserve_stat.current_state) -%></td>
     <td>
       <%= link_to t('page.show'), user_reserve_stat -%>
-      <%= link_to t('page.destroy'), user_reserve_stat, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
+      <%= link_to t('page.destroy'), user_reserve_stat, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
     </td>
   </tr>
 <%- end -%>
@@ -29,6 +29,6 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to t('page.new', :model => t('activerecord.models.user_reserve_stat')), new_user_reserve_stat_path -%></li>
+    <li><%= link_to t('page.new', model: t('activerecord.models.user_reserve_stat')), new_user_reserve_stat_path -%></li>
   </ul>
 </div>
