@@ -53,7 +53,7 @@ class ManifestationReserveStatsController < ApplicationController
     respond_to do |format|
       if @manifestation_reserve_stat.save
         Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
-        format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
+        format.html { redirect_to @manifestation_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { render :json => @manifestation_reserve_stat, :status => :created, :location => @manifestation_reserve_stat }
       else
         format.html { render :action => "new" }
@@ -70,7 +70,7 @@ class ManifestationReserveStatsController < ApplicationController
         if @manifestation_reserve_stat.mode == 'import'
           Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
         end
-        format.html { redirect_to @manifestation_reserve_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.manifestation_reserve_stat')) }
+        format.html { redirect_to @manifestation_reserve_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
