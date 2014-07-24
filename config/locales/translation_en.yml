@@ -190,4 +190,4 @@ en:
     saving: "Saving..."
     start_counting: "Start counting"
   statistic:
-    successfully_created: "%{model} task was created successfully. When the taskis completed, its status on the list will be updated to 'completed' and you can check the results by following the 'show' link."
+    successfully_created: "%{model} task was created successfully. When the task is completed, its status on the list will be updated to 'completed' and you can check the results by following the 'show' link."
