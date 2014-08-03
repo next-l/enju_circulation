@@ -3,6 +3,7 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
 
   def copy_setup_files
     directory("db/fixtures", "db/fixtures/enju_circulation")
+    return if file == 'fixture'
     rake("enju_circulation_engine:install:migrations")
     generate("enju_event:setup")
     generate("enju_message:setup")
