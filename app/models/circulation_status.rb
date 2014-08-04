@@ -10,6 +10,10 @@ class CirculationStatus < ActiveRecord::Base
   default_scope :order => "circulation_statuses.position"
   scope :available_for_checkout, where(:name => 'Available On Shelf')
   has_many :items
+
+  def set_display_name
+    self.display_name = "#{I18n.locale}: #{name}" if display_name.blank?
+  end
 end
 
 # == Schema Information
