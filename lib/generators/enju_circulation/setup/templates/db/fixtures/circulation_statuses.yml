@@ -27,7 +27,7 @@ circulation_status_00004:
   name: Claimed Returned Or Never Borrowed  
   display_name: |-
     en: Claimed Returned Or Never Borrowed
-    ja: 利用者が返却済み・未貸出と主張
+    ja: 利用者が返却済み、または未貸出と主張
   id: 4
   note: ""
   position: 4
