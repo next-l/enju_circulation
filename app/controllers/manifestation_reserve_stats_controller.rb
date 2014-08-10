@@ -49,6 +49,7 @@ class ManifestationReserveStatsController < ApplicationController
   # POST /manifestation_reserve_stats.json
   def create
     @manifestation_reserve_stat = ManifestationReserveStat.new(params[:manifestation_reserve_stat])
+    @manifestation_reserve_stat.user = current_user
 
     respond_to do |format|
       if @manifestation_reserve_stat.save

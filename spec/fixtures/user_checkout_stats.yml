@@ -5,14 +5,14 @@ one:
   start_date: 2008-12-15 18:43:02
   end_date: 2008-12-16 18:43:02
   note: MyText
-  state: pending
+  user_id: 2
 
 two:
   id: 2
   start_date: 2008-12-15 18:43:02
   end_date: 2008-12-16 18:43:02
   note: MyText
-  state: pending
+  user_id: 2
 
 # == Schema Information
 #
@@ -22,10 +22,9 @@ two:
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  state        :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
+#  user_id      :integer
 #
-

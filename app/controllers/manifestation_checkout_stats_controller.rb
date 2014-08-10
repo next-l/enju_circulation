@@ -49,6 +49,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # POST /manifestation_checkout_stats.json
   def create
     @manifestation_checkout_stat = ManifestationCheckoutStat.new(params[:manifestation_checkout_stat])
+    @manifestation_checkout_stat.user = current_user
 
     respond_to do |format|
       if @manifestation_checkout_stat.save

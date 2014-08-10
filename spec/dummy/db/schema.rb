@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140610123439) do
+ActiveRecord::Schema.define(:version => 20140810061942) do
 
   create_table "agent_relationship_types", :force => true do |t|
     t.string   "name",         :null => false
@@ -475,14 +475,14 @@ ActiveRecord::Schema.define(:version => 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "manifestation_checkout_stats", ["state"], :name => "index_manifestation_checkout_stats_on_state"
+  add_index "manifestation_checkout_stats", ["user_id"], :name => "index_manifestation_checkout_stats_on_user_id"
 
   create_table "manifestation_relationship_types", :force => true do |t|
     t.string   "name",         :null => false
@@ -521,14 +521,14 @@ ActiveRecord::Schema.define(:version => 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "manifestation_reserve_stats", ["state"], :name => "index_manifestation_reserve_stats_on_state"
+  add_index "manifestation_reserve_stats", ["user_id"], :name => "index_manifestation_reserve_stats_on_user_id"
 
   create_table "manifestations", :force => true do |t|
     t.text     "original_title",                                     :null => false
@@ -888,14 +888,14 @@ ActiveRecord::Schema.define(:version => 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "user_checkout_stats", ["state"], :name => "index_user_checkout_stats_on_state"
+  add_index "user_checkout_stats", ["user_id"], :name => "index_user_checkout_stats_on_user_id"
 
   create_table "user_group_has_checkout_types", :force => true do |t|
     t.integer  "user_group_id",                                      :null => false
@@ -956,14 +956,14 @@ ActiveRecord::Schema.define(:version => 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "user_reserve_stats", ["state"], :name => "index_user_reserve_stats_on_state"
+  add_index "user_reserve_stats", ["user_id"], :name => "index_user_reserve_stats_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                    :default => "",    :null => false

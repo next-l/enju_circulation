@@ -49,6 +49,7 @@ class UserReserveStatsController < ApplicationController
   # POST /user_reserve_stats.json
   def create
     @user_reserve_stat = UserReserveStat.new(params[:user_reserve_stat])
+    @user_reserve_stat.user = current_user
 
     respond_to do |format|
       if @user_reserve_stat.save

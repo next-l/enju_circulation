@@ -49,6 +49,7 @@ class UserCheckoutStatsController < ApplicationController
   # POST /user_checkout_stats.json
   def create
     @user_checkout_stat = UserCheckoutStat.new(params[:user_checkout_stat])
+    @user_checkout_stat.user = current_user
 
     respond_to do |format|
       if @user_checkout_stat.save
