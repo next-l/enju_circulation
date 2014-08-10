@@ -19,13 +19,15 @@ class CheckedItem < ActiveRecord::Base
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
-    if self.item.blank?
+    if item.blank?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.item_not_found')
       return false
     end
 
     if item.rent?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+      unless item.circulation_status.name == 'Missing'
+        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+      end
     end
 
     unless item.available_for_checkout?
