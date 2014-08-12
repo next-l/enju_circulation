@@ -9,7 +9,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
@@ -18,7 +18,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
@@ -27,7 +27,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
@@ -45,7 +45,7 @@ describe ManifestationCheckoutStatsController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -55,7 +55,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -65,7 +65,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -85,7 +85,7 @@ describe ManifestationCheckoutStatsController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
@@ -94,7 +94,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
@@ -103,7 +103,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
@@ -123,7 +123,7 @@ describe ManifestationCheckoutStatsController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -133,7 +133,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -143,7 +143,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
@@ -168,7 +168,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
@@ -196,7 +196,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
@@ -224,7 +224,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
@@ -286,7 +286,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
@@ -308,7 +308,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
@@ -336,7 +336,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
@@ -385,7 +385,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested manifestation_checkout_stat" do
         delete :destroy, :id => @manifestation_checkout_stat.id
@@ -398,7 +398,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested manifestation_checkout_stat" do
         delete :destroy, :id => @manifestation_checkout_stat.id
@@ -411,7 +411,7 @@ describe ManifestationCheckoutStatsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested manifestation_checkout_stat" do
         delete :destroy, :id => @manifestation_checkout_stat.id

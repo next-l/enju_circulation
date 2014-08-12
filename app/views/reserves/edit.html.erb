@@ -18,7 +18,7 @@
   <div class="field">
     <%= f.label t('activerecord.models.user') -%>
     <%= link_to @reserve.user.username, @reserve.user -%>
-    (<%= @reserve.user.user_number %>)
+    (<%= @reserve.user.profile.user_number %>)
   </div>
 
   <% unless @reserve.completed? %>

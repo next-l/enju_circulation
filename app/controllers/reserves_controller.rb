@@ -133,7 +133,7 @@ class ReservesController < ApplicationController
           access_denied; return
         end
       end
-      @reserve.user_number = current_user.user_number
+      @reserve.user_number = current_user.profile.user_number
     end
 
     get_manifestation

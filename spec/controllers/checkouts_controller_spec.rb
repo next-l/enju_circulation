@@ -9,7 +9,7 @@ describe CheckoutsController do
     end
 
     before(:each) do
-      FactoryGirl.create(:admin)
+      FactoryGirl.create(:profile)
     end
 
     describe "When logged in as Administrator" do
@@ -86,7 +86,7 @@ describe CheckoutsController do
       end
 
       it "should be forbidden if other's username is specified" do
-        user = FactoryGirl.create(:user)
+        user = users(:user3)
         get :index, :user_id => user.username
         assigns(:checkouts).should be_nil
         response.should be_forbidden
@@ -130,16 +130,16 @@ describe CheckoutsController do
       end
 
       it "assigns his own checkouts as @checkouts" do
-        token = "AVRjefcBcey6f1WyYXDl"
-        user = User.where(:checkout_icalendar_token => token).first
+        token = "577830b08ecf9c4c4333d599a57a6f44a7fe76c0"
+        user = Profile.where(:checkout_icalendar_token => token).first.user
         get :index, :icalendar_token => token
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
         response.should be_success
       end
 
       it "should get ics template" do
-        token = "AVRjefcBcey6f1WyYXDl"
-        user = User.where(:checkout_icalendar_token => token).first
+        token = "577830b08ecf9c4c4333d599a57a6f44a7fe76c0"
+        user = Profile.where(:checkout_icalendar_token => token).first.user
         get :index, :icalendar_token => token, :format => :ics
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
         response.should be_success

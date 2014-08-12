@@ -119,6 +119,9 @@ en:
       item:
         checkout_type: Checkout type
         circulation_status: Circulation status
+      profile:
+        checkout_icalendar_token: Checkout iCalendar token
+        save_checkout_history: Save checkout history
 
   basket:
     this_account_is_suspended: "This account is suspended."

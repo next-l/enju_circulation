@@ -9,7 +9,8 @@ describe CheckedItem do
   end
 
   it "should change circulation_status when a missing item is found" do
-    basket = FactoryGirl.create(:basket)
+    basket = Basket.new
+    basket.user = users(:admin)
     checked_item = CheckedItem.new
     checked_item.item = items(:item_00024)
     checked_item.basket = basket

@@ -24,7 +24,7 @@ module EnjuCirculation
 
       def available_checkout_types(user)
         if user
-          user.user_group.user_group_has_checkout_types.available_for_carrier_type(self.carrier_type)
+          user.profile.user_group.user_group_has_checkout_types.available_for_carrier_type(self.carrier_type)
         end
       end
 

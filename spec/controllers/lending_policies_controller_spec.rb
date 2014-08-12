@@ -15,7 +15,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all lending_policies as @lending_policies" do
         get :index
@@ -24,7 +24,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all lending_policies as @lending_policies" do
         get :index
@@ -33,7 +33,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns empty as @lending_policies" do
         get :index
@@ -55,7 +55,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested lending_policy as @lending_policy" do
         get :show, :id => @lending_policy.id
@@ -65,7 +65,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested lending_policy as @lending_policy" do
         get :show, :id => @lending_policy.id
@@ -75,7 +75,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should be forbidden" do
         get :show, :id => @lending_policy.id
@@ -95,7 +95,7 @@ describe LendingPoliciesController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested lending_policy as @lending_policy" do
         get :new
@@ -105,7 +105,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
@@ -115,7 +115,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
@@ -135,7 +135,7 @@ describe LendingPoliciesController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested lending_policy as @lending_policy" do
         lending_policy = FactoryGirl.create(:lending_policy)
@@ -145,7 +145,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested lending_policy as @lending_policy" do
         lending_policy = FactoryGirl.create(:lending_policy)
@@ -155,7 +155,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested lending_policy as @lending_policy" do
         lending_policy = FactoryGirl.create(:lending_policy)
@@ -180,7 +180,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
@@ -208,7 +208,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
@@ -236,7 +236,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
@@ -298,7 +298,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested lending_policy" do
@@ -320,7 +320,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "updates the requested lending_policy" do
@@ -343,7 +343,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested lending_policy" do
@@ -392,7 +392,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested lending_policy" do
         delete :destroy, :id => @lending_policy.id
@@ -405,7 +405,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested lending_policy" do
         delete :destroy, :id => @lending_policy.id
@@ -418,7 +418,7 @@ describe LendingPoliciesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested lending_policy" do
         delete :destroy, :id => @lending_policy.id

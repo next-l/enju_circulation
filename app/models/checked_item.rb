@@ -76,7 +76,7 @@ class CheckedItem < ActiveRecord::Base
 
   def item_checkout_type
     if item and basket
-      basket.user.user_group.user_group_has_checkout_types.available_for_item(item).first
+      basket.user.profile.user_group.user_group_has_checkout_types.available_for_item(item).first
     end
   end
 

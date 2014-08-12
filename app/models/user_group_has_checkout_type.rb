@@ -42,9 +42,9 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   def self.update_current_checkout_count
     sql = [
       'SELECT count(checkouts.id) as current_checkout_count,
-        users.user_group_id,
+        profiles.user_group_id,
         items.checkout_type_id
-        FROM checkouts LEFT OUTER JOIN items
+        FROM checkouts, profiles LEFT OUTER JOIN items
         ON (checkouts.item_id = items.id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)

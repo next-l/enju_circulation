@@ -83,7 +83,7 @@ module EnjuCirculation
         end
         can :index, Reserve
         can :create, Reserve do |reserve|
-          user.user_number.present?
+          user.profile.user_number.try(:present?)
         end
         can [:show, :update, :destroy, :delete], Reserve do |reserve|
           reserve.user == user

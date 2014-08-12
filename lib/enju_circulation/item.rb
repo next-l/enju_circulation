@@ -61,7 +61,7 @@ module EnjuCirculation
 
       def checkout_status(user)
         return nil unless user
-         user.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
+         user.profile.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
       end
 
       def reserved?
@@ -123,7 +123,7 @@ module EnjuCirculation
       end
 
       def lending_rule(user)
-        lending_policies.where(:user_group_id => user.user_group.id).first
+        lending_policies.where(:user_group_id => user.profile.user_group.id).first
       end
 
       def not_for_loan?

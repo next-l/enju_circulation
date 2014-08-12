@@ -9,7 +9,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
@@ -18,7 +18,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
@@ -27,7 +27,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns all checkout_stat_has_users as @checkout_stat_has_users" do
         get :index
@@ -47,7 +47,7 @@ describe CheckoutStatHasUsersController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -57,7 +57,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -67,7 +67,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -87,7 +87,7 @@ describe CheckoutStatHasUsersController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         get :new
@@ -97,7 +97,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "should not assign the requested checkout_stat_has_user as @checkout_stat_has_user" do
         get :new
@@ -107,7 +107,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested checkout_stat_has_user as @checkout_stat_has_user" do
         get :new
@@ -127,7 +127,7 @@ describe CheckoutStatHasUsersController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -137,7 +137,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -147,7 +147,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
         checkout_stat_has_user = FactoryGirl.create(:checkout_stat_has_user)
@@ -172,7 +172,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
@@ -200,7 +200,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
@@ -228,7 +228,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created checkout_stat_has_user as @checkout_stat_has_user" do
@@ -290,7 +290,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested checkout_stat_has_user" do
@@ -313,7 +313,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns the requested checkout_stat_has_user as @checkout_stat_has_user" do
@@ -340,7 +340,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested checkout_stat_has_user" do
@@ -389,7 +389,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested checkout_stat_has_user" do
         delete :destroy, :id => @checkout_stat_has_user.id
@@ -402,7 +402,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested checkout_stat_has_user" do
         delete :destroy, :id => @checkout_stat_has_user.id
@@ -415,7 +415,7 @@ describe CheckoutStatHasUsersController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested checkout_stat_has_user" do
         delete :destroy, :id => @checkout_stat_has_user.id

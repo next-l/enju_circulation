@@ -42,11 +42,11 @@ class Checkin < ActiveRecord::Base
         # TODO: ILL時の処理
         checkout.checkin = self
         checkout.operator = current_user
-        unless checkout.user.try(:save_checkout_history)
+        unless checkout.user.profile.try(:save_checkout_history)
           checkout.user = nil
         end
         checkout.save(:validate => false)
-        unless checkout.item.shelf.library == current_user.library
+        unless checkout.item.shelf.library == current_user.profile.library
           message << I18n.t('checkin.other_library_item')
         end
       end

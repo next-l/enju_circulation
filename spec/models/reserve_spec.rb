@@ -123,4 +123,3 @@ end
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #
-

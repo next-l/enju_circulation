@@ -8,12 +8,12 @@ class Checkout < ActiveRecord::Base
   scope :completed, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
   scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
 
-  belongs_to :user #, :counter_cache => true #, :validate => true
+  belongs_to :user
   delegate :username, :user_number, :to => :user, :prefix => true
-  belongs_to :item #, :counter_cache => true #, :validate => true
-  belongs_to :checkin #, :validate => true
-  belongs_to :librarian, :class_name => 'User' #, :validate => true
-  belongs_to :basket #, :validate => true
+  belongs_to :item
+  belongs_to :checkin
+  belongs_to :librarian, :class_name => 'User'
+  belongs_to :basket
 
   validates_associated :user, :item, :librarian, :checkin #, :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
@@ -29,7 +29,7 @@ class Checkout < ActiveRecord::Base
       user.try(:username)
     end
     string :user_number do
-      user.try(:user_number)
+      user.profile.try(:user_number)
     end
     string :item_identifier do
       item.try(:item_identifier)
@@ -123,7 +123,7 @@ class Checkout < ActiveRecord::Base
     queues = []
     User.find_each do |user|
       # 未来の日時を指定する
-      checkouts = user.checkouts.due_date_on(user.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
+      checkouts = user.checkouts.due_date_on(user.profile.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
       unless checkouts.empty?
         queues << user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
       end
@@ -135,10 +135,10 @@ class Checkout < ActiveRecord::Base
     template = 'recall_overdue_item'
     queues = []
     User.find_each do |user|
-      user.user_group.number_of_time_to_notify_overdue.times do |i|
-        checkouts = user.checkouts.due_date_on((user.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
+      user.profile.user_group.number_of_time_to_notify_overdue.times do |i|
+        checkouts = user.checkouts.due_date_on((user.profile.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
         unless checkouts.empty?
-          queues << user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
+          queues << user.profile.user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
         end
       end
     end
@@ -166,4 +166,3 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-

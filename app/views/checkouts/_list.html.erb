@@ -13,7 +13,7 @@
       <% if checkout.user %>
         <%= link_to checkout.user_username, checkout.user %>
         <br />
-        (<%= link_to checkout.user_user_number, checkout.user %>)
+        (<%= link_to checkout.user.profile.user_number, checkout.user %>)
       <% end %>
     </td>
     <td>

@@ -125,7 +125,7 @@ class Reserve < ActiveRecord::Base
       user.try(:username)
     end
     string :user_number do
-      user.try(:user_number)
+      user.profile.try(:user_number)
     end
     time :created_at
     text :item_identifier do
@@ -158,8 +158,7 @@ class Reserve < ActiveRecord::Base
   def set_user
     number = user_number.to_s.strip
     if number.present?
-      user = User.where(:user_number => number).first
-      self.user = user
+      self.user = Profile.where(user_number: number).first.try(:user)
     end
   end
 
@@ -184,13 +183,13 @@ class Reserve < ActiveRecord::Base
   end
 
   def set_expired_at
-    if self.user and self.manifestation
-      if self.canceled_at.blank?
-        if self.expired_at.blank?
-          expired_period = self.manifestation.reservation_expired_period(self.user)
+    if user and manifestation
+      if canceled_at.blank?
+        if expired_at.blank?
+          expired_period = manifestation.reservation_expired_period(user)
           self.expired_at = (expired_period + 1).days.from_now.beginning_of_day
         elsif !completed?
-          if self.expired_at.beginning_of_day < Time.zone.now
+          if expired_at.beginning_of_day < Time.zone.now
             errors[:base] << I18n.t('reserve.invalid_date')
           end
         end
@@ -209,57 +208,57 @@ class Reserve < ActiveRecord::Base
     Reserve.transaction do
       case state
       when 'requested'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_accepted_for_patron', user.locale)
+        message_template_to_agent = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_agent}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent) # 受付時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.locale)
+        message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent) # 受付時は即時送信
       when 'canceled'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_canceled_for_patron', user.locale)
+        message_template_to_agent = MessageTemplate.localized_template('reservation_canceled_for_patron', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_agent}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent) # キャンセル時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.locale)
+        message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent) # キャンセル時は即時送信
       when 'expired'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_expired_for_patron', user.locale)
+        message_template_to_agent = MessageTemplate.localized_template('reservation_expired_for_patron', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_to_agent}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent)
         self.update_attribute(:expiration_notice_to_patron, true)
-        message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
+        message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => sender)
         request.transition_to!(:sent)
       when 'retained'
-        message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.locale)
+        message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_for_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
         request.transition_to!(:sent)
-        message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.locale)
+        message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[item.manifestation], :user => user)
         request.transition_to!(:sent)
       when 'postponed'
-        message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.locale)
+        message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => user, :message_template => message_template_for_patron}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
         request.transition_to!(:sent)
-        message_template_for_library = MessageTemplate.localized_template('reservation_postponed_for_library', user.locale)
+        message_template_for_library = MessageTemplate.localized_template('reservation_postponed_for_library', user.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_for_library}, :as => :admin)
         request.save_message_body(:manifestations => Array[manifestation], :user => user)
@@ -274,7 +273,7 @@ class Reserve < ActiveRecord::Base
     sender = User.find(1) # TODO: システムからのメッセージの発信者
     case status
     when 'expired'
-      message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.locale)
+      message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
       request = MessageRequest.new
       request.assign_attributes({:sender => sender, :receiver => sender, :message_template => message_template_to_library}, :as => :admin)
       request.save_message_body(:manifestations => options[:manifestations])
@@ -445,4 +444,3 @@ end
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #
-
