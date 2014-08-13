@@ -15,8 +15,8 @@ class Reserve < ActiveRecord::Base
   scope :completed, -> {in_state(:completed).where('checked_out_at IS NOT NULL')}
   scope :canceled, -> {in_state(:canceled).where('canceled_at IS NOT NULL')}
   scope :postponed, -> {in_state(:postponed).where('postponed_at IS NOT NULL')}
-  scope :will_expire_retained, lambda {|datetime| {conditions: ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'retained'], order: 'expired_at'}}
-  scope :will_expire_pending, lambda {|datetime| {conditions: ['checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ? AND state = ?', datetime, 'pending'], order: 'expired_at'}}
+  scope :will_expire_retained, lambda {|datetime| in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
+  scope :will_expire_pending, lambda {|datetime| in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :created, lambda {|start_date, end_date| {conditions: ['created_at >= ? AND created_at < ?', start_date, end_date]}}
   scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => false)}
   scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => false)}
@@ -59,11 +59,6 @@ class Reserve < ActiveRecord::Base
       end
     end
   }
-  validates :item_id, :uniqueness => {scope: :state, allow_blank: true},
-    :if => Proc.new{|reserve|
-      return false unless reserve.state_changed?
-      return true if reserve.completed? or reserve.retained?
-    }
   validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, on: :create
@@ -266,8 +261,8 @@ class Reserve < ActiveRecord::Base
 
   def self.expire
     Reserve.transaction do
-      self.will_expire_retained(Time.zone.now.beginning_of_day).map{|r| r.transition_to!(:expired)}
-      self.will_expire_pending(Time.zone.now.beginning_of_day).map{|r| r.transition_to!(:expired)}
+      self.will_expire_retained(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
+      self.will_expire_pending(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
 
       # キューに登録した時点では本文は作られないので
       # 予約の連絡をすませたかどうかを識別できるようにしなければならない
