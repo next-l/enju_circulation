@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "enju_library", "~> 0.1.0.pre33"
   s.add_dependency "enju_message", "~> 0.1.14.pre14"
   s.add_dependency "enju_event", "~> 0.1.17.pre18"
-  s.add_dependency "statesman"
   s.add_dependency "state_machine"
 
   s.add_development_dependency "enju_leaf", "~> 1.1.0.rc12"
