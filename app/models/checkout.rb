@@ -3,10 +3,10 @@ class Checkout < ActiveRecord::Base
   default_scope order: 'checkouts.id DESC'
   scope :not_returned, where(:checkin_id => nil)
   scope :returned, where('checkin_id IS NOT NULL')
-  scope :overdue, lambda {|date| {:conditions => ['checkin_id IS NULL AND due_date < ?', date]}}
+  scope :overdue, lambda {|date| {conditions: ['checkin_id IS NULL AND due_date < ?', date]}}
   scope :due_date_on, lambda {|date| where(:checkin_id => nil, :due_date => date.beginning_of_day .. date.end_of_day)}
-  scope :completed, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
-  scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
+  scope :completed, lambda {|start_date, end_date| {conditions: ['created_at >= ? AND created_at < ?', start_date, end_date]}}
+  scope :on, lambda {|date| {conditions: ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
 
   belongs_to :user
   delegate :username, :user_number, :to => :user, :prefix => true
@@ -125,7 +125,7 @@ class Checkout < ActiveRecord::Base
       # 未来の日時を指定する
       checkouts = user.checkouts.due_date_on(user.profile.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
       unless checkouts.empty?
-        queues << user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
+        queues << user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
       end
     end
     queues.size
@@ -138,7 +138,7 @@ class Checkout < ActiveRecord::Base
       user.profile.user_group.number_of_time_to_notify_overdue.times do |i|
         checkouts = user.checkouts.due_date_on((user.profile.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
         unless checkouts.empty?
-          queues << user.profile.user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
+          queues << user.profile.user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
         end
       end
     end

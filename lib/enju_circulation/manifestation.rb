@@ -19,7 +19,7 @@ module EnjuCirculation
 
     module InstanceMethods
       def next_reservation
-        self.reserves.waiting.order('reserves.created_at ASC').first
+        self.reserves.waiting.order('reserves.created_at ASC').readonly(false).first
       end
 
       def available_checkout_types(user)

@@ -1,7 +1,7 @@
 class Checkin < ActiveRecord::Base
   attr_accessible :item_identifier
   default_scope order: 'checkins.id DESC'
-  scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
+  scope :on, lambda {|date| {conditions: ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
   has_one :checkout
   belongs_to :item
   belongs_to :librarian, class_name: 'User'
@@ -34,11 +34,10 @@ class Checkin < ActiveRecord::Base
   def item_checkin(current_user)
     message = ''
     Checkin.transaction do
-      checkouts = Checkout.not_returned.where(item_id: item_id).select(
-        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count]
-      )
       item.checkin!
-      checkouts.each do |checkout|
+      Checkout.not_returned.where(item_id: item_id).select(
+        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count]
+      ).each do |checkout|
         # TODO: ILL時の処理
         checkout.checkin = self
         checkout.operator = current_user
@@ -79,7 +78,7 @@ class Checkin < ActiveRecord::Base
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(:item_identifier => identifier).first
+      item = Item.where(item_identifier: identifier).first
       self.item = item
     end
   end

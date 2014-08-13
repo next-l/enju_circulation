@@ -47,15 +47,15 @@ class CheckedItem < ActiveRecord::Base
     end
     # ここまでは絶対に貸出ができない場合
 
-    return true if self.ignore_restriction == "1"
+    return true if ignore_restriction == "1"
 
     if item.not_for_loan?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
     end
 
     if item.reserved?
-      if self.item.manifestation.next_reservation.user == self.basket.user
-        self.item.manifestation.next_reservation.sm_complete
+      if item.manifestation.next_reservation.user == basket.user
+        item.manifestation.next_reservation.transition_to!(:completed)
       else
         errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
       end
@@ -110,7 +110,7 @@ class CheckedItem < ActiveRecord::Base
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(:item_identifier => identifier).first
+      item = Item.where(item_identifier: identifier).first
       self.item = item
     end
   end

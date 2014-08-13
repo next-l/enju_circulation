@@ -108,14 +108,14 @@ module EnjuCirculation
           reservation = manifestation.next_reservation
           unless reservation.nil?
             reservation.item = self
-            reservation.sm_retain!
+            reservation.transition_to!(:retained)
             reservation.send_message(librarian)
           end
         end
       end
 
       def retained?
-        if manifestation.next_reservation.try(:state) == 'retained' and  manifestation.next_reservation.item == self
+        if manifestation.next_reservation.try(:current_state) == 'retained' and  manifestation.next_reservation.item == self
           return true
         else
           false

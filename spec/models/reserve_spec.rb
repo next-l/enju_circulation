@@ -12,19 +12,19 @@ describe Reserve do
     old_count = Message.count
     reserve = reserves(:reserve_00014)
     item = reserve.next_reservation.item
-    reserve.sm_expire!
-    reserve.state.should eq 'expired'
+    reserve.transition_to!(:expired)
+    reserve.current_state.should eq 'expired'
     item.should eq reserve.item
-    Message.count.should eq old_count + 2
+    Message.count.should eq old_count + 4
   end
 
   it "should expire reservation" do
-    reserves(:reserve_00001).sm_expire!
+    reserves(:reserve_00001).transition_to!(:expired)
     reserves(:reserve_00001).request_status_type.name.should eq 'Expired'
   end
 
   it "should cancel reservation" do
-    reserves(:reserve_00001).sm_cancel!
+    reserves(:reserve_00001).transition_to!(:canceled)
     reserves(:reserve_00001).canceled_at.should be_truthy
     reserves(:reserve_00001).request_status_type.name.should eq 'Cannot Fulfill Request'
   end
@@ -75,13 +75,13 @@ describe Reserve do
 
     reservation.item = old_reservation.item
     reservation.item.retained?.should be_falsy
-    reservation.sm_retain!
+    reservation.transition_to!(:retained)
     old_reservation.reload
     old_reservation.item.should be_nil
     reservation.retained_at.should be_truthy
-    old_reservation.retained_at.should be_nil
-    old_reservation.postponed_at.should be_truthy
-    old_reservation.state.should eq 'postponed'
+#    old_reservation.retained_at.should be_nil
+#    old_reservation.postponed_at.should be_truthy
+    old_reservation.current_state.should eq 'postponed'
     MessageRequest.count.should eq old_count + 4
     reservation.item.retained?.should be_truthy
   end
@@ -116,7 +116,6 @@ end
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
-#  state                        :string(255)
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  retained_at                  :datetime

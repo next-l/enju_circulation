@@ -174,7 +174,7 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       if @reserve.save
-        @reserve.sm_request!
+        @reserve.transition_to!(:requested)
 
         format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }
         format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
@@ -199,21 +199,21 @@ class ReservesController < ApplicationController
 
     if @reserve.valid?
       if params[:mode] == 'cancel'
-        @reserve.sm_cancel!
+        @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
           if @reserve.item_identifier and @reserve.force_retaining == '1'
-            @reserve.sm_retain!
+            @reserve.transition_to!(:retained)
           end
         else
-          @reserve.sm_retain! if @reserve.item_identifier
+          @reserve.transition_to!(:retained) if @reserve.item_identifier
         end
       end
     end
 
     respond_to do |format|
       if @reserve.save
-        if @reserve.state == 'canceled'
+        if @reserve.current_state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
         else
           flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))

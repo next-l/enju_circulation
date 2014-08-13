@@ -917,6 +917,18 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   add_index "reserve_stat_has_users", ["user_id"], :name => "index_reserve_stat_has_users_on_user_id"
   add_index "reserve_stat_has_users", ["user_reserve_stat_id"], :name => "index_reserve_stat_has_users_on_user_reserve_stat_id"
 
+  create_table "reserve_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",   :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "reserve_id"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "reserve_transitions", ["reserve_id"], :name => "index_reserve_transitions_on_reserve_id"
+  add_index "reserve_transitions", ["sort_key", "reserve_id"], :name => "index_reserve_transitions_on_sort_key_and_reserve_id", :unique => true
+
   create_table "reserves", :force => true do |t|
     t.integer  "user_id",                                         :null => false
     t.integer  "manifestation_id",                                :null => false
@@ -928,7 +940,6 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
     t.datetime "canceled_at"
     t.datetime "expired_at"
     t.datetime "deleted_at"
-    t.string   "state"
     t.boolean  "expiration_notice_to_patron",  :default => false
     t.boolean  "expiration_notice_to_library", :default => false
     t.datetime "retained_at"
@@ -939,7 +950,6 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   add_index "reserves", ["item_id"], :name => "index_reserves_on_item_id"
   add_index "reserves", ["manifestation_id"], :name => "index_reserves_on_manifestation_id"
   add_index "reserves", ["request_status_type_id"], :name => "index_reserves_on_request_status_type_id"
-  add_index "reserves", ["state"], :name => "index_reserves_on_state"
   add_index "reserves", ["user_id"], :name => "index_reserves_on_user_id"
 
   create_table "resource_export_file_transitions", :force => true do |t|

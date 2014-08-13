@@ -52,7 +52,7 @@
       <%= t('activerecord.attributes.reserve.expired_at') %>: <%= l(reserve.expired_at, format: :short) -%>
     </td>
     <td>
-      <%= i18n_state(reserve.state) -%>
+      <%= i18n_state(reserve.current_state) -%>
       <% if reserve.item %>
         <br />
         (<%= link_to reserve.item.item_identifier, reserve.item %>)
