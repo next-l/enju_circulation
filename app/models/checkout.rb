@@ -29,7 +29,7 @@ class Checkout < ActiveRecord::Base
       user.try(:username)
     end
     string :user_number do
-      user.profile.try(:user_number)
+      user.try(:profile).try(:user_number)
     end
     string :item_identifier do
       item.try(:item_identifier)

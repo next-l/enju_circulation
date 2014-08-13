@@ -25,9 +25,9 @@ class Reserve < ActiveRecord::Base
   scope :not_sent_cancel_notice_to_library, where(:state => 'canceled', :expiration_notice_to_library => false)
 
   belongs_to :user #, :validate => true
-  belongs_to :manifestation #, :validate => true
+  belongs_to :manifestation, touch: true #, :validate => true
   belongs_to :librarian, :class_name => 'User' #, :validate => true
-  belongs_to :item #, :validate => true
+  belongs_to :item, touch: true #, :validate => true
   belongs_to :request_status_type
 
   validates_associated :user, :librarian, :request_status_type
@@ -80,12 +80,6 @@ class Reserve < ActiveRecord::Base
     before_transition [:pending ,:requested, :retained, :postponed] => :canceled, :do => :cancel
     before_transition [:pending, :requested, :retained, :postponed] => :expired, :do => :expire
     before_transition :retained => :completed, :do => :checkout
-    after_transition any => any do |reserve, transition|
-      if Rails.env == 'production'
-        ExpireFragmentCache.expire_fragment_cache(reserve.manifestation)
-      end
-    end
-
     after_transition any => [:requested, :canceled, :retained, :postponed] do |reserve, transition|
       reserve.send_message
     end

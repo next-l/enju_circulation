@@ -5,7 +5,6 @@ class CheckoutsController < ApplicationController
   before_filter :get_user, :only => [:index, :remove_all]
   before_filter :get_item, :only => :index
   after_filter :convert_charset, :only => :index
-  cache_sweeper :circulation_sweeper, :only => [:create, :update, :destroy]
 
   # GET /checkouts
   # GET /checkouts.json
