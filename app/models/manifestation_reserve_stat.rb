@@ -5,7 +5,7 @@ class ManifestationReserveStat < ActiveRecord::Base
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_manifestations
-  has_many :manifestations, :through => :reserve_stat_has_manifestations
+  has_many :manifestations, through: :reserve_stat_has_manifestations
   belongs_to :user
 
   paginates_per 10

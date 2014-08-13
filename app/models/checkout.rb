@@ -1,6 +1,6 @@
 class Checkout < ActiveRecord::Base
   attr_accessible :due_date
-  default_scope :order => 'checkouts.id DESC'
+  default_scope order: 'checkouts.id DESC'
   scope :not_returned, where(:checkin_id => nil)
   scope :returned, where('checkin_id IS NOT NULL')
   scope :overdue, lambda {|date| {:conditions => ['checkin_id IS NULL AND due_date < ?', date]}}
@@ -12,16 +12,16 @@ class Checkout < ActiveRecord::Base
   delegate :username, :user_number, :to => :user, :prefix => true
   belongs_to :item
   belongs_to :checkin
-  belongs_to :librarian, :class_name => 'User'
+  belongs_to :librarian, class_name: 'User'
   belongs_to :basket
 
   validates_associated :user, :item, :librarian, :checkin #, :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   #validates_presence_of :user, :item, :basket
   validates_presence_of :item_id, :basket_id, :due_date
-  validates_uniqueness_of :item_id, :scope => [:basket_id, :user_id]
-  validate :is_not_checked?, :on => :create
-  validate :renewable?, :on => :update
+  validates_uniqueness_of :item_id, scope: [:basket_id, :user_id]
+  validate :is_not_checked?, on: :create
+  validate :renewable?, on: :update
   validates_date :due_date
 
   searchable do
@@ -49,7 +49,7 @@ class Checkout < ActiveRecord::Base
   paginates_per 10
 
   def is_not_checked?
-    checkout = Checkout.not_returned.where(:item_id => item_id)
+    checkout = Checkout.not_returned.where(item_id: item_id)
     unless checkout.empty?
       errors[:base] << I18n.t('activerecord.errors.messages.checkin.already_checked_out')
     end
@@ -115,7 +115,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    completed(start_date, end_date).where(:item_id => manifestation.items.pluck('items.id')).count
+    completed(start_date, end_date).where(item_id: manifestation.items.pluck('items.id')).count
   end
 
   def self.send_due_date_notification

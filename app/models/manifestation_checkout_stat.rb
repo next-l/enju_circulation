@@ -5,7 +5,7 @@ class ManifestationCheckoutStat < ActiveRecord::Base
   default_scope {order('manifestation_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_manifestations
-  has_many :manifestations, :through => :checkout_stat_has_manifestations
+  has_many :manifestations, through: :checkout_stat_has_manifestations
   belongs_to :user
 
   paginates_per 10

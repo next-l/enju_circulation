@@ -7,20 +7,20 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   scope :available_for_item, lambda{|item| where(:checkout_type_id => item.checkout_type.id)}
   scope :available_for_carrier_type, lambda{|carrier_type| {:include => {:checkout_type => :carrier_types}, :conditions => ['carrier_types.id = ?', carrier_type.id]}}
 
-  belongs_to :user_group, :validate => true
-  belongs_to :checkout_type, :validate => true
+  belongs_to :user_group, validate: true
+  belongs_to :checkout_type, validate: true
 
   validates_presence_of :user_group, :checkout_type
   validates_associated :user_group, :checkout_type
-  validates_uniqueness_of :checkout_type_id, :scope => :user_group_id
+  validates_uniqueness_of :checkout_type_id, scope: :user_group_id
   after_create :create_lending_policy
   after_update :update_lending_policy
 
-  acts_as_list :scope => :user_group_id
+  acts_as_list scope: :user_group_id
 
   def create_lending_policy
     self.checkout_type.items.find_each do |item|
-      policy = LendingPolicy.where(:item_id => item.id, :user_group_id => user_group_id).select(:id).first
+      policy = LendingPolicy.where(item_id: item.id, :user_group_id => user_group_id).select(:id).first
       unless policy
         sql = ['INSERT INTO lending_policies (item_id, user_group_id, loan_period, renewal, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)', item.id, user_group_id, checkout_period, checkout_renewal_limit, Time.zone.now, Time.zone.now]
         ActiveRecord::Base.connection.execute(

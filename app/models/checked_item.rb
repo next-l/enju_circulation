@@ -1,18 +1,18 @@
 class CheckedItem < ActiveRecord::Base
   attr_accessible :item_identifier, :ignore_restriction, :due_date_string
-  belongs_to :item #, :validate => true
-  belongs_to :basket #, :validate => true
-  belongs_to :librarian, :class_name => 'User' #, :validate => true
+  belongs_to :item #, validate: true
+  belongs_to :basket #, validate: true
+  belongs_to :librarian, class_name: 'User' #, validate: true
 
-  validates_associated :item, :basket, :on => :update
-  validates_presence_of :item, :basket, :due_date, :on => :update
-  validates_uniqueness_of :item_id, :scope => :basket_id
-  validate :available_for_checkout?, :on => :create
-  validates :due_date_string, :format => {:with => /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, :allow_blank => true
+  validates_associated :item, :basket, on: :update
+  validates_presence_of :item, :basket, :due_date, on: :update
+  validates_uniqueness_of :item_id, scope: :basket_id
+  validate :available_for_checkout?, on: :create
+  validates :due_date_string, :format => {:with => /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
   validate :check_due_date
  
   before_validation :set_item
-  before_validation :set_due_date, :on => :create
+  before_validation :set_due_date, on: :create
   normalize_attributes :item_identifier
 
   attr_protected :user_id
@@ -32,7 +32,7 @@ class CheckedItem < ActiveRecord::Base
 
     unless item.available_for_checkout?
       if item.circulation_status.name == 'Missing'
-        item.circulation_status = CirculationStatus.where(:name => 'Available On Shelf').first
+        item.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
         item.save
         set_due_date
       else

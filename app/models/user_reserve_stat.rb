@@ -5,7 +5,7 @@ class UserReserveStat < ActiveRecord::Base
   default_scope {order('user_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_users
-  has_many :users, :through => :reserve_stat_has_users
+  has_many :users, through: :reserve_stat_has_users
   belongs_to :user
 
   paginates_per 10

@@ -1,11 +1,11 @@
 class ReserveStatHasManifestation < ActiveRecord::Base
   attr_accessible
   attr_accessible :manifestation_reserve_stat_id, :manifestation_id,
-    :as => :admin
+    as: :admin
   belongs_to :manifestation_reserve_stat
   belongs_to :manifestation
 
-  validates_uniqueness_of :manifestation_id, :scope => :manifestation_reserve_stat_id
+  validates_uniqueness_of :manifestation_id, scope: :manifestation_reserve_stat_id
   validates_presence_of :manifestation_reserve_stat_id, :manifestation_id
 
   paginates_per 10

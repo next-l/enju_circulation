@@ -87,7 +87,6 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   end
 
   create_table "agents", :force => true do |t|
-    t.integer  "user_id"
     t.string   "last_name"
     t.string   "middle_name"
     t.string   "first_name"
@@ -140,7 +139,6 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   add_index "agents", ["full_name"], :name => "index_agents_on_full_name"
   add_index "agents", ["language_id"], :name => "index_agents_on_language_id"
   add_index "agents", ["required_role_id"], :name => "index_agents_on_required_role_id"
-  add_index "agents", ["user_id"], :name => "index_agents_on_user_id", :unique => true
 
   create_table "baskets", :force => true do |t|
     t.integer  "user_id"

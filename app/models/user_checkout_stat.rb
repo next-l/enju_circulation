@@ -5,7 +5,7 @@ class UserCheckoutStat < ActiveRecord::Base
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_users
-  has_many :users, :through => :checkout_stat_has_users
+  has_many :users, through: :checkout_stat_has_users
   belongs_to :user
 
   paginates_per 10

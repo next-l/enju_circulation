@@ -1,15 +1,15 @@
 class Checkin < ActiveRecord::Base
   attr_accessible :item_identifier
-  default_scope :order => 'checkins.id DESC'
+  default_scope order: 'checkins.id DESC'
   scope :on, lambda {|date| {:conditions => ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
   has_one :checkout
   belongs_to :item
-  belongs_to :librarian, :class_name => 'User'
+  belongs_to :librarian, class_name: 'User'
   belongs_to :basket
 
-  validates_uniqueness_of :item_id, :scope => :basket_id
+  validates_uniqueness_of :item_id, scope: :basket_id
   validates_presence_of :item_id, :basket_id
-  validate :available_for_checkin?, :on => :create
+  validate :available_for_checkin?, on: :create
   before_validation :set_item
 
   attr_accessor :item_identifier
@@ -34,7 +34,7 @@ class Checkin < ActiveRecord::Base
   def item_checkin(current_user)
     message = ''
     Checkin.transaction do
-      checkouts = Checkout.not_returned.where(:item_id => item_id).select(
+      checkouts = Checkout.not_returned.where(item_id: item_id).select(
         [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count]
       )
       item.checkin!
@@ -45,7 +45,7 @@ class Checkin < ActiveRecord::Base
         unless checkout.user.profile.try(:save_checkout_history)
           checkout.user = nil
         end
-        checkout.save(:validate => false)
+        checkout.save(validate: false)
         unless checkout.item.shelf.library == current_user.profile.library
           message << I18n.t('checkin.other_library_item')
         end
@@ -67,7 +67,7 @@ class Checkin < ActiveRecord::Base
 
       # メールとメッセージの送信
       #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
-      #Message.create(:sender => current_user, :receiver => item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => item.manifestation.next_reservation.user)
+      #Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => item.manifestation.next_reservation.user)
     end
     if message.present?
       message
