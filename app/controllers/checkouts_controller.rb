@@ -1,10 +1,10 @@
 class CheckoutsController < ApplicationController
-  before_filter :store_location, :only => :index
-  load_and_authorize_resource :except => [:index, :remove_all]
-  authorize_resource :only => [:index, :remove_all]
-  before_filter :get_user, :only => [:index, :remove_all]
-  before_filter :get_item, :only => :index
-  after_filter :convert_charset, :only => :index
+  before_filter :store_location, only: :index
+  load_and_authorize_resource except: [:index, :remove_all]
+  authorize_resource only: [:index, :remove_all]
+  before_filter :get_user, only: [:index, :remove_all]
+  before_filter :get_item, only: :index
+  after_filter :convert_charset, only: :index
 
   # GET /checkouts
   # GET /checkouts.json
@@ -39,7 +39,7 @@ class CheckoutsController < ApplicationController
           end
         else
           if current_user == user
-            redirect_to checkouts_url(:format => params[:format])
+            redirect_to checkouts_url(format: params[:format])
             return
           else
             access_denied
@@ -108,8 +108,8 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checkouts }
-      format.rss  { render :layout => false }
+      format.json { render json: @checkouts }
+      format.rss  { render layout: false }
       format.ics
       format.txt
       format.atom
@@ -121,7 +121,7 @@ class CheckoutsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @checkout }
+      format.json { render json: @checkout }
     end
   end
 
@@ -139,11 +139,11 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       if @checkout.save
-        format.html { redirect_to @checkout, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout')) }
+        format.html { redirect_to @checkout, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checkout.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checkout.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -157,7 +157,7 @@ class CheckoutsController < ApplicationController
     @checkout.save!
 
     respond_to do |format|
-      format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to checkouts_url(user_id: user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end
@@ -173,7 +173,7 @@ class CheckoutsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to checkouts_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to checkouts_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end

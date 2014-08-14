@@ -1,6 +1,6 @@
 class UserCheckoutStatsController < ApplicationController
   load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_filter :convert_charset, only: :show
 
   # GET /user_checkout_stats
   # GET /user_checkout_stats.json
@@ -9,7 +9,7 @@ class UserCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @user_checkout_stats }
+      format.json { render json: @user_checkout_stats }
     end
   end
 
@@ -25,7 +25,7 @@ class UserCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @user_checkout_stat }
+      format.json { render json: @user_checkout_stat }
       format.txt
     end
   end
@@ -37,7 +37,7 @@ class UserCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @user_checkout_stat }
+      format.json { render json: @user_checkout_stat }
     end
   end
 
@@ -55,10 +55,10 @@ class UserCheckoutStatsController < ApplicationController
       if @user_checkout_stat.save
         Resque.enqueue(UserCheckoutStatQueue, @user_checkout_stat.id)
         format.html { redirect_to @user_checkout_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.user_checkout_stat')) }
-        format.json { render :json => @user_checkout_stat, :status => :created, :location => @user_checkout_stat }
+        format.json { render json: @user_checkout_stat, status: :created, location: @user_checkout_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @user_checkout_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @user_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -74,8 +74,8 @@ class UserCheckoutStatsController < ApplicationController
         format.html { redirect_to @user_checkout_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @user_checkout_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @user_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
   end

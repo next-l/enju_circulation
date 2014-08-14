@@ -1,7 +1,7 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
   load_and_authorize_resource
   before_filter :get_checkout_type
-  before_filter :prepare_options, :only => [:new, :edit]
+  before_filter :prepare_options, only: [:new, :edit]
 
   # GET /carrier_type_has_checkout_types
   # GET /carrier_type_has_checkout_types.json
@@ -10,7 +10,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @carrier_type_has_checkout_types }
+      format.json { render json: @carrier_type_has_checkout_types }
     end
   end
 
@@ -19,7 +19,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @carrier_type_has_checkout_type }
+      format.json { render json: @carrier_type_has_checkout_type }
     end
   end
 
@@ -32,7 +32,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @carrier_type_has_checkout_type }
+      format.json { render json: @carrier_type_has_checkout_type }
     end
   end
 
@@ -47,13 +47,13 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       if @carrier_type_has_checkout_type.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.carrier_type_has_checkout_type'))
+        flash[:notice] = t('controller.successfully_created', model: t('activerecord.models.carrier_type_has_checkout_type'))
         format.html { redirect_to @carrier_type_has_checkout_type }
-        format.json { render :json => @carrier_type_has_checkout_type, :status => :created, :location => @carrier_type_has_checkout_type }
+        format.json { render json: @carrier_type_has_checkout_type, status: :created, location: @carrier_type_has_checkout_type }
       else
         prepare_options
-        format.html { render :action => "new" }
-        format.json { render :json => @carrier_type_has_checkout_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,13 +63,13 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   def update
     respond_to do |format|
       if @carrier_type_has_checkout_type.update_attributes(params[:carrier_type_has_checkout_type])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.carrier_type_has_checkout_type'))
+        flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.carrier_type_has_checkout_type'))
         format.html { redirect_to @carrier_type_has_checkout_type }
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render :action => "edit" }
-        format.json { render :json => @carrier_type_has_checkout_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
   end

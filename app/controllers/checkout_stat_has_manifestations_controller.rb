@@ -8,7 +8,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checkout_stat_has_manifestations }
+      format.json { render json: @checkout_stat_has_manifestations }
     end
   end
 
@@ -17,7 +17,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @checkout_stat_has_manifestation }
+      format.json { render json: @checkout_stat_has_manifestation }
     end
   end
 
@@ -28,7 +28,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @checkout_stat_has_manifestation }
+      format.json { render json: @checkout_stat_has_manifestation }
     end
   end
 
@@ -40,15 +40,15 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # POST /checkout_stat_has_manifestations.json
   def create
     @checkout_stat_has_manifestation = CheckoutStatHasManifestation.new
-    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], :as => :admin)
+    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], as: :admin)
 
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
-        format.json { render :json => @checkout_stat_has_manifestation, :status => :created, :location => @checkout_stat_has_manifestation }
+        format.html { redirect_to @checkout_stat_has_manifestation, notice: t('controller.successfully_created', model: t('activerecord.models.checkout_stat_has_manifestation')) }
+        format.json { render json: @checkout_stat_has_manifestation, status: :created, location: @checkout_stat_has_manifestation }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @checkout_stat_has_manifestation.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @checkout_stat_has_manifestation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,14 +56,14 @@ class CheckoutStatHasManifestationsController < ApplicationController
   # PUT /checkout_stat_has_manifestations/1
   # PUT /checkout_stat_has_manifestations/1.json
   def update
-    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], :as => :admin)
+    @checkout_stat_has_manifestation.assign_attributes(params[:checkout_stat_has_manifestation], as: :admin)
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
+        format.html { redirect_to @checkout_stat_has_manifestation, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout_stat_has_manifestation')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checkout_stat_has_manifestation.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checkout_stat_has_manifestation.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,7 +1,7 @@
 class CheckinsController < ApplicationController
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
-  before_filter :get_basket, :only => [:index, :create]
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :get_basket, only: [:index, :create]
 
   # GET /checkins
   # GET /checkins.json
@@ -14,7 +14,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checkins }
+      format.json { render json: @checkins }
       format.js
     end
   end
@@ -26,7 +26,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @checkin }
+      format.json { render json: @checkin }
     end
   end
 
@@ -46,7 +46,7 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @checkin }
+      format.json { render json: @checkin }
     end
   end
 
@@ -76,13 +76,13 @@ class CheckinsController < ApplicationController
         end
         flash[:message] << message if message
         format.html { redirect_to basket_checkins_url(@checkin.basket) }
-        format.json { render :json => @checkin, :status => :created, :location => @checkin }
-        format.js { redirect_to basket_checkins_url(@basket, :format => :js) }
+        format.json { render json: @checkin, status: :created, location: @checkin }
+        format.js { redirect_to basket_checkins_url(@basket, format: :js) }
       else
         @checkins = @basket.checkins.page(1)
-        format.html { render :action => "new" }
-        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
-        format.js { render :action => "index" }
+        format.html { render action: "new" }
+        format.json { render json: @checkin.errors, status: :unprocessable_entity }
+        format.js { render action: "index" }
       end
     end
   end
@@ -95,11 +95,11 @@ class CheckinsController < ApplicationController
 
     respond_to do |format|
       if @checkin.save
-        format.html { redirect_to @checkin, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkin')) }
+        format.html { redirect_to @checkin, notice: t('controller.successfully_updated', model: t('activerecord.models.checkin')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checkin.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checkin.errors, status: :unprocessable_entity }
       end
     end
   end

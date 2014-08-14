@@ -13,7 +13,7 @@ class ItemHasUseRestrictionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @item_has_use_restrictions }
+      format.json { render json: @item_has_use_restrictions }
     end
   end
 
@@ -22,7 +22,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @item_has_use_restriction }
+      format.json { render json: @item_has_use_restriction }
     end
   end
 
@@ -33,7 +33,7 @@ class ItemHasUseRestrictionsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @item_has_use_restriction }
+      format.json { render json: @item_has_use_restriction }
     end
   end
 
@@ -50,12 +50,12 @@ class ItemHasUseRestrictionsController < ApplicationController
 
     respond_to do |format|
       if @item_has_use_restriction.save
-        format.html { redirect_to @item_has_use_restriction, :notice => t('controller.successfully_created', :model => t('activerecord.models.item_has_use_restriction')) }
-        format.json { render :json => @item_has_use_restriction, :status => :created, :location => @item_has_use_restriction }
+        format.html { redirect_to @item_has_use_restriction, notice: t('controller.successfully_created', model: t('activerecord.models.item_has_use_restriction')) }
+        format.json { render json: @item_has_use_restriction, status: :created, location: @item_has_use_restriction }
       else
         @use_restrictions = UseRestriction.all
-        format.html { render :action => "new" }
-        format.json { render :json => @item_has_use_restriction.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -66,12 +66,12 @@ class ItemHasUseRestrictionsController < ApplicationController
     @item_has_use_restriction.assign_attributes(params[:item_has_use_restriction])
     respond_to do |format|
       if @item_has_use_restriction.save
-        format.html { redirect_to @item_has_use_restriction, :notice => t('controller.successfully_updated', :model => t('activerecord.models.item_has_use_restriction')) }
+        format.html { redirect_to @item_has_use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.item_has_use_restriction')) }
         format.json { head :no_content }
       else
         @use_restrictions = UseRestriction.all
-        format.html { render :action => "edit" }
-        format.json { render :json => @item_has_use_restriction.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end
   end

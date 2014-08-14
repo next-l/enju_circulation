@@ -432,7 +432,7 @@ describe CheckoutsController do
 
       it "redirects to the checkouts list" do
         delete :destroy, :id => @returned_checkout.id
-        response.should redirect_to(user_checkouts_url(@returned_checkout.user))
+        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
       end
     end
 
@@ -450,7 +450,7 @@ describe CheckoutsController do
 
       it "redirects to the checkouts list" do
         delete :destroy, :id => @returned_checkout.id
-        response.should redirect_to(user_checkouts_url(@returned_checkout.user))
+        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
       end
     end
 
@@ -468,7 +468,7 @@ describe CheckoutsController do
 
       it "should destroy my checkout" do
         delete :destroy, :id => 13
-        response.should redirect_to user_checkouts_url(users(:user1))
+        response.should redirect_to checkouts_url(user_id: users(:user1).username)
       end
     end
 

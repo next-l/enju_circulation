@@ -13,12 +13,8 @@ Rails.application.routes.draw do
     resources :checked_items
     resources :checkins
   end
-  resources :users do
-    resources :checkouts, :only => :index do
-      put :remove_all, :on => :collection
-    end
-    resources :reserves, :only => :index
-    resources :baskets, :only => :index
+  resources :checkouts, :only => :index do
+    put :remove_all, :on => :collection
   end
   resources :user_checkout_stats
   resources :user_reserve_stats

@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
-  before_filter :store_location, :only => [:index, :new]
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
-  before_filter :get_user, :only => [:index, :new]
+  before_filter :store_location, only: [:index, :new]
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :get_user, only: [:index, :new]
   before_filter :store_page
   helper_method :get_manifestation
   helper_method :get_item
-  after_filter :convert_charset, :only => :index
+  after_filter :convert_charset, only: :index
 
   # GET /reserves
   # GET /reserves.json
@@ -15,7 +15,7 @@ class ReservesController < ApplicationController
     unless current_user.has_role?('Librarian')
       if @user
         if current_user == @user
-          redirect_to reserves_url(:format => params[:format])
+          redirect_to reserves_url(format: params[:format])
           return
         else
           access_denied; return
@@ -103,8 +103,8 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @reserves }
-      format.rss  { render :layout => false }
+      format.json { render json: @reserves }
+      format.rss  { render layout: false }
       format.atom
       format.txt
     end
@@ -115,7 +115,7 @@ class ReservesController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @reserve }
+      format.json { render json: @reserve }
     end
   end
 
@@ -176,11 +176,11 @@ class ReservesController < ApplicationController
       if @reserve.save
         @reserve.transition_to!(:requested)
 
-        format.html { redirect_to @reserve, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve')) }
-        format.json { render :json => @reserve, :status => :created, :location => reserve_url(@reserve) }
+        format.html { redirect_to @reserve, notice: t('controller.successfully_created', model: t('activerecord.models.reserve')) }
+        format.json { render json: @reserve, status: :created, location: reserve_url(@reserve) }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @reserve.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -189,12 +189,12 @@ class ReservesController < ApplicationController
   # PUT /reserves/1.json
   def update
     if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(params[:reserve], :as => :admin)
+      @reserve.assign_attributes(params[:reserve], as: :admin)
     else
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(params[:reserve], :as => :user_update)
+      @reserve.assign_attributes(params[:reserve], as: :user_update)
     end
 
     if @reserve.valid?
@@ -216,13 +216,13 @@ class ReservesController < ApplicationController
         if @reserve.current_state == 'canceled'
           flash[:notice] = t('reserve.reservation_was_canceled')
         else
-          flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.reserve'))
+          flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.reserve'))
         end
         format.html { redirect_to @reserve }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @reserve.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -243,7 +243,7 @@ class ReservesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to reserves_url, :notice => t('controller.successfully_deleted', :model => t('activerecord.models.reserve')) }
+      format.html { redirect_to reserves_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.reserve')) }
       format.json { head :no_content }
     end
   end

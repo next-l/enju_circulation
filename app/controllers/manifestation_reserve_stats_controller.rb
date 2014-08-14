@@ -1,6 +1,6 @@
 class ManifestationReserveStatsController < ApplicationController
   load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_filter :convert_charset, only: :show
 
   # GET /manifestation_reserve_stats
   # GET /manifestation_reserve_stats.json
@@ -9,7 +9,7 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @manifestation_reserve_stats }
+      format.json { render json: @manifestation_reserve_stats }
     end
   end
 
@@ -25,7 +25,7 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @manifestation_reserve_stat }
+      format.json { render json: @manifestation_reserve_stat }
       format.txt
     end
   end
@@ -37,7 +37,7 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @manifestation_reserve_stat }
+      format.json { render json: @manifestation_reserve_stat }
     end
   end
 
@@ -55,10 +55,10 @@ class ManifestationReserveStatsController < ApplicationController
       if @manifestation_reserve_stat.save
         Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
         format.html { redirect_to @manifestation_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
-        format.json { render :json => @manifestation_reserve_stat, :status => :created, :location => @manifestation_reserve_stat }
+        format.json { render json: @manifestation_reserve_stat, status: :created, location: @manifestation_reserve_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @manifestation_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -74,8 +74,8 @@ class ManifestationReserveStatsController < ApplicationController
         format.html { redirect_to @manifestation_reserve_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @manifestation_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -8,7 +8,7 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @reserve_stat_has_users }
+      format.json { render json: @reserve_stat_has_users }
     end
   end
 
@@ -17,7 +17,7 @@ class ReserveStatHasUsersController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @reserve_stat_has_user }
+      format.json { render json: @reserve_stat_has_user }
     end
   end
 
@@ -28,7 +28,7 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @reserve_stat_has_user }
+      format.json { render json: @reserve_stat_has_user }
     end
   end
 
@@ -40,15 +40,15 @@ class ReserveStatHasUsersController < ApplicationController
   # POST /reserve_stat_has_users.json
   def create
     @reserve_stat_has_user = ReserveStatHasUser.new
-    @reserve_stat_has_user.assign_attributes(params[:reserve_stat_has_user], :as => :admin)
+    @reserve_stat_has_user.assign_attributes(params[:reserve_stat_has_user], as: :admin)
 
     respond_to do |format|
       if @reserve_stat_has_user.save
-        format.html { redirect_to @reserve_stat_has_user, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve_stat_has_user')) }
-        format.json { render :json => @reserve_stat_has_user, :status => :created, :location => @reserve_stat_has_user }
+        format.html { redirect_to @reserve_stat_has_user, notice: t('controller.successfully_created', model: t('activerecord.models.reserve_stat_has_user')) }
+        format.json { render json: @reserve_stat_has_user, status: :created, location: @reserve_stat_has_user }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @reserve_stat_has_user.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @reserve_stat_has_user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,14 +56,14 @@ class ReserveStatHasUsersController < ApplicationController
   # PUT /reserve_stat_has_users/1
   # PUT /reserve_stat_has_users/1.json
   def update
-    @reserve_stat_has_user.assign_attributes(params[:reserve_stat_has_user], :as => :admin)
+    @reserve_stat_has_user.assign_attributes(params[:reserve_stat_has_user], as: :admin)
     respond_to do |format|
       if @reserve_stat_has_user.save
-        format.html { redirect_to @reserve_stat_has_user, :notice => t('controller.successfully_updated', :model => t('activerecord.models.reserve_stat_has_user')) }
+        format.html { redirect_to @reserve_stat_has_user, notice: t('controller.successfully_updated', model: t('activerecord.models.reserve_stat_has_user')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @reserve_stat_has_user.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @reserve_stat_has_user.errors, status: :unprocessable_entity }
       end
     end
   end
