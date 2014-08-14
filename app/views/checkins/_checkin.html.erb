@@ -31,7 +31,7 @@
     </td>
     <td>
       <% if checkin.checkout.try(:user) %>
-        <%= link_to checkin.checkout.user.username, checkin.checkout.user -%>
+        <%= link_to checkin.checkout.user.username, checkin.checkout.user.profile -%>
       <% end %>
     </td>
   </tr>

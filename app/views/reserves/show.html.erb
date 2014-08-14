@@ -12,7 +12,7 @@
 
 <p>
   <strong><%= t('activerecord.models.user') -%>:</strong>
-  <%= link_to @reserve.user.username, @reserve.user -%>
+  <%= link_to @reserve.user.username, @reserve.user.profile -%>
   (<%= @reserve.user.profile.user_number %>)
 </p>
 

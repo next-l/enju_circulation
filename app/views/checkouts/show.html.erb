@@ -15,7 +15,7 @@
   <%- if can? :update, @checkout -%>
     <p>
       <strong><%= t('checkout.current_user') -%></strong><br />
-      <%= link_to @checkout.user_username, @checkout.user if @checkout.user -%>
+      <%= link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile) -%>
     </p>
   <%- end -%>
 </div>

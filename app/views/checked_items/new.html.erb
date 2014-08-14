@@ -12,7 +12,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to @basket.user.username, @basket.user -%></li>
+    <li><%= link_to @basket.user.username, @basket.user.profile -%></li>
   </ul>
   <ul>
     <%- @basket.user.user_group.user_group_has_checkout_types.each do |available_checkout_type| -%>

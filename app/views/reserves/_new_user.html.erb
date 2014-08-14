@@ -22,7 +22,7 @@
 
   <div class="field">
     <%= f.label t('activerecord.models.user') -%>
-    <%= link_to @reserve.user.username, @reserve.user -%>
+    <%= link_to @reserve.user.username, @reserve.user.profile -%>
     (<%= @reserve.user.profile.user_number %>)
     <%= f.hidden_field :user_number, value: @user.profile.user_number -%>
   </div>
