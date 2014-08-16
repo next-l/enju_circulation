@@ -1,4 +1,8 @@
 require 'active_record/fixtures'
+require 'tasks/reserve'
+require 'tasks/circulation_status'
+require 'tasks/use_restriction'
+
 namespace :enju_circulation do
   desc "create initial records for enju_circulation"
   task :setup => :environment do
@@ -30,5 +34,15 @@ namespace :enju_circulation do
   task :send_notification => :environment do
     Checkout.send_due_date_notification
     Checkout.send_overdue_notification
+  end
+
+  desc "upgrade enju_circulation"
+  task :upgrade => :environment do
+    Reserve.transaction do
+      update_reserve
+      update_circulation_status
+      update_use_restriction
+    end
+    puts 'enju_circulation: The upgrade completed successfully.'
   end
 end

@@ -66,7 +66,7 @@ class Checkin < ActiveRecord::Base
 
       # メールとメッセージの送信
       #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
-      #Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, :subject => message_template.title, :body => message_template.body, :recipient => item.manifestation.next_reservation.user)
+      #Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, subject: message_template.title, body: message_template.body, recipient: item.manifestation.next_reservation.user)
     end
     if message.present?
       message

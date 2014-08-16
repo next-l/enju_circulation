@@ -8,7 +8,7 @@ class CheckedItem < ActiveRecord::Base
   validates_presence_of :item, :basket, :due_date, on: :update
   validates_uniqueness_of :item_id, scope: :basket_id
   validate :available_for_checkout?, on: :create
-  validates :due_date_string, :format => {:with => /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
+  validates :due_date_string, format: {with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
   validate :check_due_date
  
   before_validation :set_item
