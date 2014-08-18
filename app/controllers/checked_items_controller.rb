@@ -64,9 +64,9 @@ class CheckedItemsController < ApplicationController
         if @checked_item.item.include_supplements
           flash[:message] << t('item.this_item_include_supplement')
         end
-        format.html { redirect_to(basket_checked_items_url(@basket), notice: t('controller.successfully_created', model: t('activerecord.models.checked_item'))) }
+        format.html { redirect_to(checked_items_url(basket_id: @basket.id), notice: t('controller.successfully_created', model: t('activerecord.models.checked_item'))) }
         format.json { render json: @checked_item, status: :created, location: @checked_item }
-        format.js { redirect_to(basket_checked_items_url(@basket, format: :js)) }
+        format.js { redirect_to(checked_items_url(basket_id: @basket.id, format: :js)) }
       else
         @checked_items = @basket.checked_items.order('created_at DESC').page(1)
         format.html { render action: "index" }
@@ -103,7 +103,7 @@ class CheckedItemsController < ApplicationController
     @checked_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to basket_checked_items_url(@checked_item.basket) }
+      format.html { redirect_to checked_items_url(basket_id: @checked_item.basket_id) }
       format.json { head :no_content }
     end
   end

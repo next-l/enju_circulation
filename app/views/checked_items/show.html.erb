@@ -19,6 +19,6 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <li><%= link_to t('page.edit'), edit_checked_item_path(@checked_item) -%></li>
-    <li><%= link_to t('page.back'), basket_checked_items_path(@checked_item.basket) -%></li>
+    <li><%= link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id) -%></li>
   </ul>
 </div>

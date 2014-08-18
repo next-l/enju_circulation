@@ -10,7 +10,7 @@ class Checkout < ActiveRecord::Base
 
   belongs_to :user
   delegate :username, :user_number, :to => :user, :prefix => true
-  belongs_to :item
+  belongs_to :item, touch: true
   belongs_to :checkin
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket

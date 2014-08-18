@@ -200,13 +200,13 @@ describe CheckinsController do
         describe "When basket_id is specified" do
           it "redirects to the created checkin" do
             post :create, :checkin => @attrs, :basket_id => 9
-            response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
+            response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
 
           it "should checkin the overdue item" do
             post :create, :checkin => {:item_identifier => '00014'}, :basket_id => 9
-            response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
+            response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).checkout.should be_valid
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
@@ -251,14 +251,14 @@ describe CheckinsController do
           flash[:message].to_s.index(I18n.t('item.this_item_is_reserved')).should be_truthy
           assigns(:checkin).item.manifestation.next_reservation.current_state.should eq 'retained'
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
-          response.should redirect_to basket_checkins_url(assigns(:basket))
+          response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
         end
 
         it "should show notification when an item includes supplements" do
           post :create, :checkin => {:item_identifier => '00004'}, :basket_id => 9
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           flash[:message].to_s.index(I18n.t('item.this_item_include_supplement')).should be_truthy
-          response.should redirect_to basket_checkins_url(assigns(:basket))
+          response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
         end
       end
 
@@ -267,7 +267,7 @@ describe CheckinsController do
         post :create, :checkin => {:item_identifier => '00009'}, :basket_id => 9
         assigns(:checkin).should be_valid
         flash[:message].to_s.index(I18n.t('checkin.other_library_item')).should be_truthy
-        response.should redirect_to basket_checkins_url(assigns(:basket))
+        response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
       end
     end
 
