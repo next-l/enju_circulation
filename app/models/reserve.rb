@@ -172,9 +172,9 @@ class Reserve < ActiveRecord::Base
     Reserve.transaction do
       case current_state
       when 'requested'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
+        message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_agent}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # 受付時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.profile.locale)
@@ -183,9 +183,9 @@ class Reserve < ActiveRecord::Base
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # 受付時は即時送信
       when 'canceled'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_canceled_for_patron', user.profile.locale)
+        message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_agent}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # キャンセル時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.profile.locale)
@@ -194,9 +194,9 @@ class Reserve < ActiveRecord::Base
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # キャンセル時は即時送信
       when 'expired'
-        message_template_to_agent = MessageTemplate.localized_template('reservation_expired_for_patron', user.profile.locale)
+        message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_agent}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent)
         reload
