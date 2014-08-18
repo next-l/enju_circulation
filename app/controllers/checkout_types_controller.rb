@@ -6,9 +6,9 @@ class CheckoutTypesController < ApplicationController
   # GET /checkout_types.json
   def index
     if @user_group
-      @checkout_types = @user_group.checkout_types.order('checkout_types.position').page(params[:page])
+      @checkout_types = @user_group.checkout_types.order('checkout_types.position')
     else
-      @checkout_types = CheckoutType.order(:position).page(params[:page])
+      @checkout_types = CheckoutType.order(:position)
     end
 
     respond_to do |format|

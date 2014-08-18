@@ -6,7 +6,11 @@
   <tr>
     <th id="position"></th>
     <th><%= t('activerecord.attributes.use_restriction.name') -%></th>
-    <th><%= t('activerecord.attributes.use_restriction.display_name') -%></th>
+    <th>
+      <%= t('activerecord.attributes.use_restriction.display_name') -%>
+      /
+      <%= t('activerecord.attributes.use_restriction.note') -%>
+    </th>
     <th></th>
   </tr>
 
@@ -17,14 +21,18 @@
         <%= move_position(use_restriction) -%>
       <%- end -%>
     </td>
-    <td><%= link_to use_restriction.name, use_restriction -%></td>
-    <td><%= link_to use_restriction.display_name.localize, use_restriction -%></td>
+    <td><%= use_restriction.name -%></td>
+    <td>
+      <%= link_to use_restriction.display_name.localize, use_restriction -%>
+      <br />
+      <%= use_restriction.note %>
+    </td>
     <td>
       <%- if can? :update, use_restriction -%>
         <%= link_to t('page.edit'), edit_use_restriction_path(use_restriction) -%>
       <% end %>
       <%- if can? :delete, use_restriction -%>
-        <%= link_to t('page.destroy'), use_restriction, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
+        <%= link_to t('page.destroy'), use_restriction_path(use_restriction), data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <%- end -%>
     </td>
   </tr>
@@ -37,7 +45,7 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <%- if can? :create, UseRestriction -%>
-      <li><%= link_to t('page.new', model: t('activerecord.models.use_restriction')), new_use_restriction_path -%></li >
+      <li><%= link_to t('page.new', model: t('activerecord.models.use_restriction')), new_use_restriction_path -%></li>
     <%- end -%>
   </ul>
 </div>

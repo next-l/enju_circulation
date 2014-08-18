@@ -54,7 +54,7 @@
   </ul>
   <ul>
     <% if @user == current_user %>
-      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), method: :put, data: {confirm: t('page.are_you_sure')} %></li>
+      <li><%= link_to t('checkout.remove_all_history'), remove_all_checkouts_path(user_id: current_user.id), method: :put, data: {confirm: t('page.are_you_sure')} %></li>
     <% end %>
   </ul>
 </div>
