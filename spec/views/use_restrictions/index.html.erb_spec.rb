@@ -25,8 +25,8 @@ describe "use_restrictions/index" do
   it "renders a list of use_restrictions" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "Not For Loan".to_s, :count => 2
+    assert_select "tr>td:nth-child(3)", /Not For Loan/
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "MyText".to_s, :count => 0
+    assert_select "tr>td:nth-child(3)", /MyText/
   end
 end

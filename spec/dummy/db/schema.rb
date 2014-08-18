@@ -697,14 +697,12 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
     t.text     "attachment_meta"
     t.integer  "month_of_publication"
     t.boolean  "fulltext_content"
-    t.string   "doi"
     t.boolean  "periodical"
     t.text     "statement_of_responsibility"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
   add_index "manifestations", ["date_of_publication"], :name => "index_manifestations_on_date_of_publication"
-  add_index "manifestations", ["doi"], :name => "index_manifestations_on_doi"
   add_index "manifestations", ["manifestation_identifier"], :name => "index_manifestations_on_manifestation_identifier"
   add_index "manifestations", ["updated_at"], :name => "index_manifestations_on_updated_at"
 
