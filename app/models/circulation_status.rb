@@ -7,8 +7,9 @@ class CirculationStatus < ActiveRecord::Base
   scope :available_for_checkout, where(name: 'Available On Shelf')
   has_many :items
 
-  def set_display_name
-    self.display_name = "#{I18n.locale}: #{name}" if display_name.blank?
+  private
+  def valid_format?
+    true
   end
 end
 
