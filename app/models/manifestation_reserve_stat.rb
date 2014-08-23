@@ -27,7 +27,7 @@ class ManifestationReserveStat < ActiveRecord::Base
       #manifestation.update_attributes({:daily_reserves_count => daily_count, :total_count => manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
-        sql = ['UPDATE reserve_stat_has_manifestations SET reserves_count = ? WHERE manifestation_reserve_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
+        sql = ['UPDATE reserve_stat_has_manifestations SET reserves_count = ? WHERE manifestation_reserve_stat_id = ? AND manifestation_id = ?', daily_count, id, manifestation.id]
         ManifestationReserveStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )

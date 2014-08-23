@@ -31,16 +31,16 @@ class Reserve < ActiveRecord::Base
   belongs_to :request_status_type
 
   validates_associated :user, :librarian, :request_status_type
-  validates :manifestation, :associated => true #, on: :create
+  validates :manifestation, associated: true #, on: :create
   validates_presence_of :user, :request_status_type
-  validates :manifestation, presence: true, :unless => Proc.new{|reserve|
+  validates :manifestation, presence: true, unless: Proc.new{|reserve|
     reserve.completed?
   }
   #validates_uniqueness_of :manifestation_id, scope: :user_id
   validates_date :expired_at, allow_blank: true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, on: :create
-  validates :item_id, presence: true, :if => Proc.new{|reserve|
+  validates :item_id, presence: true, if: Proc.new{|reserve|
     if item_id_changed?
       if reserve.completed? or reserve.retained?
         unless item_id_change[0]
@@ -163,7 +163,7 @@ class Reserve < ActiveRecord::Base
 
   def next_reservation
     if item
-      Reserve.waiting.where(:manifestation_id => item.manifestation.id).readonly(false).first
+      Reserve.waiting.where(manifestation_id: item.manifestation.id).readonly(false).first
     end
   end
 
@@ -317,13 +317,13 @@ class Reserve < ActiveRecord::Base
 
   private
   def do_request
-    self.assign_attributes({:request_status_type => RequestStatusType.where(name: 'In Process').first, item_id: nil, :retained_at => nil}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil}, as: :admin)
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
-    self.assign_attributes({:request_status_type => RequestStatusType.where(name: 'In Process').first, :retained_at => Time.zone.now}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now}, as: :admin)
     Reserve.transaction do
       if item.try(:next_reservation)
         reservation = item.next_reservation
@@ -335,7 +335,7 @@ class Reserve < ActiveRecord::Base
 
   def expire
     Reserve.transaction do
-      self.assign_attributes({:request_status_type => RequestStatusType.where(name: 'Expired').first, :canceled_at => Time.zone.now}, as: :admin)
+      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now}, as: :admin)
       reserve = next_reservation
       if reserve
         reserve.item = item
@@ -349,7 +349,7 @@ class Reserve < ActiveRecord::Base
 
   def cancel
     Reserve.transaction do
-      self.assign_attributes({:request_status_type => RequestStatusType.where(name: 'Cannot Fulfill Request').first, :canceled_at => Time.zone.now}, as: :admin)
+      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now}, as: :admin)
       save!
       reserve = next_reservation
       if reserve
@@ -362,16 +362,16 @@ class Reserve < ActiveRecord::Base
   end
 
   def checkout
-    self.assign_attributes({:request_status_type => RequestStatusType.where(name: 'Available For Pickup').first, :checked_out_at => Time.zone.now}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now}, as: :admin)
     save!
   end
 
   def postpone
     self.assign_attributes({
-      :request_status_type => RequestStatusType.where(name: 'In Process').first,
+      request_status_type: RequestStatusType.where(name: 'In Process').first,
       item_id: nil,
-      :retained_at => nil,
-      :postponed_at => Time.zone.now
+      retained_at: nil,
+      postponed_at: Time.zone.now
     }, as: :admin)
     save!
   end
