@@ -8,7 +8,7 @@ class CirculationStatus < ActiveRecord::Base
   has_many :items
 
   private
-  def valid_format?
+  def valid_name?
     true
   end
 end

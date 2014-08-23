@@ -9,7 +9,7 @@ class UseRestriction < ActiveRecord::Base
   has_many :items, through: :item_has_use_restrictions
 
   private
-  def valid_format?
+  def valid_name?
     true
   end
 end
