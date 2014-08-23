@@ -6,6 +6,6 @@ rvm:
 before_script: "bundle exec rake db:migrate"
 services:
   - redis-server
-gemfile:
-  - gemfiles/rails3_2.gemfile
-  - gemfiles/rails4_1.gemfile
+#gemfile:
+#  - gemfiles/rails3_2.gemfile
+#  - gemfiles/rails4_1.gemfile
