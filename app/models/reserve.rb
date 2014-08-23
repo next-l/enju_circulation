@@ -8,8 +8,8 @@ class Reserve < ActiveRecord::Base
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
     :retained_at, :postponed_at, :force_retaining,
     as: :admin
-  scope :hold, where('item_id IS NOT NULL')
-  scope :not_hold, where(item_id: nil)
+  scope :hold, -> { where('item_id IS NOT NULL') }
+  scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
   scope :retained, -> {in_state(:retained).where('retained_at IS NOT NULL')}
   scope :completed, -> {in_state(:completed).where('checked_out_at IS NOT NULL')}

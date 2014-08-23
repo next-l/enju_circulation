@@ -1,10 +1,10 @@
 class CirculationStatus < ActiveRecord::Base
   attr_accessible :name, :display_name, :note
   include MasterModel
-  validates :name, presence: true, format: {with: /\A[0-9A-Za-z][0-9A-Za-z_\-\s,]*[0-9a-z]\Z/}
+  validates :name, presence: true, format: { with: /\A[0-9A-Za-z][0-9A-Za-z_\-\s,]*[0-9a-z]\Z/ }
 
-  default_scope order: "circulation_statuses.position"
-  scope :available_for_checkout, where(name: 'Available On Shelf')
+  default_scope { order('circulation_statuses.position') }
+  scope :available_for_checkout, -> { where(name: 'Available On Shelf') }
   has_many :items
 
   private

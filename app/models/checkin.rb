@@ -1,6 +1,6 @@
 class Checkin < ActiveRecord::Base
   attr_accessible :item_identifier
-  default_scope order: 'checkins.id DESC'
+  default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| {conditions: ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
   has_one :checkout
   belongs_to :item, touch: true
