@@ -8,4 +8,4 @@ services:
   - redis-server
 gemfile:
   - gemfiles/rails3_2.gemfile
-#  - gemfiles/rails4_1.gemfile
+  - gemfiles/rails4_1.gemfile

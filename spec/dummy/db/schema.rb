@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140811031145) do
+ActiveRecord::Schema.define(:version => 20140823095740) do
 
   create_table "agent_import_file_transitions", :force => true do |t|
     t.string   "to_state"
@@ -50,11 +50,26 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   create_table "agent_import_results", :force => true do |t|
     t.integer  "agent_import_file_id"
     t.integer  "agent_id"
-    t.integer  "user_id"
     t.text     "body"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  create_table "agent_merge_lists", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "agent_merges", :force => true do |t|
+    t.integer  "agent_id",            :null => false
+    t.integer  "agent_merge_list_id", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "agent_merges", ["agent_id"], :name => "index_agent_merges_on_agent_id"
+  add_index "agent_merges", ["agent_merge_list_id"], :name => "index_agent_merges_on_agent_merge_list_id"
 
   create_table "agent_relationship_types", :force => true do |t|
     t.string   "name",         :null => false
@@ -656,7 +671,6 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
     t.string   "access_address"
     t.integer  "language_id",                     :default => 1,     :null => false
     t.integer  "carrier_type_id",                 :default => 1,     :null => false
-    t.integer  "extent_id",                       :default => 1,     :null => false
     t.integer  "start_page"
     t.integer  "end_page"
     t.integer  "height"
@@ -697,8 +711,11 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
     t.text     "attachment_meta"
     t.integer  "month_of_publication"
     t.boolean  "fulltext_content"
-    t.boolean  "periodical"
+    t.boolean  "serial"
     t.text     "statement_of_responsibility"
+    t.text     "publication_place"
+    t.text     "extent"
+    t.text     "dimensions"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
@@ -1015,6 +1032,7 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
     t.text     "body"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
+    t.text     "error_message"
   end
 
   add_index "resource_import_results", ["item_id"], :name => "index_resource_import_results_on_item_id"
@@ -1055,7 +1073,7 @@ ActiveRecord::Schema.define(:version => 20140811031145) do
   end
 
   add_index "series_statement_merges", ["series_statement_id"], :name => "index_series_statement_merges_on_series_statement_id"
-  add_index "series_statement_merges", ["series_statement_merge_list_id"], :name => "index_series_statement_merges_on_series_statement_merge_list_id"
+  add_index "series_statement_merges", ["series_statement_merge_list_id"], :name => "index_series_statement_merges_on_list_id"
 
   create_table "series_statements", :force => true do |t|
     t.text     "original_title"
