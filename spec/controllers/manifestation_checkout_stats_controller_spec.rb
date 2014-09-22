@@ -13,7 +13,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
-        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.all)
+        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
-        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.all)
+        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.page(1))
       end
     end
 
@@ -31,14 +31,14 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns all manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
-        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.all)
+        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.page(1))
       end
     end
 
     describe "When not logged in" do
       it "should not assign manifestation_checkout_stats as @manifestation_checkout_stats" do
         get :index
-        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.all)
+        assigns(:manifestation_checkout_stats).should eq(ManifestationCheckoutStat.page(1))
       end
     end
   end

@@ -19,7 +19,7 @@ describe CirculationStatusesController do
 
       it "assigns all circulation_statuses as @circulation_statuses" do
         get :index
-        assigns(:circulation_statuses).should eq(CirculationStatus.all)
+        assigns(:circulation_statuses).should eq(CirculationStatus.order(:position))
       end
     end
 
@@ -28,7 +28,7 @@ describe CirculationStatusesController do
 
       it "assigns all circulation_statuses as @circulation_statuses" do
         get :index
-        assigns(:circulation_statuses).should eq(CirculationStatus.all)
+        assigns(:circulation_statuses).should eq(CirculationStatus.order(:position))
       end
     end
 
@@ -37,14 +37,14 @@ describe CirculationStatusesController do
 
       it "assigns all circulation_statuses as @circulation_statuses" do
         get :index
-        assigns(:circulation_statuses).should eq(CirculationStatus.all)
+        assigns(:circulation_statuses).should eq(CirculationStatus.order(:position))
       end
     end
 
     describe "When not logged in" do
       it "assigns all circulation_statuses as @circulation_statuses" do
         get :index
-        assigns(:circulation_statuses).should eq(CirculationStatus.all)
+        assigns(:circulation_statuses).should eq(CirculationStatus.order(:position))
       end
     end
   end

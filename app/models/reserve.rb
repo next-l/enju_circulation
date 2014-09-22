@@ -44,18 +44,18 @@ class Reserve < ActiveRecord::Base
     if item_id_changed?
       if reserve.completed? or reserve.retained?
         unless item_id_change[0]
-          return false
+          false
         else
           unless item_id_change[1]
-            return false
+            false
           else
-            return true
+            true
           end
         end
       end
     else
       if reserve.retained?
-        return true
+        true
       end
     end
   }

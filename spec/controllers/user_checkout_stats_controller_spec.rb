@@ -13,7 +13,7 @@ describe UserCheckoutStatsController do
 
       it "assigns all user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.all)
+        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
       end
     end
 
@@ -22,7 +22,7 @@ describe UserCheckoutStatsController do
 
       it "assigns all user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.all)
+        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
       end
     end
 
@@ -31,14 +31,14 @@ describe UserCheckoutStatsController do
 
       it "assigns all user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.all)
+        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
       end
     end
 
     describe "When not logged in" do
       it "should not assign user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.all)
+        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
       end
     end
   end

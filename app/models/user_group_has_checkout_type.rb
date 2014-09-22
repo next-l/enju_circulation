@@ -5,7 +5,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
     :set_due_date_before_closing_day, :fixed_due_date, :note, :position,
     :user_group, :checkout_type
   scope :available_for_item, lambda{|item| where(:checkout_type_id => item.checkout_type.id)}
-  scope :available_for_carrier_type, lambda{|carrier_type| {:include => {:checkout_type => :carrier_types}, conditions: ['carrier_types.id = ?', carrier_type.id]}}
+  scope :available_for_carrier_type, lambda{|carrier_type| includes(:checkout_type => :carrier_types).where('carrier_types.id' => carrier_type.id)}
 
   belongs_to :user_group, validate: true
   belongs_to :checkout_type, validate: true
