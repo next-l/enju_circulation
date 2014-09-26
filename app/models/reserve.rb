@@ -17,7 +17,7 @@ class Reserve < ActiveRecord::Base
   scope :postponed, -> {in_state(:postponed).where('postponed_at IS NOT NULL')}
   scope :will_expire_retained, lambda {|datetime| in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :will_expire_pending, lambda {|datetime| in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
-  scope :created, lambda {|start_date, end_date| {conditions: ['created_at >= ? AND created_at < ?', start_date, end_date]}}
+  scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => false)}
   scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => false)}
   scope :sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => true)}

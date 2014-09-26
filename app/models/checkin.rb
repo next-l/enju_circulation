@@ -1,7 +1,7 @@
 class Checkin < ActiveRecord::Base
   attr_accessible :item_identifier
   default_scope { order('checkins.id DESC') }
-  scope :on, lambda {|date| {conditions: ['created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day]}}
+  scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
   has_one :checkout
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
@@ -35,9 +35,11 @@ class Checkin < ActiveRecord::Base
     message = ''
     Checkin.transaction do
       item.checkin!
-      Checkout.not_returned.where(item_id: item_id).select(
-        [:id, :item_id, :user_id, :basket_id, :due_date, :lock_version, :created_at, :checkout_renewal_count]
-      ).each do |checkout|
+      Checkout.not_returned.where(item_id: item_id).select([
+        :id, :item_id, :user_id, :librarian_id,
+        :basket_id, :due_date, :lock_version, :created_at,
+        :checkout_renewal_count
+      ]).each do |checkout|
         # TODO: ILL時の処理
         checkout.checkin = self
         checkout.operator = current_user
