@@ -22,6 +22,9 @@ class ManifestationCheckoutStatsController < ApplicationController
       per_page = CheckoutStatHasManifestation.default_per_page
     end
     @stats = @manifestation_checkout_stat.checkout_stat_has_manifestations.order('checkouts_count DESC, manifestation_id').page(params[:page]).per(per_page)
+    @breakdown = CheckoutStatHasManifestation.joins(:manifestation).where(
+      manifestation_checkout_stat_id: @manifestation_checkout_stat.id
+    ).group(:carrier_type_id).sum(:checkouts_count)
 
     respond_to do |format|
       format.html # show.html.erb
