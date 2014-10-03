@@ -66,7 +66,7 @@ ja:
         checkout_limit: 貸出数の上限
         checkout_period: 貸出期間
         checkout_renewal_limit: 貸出更新回数の上限
-        reservation_limit: 予約冊数の上限
+        reservation_limit: 予約数の上限
         reservation_expired_period: 予約の期限切れまでの期間
         set_due_date_before_closing_day: 返却日を閉館日の前日にする
         fixed_due_date: 固定貸出期限
