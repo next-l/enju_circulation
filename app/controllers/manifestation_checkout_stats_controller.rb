@@ -28,6 +28,13 @@ class ManifestationCheckoutStatsController < ApplicationController
     ).joins(item: [:manifestation]).group(:manifestation_id).merge(
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
     ).order('count_id DESC').page(params[:page])
+    @breakdown = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
+      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+    ).order(:carrier_type_id).count(:id) %>
 
     respond_to do |format|
       format.html # show.html.erb
