@@ -45,7 +45,7 @@
               Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
             ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
               Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-            ).merge(Shelf.where(id: shelf.id)).order(:carrier_type_id).count(:id) %>
+            ).merge(Shelf.where(id: shelf.id)).order('manifestations.carrier_type_id').count(:id) %>
           <% CarrierType.order(:position).each do |carrier_type| %>
             <td>
               <% results.each do |carrier_type_id, count| %>
