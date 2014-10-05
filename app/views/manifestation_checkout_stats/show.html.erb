@@ -36,7 +36,7 @@
           <th><%= carrier_type.display_name.localize %></th>
         <% end %>
       </tr>
-      <% Shelf.all.each do |shelf| %>
+      <% Shelf.order(:library_id, :position).each do |shelf| %>
         <tr>
           <td><strong><%= shelf.display_name.localize %></strong></td>
           <% results = Checkout.where(
@@ -59,8 +59,12 @@
       <% end %>
       <tr>
         <td></td>
-        <% @breakdown.each do |carrier_type_id, count| %>
-          <td><%= count %></td>
+        <% CarrierType.order(:position).each do |carrier_type| %>
+          <td>
+            <% @breakdown.each do |carrier_type_id, count| %>
+              <%= count %>
+            <% end %>
+          </td>
         <% end %>
       </tr>
     </table>
