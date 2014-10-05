@@ -56,7 +56,7 @@
         </tr>
       <% end %>
       <tr>
-        <td><%= t('page.total') %></td>
+        <td><strong><%= t('page.total') %></strong></td>
         <% CarrierType.order(:position).each do |carrier_type| %>
           <td>
             <% @breakdown.each do |carrier_type_id, count| %>
