@@ -195,3 +195,5 @@ en:
   statistic:
     successfully_created: "%{model} task was created successfully. When the task is completed, its status on the list will be updated to 'completed' and you can check the results by following the 'show' link."
     breakdown: Brakedown
+    by_carrier_type: By carrier type
+    by_manifestation: By manifestation

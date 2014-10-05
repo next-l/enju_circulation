@@ -1,6 +1,5 @@
 class Checkout < ActiveRecord::Base
   attr_accessible :due_date
-  default_scope { order('checkouts.id DESC') }
   scope :not_returned, -> { where(checkin_id: nil) }
   scope :returned, -> { where('checkin_id IS NOT NULL') }
   scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
@@ -9,7 +8,7 @@ class Checkout < ActiveRecord::Base
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
   belongs_to :user
-  delegate :username, :user_number, :to => :user, :prefix => true
+  delegate :username, :user_number, to: :user, prefix: true
   belongs_to :item, touch: true
   belongs_to :checkin
   belongs_to :librarian, class_name: 'User'
@@ -107,7 +106,7 @@ class Checkout < ActiveRecord::Base
     return nil unless user
     if item
       if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
-        new_due_date = Time.zone.now.advance(:days => item.checkout_status(user).checkout_period).beginning_of_day
+        new_due_date = Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day
       else
         new_due_date = due_date
       end
@@ -115,7 +114,14 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    completed(start_date, end_date).where(item_id: manifestation.items.pluck('items.id')).count
+    self.where(
+      self.arel_table[:created_at].gteq start_date
+    ).where(
+      self.arel_table[:created_at].lt end_date
+    )
+    .where(
+      item_id: manifestation.items.pluck('items.id')
+    ).count
   end
 
   def self.send_due_date_notification
@@ -146,11 +152,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.remove_all_history(user)
-    user.checkouts.returned.update_all(:user_id => nil)
-  end
-
-  def self.calculate_item
-    joins(item: :shelf).group(:library_id).count(:id)
+    user.checkouts.returned.update_all(user_id: nil)
   end
 end
 
