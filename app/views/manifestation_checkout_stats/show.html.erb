@@ -62,7 +62,7 @@
         <% CarrierType.order(:position).each do |carrier_type| %>
           <td>
             <% @breakdown.each do |carrier_type_id, count| %>
-              <%= count %>
+              <%= count if carrier_type.id.to_s == carrer_type_id %>
             <% end %>
           </td>
         <% end %>
