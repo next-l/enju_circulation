@@ -59,7 +59,7 @@
       <% end %>
       <tr>
         <td></td>
-        <% breakdown.each do |carrier_type_id, count| %>
+        <% @breakdown.each do |carrier_type_id, count| %>
           <td><%= CarrierType.find(carrier_type_id).display_name.localize %></td>
           <td><%= count %></td>
         <% end %>
