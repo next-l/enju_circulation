@@ -44,7 +44,7 @@ class Checkin < ActiveRecord::Base
         checkout.checkin = self
         checkout.operator = current_user
         unless checkout.user.profile.try(:save_checkout_history)
-          checkout.user = nil
+          checkout.update_attribute(:user_id, nil)
         end
         checkout.save(validate: false)
         unless checkout.item.shelf.library == current_user.profile.library
