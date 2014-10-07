@@ -102,13 +102,13 @@ en:
         note: Note
         state: State
       checkout_stat_has_user:
-        checkouts_count: Checkout count
+        checkouts_count: count by user
       checkout_stat_has_manifestation:
-        checkouts_count: Checkout count
+        checkouts_count: count by manifestation
       reserve_stat_has_user:
-        reserves_count: Reserve count
+        reserves_count: count by user
       reserve_stat_has_manifestation:
-        reserves_count: Reserve count
+        reserves_count: count by manifestation
       lending_policy:
         loan_period: Loan period
         fixed_due_date: Fixed due date
