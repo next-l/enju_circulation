@@ -7,9 +7,6 @@ module EnjuCirculation
     module ClassMethods
       def enju_circulation_user_model
         include InstanceMethods
-        #attr_accessible :save_checkout_history, :checkout_icalendar_token
-        #attr_accessible :save_checkout_history, :checkout_icalendar_token,
-        #  :as => :admin
 
         has_many :checkouts, :dependent => :nullify
         has_many :reserves, :dependent => :destroy

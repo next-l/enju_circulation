@@ -49,7 +49,6 @@ module EnjuCirculation
             indexes :circulation_status_id, type: 'integer'
           end
         end
-        #attr_accessible :item_has_use_restriction_attributes
         accepts_nested_attributes_for :item_has_use_restriction
 
         after_create :create_lending_policy
