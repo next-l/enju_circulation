@@ -102,13 +102,13 @@ en:
         note: Note
         state: State
       checkout_stat_has_user:
-        checkouts_count: Checkout count
+        checkouts_count: count by user
       checkout_stat_has_manifestation:
-        checkouts_count: Checkout count
+        checkouts_count: count by manifestation
       reserve_stat_has_user:
-        reserves_count: Reserve count
+        reserves_count: count by user
       reserve_stat_has_manifestation:
-        reserves_count: Reserve count
+        reserves_count: count by manifestation
       lending_policy:
         loan_period: Loan period
         fixed_due_date: Fixed due date
@@ -119,6 +119,9 @@ en:
       item:
         checkout_type: Checkout type
         circulation_status: Circulation status
+      profile:
+        checkout_icalendar_token: Checkout iCalendar token
+        save_checkout_history: Save checkout history
 
   basket:
     this_account_is_suspended: "This account is suspended."
@@ -191,3 +194,6 @@ en:
     start_counting: "Start counting"
   statistic:
     successfully_created: "%{model} task was created successfully. When the task is completed, its status on the list will be updated to 'completed' and you can check the results by following the 'show' link."
+    breakdown: Brakedown
+    by_carrier_type: By carrier type
+    by_manifestation: By manifestation

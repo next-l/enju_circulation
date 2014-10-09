@@ -11,18 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140610123439) do
+ActiveRecord::Schema.define(version: 20140823095740) do
 
-  create_table "accepts", force: true do |t|
-    t.integer  "basket_id"
-    t.integer  "item_id"
-    t.integer  "librarian_id"
+  create_table "agent_import_file_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",             default: "{}"
+    t.integer  "sort_key"
+    t.integer  "agent_import_file_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "accepts", ["basket_id"], name: "index_accepts_on_basket_id"
-  add_index "accepts", ["item_id"], name: "index_accepts_on_item_id"
+  add_index "agent_import_file_transitions", ["agent_import_file_id"], name: "index_agent_import_file_transitions_on_agent_import_file_id"
+  add_index "agent_import_file_transitions", ["sort_key", "agent_import_file_id"], name: "index_agent_import_file_transitions_on_sort_key_and_file_id", unique: true
 
   create_table "agent_import_files", force: true do |t|
     t.integer  "parent_id"
@@ -31,7 +32,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "state"
     t.string   "agent_import_file_name"
     t.string   "agent_import_content_type"
     t.integer  "agent_import_file_size"
@@ -41,20 +41,35 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.string   "agent_import_fingerprint"
     t.text     "error_message"
     t.string   "edit_mode"
+    t.string   "user_encoding"
   end
 
   add_index "agent_import_files", ["parent_id"], name: "index_agent_import_files_on_parent_id"
-  add_index "agent_import_files", ["state"], name: "index_agent_import_files_on_state"
   add_index "agent_import_files", ["user_id"], name: "index_agent_import_files_on_user_id"
 
   create_table "agent_import_results", force: true do |t|
     t.integer  "agent_import_file_id"
     t.integer  "agent_id"
-    t.integer  "user_id"
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "agent_merge_lists", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "agent_merges", force: true do |t|
+    t.integer  "agent_id",            null: false
+    t.integer  "agent_merge_list_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "agent_merges", ["agent_id"], name: "index_agent_merges_on_agent_id"
+  add_index "agent_merges", ["agent_merge_list_id"], name: "index_agent_merges_on_agent_merge_list_id"
 
   create_table "agent_relationship_types", force: true do |t|
     t.string   "name",         null: false
@@ -87,7 +102,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   end
 
   create_table "agents", force: true do |t|
-    t.integer  "user_id"
     t.string   "last_name"
     t.string   "middle_name"
     t.string   "first_name"
@@ -127,7 +141,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.text     "note"
     t.integer  "required_role_id",                    default: 1, null: false
     t.integer  "required_score",                      default: 0, null: false
-    t.string   "state"
     t.text     "email"
     t.text     "url"
     t.text     "full_name_alternative_transcription"
@@ -141,7 +154,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "agents", ["full_name"], name: "index_agents_on_full_name"
   add_index "agents", ["language_id"], name: "index_agents_on_language_id"
   add_index "agents", ["required_role_id"], name: "index_agents_on_required_role_id"
-  add_index "agents", ["user_id"], name: "index_agents_on_user_id", unique: true
 
   create_table "baskets", force: true do |t|
     t.integer  "user_id"
@@ -152,29 +164,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   end
 
   add_index "baskets", ["user_id"], name: "index_baskets_on_user_id"
-
-  create_table "bookstores", force: true do |t|
-    t.text     "name",             null: false
-    t.string   "zip_code"
-    t.text     "address"
-    t.text     "note"
-    t.string   "telephone_number"
-    t.string   "fax_number"
-    t.string   "url"
-    t.integer  "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "budget_types", force: true do |t|
-    t.string   "name"
-    t.text     "display_name"
-    t.text     "note"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "carrier_type_has_checkout_types", force: true do |t|
     t.integer  "carrier_type_id",  null: false
@@ -329,6 +318,22 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "creates", ["agent_id"], name: "index_creates_on_agent_id"
   add_index "creates", ["work_id"], name: "index_creates_on_work_id"
 
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0
+    t.integer  "attempts",   default: 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+
   create_table "donates", force: true do |t|
     t.integer  "agent_id",   null: false
     t.integer  "item_id",    null: false
@@ -344,37 +349,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "event_import_files", force: true do |t|
-    t.integer  "parent_id"
-    t.string   "content_type"
-    t.integer  "size"
-    t.integer  "user_id"
-    t.text     "note"
-    t.datetime "executed_at"
-    t.string   "state"
-    t.string   "event_import_file_name"
-    t.string   "event_import_content_type"
-    t.integer  "event_import_file_size"
-    t.datetime "event_import_updated_at"
-    t.string   "edit_mode"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "event_import_fingerprint"
-    t.text     "error_message"
-  end
-
-  add_index "event_import_files", ["parent_id"], name: "index_event_import_files_on_parent_id"
-  add_index "event_import_files", ["state"], name: "index_event_import_files_on_state"
-  add_index "event_import_files", ["user_id"], name: "index_event_import_files_on_user_id"
-
-  create_table "event_import_results", force: true do |t|
-    t.integer  "event_import_file_id"
-    t.integer  "event_id"
-    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -456,9 +430,20 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "identifiers", ["body", "identifier_type_id"], name: "index_identifiers_on_body_and_identifier_type_id"
   add_index "identifiers", ["manifestation_id"], name: "index_identifiers_on_manifestation_id"
 
+  create_table "import_request_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",          default: "{}"
+    t.integer  "sort_key"
+    t.integer  "import_request_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "import_request_transitions", ["import_request_id"], name: "index_import_request_transitions_on_import_request_id"
+  add_index "import_request_transitions", ["sort_key", "import_request_id"], name: "index_import_request_transitions_on_sort_key_and_request_id", unique: true
+
   create_table "import_requests", force: true do |t|
     t.string   "isbn"
-    t.string   "state"
     t.integer  "manifestation_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -492,28 +477,31 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "item_transitions", ["sort_key", "item_id"], name: "index_item_transitions_on_sort_key_and_item_id", unique: true
 
   create_table "items", force: true do |t|
-    t.integer  "manifestation_id"
     t.string   "call_number"
     t.string   "item_identifier"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.integer  "shelf_id",              default: 1,     null: false
-    t.boolean  "include_supplements",   default: false, null: false
+    t.integer  "shelf_id",                default: 1,     null: false
+    t.boolean  "include_supplements",     default: false, null: false
     t.text     "note"
     t.string   "url"
     t.integer  "price"
-    t.integer  "lock_version",          default: 0,     null: false
-    t.integer  "required_role_id",      default: 1,     null: false
-    t.string   "state"
-    t.integer  "required_score",        default: 0,     null: false
+    t.integer  "lock_version",            default: 0,     null: false
+    t.integer  "required_role_id",        default: 1,     null: false
+    t.integer  "required_score",          default: 0,     null: false
     t.datetime "acquired_at"
     t.integer  "bookstore_id"
     t.integer  "budget_type_id"
-    t.integer  "circulation_status_id", default: 5,     null: false
-    t.integer  "checkout_type_id",      default: 1,     null: false
+    t.integer  "circulation_status_id",   default: 5,     null: false
+    t.integer  "checkout_type_id",        default: 1,     null: false
+    t.string   "binding_item_identifier"
+    t.string   "binding_call_number"
+    t.datetime "binded_at"
+    t.integer  "manifestation_id"
   end
 
+  add_index "items", ["binding_item_identifier"], name: "index_items_on_binding_item_identifier"
   add_index "items", ["bookstore_id"], name: "index_items_on_bookstore_id"
   add_index "items", ["checkout_type_id"], name: "index_items_on_checkout_type_id"
   add_index "items", ["circulation_status_id"], name: "index_items_on_circulation_status_id"
@@ -574,29 +562,29 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.text     "opening_hour"
     t.string   "isil"
-    t.float    "latitude"
-    t.float    "longitude"
   end
 
   add_index "libraries", ["library_group_id"], name: "index_libraries_on_library_group_id"
   add_index "libraries", ["name"], name: "index_libraries_on_name", unique: true
 
   create_table "library_groups", force: true do |t|
-    t.string   "name",                                              null: false
+    t.string   "name",                                                           null: false
     t.text     "display_name"
-    t.string   "short_name",                                        null: false
+    t.string   "short_name",                                                     null: false
     t.string   "email"
     t.text     "my_networks"
     t.text     "login_banner"
     t.text     "note"
+    t.integer  "valid_period_for_new_user",   default: 365,                      null: false
+    t.boolean  "post_to_union_catalog",       default: false,                    null: false
     t.integer  "country_id"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "admin_networks"
-    t.string   "url",            default: "http://localhost:3000/"
+    t.boolean  "allow_bookmark_external_url", default: false,                    null: false
+    t.integer  "position"
+    t.string   "url",                         default: "http://localhost:3000/"
   end
 
   add_index "library_groups", ["short_name"], name: "index_library_groups_on_short_name"
@@ -626,14 +614,14 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "manifestation_checkout_stats", ["state"], name: "index_manifestation_checkout_stats_on_state"
+  add_index "manifestation_checkout_stats", ["user_id"], name: "index_manifestation_checkout_stats_on_user_id"
 
   create_table "manifestation_relationship_types", force: true do |t|
     t.string   "name",         null: false
@@ -672,14 +660,14 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "manifestation_reserve_stats", ["state"], name: "index_manifestation_reserve_stats_on_state"
+  add_index "manifestation_reserve_stats", ["user_id"], name: "index_manifestation_reserve_stats_on_user_id"
 
   create_table "manifestations", force: true do |t|
     t.text     "original_title",                                  null: false
@@ -695,7 +683,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.string   "access_address"
     t.integer  "language_id",                     default: 1,     null: false
     t.integer  "carrier_type_id",                 default: 1,     null: false
-    t.integer  "extent_id",                       default: 1,     null: false
     t.integer  "start_page"
     t.integer  "end_page"
     t.integer  "height"
@@ -711,7 +698,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.boolean  "repository_content",              default: false, null: false
     t.integer  "lock_version",                    default: 0,     null: false
     t.integer  "required_role_id",                default: 1,     null: false
-    t.string   "state"
     t.integer  "required_score",                  default: 0,     null: false
     t.integer  "frequency_id",                    default: 1,     null: false
     t.boolean  "subscription_master",             default: false, null: false
@@ -737,14 +723,15 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.text     "attachment_meta"
     t.integer  "month_of_publication"
     t.boolean  "fulltext_content"
-    t.string   "doi"
-    t.boolean  "periodical"
+    t.boolean  "serial"
     t.text     "statement_of_responsibility"
+    t.text     "publication_place"
+    t.text     "extent"
+    t.text     "dimensions"
   end
 
   add_index "manifestations", ["access_address"], name: "index_manifestations_on_access_address"
   add_index "manifestations", ["date_of_publication"], name: "index_manifestations_on_date_of_publication"
-  add_index "manifestations", ["doi"], name: "index_manifestations_on_doi"
   add_index "manifestations", ["manifestation_identifier"], name: "index_manifestations_on_manifestation_identifier"
   add_index "manifestations", ["updated_at"], name: "index_manifestations_on_updated_at"
 
@@ -758,10 +745,12 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   end
 
   create_table "message_request_transitions", force: true do |t|
-    t.string  "to_state"
-    t.text    "metadata",           default: "{}"
-    t.integer "sort_key"
-    t.integer "message_request_id"
+    t.string   "to_state"
+    t.text     "metadata",           default: "{}"
+    t.integer  "sort_key"
+    t.integer  "message_request_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "message_request_transitions", ["message_request_id"], name: "index_message_request_transitions_on_message_request_id"
@@ -774,12 +763,9 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "sent_at"
     t.datetime "deleted_at"
     t.text     "body"
-    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "message_requests", ["state"], name: "index_message_requests_on_state"
 
   create_table "message_templates", force: true do |t|
     t.string   "status",                    null: false
@@ -794,10 +780,12 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "message_templates", ["status"], name: "index_message_templates_on_status", unique: true
 
   create_table "message_transitions", force: true do |t|
-    t.string  "to_state"
-    t.text    "metadata",   default: "{}"
-    t.integer "sort_key"
-    t.integer "message_id"
+    t.string   "to_state"
+    t.text     "metadata",   default: "{}"
+    t.integer  "sort_key"
+    t.integer  "message_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "message_transitions", ["message_id"], name: "index_message_transitions_on_message_id"
@@ -810,7 +798,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.string   "subject",            null: false
     t.text     "body"
     t.integer  "message_request_id"
-    t.string   "state"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -834,17 +821,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
 
   add_index "owns", ["agent_id"], name: "index_owns_on_agent_id"
   add_index "owns", ["item_id"], name: "index_owns_on_item_id"
-
-  create_table "participates", force: true do |t|
-    t.integer  "agent_id",   null: false
-    t.integer  "event_id",   null: false
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "participates", ["agent_id"], name: "index_participates_on_agent_id"
-  add_index "participates", ["event_id"], name: "index_participates_on_event_id"
 
   create_table "picture_files", force: true do |t|
     t.integer  "picture_attachable_id"
@@ -885,6 +861,27 @@ ActiveRecord::Schema.define(version: 20140610123439) do
 
   add_index "produces", ["agent_id"], name: "index_produces_on_agent_id"
   add_index "produces", ["manifestation_id"], name: "index_produces_on_manifestation_id"
+
+  create_table "profiles", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "user_group_id"
+    t.integer  "library_id"
+    t.string   "locale"
+    t.string   "user_number"
+    t.text     "full_name"
+    t.text     "note"
+    t.text     "keyword_list"
+    t.integer  "required_role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "checkout_icalendar_token"
+    t.boolean  "save_checkout_history",    default: false, null: false
+    t.datetime "expired_at"
+  end
+
+  add_index "profiles", ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
+  add_index "profiles", ["user_number"], name: "index_profiles_on_user_number"
 
   create_table "realize_types", force: true do |t|
     t.string   "name"
@@ -970,7 +967,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "canceled_at"
     t.datetime "expired_at"
     t.datetime "deleted_at"
-    t.string   "state"
     t.boolean  "expiration_notice_to_patron",  default: false
     t.boolean  "expiration_notice_to_library", default: false
     t.datetime "retained_at"
@@ -981,8 +977,42 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "reserves", ["item_id"], name: "index_reserves_on_item_id"
   add_index "reserves", ["manifestation_id"], name: "index_reserves_on_manifestation_id"
   add_index "reserves", ["request_status_type_id"], name: "index_reserves_on_request_status_type_id"
-  add_index "reserves", ["state"], name: "index_reserves_on_state"
   add_index "reserves", ["user_id"], name: "index_reserves_on_user_id"
+
+  create_table "resource_export_file_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                default: "{}"
+    t.integer  "sort_key"
+    t.integer  "resource_export_file_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "resource_export_file_transitions", ["resource_export_file_id"], name: "index_resource_export_file_transitions_on_file_id"
+  add_index "resource_export_file_transitions", ["sort_key", "resource_export_file_id"], name: "index_resource_export_file_transitions_on_sort_key_and_file_id", unique: true
+
+  create_table "resource_export_files", force: true do |t|
+    t.integer  "user_id"
+    t.string   "resource_export_file_name"
+    t.string   "resource_export_content_type"
+    t.integer  "resource_export_file_size"
+    t.datetime "resource_export_updated_at"
+    t.datetime "executed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resource_import_file_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                default: "{}"
+    t.integer  "sort_key"
+    t.integer  "resource_import_file_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "resource_import_file_transitions", ["resource_import_file_id"], name: "index_resource_import_file_transitions_on_file_id"
+  add_index "resource_import_file_transitions", ["sort_key", "resource_import_file_id"], name: "index_resource_import_file_transitions_on_sort_key_and_file_id", unique: true
 
   create_table "resource_import_files", force: true do |t|
     t.integer  "parent_id"
@@ -991,7 +1021,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "state"
     t.string   "resource_import_file_name"
     t.string   "resource_import_content_type"
     t.integer  "resource_import_file_size"
@@ -1001,10 +1030,11 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.string   "edit_mode"
     t.string   "resource_import_fingerprint"
     t.text     "error_message"
+    t.string   "user_encoding"
+    t.integer  "default_shelf_id"
   end
 
   add_index "resource_import_files", ["parent_id"], name: "index_resource_import_files_on_parent_id"
-  add_index "resource_import_files", ["state"], name: "index_resource_import_files_on_state"
   add_index "resource_import_files", ["user_id"], name: "index_resource_import_files_on_user_id"
 
   create_table "resource_import_results", force: true do |t|
@@ -1014,6 +1044,7 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "error_message"
   end
 
   add_index "resource_import_results", ["item_id"], name: "index_resource_import_results_on_item_id"
@@ -1021,28 +1052,40 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "resource_import_results", ["resource_import_file_id"], name: "index_resource_import_results_on_resource_import_file_id"
 
   create_table "roles", force: true do |t|
-    t.string   "name",                     null: false
-    t.string   "display_name"
+    t.string   "name"
+    t.text     "display_name"
     t.text     "note"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "score",        default: 0, null: false
-    t.integer  "position"
   end
 
-  create_table "search_engines", force: true do |t|
-    t.string   "name",             null: false
-    t.text     "display_name"
-    t.string   "url",              null: false
-    t.text     "base_url",         null: false
-    t.text     "http_method",      null: false
-    t.text     "query_param",      null: false
-    t.text     "additional_param"
-    t.text     "note"
+  create_table "series_has_manifestations", force: true do |t|
+    t.integer  "series_statement_id"
+    t.integer  "manifestation_id"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "series_has_manifestations", ["manifestation_id"], name: "index_series_has_manifestations_on_manifestation_id"
+  add_index "series_has_manifestations", ["series_statement_id"], name: "index_series_has_manifestations_on_series_statement_id"
+
+  create_table "series_statement_merge_lists", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "series_statement_merges", force: true do |t|
+    t.integer  "series_statement_id",            null: false
+    t.integer  "series_statement_merge_list_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "series_statement_merges", ["series_statement_id"], name: "index_series_statement_merges_on_series_statement_id"
+  add_index "series_statement_merges", ["series_statement_merge_list_id"], name: "index_series_statement_merges_on_list_id"
 
   create_table "series_statements", force: true do |t|
     t.text     "original_title"
@@ -1055,6 +1098,8 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.text     "title_transcription"
     t.text     "title_alternative"
     t.string   "series_statement_identifier"
+    t.string   "issn"
+    t.boolean  "periodical"
     t.integer  "manifestation_id"
     t.text     "note"
     t.text     "title_subseries_transcription"
@@ -1070,45 +1115,18 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "series_statements", ["series_statement_identifier"], name: "index_series_statements_on_series_statement_identifier"
 
   create_table "shelves", force: true do |t|
-    t.string   "name",                         null: false
+    t.string   "name",                     null: false
     t.text     "display_name"
     t.text     "note"
-    t.integer  "library_id",   default: 1,     null: false
-    t.integer  "items_count",  default: 0,     null: false
+    t.integer  "library_id",   default: 1, null: false
+    t.integer  "items_count",  default: 0, null: false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.boolean  "closed",       default: false, null: false
   end
 
   add_index "shelves", ["library_id"], name: "index_shelves_on_library_id"
-
-  create_table "subscribes", force: true do |t|
-    t.integer  "subscription_id", null: false
-    t.integer  "work_id",         null: false
-    t.datetime "start_at",        null: false
-    t.datetime "end_at",          null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "subscribes", ["subscription_id"], name: "index_subscribes_on_subscription_id"
-  add_index "subscribes", ["work_id"], name: "index_subscribes_on_work_id"
-
-  create_table "subscriptions", force: true do |t|
-    t.text     "title",                        null: false
-    t.text     "note"
-    t.integer  "user_id"
-    t.integer  "order_list_id"
-    t.datetime "deleted_at"
-    t.integer  "subscribes_count", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "subscriptions", ["order_list_id"], name: "index_subscriptions_on_order_list_id"
-  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
 
   create_table "use_restrictions", force: true do |t|
     t.string   "name",         null: false
@@ -1135,14 +1153,14 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "user_checkout_stats", ["state"], name: "index_user_checkout_stats_on_state"
+  add_index "user_checkout_stats", ["user_id"], name: "index_user_checkout_stats_on_user_id"
 
   create_table "user_group_has_checkout_types", force: true do |t|
     t.integer  "user_group_id",                                   null: false
@@ -1166,6 +1184,7 @@ ActiveRecord::Schema.define(version: 20140610123439) do
 
   create_table "user_groups", force: true do |t|
     t.string   "name"
+    t.text     "string"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
@@ -1186,9 +1205,6 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "updated_at"
   end
 
-  add_index "user_has_roles", ["role_id"], name: "index_user_has_roles_on_role_id"
-  add_index "user_has_roles", ["user_id"], name: "index_user_has_roles_on_user_id"
-
   create_table "user_reserve_stat_transitions", force: true do |t|
     t.string   "to_state"
     t.text     "metadata",             default: "{}"
@@ -1205,14 +1221,14 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
-  add_index "user_reserve_stats", ["state"], name: "index_user_reserve_stats_on_state"
+  add_index "user_reserve_stats", ["user_id"], name: "index_user_reserve_stats_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                    default: "",    null: false
@@ -1230,16 +1246,8 @@ ActiveRecord::Schema.define(version: 20140610123439) do
     t.boolean  "save_checkout_history",    default: false, null: false
     t.string   "checkout_icalendar_token"
     t.string   "username"
-    t.string   "user_number"
-    t.string   "state"
-    t.string   "locale"
     t.datetime "deleted_at"
     t.datetime "expired_at"
-    t.integer  "library_id",               default: 1,     null: false
-    t.integer  "required_role_id",         default: 1,     null: false
-    t.integer  "user_group_id",            default: 1,     null: false
-    t.text     "note"
-    t.text     "keyword_list"
     t.integer  "failed_attempts",          default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
@@ -1250,8 +1258,17 @@ ActiveRecord::Schema.define(version: 20140610123439) do
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-  add_index "users", ["user_group_id"], name: "index_users_on_user_group_id"
-  add_index "users", ["user_number"], name: "index_users_on_user_number", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
+
+  create_table "versions", force: true do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
 end

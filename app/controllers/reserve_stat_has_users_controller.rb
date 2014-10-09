@@ -10,7 +10,7 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @reserve_stat_has_users }
+      format.json { render json: @reserve_stat_has_users }
     end
   end
 
@@ -27,7 +27,7 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @reserve_stat_has_user }
+      format.json { render json: @reserve_stat_has_user }
     end
   end
 
@@ -43,11 +43,11 @@ class ReserveStatHasUsersController < ApplicationController
 
     respond_to do |format|
       if @reserve_stat_has_user.save
-        format.html { redirect_to @reserve_stat_has_user, :notice => t('controller.successfully_created', :model => t('activerecord.models.reserve_stat_has_user')) }
-        format.json { render :json => @reserve_stat_has_user, :status => :created, :location => @reserve_stat_has_user }
+        format.html { redirect_to @reserve_stat_has_user, notice: t('controller.successfully_created', model: t('activerecord.models.reserve_stat_has_user')) }
+        format.json { render json: @reserve_stat_has_user, status: :created, location: @reserve_stat_has_user }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @reserve_stat_has_user.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @reserve_stat_has_user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,11 +58,11 @@ class ReserveStatHasUsersController < ApplicationController
     @reserve_stat_has_user.assign_attributes(reserve_stat_has_user_params)
     respond_to do |format|
       if @reserve_stat_has_user.save
-        format.html { redirect_to @reserve_stat_has_user, :notice => t('controller.successfully_updated', :model => t('activerecord.models.reserve_stat_has_user')) }
+        format.html { redirect_to @reserve_stat_has_user, notice: t('controller.successfully_updated', model: t('activerecord.models.reserve_stat_has_user')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @reserve_stat_has_user.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @reserve_stat_has_user.errors, status: :unprocessable_entity }
       end
     end
   end

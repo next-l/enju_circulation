@@ -25,8 +25,8 @@ describe "checkout_types/index" do
   it "renders a list of checkout_types" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "Book".to_s, :count => 1
+    assert_select "tr>td:nth-child(3)", /Book/
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "tr>td", :text => "MyText".to_s, :count => 0
+    assert_select "tr>td:nth-child(3)", /MyText/
   end
 end

@@ -13,10 +13,10 @@ class ItemStateMachine
   transition from: :lost, to: [:available_on_shelf, :on_loan]
 
   before_transition(to: :on_loan) do |item|
-    item.circulation_status = CirculationStatus.where(:name => 'On Loan').first
+    item.circulation_status = CirculationStatus.where(name: 'On Loan').first
   end
 
   before_transition(to: :available_on_shelf) do |item|
-    item.circulation_status = CirculationStatus.where(:name => 'Available On Shelf').first
+    item.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
   end
 end

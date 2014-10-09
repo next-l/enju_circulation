@@ -9,7 +9,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
@@ -18,7 +18,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
@@ -27,7 +27,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns nil as @carrier_type_has_checkout_types" do
         get :index
@@ -47,7 +47,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -57,7 +57,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -67,7 +67,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -87,7 +87,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
@@ -97,7 +97,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
@@ -107,7 +107,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
@@ -127,7 +127,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -137,7 +137,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -147,7 +147,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
@@ -172,7 +172,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
@@ -200,7 +200,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
@@ -228,7 +228,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
@@ -290,7 +290,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested carrier_type_has_checkout_type" do
@@ -313,7 +313,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
@@ -340,7 +340,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested carrier_type_has_checkout_type" do
@@ -389,7 +389,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested carrier_type_has_checkout_type" do
         delete :destroy, :id => @carrier_type_has_checkout_type.id
@@ -402,7 +402,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested carrier_type_has_checkout_type" do
         delete :destroy, :id => @carrier_type_has_checkout_type.id
@@ -415,7 +415,7 @@ describe CarrierTypeHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested carrier_type_has_checkout_type" do
         delete :destroy, :id => @carrier_type_has_checkout_type.id

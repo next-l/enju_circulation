@@ -23,22 +23,56 @@
   <%= @manifestation_checkout_stat.note -%>
 </p>
 
-<table class="table table-striped index">
-  <tr>
-    <th><%= t('activerecord.models.manifestation') -%></th>
-    <th><%= t('activerecord.attributes.checkout_stat_has_manifestation.checkouts_count') -%></th>
-  </tr>
-  <%- @stats.each do |stat| -%>
-    <tr class="line<%= cycle("0", "1") -%>">
-      <td>
-        <%= render 'manifestations/show_index', manifestation: stat.manifestation if stat.manifestation -%>
-      </td>
-      <td><%= stat.checkouts_count -%></td>
-    </tr>
-  <%- end -%>
-</table>
-
-<%= paginate(@stats) -%>
+<div id="tabs">
+  <ul>
+    <li title="active" class="selected"><a href="#tab1"><em><%= t('statistic.by_carrier_type') -%></em></a></li>
+    <li><a href="#tab2"><em><%= t('statistic.by_manifestation') -%></em></a></li>
+  </ul>
+  <div id="tab1">
+    <table class="table table-striped index">
+      <tr>
+        <th></th>
+        <% CarrierType.order(:position).each do |carrier_type| %>
+          <th><%= carrier_type.display_name.localize %></th>
+        <% end %>
+      </tr>
+      <% Shelf.order(:library_id, :position).each do |shelf| %>
+        <tr>
+          <td><strong><%= shelf.display_name.localize %></strong></td>
+          <% results = Checkout.where(
+              Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+            ).where(
+              Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+            ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
+              Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+            ).merge(Shelf.where(id: shelf.id)).order('manifestations.carrier_type_id').count(:id) %>
+          <% CarrierType.order(:position).each do |carrier_type| %>
+            <td>
+              <% results.each do |carrier_type_id, count| %>
+                <%= count if carrier_type_id == carrier_type.id %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+      <tr>
+        <td><strong><%= t('page.total') %></strong></td>
+        <% CarrierType.order(:position).each do |carrier_type| %>
+          <td>
+            <% @breakdown.each do |carrier_type_id, count| %>
+              <%= count if carrier_type_id == carrier_type.id %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    </table>
+  </div>
+  <div id="tab2">
+    <div id="group_by_manifestation">
+      <%= render 'group_by_manifestation', stats: @stats %>
+    </div>
+  </div>
+</div>
 
 </div>
 </div>

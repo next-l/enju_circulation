@@ -13,7 +13,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- user.user_group.user_group_has_checkout_types.each do |available_checkout_type| -%>
+    <%- user.profile.user_group.user_group_has_checkout_types.each do |available_checkout_type| -%>
       <li>
         <%= available_checkout_type.checkout_type.display_name.localize -%>:
         <%= user.checked_item_count[:"#{available_checkout_type.checkout_type.name}"] -%> / <%= available_checkout_type.checkout_limit -%>
@@ -54,7 +54,7 @@
   </ul>
   <ul>
     <% if @user == current_user %>
-      <li><%= link_to t('checkout.remove_all_history'), remove_all_user_checkouts_path(current_user), method: :put, data: {confirm: t('page.are_you_sure')} %></li>
+      <li><%= link_to t('checkout.remove_all_history'), remove_all_checkouts_path(user_id: current_user.id), method: :put, data: {confirm: t('page.are_you_sure')} %></li>
     <% end %>
   </ul>
 </div>

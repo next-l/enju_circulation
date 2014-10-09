@@ -255,21 +255,21 @@ describe CheckedItemsController do
       it "should create checked_item" do
         post :create, :checked_item => @attrs, :basket_id => 3
         assigns(:checked_item).due_date.should eq Time.zone.now.tomorrow.end_of_day
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
 
       it "should create checked_item with item_identifier" do
         post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 3
         assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should_not be_nil
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end 
 
       it "should override due_date" do
         post :create, :checked_item => {:item_identifier => '00011', :due_date_string => 1.year.from_now.strftime('%Y-%m-%d')}, :basket_id => 3
         assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should eq 1.year.from_now.end_of_day
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end 
 
       it "should not create checked_item with an invalid due_date" do
@@ -288,14 +288,14 @@ describe CheckedItemsController do
       it "should show message when the item includes supplements" do
         post :create, :checked_item => {:item_identifier => '00006'}, :basket_id => 3
         assigns(:checked_item).due_date.should_not be_nil
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
         flash[:message].index(I18n.t('item.this_item_include_supplement')).should be_truthy
       end 
 
       it "should create checked_item when ignore_restriction is checked" do
         post :create, :checked_item => {:item_identifier => '00011', :ignore_restriction => "1"}, :basket_id => 2
         assigns(:checked_item).due_date.should_not be_nil
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
     end
 
@@ -369,7 +369,7 @@ describe CheckedItemsController do
 
       it "should destroy checked_item" do
         delete :destroy, :id => 1
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
     end
 
@@ -378,7 +378,7 @@ describe CheckedItemsController do
 
       it "should destroy checked_item" do
         delete :destroy, :id => 1
-        response.should redirect_to basket_checked_items_url(assigns(:checked_item).basket)
+        response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
     end
 

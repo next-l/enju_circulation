@@ -1,7 +1,7 @@
 class UseRestrictionsController < ApplicationController
   before_action :set_use_restriction, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
-  after_action :verify_policy_scoped, :only => :index
+  after_action :verify_policy_scoped, only: :index
 
   # GET /use_restrictions
   def index
@@ -29,7 +29,7 @@ class UseRestrictionsController < ApplicationController
     authorize @use_restriction
 
     if @use_restriction.save
-      redirect_to @use_restriction, notice:  t('controller.successfully_created', :model => t('activerecord.models.use_restriction'))
+      redirect_to @use_restriction, notice: t('controller.successfully_created', model: t('activerecord.models.use_restriction'))
     else
       render action: 'new'
     end
@@ -41,8 +41,9 @@ class UseRestrictionsController < ApplicationController
       move_position(@use_restriction, params[:move])
       return
     end
+
     if @use_restriction.update(use_restriction_params)
-      redirect_to @use_restriction, notice:  t('controller.successfully_updated', :model => t('activerecord.models.use_restriction'))
+      redirect_to @use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.use_restriction'))
     else
       render action: 'edit'
     end
@@ -51,7 +52,7 @@ class UseRestrictionsController < ApplicationController
   # DELETE /use_restrictions/1
   def destroy
     @use_restriction.destroy
-    redirect_to use_restrictions_url, :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.use_restriction'))
+    redirect_to use_restrictions_url, notice: t('controller.successfully_destroyed', model: t('activerecord.models.use_restriction'))
   end
 
   private

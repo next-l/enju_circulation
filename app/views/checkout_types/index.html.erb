@@ -6,42 +6,45 @@
   <tr>
     <th id="position"></th>
     <th><%= t('activerecord.attributes.checkout_type.name') -%></th>
-    <th><%= t('activerecord.attributes.checkout_type.display_name') -%></th>
+    <th>
+      <%= t('activerecord.attributes.checkout_type.display_name') -%>
+      /
+      <%= t('activerecord.attributes.checkout_type.note') -%>
+    </th>
     <th></th>
   </tr>
 
 <%- @checkout_types.each do |checkout_type| -%>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
-      <%- unless @user_group -%>
-        <%- if policy(checkout_type).update? -%>
-          <%= move_position(checkout_type) -%>
-        <%- end -%>
+      <%- if policy(checkout_type).update? -%>
+        <%= move_position(checkout_type) -%>
       <%- end -%>
     </td>
-    <td><%= link_to checkout_type.name, checkout_type -%></td>
-    <td><%= link_to checkout_type.display_name.localize, checkout_type -%></td>
+    <td><%= checkout_type.name -%></td>
+    <td>
+      <%= link_to checkout_type.display_name.localize, checkout_type -%>
+      <br />
+      <%= checkout_type.note %>
+    </td>
     <td>
       <%- if policy(checkout_type).update? -%>
         <%= link_to t('page.edit'), edit_checkout_type_path(checkout_type) -%>
       <% end %>
       <%- if policy(checkout_type).destroy? -%>
-        <%= link_to t('page.destroy'), checkout_type, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
-      <% end %>
+        <%= link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete -%>
+      <%- end -%>
     </td>
   </tr>
 <%- end -%>
 </table>
 
-<%= paginate(@checkout_types) -%>
 </div>
 </div>
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- if @user_group -%>
-      <li><%= link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_user_group_user_group_has_checkout_type_path(@user_group) -%></li>
-    <%- else -%>
+    <%- if policy(CheckoutType).create? -%>
       <li><%= link_to t('page.new', model: t('activerecord.models.checkout_type')), new_checkout_type_path -%></li>
     <%- end -%>
   </ul>

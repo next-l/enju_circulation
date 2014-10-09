@@ -28,7 +28,8 @@ checked_item_00004:
 #  item_id      :integer          not null
 #  basket_id    :integer          not null
 #  due_date     :datetime         not null
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  librarian_id :integer
 #
+

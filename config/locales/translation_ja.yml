@@ -66,7 +66,7 @@ ja:
         checkout_limit: 貸出数の上限
         checkout_period: 貸出期間
         checkout_renewal_limit: 貸出更新回数の上限
-        reservation_limit: 予約冊数の上限
+        reservation_limit: 予約数の上限
         reservation_expired_period: 予約の期限切れまでの期間
         set_due_date_before_closing_day: 返却日を閉館日の前日にする
         fixed_due_date: 固定貸出期限
@@ -117,6 +117,9 @@ ja:
       item:
         checkout_type: 貸出種別
         circulation_status: 貸出状態
+      profile:
+        checkout_icalendar_token: 貸出iCalendarのトークン
+        save_checkout_history: 貸出の履歴を保存する
 
   basket:
     this_account_is_suspended: "このアカウントは停止されています。"
@@ -189,3 +192,6 @@ ja:
     start_counting: "集計を開始"
   statistic:
     successfully_created: "%{model}のタスクは正常に作成されました。タスクが完了すると「%{model}の一覧」の状態が「完了」となり、「表示」リンクをたどることで結果を確認できるようになります。"
+    breakdown: 内訳
+    by_carrier_type: 資料の形態別
+    by_manifestation: 書誌別

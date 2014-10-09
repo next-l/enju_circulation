@@ -10,7 +10,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checkout_stat_has_manifestations }
+      format.json { render json: @checkout_stat_has_manifestations }
     end
   end
 
@@ -27,7 +27,7 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @checkout_stat_has_manifestation }
+      format.json { render json: @checkout_stat_has_manifestation }
     end
   end
 
@@ -43,11 +43,11 @@ class CheckoutStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_created', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
-        format.json { render :json => @checkout_stat_has_manifestation, :status => :created, :location => @checkout_stat_has_manifestation }
+        format.html { redirect_to @checkout_stat_has_manifestation, notice: t('controller.successfully_created', model: t('activerecord.models.checkout_stat_has_manifestation')) }
+        format.json { render json: @checkout_stat_has_manifestation, status: :created, location: @checkout_stat_has_manifestation }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @checkout_stat_has_manifestation.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @checkout_stat_has_manifestation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,11 +58,11 @@ class CheckoutStatHasManifestationsController < ApplicationController
     @checkout_stat_has_manifestation.assign_attributes(checkout_stat_has_manifestation_params)
     respond_to do |format|
       if @checkout_stat_has_manifestation.save
-        format.html { redirect_to @checkout_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout_stat_has_manifestation')) }
+        format.html { redirect_to @checkout_stat_has_manifestation, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout_stat_has_manifestation')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checkout_stat_has_manifestation.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checkout_stat_has_manifestation.errors, status: :unprocessable_entity }
       end
     end
   end

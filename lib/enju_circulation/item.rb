@@ -28,11 +28,11 @@ module EnjuCirculation
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
-        scope :for_checkout, -> {includes(:circulation_status, :use_restriction).where(
+        scope :for_checkout, -> { includes(:circulation_status, :use_restriction).where(
             'circulation_statuses.name' => FOR_CHECKOUT_CIRCULATION_STATUS,
             'use_restrictions.name' => FOR_CHECKOUT_USE_RESTRICTION
-          ).where('item_identifier IS NOT NULL')}
-        scope :removed, -> {includes(:circulation_status).where('circulation_statuses.name' => 'Removed')}
+          ).where('item_identifier IS NOT NULL') }
+        scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
         has_many :checkouts
         has_many :reserves
         has_many :checked_items
@@ -73,7 +73,7 @@ module EnjuCirculation
 
       def checkout_status(user)
         return nil unless user
-         user.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
+         user.profile.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
       end
 
       def reserved?
@@ -137,7 +137,7 @@ module EnjuCirculation
       end
 
       def lending_rule(user)
-        lending_policies.where(:user_group_id => user.user_group.id).first
+        lending_policies.where(:user_group_id => user.profile.user_group.id).first
       end
 
       def not_for_loan?

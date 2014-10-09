@@ -1,16 +1,16 @@
 class CheckoutsController < ApplicationController
   before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-  before_action :store_location, :only => :index
-  before_action :get_user, :only => [:index, :remove_all]
-  before_action :get_item, :only => :index
-  after_action :convert_charset, :only => :index
+  before_action :store_location, only: :index
+  before_action :get_user, only: [:index, :remove_all]
+  before_action :get_item, only: :index
+  after_action :convert_charset, only: :index
   after_action :verify_authorized, except: :index
 
   # GET /checkouts
   # GET /checkouts.json
   def index
     if params[:icalendar_token].present?
-      icalendar_user = User.where(:checkout_icalendar_token => params[:icalendar_token]).first
+      icalendar_user = Profile.where(:checkout_icalendar_token => params[:icalendar_token]).first.try(:user)
       if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
       else
@@ -37,7 +37,7 @@ class CheckoutsController < ApplicationController
           end
         else
           if current_user == user
-            redirect_to checkouts_url(:format => params[:format])
+            redirect_to checkouts_url(format: params[:format])
             return
           else
             access_denied
@@ -106,8 +106,8 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checkouts }
-      format.rss  { render :layout => false }
+      format.json { render json: @checkouts }
+      format.rss  { render layout: false }
       format.ics
       format.txt
       format.atom
@@ -115,7 +115,6 @@ class CheckoutsController < ApplicationController
   end
 
   # GET /checkouts/1
-  # GET /checkouts/1.json
   def show
   end
 
@@ -125,7 +124,6 @@ class CheckoutsController < ApplicationController
   end
 
   # PUT /checkouts/1
-  # PUT /checkouts/1.json
   def update
     @checkout.assign_attributes(checkout_params)
     @checkout.due_date = @checkout.due_date.end_of_day
@@ -133,11 +131,11 @@ class CheckoutsController < ApplicationController
 
     respond_to do |format|
       if @checkout.save
-        format.html { redirect_to @checkout, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checkout')) }
+        format.html { redirect_to @checkout, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checkout.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checkout.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -151,7 +149,7 @@ class CheckoutsController < ApplicationController
     @checkout.save!
 
     respond_to do |format|
-      format.html { redirect_to user_checkouts_url(user), :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to checkouts_url(user_id: user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end
@@ -167,7 +165,7 @@ class CheckoutsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to checkouts_url, :notice => t('controller.successfully_destroyed', :model => t('activerecord.models.checkout')) }
+      format.html { redirect_to checkouts_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
   end

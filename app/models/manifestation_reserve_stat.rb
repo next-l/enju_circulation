@@ -4,7 +4,8 @@ class ManifestationReserveStat < ActiveRecord::Base
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_manifestations
-  has_many :manifestations, :through => :reserve_stat_has_manifestations
+  has_many :manifestations, through: :reserve_stat_has_manifestations
+  belongs_to :user
 
   paginates_per 10
   attr_accessor :mode
@@ -25,7 +26,7 @@ class ManifestationReserveStat < ActiveRecord::Base
       #manifestation.update_attributes({:daily_reserves_count => daily_count, :total_count => manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
-        sql = ['UPDATE reserve_stat_has_manifestations SET reserves_count = ? WHERE manifestation_reserve_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
+        sql = ['UPDATE reserve_stat_has_manifestations SET reserves_count = ? WHERE manifestation_reserve_stat_id = ? AND manifestation_id = ?', daily_count, id, manifestation.id]
         ManifestationReserveStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
@@ -33,8 +34,9 @@ class ManifestationReserveStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
+    send_message
   end
-  
+
   private
   def self.transition_class
     ManifestationReserveStatTransition
@@ -49,9 +51,9 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  state        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
+#  user_id      :integer
 #

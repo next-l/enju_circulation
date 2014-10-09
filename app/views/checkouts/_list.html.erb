@@ -11,9 +11,9 @@
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
       <% if checkout.user %>
-        <%= link_to checkout.user_username, checkout.user %>
+        <%= link_to checkout.user_username, checkout.user.profile %>
         <br />
-        (<%= link_to checkout.user_user_number, checkout.user %>)
+        (<%= link_to checkout.user.profile.user_number, checkout.user.profile %>)
       <% end %>
     </td>
     <td>

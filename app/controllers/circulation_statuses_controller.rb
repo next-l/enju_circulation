@@ -1,7 +1,7 @@
 class CirculationStatusesController < ApplicationController
   before_action :set_circulation_status, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
-  after_action :verify_policy_scoped, :only => :index
+  after_action :verify_policy_scoped, only: :index
 
   # GET /circulation_statuses
   def index
@@ -29,7 +29,7 @@ class CirculationStatusesController < ApplicationController
     authorize @circulation_status
 
     if @circulation_status.save
-      redirect_to @circulation_status, notice:  t('controller.successfully_created', :model => t('activerecord.models.circulation_status'))
+      redirect_to @circulation_status, notice: t('controller.successfully_created', model: t('activerecord.models.circulation_status'))
     else
       render action: 'new'
     end
@@ -41,8 +41,9 @@ class CirculationStatusesController < ApplicationController
       move_position(@circulation_status, params[:move])
       return
     end
+
     if @circulation_status.update(circulation_status_params)
-      redirect_to @circulation_status, notice:  t('controller.successfully_updated', :model => t('activerecord.models.circulation_status'))
+      redirect_to @circulation_status, notice: t('controller.successfully_updated', model: t('activerecord.models.circulation_status'))
     else
       render action: 'edit'
     end
@@ -51,7 +52,7 @@ class CirculationStatusesController < ApplicationController
   # DELETE /circulation_statuses/1
   def destroy
     @circulation_status.destroy
-    redirect_to circulation_statuses_url, notice: 'Circulation status was successfully destroyed.'
+    redirect_to circulation_statuses_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.circulation_status'))
   end
 
   private

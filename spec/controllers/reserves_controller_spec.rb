@@ -113,7 +113,7 @@ describe ReservesController do
 
       describe "When other user_id is specified" do
         before(:each) do
-          @user = FactoryGirl.create(:user)
+          @user = users(:user3)
         end
 
         it "should not get any reserve as @reserves" do
@@ -338,8 +338,8 @@ describe ReservesController do
 
   describe "POST create" do
     before(:each) do
-      @attrs = {:user_number => users(:user1).user_number, :manifestation_id => 5}
-      @invalid_attrs = {:user_number => users(:user1).user_number, :manifestation_id => 'invalid'}
+      @attrs = {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
+      @invalid_attrs = {:user_number => users(:user1).profile.user_number, :manifestation_id => 'invalid'}
     end
 
     describe "When logged in as Administrator" do
@@ -373,19 +373,19 @@ describe ReservesController do
       end
 
       it "should not create reservation with past date" do
-        post :create, :reserve => {:user_number => users(:user1).user_number, :manifestation_id => 5, :expired_at => '1901-01-01'}
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5, :expired_at => '1901-01-01'}
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should create other user's reserve" do
-        post :create, :reserve => {:user_number => users(:user1).user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not create reserve without manifestation_id" do
-        post :create, :reserve => {:user_number => users(:admin).user_number}
+        post :create, :reserve => {:user_number => users(:admin).profile.user_number}
         response.should be_success
       end
 
@@ -433,14 +433,14 @@ describe ReservesController do
       end
 
       it "should create other user's reserve" do
-        post :create, :reserve => {:user_number => users(:user1).user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).should be_valid
         assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not create reserve over reserve_limit" do
-        post :create, :reserve => {:user_number => users(:admin).user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:admin).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end
@@ -476,7 +476,7 @@ describe ReservesController do
       end
 
       it "should not create other user's reservation" do
-        post :create, :reserve => {:user_number => users(:user2).user_number, :manifestation_id => 6}
+        post :create, :reserve => {:user_number => users(:user2).profile.user_number, :manifestation_id => 6}
         assigns(:reserve).expired_at.should be_nil
         response.should be_forbidden
       end
@@ -544,13 +544,13 @@ describe ReservesController do
       end
 
       it "should not update reserve without manifestation_id" do
-        put :update, :id => 1, :reserve => {:user_number => users(:admin).user_number, :manifestation_id => nil}
+        put :update, :id => 1, :reserve => {:user_number => users(:admin).profile.user_number, :manifestation_id => nil}
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
   
       it "should update other user's reservation without user_id" do
-        put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -607,7 +607,7 @@ describe ReservesController do
 
       it "should cancel other user's reservation" do
         old_message_requests_count = MessageRequest.count
-        put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}, :mode => 'cancel'
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
@@ -615,13 +615,13 @@ describe ReservesController do
       end
 
       it "should update reserve without user_id" do
-        put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should update other user's reservation" do
-        put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -659,18 +659,18 @@ describe ReservesController do
       end
 
       it "should update my reservation" do
-        put :update, :id => 3, :reserve => {:user_number => users(:user1).user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         flash[:notice].should eq I18n.t('controller.successfully_updated', :model => I18n.t('activerecord.models.reserve'))
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not update other user's reservation" do
-        put :update, :id => 5, :reserve => {:user_number => users(:user2).user_number}
+        put :update, :id => 5, :reserve => {:user_number => users(:user2).profile.user_number}
         response.should be_forbidden
       end
   
       it "should not cancel other user's reservation" do
-        put :update, :id => 5, :reserve => {:user_number => users(:user1).user_number}, :mode => 'cancel'
+        put :update, :id => 5, :reserve => {:user_number => users(:user1).profile.user_number}, :mode => 'cancel'
         response.should be_forbidden
       end
     end

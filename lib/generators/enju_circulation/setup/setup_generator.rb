@@ -1,10 +1,13 @@
 class EnjuCirculation::SetupGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
+  argument :file, :type => :string, :default => "all"
 
   def copy_setup_files
     directory("db/fixtures", "db/fixtures/enju_circulation")
     return if file == 'fixture'
     rake("enju_circulation_engine:install:migrations")
+    rake("enju_event_engine:install:migrations")
+    rake("enju_message_engine:install:migrations")
     generate("enju_event:setup")
     generate("enju_message:setup")
     inject_into_file 'app/controllers/application_controller.rb',

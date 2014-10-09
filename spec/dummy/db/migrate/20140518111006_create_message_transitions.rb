@@ -5,6 +5,7 @@ class CreateMessageTransitions < ActiveRecord::Migration
       t.text :metadata, default: "{}"
       t.integer :sort_key
       t.integer :message_id
+      t.timestamps
     end
 
     add_index :message_transitions, :message_id

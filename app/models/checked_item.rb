@@ -1,35 +1,37 @@
 class CheckedItem < ActiveRecord::Base
-  belongs_to :item, touch: true #, :validate => true
-  belongs_to :basket #, :validate => true
-  belongs_to :librarian, :class_name => 'User' #, :validate => true
+  belongs_to :item #, validate: true
+  belongs_to :basket #, validate: true
+  belongs_to :librarian, class_name: 'User' #, validate: true
 
-  validates_associated :item, :basket, :on => :update
-  validates_presence_of :item, :basket, :due_date, :on => :update
-  validates_uniqueness_of :item_id, :scope => :basket_id
-  validate :available_for_checkout?, :on => :create
-  validates :due_date_string, :format => {:with => /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, :allow_blank => true
+  validates_associated :item, :basket, on: :update
+  validates_presence_of :item, :basket, :due_date, on: :update
+  validates_uniqueness_of :item_id, scope: :basket_id
+  validate :available_for_checkout?, on: :create
+  validates :due_date_string, format: {with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
   validate :check_due_date
  
   before_validation :set_item
-  before_validation :set_due_date, :on => :create
+  before_validation :set_due_date, on: :create
   normalize_attributes :item_identifier
 
   #attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
-    if self.item.blank?
+    if item.blank?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.item_not_found')
       return false
     end
 
     if item.rent?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+      unless item.circulation_status.name == 'Missing'
+        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+      end
     end
 
     unless item.available_for_checkout?
       if item.circulation_status.name == 'Missing'
-        item.circulation_status = CirculationStatus.where(:name => 'Available On Shelf').first
+        item.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
         item.save
         set_due_date
       else
@@ -44,7 +46,7 @@ class CheckedItem < ActiveRecord::Base
     end
     # ここまでは絶対に貸出ができない場合
 
-    return true if self.ignore_restriction == "1"
+    return true if ignore_restriction == "1"
 
     if item.not_for_loan?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
@@ -78,7 +80,7 @@ class CheckedItem < ActiveRecord::Base
 
   def item_checkout_type
     if item and basket
-      basket.user.user_group.user_group_has_checkout_types.available_for_item(item).first
+      basket.user.profile.user_group.user_group_has_checkout_types.available_for_item(item).first
     end
   end
 
@@ -112,7 +114,7 @@ class CheckedItem < ActiveRecord::Base
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(:item_identifier => identifier).first
+      item = Item.where(item_identifier: identifier).first
       self.item = item
     end
   end

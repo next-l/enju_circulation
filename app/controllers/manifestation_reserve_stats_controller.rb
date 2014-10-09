@@ -1,22 +1,20 @@
 class ManifestationReserveStatsController < ApplicationController
   before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
-  after_action :convert_charset, :only => :show
+  after_action :convert_charset, only: :show
 
   # GET /manifestation_reserve_stats
-  # GET /manifestation_reserve_stats.json
   def index
     authorize ManifestationReserveStat
     @manifestation_reserve_stats = ManifestationReserveStat.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @manifestation_reserve_stats }
+      format.json { render json: @manifestation_reserve_stats }
     end
   end
 
   # GET /manifestation_reserve_stats/1
-  # GET /manifestation_reserve_stats/1.json
   def show
     if params[:format] == 'txt'
       per_page = 65534
@@ -27,20 +25,19 @@ class ManifestationReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @manifestation_reserve_stat }
+      format.json { render json: @manifestation_reserve_stat }
       format.txt
     end
   end
 
   # GET /manifestation_reserve_stats/new
-  # GET /manifestation_reserve_stats/new.json
   def new
     @manifestation_reserve_stat = ManifestationReserveStat.new
     authorize @manifestation_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @manifestation_reserve_stat }
+      format.json { render json: @manifestation_reserve_stat }
     end
   end
 
@@ -49,25 +46,24 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # POST /manifestation_reserve_stats
-  # POST /manifestation_reserve_stats.json
   def create
     @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
+    @manifestation_reserve_stat.user = current_user
     authorize @manifestation_reserve_stat
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
         Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
         format.html { redirect_to @manifestation_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
-        format.json { render :json => @manifestation_reserve_stat, :status => :created, :location => @manifestation_reserve_stat }
+        format.json { render json: @manifestation_reserve_stat, status: :created, location: @manifestation_reserve_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @manifestation_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PUT /manifestation_reserve_stats/1
-  # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
       if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
@@ -77,14 +73,13 @@ class ManifestationReserveStatsController < ApplicationController
         format.html { redirect_to @manifestation_reserve_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @manifestation_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /manifestation_reserve_stats/1
-  # DELETE /manifestation_reserve_stats/1.json
   def destroy
     @manifestation_reserve_stat.destroy
 

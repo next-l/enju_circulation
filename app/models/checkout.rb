@@ -1,28 +1,27 @@
 class Checkout < ActiveRecord::Base
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
-  #default_scope {order('checkouts.id DESC')}
-  scope :not_returned, -> {where(:checkin_id => nil)}
-  scope :returned, -> {where('checkin_id IS NOT NULL')}
+  scope :not_returned, -> { where(checkin_id: nil) }
+  scope :returned, -> { where('checkin_id IS NOT NULL') }
   scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
-  scope :due_date_on, lambda {|date| where(:checkin_id => nil, :due_date => date.beginning_of_day .. date.end_of_day)}
-  scope :completed, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
+  scope :due_date_on, lambda {|date| where(checkin_id: nil, due_date: date.beginning_of_day .. date.end_of_day)}
+  scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
-  belongs_to :user #, :counter_cache => true #, :validate => true
-  delegate :username, :user_number, :to => :user, :prefix => true
-  belongs_to :item, touch: true #, :counter_cache => true #, :validate => true
-  belongs_to :checkin #, :validate => true
-  belongs_to :librarian, :class_name => 'User' #, :validate => true
-  belongs_to :basket #, :validate => true
+  belongs_to :user
+  delegate :username, :user_number, to: :user, prefix: true
+  belongs_to :item, touch: true
+  belongs_to :checkin
+  belongs_to :librarian, class_name: 'User'
+  belongs_to :basket
 
   validates_associated :user, :item, :librarian, :checkin #, :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   #validates_presence_of :user, :item, :basket
   validates_presence_of :item_id, :basket_id, :due_date
-  validates_uniqueness_of :item_id, :scope => [:basket_id, :user_id]
-  validate :is_not_checked?, :on => :create
-  validate :renewable?, :on => :update
+  validates_uniqueness_of :item_id, scope: [:basket_id, :user_id]
+  validate :is_not_checked?, on: :create
+  validate :renewable?, on: :update
   validates_date :due_date
 
   index_name "#{name.downcase.pluralize}-#{Rails.env}"
@@ -70,7 +69,7 @@ class Checkout < ActiveRecord::Base
   paginates_per 10
 
   def is_not_checked?
-    checkout = Checkout.not_returned.where(:item_id => item_id)
+    checkout = Checkout.not_returned.where(item_id: item_id)
     unless checkout.empty?
       errors[:base] << I18n.t('activerecord.errors.messages.checkin.already_checked_out')
     end
@@ -128,7 +127,7 @@ class Checkout < ActiveRecord::Base
     return nil unless user
     if item
       if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
-        Time.zone.now.advance(:days => item.checkout_status(user).checkout_period).beginning_of_day
+        new_due_date = Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day
       else
         due_date
       end
@@ -136,7 +135,14 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    completed(start_date, end_date).where(:item_id => manifestation.items.pluck('items.id')).count
+    self.where(
+      self.arel_table[:created_at].gteq start_date
+    ).where(
+      self.arel_table[:created_at].lt end_date
+    )
+    .where(
+      item_id: manifestation.items.pluck('items.id')
+    ).count
   end
 
   def self.send_due_date_notification
@@ -144,9 +150,9 @@ class Checkout < ActiveRecord::Base
     queues = []
     User.find_each do |user|
       # 未来の日時を指定する
-      checkouts = user.checkouts.due_date_on(user.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
+      checkouts = user.checkouts.due_date_on(user.profile.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
       unless checkouts.empty?
-        queues << user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
+        queues << user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
       end
     end
     queues.size
@@ -156,10 +162,10 @@ class Checkout < ActiveRecord::Base
     template = 'recall_overdue_item'
     queues = []
     User.find_each do |user|
-      user.user_group.number_of_time_to_notify_overdue.times do |i|
-        checkouts = user.checkouts.due_date_on((user.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
+      user.profile.user_group.number_of_time_to_notify_overdue.times do |i|
+        checkouts = user.checkouts.due_date_on((user.profile.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
         unless checkouts.empty?
-          queues << user.send_message(template, :manifestations => checkouts.collect(&:item).collect(&:manifestation))
+          queues << user.profile.user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
         end
       end
     end
@@ -167,7 +173,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.remove_all_history(user)
-    user.checkouts.returned.update_all(:user_id => nil)
+    user.checkouts.returned.update_all(user_id: nil)
   end
 end
 

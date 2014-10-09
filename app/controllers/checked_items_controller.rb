@@ -1,6 +1,6 @@
 class CheckedItemsController < ApplicationController
   before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
-  before_action :get_basket, :only => [:index, :new, :create, :update]
+  before_action :get_basket, only: [:index, :new, :create, :update]
   after_action :verify_authorized
 
   # GET /checked_items
@@ -16,7 +16,7 @@ class CheckedItemsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @checked_items }
+      format.json { render json: @checked_items }
       format.js
     end
   end
@@ -26,7 +26,7 @@ class CheckedItemsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @checked_item }
+      format.json { render json: @checked_item }
     end
   end
 
@@ -43,7 +43,7 @@ class CheckedItemsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @checked_item }
+      format.json { render json: @checked_item }
     end
   end
 
@@ -69,14 +69,14 @@ class CheckedItemsController < ApplicationController
         if @checked_item.item.include_supplements
           flash[:message] << t('item.this_item_include_supplement')
         end
-        format.html { redirect_to(basket_checked_items_url(@basket), :notice => t('controller.successfully_created', :model => t('activerecord.models.checked_item'))) }
-        format.json { render :json => @checked_item, :status => :created, :location => @checked_item }
-        format.js { redirect_to(basket_checked_items_url(@basket, :format => :js)) }
+        format.html { redirect_to(checked_items_url(basket_id: @basket.id), notice: t('controller.successfully_created', model: t('activerecord.models.checked_item'))) }
+        format.json { render json: @checked_item, status: :created, location: @checked_item }
+        format.js { redirect_to(checked_items_url(basket_id: @basket.id, format: :js)) }
       else
         @checked_items = @basket.checked_items.order('created_at DESC').page(1)
-        format.html { render :action => "index" }
-        format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
-        format.js { render :action => "index" }
+        format.html { render action: "index" }
+        format.json { render json: @checked_item.errors, status: :unprocessable_entity }
+        format.js { render action: "index" }
       end
     end
   end
@@ -93,11 +93,11 @@ class CheckedItemsController < ApplicationController
 
     respond_to do |format|
       if @checked_item.update_attributes(checked_item_params)
-        format.html { redirect_to @checked_item, :notice => t('controller.successfully_updated', :model => t('activerecord.models.checked_item')) }
+        format.html { redirect_to @checked_item, notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @checked_item.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @checked_item.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -108,7 +108,7 @@ class CheckedItemsController < ApplicationController
     @checked_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to basket_checked_items_url(@checked_item.basket) }
+      format.html { redirect_to checked_items_url(basket_id: @checked_item.basket_id) }
       format.json { head :no_content }
     end
   end

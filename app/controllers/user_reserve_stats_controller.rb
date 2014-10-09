@@ -1,7 +1,7 @@
 class UserReserveStatsController < ApplicationController
   before_action :set_user_reserve_stat, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
-  after_action :convert_charset, :only => :show
+  after_action :convert_charset, only: :show
 
   # GET /user_reserve_stats
   # GET /user_reserve_stats.json
@@ -11,7 +11,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @user_reserve_stats }
+      format.json { render json: @user_reserve_stats }
     end
   end
 
@@ -27,7 +27,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @user_reserve_stat }
+      format.json { render json: @user_reserve_stat }
       format.txt
     end
   end
@@ -40,7 +40,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @user_reserve_stat }
+      format.json { render json: @user_reserve_stat }
     end
   end
 
@@ -52,16 +52,17 @@ class UserReserveStatsController < ApplicationController
   # POST /user_reserve_stats.json
   def create
     @user_reserve_stat = UserReserveStat.new(user_reserve_stat_params)
+    @user_reserve_stat.user = current_user
     authorize @user_reserve_stat
 
     respond_to do |format|
       if @user_reserve_stat.save
         Resque.enqueue(UserReserveStatQueue, @user_reserve_stat.id)
         format.html { redirect_to @user_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.user_reserve_stat')) }
-        format.json { render :json => @user_reserve_stat, :status => :created, :location => @user_reserve_stat }
+        format.json { render json: @user_reserve_stat, status: :created, location: @user_reserve_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @user_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @user_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,8 +78,8 @@ class UserReserveStatsController < ApplicationController
         format.html { redirect_to @user_reserve_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.user_reserve_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @user_reserve_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @user_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
   end

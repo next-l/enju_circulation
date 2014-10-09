@@ -4,7 +4,8 @@ class UserReserveStat < ActiveRecord::Base
   default_scope {order('user_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_users
-  has_many :users, :through => :reserve_stat_has_users
+  has_many :users, through: :reserve_stat_has_users
+  belongs_to :user
 
   paginates_per 10
   attr_accessor :mode
@@ -32,8 +33,9 @@ class UserReserveStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
+    send_message
   end
-  
+
   private
   def self.transition_class
     UserReserveStatTransition
@@ -48,9 +50,9 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  state        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
+#  user_id      :integer
 #

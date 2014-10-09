@@ -5,7 +5,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe "GET index" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
         get :index
@@ -14,7 +14,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
         get :index
@@ -23,7 +23,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns nil as @user_group_has_checkout_types" do
         get :index
@@ -43,7 +43,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -53,7 +53,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -63,7 +63,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -83,7 +83,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
@@ -93,7 +93,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
@@ -103,7 +103,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
@@ -123,7 +123,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -133,7 +133,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -143,7 +143,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
@@ -168,7 +168,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
@@ -196,7 +196,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
@@ -224,7 +224,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
@@ -286,7 +286,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested user_group_has_checkout_type" do
@@ -308,7 +308,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "updates the requested user_group_has_checkout_type" do
@@ -331,7 +331,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested user_group_has_checkout_type" do
@@ -380,7 +380,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested user_group_has_checkout_type" do
         delete :destroy, :id => @user_group_has_checkout_type.id
@@ -393,7 +393,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested user_group_has_checkout_type" do
         delete :destroy, :id => @user_group_has_checkout_type.id
@@ -406,7 +406,7 @@ describe UserGroupHasCheckoutTypesController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested user_group_has_checkout_type" do
         delete :destroy, :id => @user_group_has_checkout_type.id

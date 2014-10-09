@@ -9,16 +9,9 @@ Rails.application.routes.draw do
   resources :item_has_use_restrictions
   resources :lending_policies
   resources :circulation_statuses
-  resources :baskets do
-    resources :checked_items
-    resources :checkins
-  end
-  resources :users do
-    resources :checkouts, :only => :index do
-      put :remove_all, :on => :collection
-    end
-    resources :reserves, :only => :index
-    resources :baskets, :only => :index
+  resources :baskets
+  resources :checkouts, only: :index do
+    put :remove_all, on: :collection
   end
   resources :user_checkout_stats
   resources :user_reserve_stats
@@ -42,8 +35,4 @@ Rails.application.routes.draw do
     resources :lending_policies
     resources :checkouts
   end
-  resources :checkout_stat_has_manifestations
-  resources :checkout_stat_has_users
-  resources :reserve_stat_has_manifestations
-  resources :reserve_stat_has_users
 end

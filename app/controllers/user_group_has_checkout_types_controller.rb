@@ -1,6 +1,6 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
   before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
-  before_action :prepare_options, :only => [:new, :edit]
+  before_action :prepare_options, only: [:new, :edit]
   after_action :verify_authorized
   helper_method :get_user_group, :get_checkout_type
 
@@ -12,7 +12,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @user_group_has_checkout_types }
+      format.json { render json: @user_group_has_checkout_types }
     end
   end
 
@@ -32,7 +32,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @user_group_has_checkout_type }
+      format.json { render json: @user_group_has_checkout_type }
     end
   end
 
@@ -48,12 +48,12 @@ class UserGroupHasCheckoutTypesController < ApplicationController
 
     respond_to do |format|
       if @user_group_has_checkout_type.save
-        format.html { redirect_to(@user_group_has_checkout_type, :notice => t('controller.successfully_created', :model => t('activerecord.models.user_group_has_checkout_type'))) }
-        format.json { render :json => @user_group_has_checkout_type, :status => :created, :location => @user_group_has_checkout_type }
+        format.html { redirect_to(@user_group_has_checkout_type, notice: t('controller.successfully_created', model: t('activerecord.models.user_group_has_checkout_type'))) }
+        format.json { render json: @user_group_has_checkout_type, status: :created, location: @user_group_has_checkout_type }
       else
         prepare_options
-        format.html { render :action => "new" }
-        format.json { render :json => @user_group_has_checkout_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,12 +63,12 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   def update
     respond_to do |format|
       if @user_group_has_checkout_type.update_attributes(user_group_has_checkout_type_params)
-        format.html { redirect_to @user_group_has_checkout_type, :notice => t('controller.successfully_updated', :model => t('activerecord.models.user_group_has_checkout_type')) }
+        format.html { redirect_to @user_group_has_checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.user_group_has_checkout_type')) }
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render :action => "edit" }
-        format.json { render :json => @user_group_has_checkout_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -4,7 +4,8 @@ class UserCheckoutStat < ActiveRecord::Base
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_users
-  has_many :users, :through => :checkout_stat_has_users
+  has_many :users, through: :checkout_stat_has_users
+  belongs_to :user
 
   paginates_per 10
   attr_accessor :mode
@@ -32,23 +33,12 @@ class UserCheckoutStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
+    send_message
   end
-  
+
   private
   def self.transition_class
     UserCheckoutStatTransition
-  end
-
-  def send_message
-    message = Message.create(
-      sender: User.find(1),
-      recipient: user.username,
-      subject: 'counting completed',
-      body: <<EOS
-"#{I18n.t('counting.counting_completed')}"
-"#{LibraryGroup.site_config.url}#{self.name.underscore.pluralize}/#{id}"
-EOS
-    )
   end
 end
 
@@ -60,9 +50,9 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  state        :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
+#  user_id      :integer
 #

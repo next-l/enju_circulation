@@ -11,7 +11,7 @@ describe CheckinsController do
 
   describe "GET index" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all checkins as @checkins" do
         get :index
@@ -29,7 +29,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all checkins as @checkins" do
         get :index
@@ -47,7 +47,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign all checkins as @checkins" do
         get :index
@@ -59,7 +59,7 @@ describe CheckinsController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -69,7 +69,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -79,7 +79,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -101,7 +101,7 @@ describe CheckinsController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkin as @checkin" do
         get :new
@@ -110,7 +110,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested checkin as @checkin" do
         get :new
@@ -119,7 +119,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested checkin as @checkin" do
         get :new
@@ -139,7 +139,7 @@ describe CheckinsController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -149,7 +149,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -159,7 +159,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
@@ -184,7 +184,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
@@ -200,13 +200,13 @@ describe CheckinsController do
         describe "When basket_id is specified" do
           it "redirects to the created checkin" do
             post :create, :checkin => @attrs, :basket_id => 9
-            response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
+            response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
 
           it "should checkin the overdue item" do
             post :create, :checkin => {:item_identifier => '00014'}, :basket_id => 9
-            response.should redirect_to(basket_checkins_url(assigns(:checkin).basket))
+            response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).checkout.should be_valid
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
@@ -233,7 +233,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
@@ -249,16 +249,16 @@ describe CheckinsController do
         it "should show notification when it is reserved" do
           post :create, :checkin => {:item_identifier => '00008'}, :basket_id => 9
           flash[:message].to_s.index(I18n.t('item.this_item_is_reserved')).should be_truthy
-          assigns(:checkin).item.manifestation.next_reservation.state.should eq 'retained'
+          assigns(:checkin).item.manifestation.next_reservation.current_state.should eq 'retained'
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
-          response.should redirect_to basket_checkins_url(assigns(:basket))
+          response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
         end
 
         it "should show notification when an item includes supplements" do
           post :create, :checkin => {:item_identifier => '00004'}, :basket_id => 9
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           flash[:message].to_s.index(I18n.t('item.this_item_include_supplement')).should be_truthy
-          response.should redirect_to basket_checkins_url(assigns(:basket))
+          response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
         end
       end
 
@@ -267,12 +267,12 @@ describe CheckinsController do
         post :create, :checkin => {:item_identifier => '00009'}, :basket_id => 9
         assigns(:checkin).should be_valid
         flash[:message].to_s.index(I18n.t('checkin.other_library_item')).should be_truthy
-        response.should redirect_to basket_checkins_url(assigns(:basket))
+        response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
       end
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
@@ -314,7 +314,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested checkin" do
@@ -347,7 +347,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "updates the requested checkin" do
@@ -375,7 +375,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested checkin" do
@@ -424,7 +424,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested checkin" do
         delete :destroy, :id => @checkin.id
@@ -437,7 +437,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested checkin" do
         delete :destroy, :id => @checkin.id
@@ -450,7 +450,7 @@ describe CheckinsController do
     end
 
     describe "When logged in as User" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested checkin" do
         delete :destroy, :id => @checkin.id

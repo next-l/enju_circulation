@@ -1,7 +1,7 @@
 class ManifestationCheckoutStatsController < ApplicationController
   before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
-  after_action :convert_charset, :only => :show
+  after_action :convert_charset, only: :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json
@@ -11,7 +11,7 @@ class ManifestationCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @manifestation_checkout_stats }
+      format.json { render json: @manifestation_checkout_stats }
     end
   end
 
@@ -23,12 +23,26 @@ class ManifestationCheckoutStatsController < ApplicationController
     else
       per_page = CheckoutStatHasManifestation.default_per_page
     end
-    @stats = @manifestation_checkout_stat.checkout_stat_has_manifestations.order('checkouts_count DESC, manifestation_id').page(params[:page]).per(per_page)
+    @stats = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: [:manifestation]).group(:manifestation_id).merge(
+      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+    ).order('count_id DESC').page(params[:page])
+    @breakdown = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
+      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+    ).order('manifestations.carrier_type_id').count(:id)
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @manifestation_checkout_stat }
+      format.json { render json: @manifestation_checkout_stat }
       format.txt
+      format.js
     end
   end
 
@@ -40,7 +54,7 @@ class ManifestationCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @manifestation_checkout_stat }
+      format.json { render json: @manifestation_checkout_stat }
     end
   end
 
@@ -52,16 +66,17 @@ class ManifestationCheckoutStatsController < ApplicationController
   # POST /manifestation_checkout_stats.json
   def create
     @manifestation_checkout_stat = ManifestationCheckoutStat.new(manifestation_checkout_stat_params)
+    @manifestation_checkout_stat.user = current_user
     authorize @manifestation_checkout_stat
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
         Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
         format.html { redirect_to @manifestation_checkout_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
-        format.json { render :json => @manifestation_checkout_stat, :status => :created, :location => @manifestation_checkout_stat }
+        format.json { render json: @manifestation_checkout_stat, status: :created, location: @manifestation_checkout_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @manifestation_checkout_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @manifestation_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,8 +92,8 @@ class ManifestationCheckoutStatsController < ApplicationController
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @manifestation_checkout_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @manifestation_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
   end
