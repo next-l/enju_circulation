@@ -36,6 +36,9 @@ class Checkout < ActiveRecord::Base
       indexes :reserved, type: 'boolean'
       indexes :due_date, type: 'date'
     end
+    boolean :returned do
+      checkin.nil?
+    end
   end
 
   after_commit on: :create do
