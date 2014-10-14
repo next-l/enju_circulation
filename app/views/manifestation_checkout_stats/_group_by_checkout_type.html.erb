@@ -18,17 +18,17 @@
           <% CheckoutType.order(:position).each do |checkout_type| %>
             <td>
               <% if shelf %>
-                <%= @results[[shelf.id, checkout_type.id]] %>
+                <%= @checkout_type_results[[shelf.id, checkout_type.id]] %>
               <% else %>
-                <%= @results[[nil, checkout_type.id]] %>
+                <%= @checkout_type_results[[nil, checkout_type.id]] %>
               <% end %>
             </td>
           <% end %>
           <td>
             <% if shelf %>
-              <%= @results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
+              <%= @checkout_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
             <% else %>
-              <%= @results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+              <%= @checkout_type_results.select{|r| r[0].nil?}.sum{|k, v| v} %>
             <% end %>
           </td>
         </tr>
@@ -37,10 +37,10 @@
         <td><strong><%= t('page.total') %></strong></td>
         <% CheckoutType.order(:position).each do |checkout_type| %>
           <td>
-            <%= @results.select{|r| r[1] == checkout_type.id}.sum{|k, v| v} %>
+            <%= @checkout_type_results.select{|r| r[1] == checkout_type.id}.sum{|k, v| v} %>
           </td>
         <% end %>
-        <td><%= @results.sum{|k, v| v} %></td>
+        <td><%= @checkout_type_results.sum{|k, v| v} %></td>
       </tr>
     </table>
 
