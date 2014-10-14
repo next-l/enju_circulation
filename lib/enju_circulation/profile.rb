@@ -9,7 +9,7 @@ module EnjuCirculation
         include InstanceMethods
         attr_accessible :save_checkout_history, :checkout_icalendar_token
         attr_accessible :save_checkout_history, :checkout_icalendar_token,
-          :as => :admin
+          as: :admin
       end
     end
 

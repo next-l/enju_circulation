@@ -24,7 +24,7 @@ class ManifestationReserveStat < ActiveRecord::Base
     self.started_at = Time.zone.now
     Manifestation.find_each do |manifestation|
       daily_count = manifestation.reserves.created(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
-      #manifestation.update_attributes({:daily_reserves_count => daily_count, :total_count => manifestation.total_count + daily_count})
+      #manifestation.update_attributes({daily_reserves_count: daily_count, total_count: manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE reserve_stat_has_manifestations SET reserves_count = ? WHERE manifestation_reserve_stat_id = ? AND manifestation_id = ?', daily_count, id, manifestation.id]

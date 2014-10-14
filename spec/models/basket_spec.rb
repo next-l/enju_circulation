@@ -8,8 +8,20 @@ describe Basket do
     Basket.create(:user => users(:user4)).id.should be_nil
   end
 
+  it "should save shelf" do
+    items(:item_00011).checkouts.count.should eq 0
+    basket_1 = Basket.new
+    basket_1.user = users(:admin)
+    basket_1.save
+    checked_item_1 = basket_1.checked_items.new
+    checked_item_1.item = items(:item_00011)
+    checked_item_1.save
+    basket_1.basket_checkout(users(:librarian1))
+    items(:item_00011).checkouts.order('id DESC').first.shelf.should eq 'test'
+  end
+
   it "should not check out items that are already checked out" do
-    items(:item_00021).checkouts.count.should eq 0
+    items(:item_00011).checkouts.count.should eq 0
     basket_1 = Basket.new
     basket_1.user = users(:admin)
     basket_1.save
@@ -24,7 +36,7 @@ describe Basket do
     checked_item_2.save
     basket_1.basket_checkout(users(:librarian1))
     lambda{basket_2.basket_checkout(users(:librarian1))}.should raise_exception ActiveRecord::RecordInvalid
-    items(:item_00011).checkouts.first.user.should eq users(:admin)
+    items(:item_00011).checkouts.order('id DESC').first.user.should eq users(:admin)
   end
 end
 

@@ -10,7 +10,7 @@ class CheckoutsController < ApplicationController
   # GET /checkouts.json
   def index
     if params[:icalendar_token].present?
-      icalendar_user = Profile.where(:checkout_icalendar_token => params[:icalendar_token]).first.try(:user)
+      icalendar_user = Profile.where(checkout_icalendar_token: params[:icalendar_token]).first.try(:user)
       if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
       else

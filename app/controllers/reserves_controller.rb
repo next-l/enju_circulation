@@ -95,7 +95,7 @@ class ReservesController < ApplicationController
       order_by sort_column, order
       with(:state).equal_to state if state
       facet :state
-      paginate :page => page.to_i, :per_page => per_page
+      paginate page: page.to_i, per_page: per_page
     end
 
     @reserves = search.execute.results
