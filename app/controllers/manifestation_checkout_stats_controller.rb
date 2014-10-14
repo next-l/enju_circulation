@@ -21,20 +21,32 @@ class ManifestationCheckoutStatsController < ApplicationController
     else
       per_page = CheckoutStatHasManifestation.default_per_page
     end
+
+    @results = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: :manifestation).group(
+      'checkouts.shelf_id', :carrier_type_id
+    ).merge(
+      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+    ).count(:id)
+
+    @checkout_type_results = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: :manifestation).group(
+      'checkouts.shelf_id', :checkout_type_id
+    ).count(:id)
+
     @stats = Checkout.where(
       Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
     ).where(
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
-    ).joins(item: [:manifestation]).group(:manifestation_id).merge(
+    ).joins(item: :manifestation).group(:manifestation_id).merge(
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
     ).order('count_id DESC').page(params[:page])
-    @breakdown = Checkout.where(
-      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
-    ).where(
-      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
-    ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
-      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).order('manifestations.carrier_type_id').count(:id)
 
     respond_to do |format|
       format.html # show.html.erb

@@ -1,0 +1,46 @@
+    <table class="table table-striped index">
+      <tr>
+        <th></th>
+        <% CheckoutType.order(:position).each do |checkout_type| %>
+          <th><%= checkout_type.display_name.localize %></th>
+        <% end %>
+        <th><%= t('page.total') %></th>
+      </tr>
+      <% (Shelf.order(:position) << nil).each do |shelf| %>
+        <tr>
+          <td>
+            <% if shelf %>
+              <strong><%= shelf.display_name.localize %></strong>
+            <% else %>
+              <strong><%= t('page.unknown') %></strong>
+            <% end %>
+          </td>
+          <% CheckoutType.order(:position).each do |checkout_type| %>
+            <td>
+              <% if shelf %>
+                <%= @results[[shelf.id, checkout_type.id]] %>
+              <% else %>
+                <%= @results[[nil, checkout_type.id]] %>
+              <% end %>
+            </td>
+          <% end %>
+          <td>
+            <% if shelf %>
+              <%= @results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
+            <% else %>
+              <%= @results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td><strong><%= t('page.total') %></strong></td>
+        <% CheckoutType.order(:position).each do |checkout_type| %>
+          <td>
+            <%= @results.select{|r| r[1] == checkout_type.id}.sum{|k, v| v} %>
+          </td>
+        <% end %>
+        <td><%= @results.sum{|k, v| v} %></td>
+      </tr>
+    </table>
+

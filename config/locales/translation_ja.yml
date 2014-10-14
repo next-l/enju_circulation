@@ -194,4 +194,5 @@ ja:
     successfully_created: "%{model}のタスクは正常に作成されました。タスクが完了すると「%{model}の一覧」の状態が「完了」となり、「表示」リンクをたどることで結果を確認できるようになります。"
     breakdown: 内訳
     by_carrier_type: 資料の形態別
+    by_checkout_type: 貸出区分別
     by_manifestation: 書誌別
