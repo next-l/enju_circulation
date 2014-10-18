@@ -46,7 +46,7 @@ class ManifestationCheckoutStatsController < ApplicationController
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
     ).joins(item: :manifestation).group(:manifestation_id).merge(
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).order('count_id DESC').page(params[:page])
+    ).order('count_id DESC').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb
