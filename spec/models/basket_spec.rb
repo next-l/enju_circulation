@@ -17,7 +17,7 @@ describe Basket do
     checked_item_1.item = items(:item_00011)
     checked_item_1.save
     basket_1.basket_checkout(users(:librarian1))
-    items(:item_00011).checkouts.order('id DESC').first.shelf.should eq 'test'
+    items(:item_00011).checkouts.order('id DESC').first.shelf.name.should eq items(:item_00001).shelf.name
   end
 
   it "should not check out items that are already checked out" do
