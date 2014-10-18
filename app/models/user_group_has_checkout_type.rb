@@ -44,7 +44,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
       'SELECT count(checkouts.id) as current_checkout_count,
         profiles.user_group_id,
         items.checkout_type_id
-        FROM checkouts, profiles LEFT OUTER JOIN items
+        FROM profiles, checkouts LEFT OUTER JOIN items
         ON (checkouts.item_id = items.id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)
