@@ -6,8 +6,8 @@ rvm:
   - 2.1.3
 before_script:
   - "bundle exec rake db:migrate"
-  - mysql -e 'create database enju_leaf_test'
-  - psql -c 'create database enju_leaf_test;' -U postgres
+  - mysql -e 'create database enju_test'
+  - psql -c 'create database enju_test;' -U postgres
 services:
   - redis-server
 gemfile:
