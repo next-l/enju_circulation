@@ -123,7 +123,7 @@ class ReservesController < ApplicationController
   # GET /reserves/new
   # GET /reserves/new.json
   def new
-    @reserve = Reserve.new(params[:reserve])
+    @reserve = Reserve.new
 
     if current_user.has_role?('Librarian')
       @reserve.user = @user
