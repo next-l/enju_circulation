@@ -4,5 +4,6 @@ gem "rails", "~> 4.1.6"
 gem "jquery-rails"
 gem "protected_attributes"
 gem "enju_library", github: "next-l/enju_library", branch: "1.1"
+gem 'coveralls', require: false
 
 gemspec path: "../"
