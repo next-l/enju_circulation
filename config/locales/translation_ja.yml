@@ -46,6 +46,7 @@ ja:
         state: 状態
         force_retaining: 強制的に取り置きを行う
         item_identifier: 個別資料ID
+        pickup_location: 受取館
       checkout_type:
         name: 名前
         display_name: 表示名

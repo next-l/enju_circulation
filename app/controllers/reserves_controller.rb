@@ -204,11 +204,11 @@ class ReservesController < ApplicationController
         @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
-          if @reserve.item_identifier and @reserve.force_retaining == '1'
+          if @reserve.item_identifier.present? and @reserve.force_retaining == '1'
             @reserve.transition_to!(:retained)
           end
         else
-          @reserve.transition_to!(:retained) if @reserve.item_identifier
+          @reserve.transition_to!(:retained) if @reserve.item_identifier.present?
         end
       end
     end
