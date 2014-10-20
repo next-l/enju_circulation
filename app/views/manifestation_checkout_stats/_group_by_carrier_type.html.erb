@@ -1,8 +1,9 @@
     <table class="table table-striped index">
       <tr>
         <th>
+          <%= t('activerecord.models.library') %>
+          -
           <%= t('activerecord.models.shelf') %>
-          (<%= t('activerecord.models.library') %>)
         </th>
         <% CarrierType.order(:position).each do |carrier_type| %>
           <th><%= carrier_type.display_name.localize %></th>
@@ -13,8 +14,11 @@
         <tr>
           <td>
             <% if shelf %>
-              <strong><%= shelf.display_name.localize %></strong>
-              <strong>(<%= shelf.library.display_name.localize %>)</strong>
+              <strong>
+                <%= shelf.library.display_name.localize %>
+                -
+                <%= shelf.display_name.localize %>
+              </strong>
             <% else %>
               <strong><%= t('page.unknown') %></strong>
             <% end %>
