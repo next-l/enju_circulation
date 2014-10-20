@@ -158,7 +158,11 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    @reserve = Reserve.new(params[:reserve])
+    if current_user.has_role?('Librarian')
+      @reserve = Reserve.new(params[:reserve], as: :admin)
+    else
+      @reserve = Reserve.new(params[:reserve], as: :user_update)
+    end
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
