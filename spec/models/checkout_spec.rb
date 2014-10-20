@@ -74,4 +74,5 @@ end
 #  created_at             :datetime
 #  updated_at             :datetime
 #  shelf_id               :integer
+#  library_id             :integer
 #

@@ -14,6 +14,7 @@ class Checkout < ActiveRecord::Base
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
   belongs_to :shelf
+  belongs_to :library
 
   validates_associated :user, :item, :librarian, :checkin #, :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
@@ -173,4 +174,5 @@ end
 #  created_at             :datetime
 #  updated_at             :datetime
 #  shelf_id               :integer
+#  library_id             :integer
 #

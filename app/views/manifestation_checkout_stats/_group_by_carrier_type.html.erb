@@ -1,6 +1,9 @@
     <table class="table table-striped index">
       <tr>
-        <th></th>
+        <th>
+          <%= t('activerecord.models.shelf') %>
+          (<%= t('activerecord.models.library') %>)
+        </th>
         <% CarrierType.order(:position).each do |carrier_type| %>
           <th><%= carrier_type.display_name.localize %></th>
         <% end %>
@@ -11,6 +14,7 @@
           <td>
             <% if shelf %>
               <strong><%= shelf.display_name.localize %></strong>
+              <strong>(<%= shelf.library.display_name.localize %>)</strong>
             <% else %>
               <strong><%= t('page.unknown') %></strong>
             <% end %>
@@ -43,4 +47,3 @@
         <td><%= @carrier_type_results.sum{|k, v| v} %></td>
       </tr>
     </table>
-

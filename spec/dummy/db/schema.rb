@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014065831) do
+ActiveRecord::Schema.define(version: 20141020120523) do
 
   create_table "agent_import_file_transitions", force: true do |t|
     t.string   "to_state"
@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "shelf_id"
+    t.integer  "library_id"
   end
 
   add_index "checkouts", ["basket_id"], name: "index_checkouts_on_basket_id"
@@ -263,6 +264,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   add_index "checkouts", ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true
   add_index "checkouts", ["item_id"], name: "index_checkouts_on_item_id"
   add_index "checkouts", ["librarian_id"], name: "index_checkouts_on_librarian_id"
+  add_index "checkouts", ["library_id"], name: "index_checkouts_on_library_id"
   add_index "checkouts", ["shelf_id"], name: "index_checkouts_on_shelf_id"
   add_index "checkouts", ["user_id"], name: "index_checkouts_on_user_id"
 
