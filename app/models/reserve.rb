@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordModel
-  attr_accessible :manifestation_id, :user_number, :expired_at
+  attr_accessible :manifestation_id, :user_number, :expired_at,
+    :pickup_location_id
   attr_accessible :expired_at, :pickup_location_id, as: :user_update
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,

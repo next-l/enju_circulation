@@ -161,7 +161,7 @@ class ReservesController < ApplicationController
     if current_user.has_role?('Librarian')
       @reserve = Reserve.new(params[:reserve], as: :admin)
     else
-      @reserve = Reserve.new(params[:reserve], as: :user_update)
+      @reserve = Reserve.new(params[:reserve])
     end
     @reserve.set_user
 
