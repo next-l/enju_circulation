@@ -34,7 +34,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :pickup_location %>
+    <%= f.label :pickup_location_id %>
     <%= f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]} %>
   </div>
 

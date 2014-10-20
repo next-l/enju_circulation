@@ -48,7 +48,7 @@ en:
         state: State
         force_retaining: Force retaining
         item_identifier: Item identifier
-        pickup_location: Pickup location
+        pickup_location_id: Pickup location
       checkout_type:
         name: Name
         display_name: Display name
