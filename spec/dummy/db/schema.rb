@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",             default: "{}"
     t.integer  "sort_key"
     t.integer  "agent_import_file_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "agent_import_file_transitions", ["agent_import_file_id"], name: "index_agent_import_file_transitions_on_agent_import_file_id"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "agent_import_content_type"
     t.integer  "agent_import_file_size"
     t.datetime "agent_import_updated_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "agent_import_fingerprint"
     t.text     "error_message"
     t.string   "edit_mode"
@@ -51,21 +51,21 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "agent_import_file_id"
     t.integer  "agent_id"
     t.text     "body"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "agent_merge_lists", force: true do |t|
     t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "agent_merges", force: true do |t|
     t.integer  "agent_id",            null: false
     t.integer  "agent_merge_list_id", null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "agent_merges", ["agent_id"], name: "index_agent_merges_on_agent_id"
@@ -76,16 +76,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "agent_relationships", force: true do |t|
     t.integer  "parent_id"
     t.integer  "child_id"
     t.integer  "agent_relationship_type_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "position"
   end
 
@@ -97,8 +97,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "agents", force: true do |t|
@@ -113,8 +113,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "full_name"
     t.text     "full_name_transcription"
     t.text     "full_name_alternative"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "zip_code_1"
     t.string   "zip_code_2"
@@ -159,8 +159,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_id"
     t.text     "note"
     t.integer  "lock_version", default: 0, null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "baskets", ["user_id"], name: "index_baskets_on_user_id"
@@ -170,8 +170,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "checkout_type_id", null: false
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "carrier_type_has_checkout_types", ["carrier_type_id"], name: "index_carrier_type_has_checkout_types_on_m_form_id"
@@ -182,16 +182,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "checked_items", force: true do |t|
     t.integer  "item_id",      null: false
     t.integer  "basket_id",    null: false
     t.datetime "due_date",     null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "librarian_id"
   end
 
@@ -202,8 +202,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "item_id",                  null: false
     t.integer  "librarian_id"
     t.integer  "basket_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lock_version", default: 0, null: false
   end
 
@@ -215,8 +215,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "manifestation_checkout_stat_id", null: false
     t.integer  "manifestation_id",               null: false
     t.integer  "checkouts_count"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "checkout_stat_has_manifestations", ["manifestation_checkout_stat_id"], name: "index_checkout_stat_has_manifestations_on_checkout_stat_id"
@@ -226,8 +226,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_checkout_stat_id",             null: false
     t.integer  "user_id",                           null: false
     t.integer  "checkouts_count",       default: 0, null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "checkout_stat_has_users", ["user_checkout_stat_id"], name: "index_checkout_stat_has_users_on_user_checkout_stat_id"
@@ -238,8 +238,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "checkout_types", ["name"], name: "index_checkout_types_on_name"
@@ -253,8 +253,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "due_date"
     t.integer  "checkout_renewal_count", default: 0, null: false
     t.integer  "lock_version",           default: 0, null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "shelf_id"
   end
 
@@ -271,8 +271,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "content_types", force: true do |t|
@@ -280,8 +280,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "countries", force: true do |t|
@@ -304,16 +304,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "creates", force: true do |t|
     t.integer  "agent_id",       null: false
     t.integer  "work_id",        null: false
     t.integer  "position"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "create_type_id"
   end
 
@@ -330,8 +330,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
@@ -339,8 +339,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   create_table "donates", force: true do |t|
     t.integer  "agent_id",   null: false
     t.integer  "item_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "donates", ["agent_id"], name: "index_donates_on_agent_id"
@@ -351,8 +351,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "events", force: true do |t|
@@ -365,8 +365,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.boolean  "all_day",           default: false, null: false
     t.datetime "deleted_at"
     t.text     "display_name"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "events", ["event_category_id"], name: "index_events_on_event_category_id"
@@ -376,8 +376,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "manifestation_id", null: false
     t.integer  "item_id",          null: false
     t.integer  "position"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "exemplifies", ["item_id"], name: "index_exemplifies_on_item_id", unique: true
@@ -388,8 +388,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "form_of_works", force: true do |t|
@@ -397,8 +397,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "frequencies", force: true do |t|
@@ -406,8 +406,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "identifier_types", force: true do |t|
@@ -415,8 +415,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "identifiers", force: true do |t|
@@ -425,8 +425,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "manifestation_id"
     t.boolean  "primary"
     t.integer  "position"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "identifiers", ["body", "identifier_type_id"], name: "index_identifiers_on_body_and_identifier_type_id"
@@ -437,8 +437,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",          default: "{}"
     t.integer  "sort_key"
     t.integer  "import_request_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "import_request_transitions", ["import_request_id"], name: "index_import_request_transitions_on_import_request_id"
@@ -448,8 +448,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "isbn"
     t.integer  "manifestation_id"
     t.integer  "user_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "import_requests", ["isbn"], name: "index_import_requests_on_isbn"
@@ -459,8 +459,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   create_table "item_has_use_restrictions", force: true do |t|
     t.integer  "item_id",            null: false
     t.integer  "use_restriction_id", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "item_has_use_restrictions", ["item_id"], name: "index_item_has_use_restrictions_on_item_id"
@@ -469,8 +469,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   create_table "items", force: true do |t|
     t.string   "call_number"
     t.string   "item_identifier"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.integer  "shelf_id",                default: 1,     null: false
     t.boolean  "include_supplements",     default: false, null: false
@@ -525,8 +525,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "fine",           default: 0, null: false
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "lending_policies", ["item_id", "user_group_id"], name: "index_lending_policies_on_item_id_and_user_group_id", unique: true
@@ -549,8 +549,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "users_count",           default: 0,   null: false
     t.integer  "position"
     t.integer  "country_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "isil"
   end
@@ -569,8 +569,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "valid_period_for_new_user",   default: 365,                      null: false
     t.boolean  "post_to_union_catalog",       default: false,                    null: false
     t.integer  "country_id"
-    t.datetime "created_at",                                                     null: false
-    t.datetime "updated_at",                                                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "admin_networks"
     t.boolean  "allow_bookmark_external_url", default: false,                    null: false
     t.integer  "position"
@@ -584,8 +584,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manifestation_checkout_stat_transitions", force: true do |t|
@@ -593,8 +593,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",                       default: "{}"
     t.integer  "sort_key"
     t.integer  "manifestation_checkout_stat_id"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "manifestation_checkout_stat_transitions", ["manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_stat_id"
@@ -604,8 +604,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -618,16 +618,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manifestation_relationships", force: true do |t|
     t.integer  "parent_id"
     t.integer  "child_id"
     t.integer  "manifestation_relationship_type_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "position"
   end
 
@@ -639,8 +639,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",                      default: "{}"
     t.integer  "sort_key"
     t.integer  "manifestation_reserve_stat_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "manifestation_reserve_stat_transitions", ["manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_stat_id"
@@ -650,8 +650,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -667,8 +667,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "manifestation_identifier"
     t.datetime "date_of_publication"
     t.datetime "date_copyrighted"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "access_address"
     t.integer  "language_id",                     default: 1,     null: false
@@ -730,8 +730,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "message_request_transitions", force: true do |t|
@@ -739,8 +739,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",           default: "{}"
     t.integer  "sort_key"
     t.integer  "message_request_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "message_request_transitions", ["message_request_id"], name: "index_message_request_transitions_on_message_request_id"
@@ -753,8 +753,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "sent_at"
     t.datetime "deleted_at"
     t.text     "body"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "message_templates", force: true do |t|
@@ -763,8 +763,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "body",                      null: false
     t.integer  "position"
     t.string   "locale",     default: "en"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "message_templates", ["status"], name: "index_message_templates_on_status", unique: true
@@ -774,8 +774,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",   default: "{}"
     t.integer  "sort_key"
     t.integer  "message_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "message_transitions", ["message_id"], name: "index_message_transitions_on_message_id"
@@ -789,8 +789,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "body"
     t.integer  "message_request_id"
     t.integer  "parent_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lft"
     t.integer  "rgt"
     t.integer  "depth"
@@ -805,8 +805,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "agent_id",   null: false
     t.integer  "item_id",    null: false
     t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "owns", ["agent_id"], name: "index_owns_on_agent_id"
@@ -819,8 +819,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "title"
     t.string   "thumbnail"
     t.integer  "position"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
@@ -836,16 +836,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "produces", force: true do |t|
     t.integer  "agent_id",         null: false
     t.integer  "manifestation_id", null: false
     t.integer  "position"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "produce_type_id"
   end
 
@@ -862,8 +862,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "note"
     t.text     "keyword_list"
     t.integer  "required_role_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "checkout_icalendar_token"
     t.boolean  "save_checkout_history",    default: false, null: false
     t.datetime "expired_at"
@@ -878,16 +878,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "realizes", force: true do |t|
     t.integer  "agent_id",        null: false
     t.integer  "expression_id",   null: false
     t.integer  "position"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "realize_type_id"
   end
 
@@ -899,8 +899,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "request_types", force: true do |t|
@@ -908,16 +908,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "reserve_stat_has_manifestations", force: true do |t|
     t.integer  "manifestation_reserve_stat_id", null: false
     t.integer  "manifestation_id",              null: false
     t.integer  "reserves_count"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "reserve_stat_has_manifestations", ["manifestation_id"], name: "index_reserve_stat_has_manifestations_on_manifestation_id"
@@ -927,8 +927,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_reserve_stat_id", null: false
     t.integer  "user_id",              null: false
     t.integer  "reserves_count"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "reserve_stat_has_users", ["user_id"], name: "index_reserve_stat_has_users_on_user_id"
@@ -939,8 +939,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",   default: "{}"
     t.integer  "sort_key"
     t.integer  "reserve_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "reserve_transitions", ["reserve_id"], name: "index_reserve_transitions_on_reserve_id"
@@ -952,13 +952,14 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "item_id"
     t.integer  "request_status_type_id",                       null: false
     t.datetime "checked_out_at"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "canceled_at"
     t.datetime "expired_at"
     t.datetime "deleted_at"
     t.boolean  "expiration_notice_to_patron",  default: false
     t.boolean  "expiration_notice_to_library", default: false
+    t.integer  "pickup_location_id"
     t.datetime "retained_at"
     t.datetime "postponed_at"
     t.integer  "lock_version",                 default: 0,     null: false
@@ -966,6 +967,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   add_index "reserves", ["item_id"], name: "index_reserves_on_item_id"
   add_index "reserves", ["manifestation_id"], name: "index_reserves_on_manifestation_id"
+  add_index "reserves", ["pickup_location_id"], name: "index_reserves_on_pickup_location_id"
   add_index "reserves", ["request_status_type_id"], name: "index_reserves_on_request_status_type_id"
   add_index "reserves", ["user_id"], name: "index_reserves_on_user_id"
 
@@ -974,8 +976,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",                default: "{}"
     t.integer  "sort_key"
     t.integer  "resource_export_file_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "resource_export_file_transitions", ["resource_export_file_id"], name: "index_resource_export_file_transitions_on_file_id"
@@ -988,8 +990,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "resource_export_file_size"
     t.datetime "resource_export_updated_at"
     t.datetime "executed_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "resource_import_file_transitions", force: true do |t|
@@ -997,8 +999,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",                default: "{}"
     t.integer  "sort_key"
     t.integer  "resource_import_file_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "resource_import_file_transitions", ["resource_import_file_id"], name: "index_resource_import_file_transitions_on_file_id"
@@ -1015,8 +1017,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.string   "resource_import_content_type"
     t.integer  "resource_import_file_size"
     t.datetime "resource_import_updated_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "edit_mode"
     t.string   "resource_import_fingerprint"
     t.text     "error_message"
@@ -1032,8 +1034,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "manifestation_id"
     t.integer  "item_id"
     t.text     "body"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "error_message"
   end
 
@@ -1046,16 +1048,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "series_has_manifestations", force: true do |t|
     t.integer  "series_statement_id"
     t.integer  "manifestation_id"
     t.integer  "position"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "series_has_manifestations", ["manifestation_id"], name: "index_series_has_manifestations_on_manifestation_id"
@@ -1063,15 +1065,15 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "series_statement_merge_lists", force: true do |t|
     t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "series_statement_merges", force: true do |t|
     t.integer  "series_statement_id",            null: false
     t.integer  "series_statement_merge_list_id", null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "series_statement_merges", ["series_statement_id"], name: "index_series_statement_merges_on_series_statement_id"
@@ -1083,8 +1085,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "title_subseries"
     t.text     "numbering_subseries"
     t.integer  "position"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "title_transcription"
     t.text     "title_alternative"
     t.string   "series_statement_identifier"
@@ -1111,8 +1113,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "library_id",   default: 1, null: false
     t.integer  "items_count",  default: 0, null: false
     t.integer  "position"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
   end
 
@@ -1123,8 +1125,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_checkout_stat_transitions", force: true do |t|
@@ -1132,8 +1134,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",              default: "{}"
     t.integer  "sort_key"
     t.integer  "user_checkout_stat_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "user_checkout_stat_transitions", ["sort_key", "user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_sort_key_and_stat_id", unique: true
@@ -1143,8 +1145,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -1164,8 +1166,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "fixed_due_date"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "current_checkout_count"
   end
 
@@ -1174,12 +1176,12 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "user_groups", force: true do |t|
     t.string   "name"
-    t.string   "string"
+    t.text     "string"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.integer  "valid_period_for_new_user",        default: 0, null: false
     t.datetime "expired_at"
@@ -1191,8 +1193,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   create_table "user_has_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_reserve_stat_transitions", force: true do |t|
@@ -1200,8 +1202,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.text     "metadata",             default: "{}"
     t.integer  "sort_key"
     t.integer  "user_reserve_stat_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "user_reserve_stat_transitions", ["sort_key", "user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_sort_key_and_stat_id", unique: true
@@ -1211,8 +1213,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -1231,8 +1233,8 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "save_checkout_history",    default: false, null: false
     t.string   "checkout_icalendar_token"
     t.string   "username"

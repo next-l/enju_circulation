@@ -8,6 +8,8 @@ class Reserve < ActiveRecord::Base
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
     :retained_at, :postponed_at, :force_retaining,
     as: :admin
+  attr_accessible :pickup_location_id, as: :user
+  attr_accessible :pickup_location_id, as: :admin
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
@@ -29,6 +31,7 @@ class Reserve < ActiveRecord::Base
   belongs_to :librarian, class_name: 'User'
   belongs_to :item, touch: true
   belongs_to :request_status_type
+  belongs_to :pickup_location, :class_name => 'Library'
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true #, on: :create
@@ -401,13 +404,14 @@ end
 #  item_id                      :integer
 #  request_status_type_id       :integer          not null
 #  checked_out_at               :datetime
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
+#  created_at                   :datetime
+#  updated_at                   :datetime
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

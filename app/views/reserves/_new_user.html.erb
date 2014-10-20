@@ -32,6 +32,11 @@
     <%= f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"-%>
   </div>
 
+  <div class="field">
+    <%= f.label :pickup_location %>
+    <%= f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]} %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
