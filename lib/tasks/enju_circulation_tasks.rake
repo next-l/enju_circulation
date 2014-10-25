@@ -1,6 +1,7 @@
 require 'active_record/fixtures'
-require 'tasks/reserve'
+require 'tasks/checkout'
 require 'tasks/circulation_status'
+require 'tasks/reserve'
 require 'tasks/use_restriction'
 
 namespace :enju_circulation do
