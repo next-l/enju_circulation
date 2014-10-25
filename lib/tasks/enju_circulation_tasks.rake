@@ -20,7 +20,7 @@ namespace :enju_circulation do
   task :stat => :environment do
     UserCheckoutStat.calculate_stat
     UserReserveStat.calculate_stat
-    ManifestationCheckoutStat.calculate_stat
+    #ManifestationCheckoutStat.calculate_stat
     ManifestationReserveStat.calculate_stat
   end
 
@@ -44,5 +44,12 @@ namespace :enju_circulation do
       update_use_restriction
     end
     puts 'enju_circulation: The upgrade completed successfully.'
+  end
+
+  desc "migrate old checkout records"
+  task :migrate_old_checkout => :environment do
+    Checkout.transaction do
+      update_checkout
+    end
   end
 end
