@@ -35,7 +35,7 @@ class CheckoutsController < ApplicationController
         if current_user.try(:has_role?, 'Librarian')
           search.build do
             with(:username).equal_to user.username
-            with(:checked_in_at).equal_to nil unless user.save_checkout_history
+            with(:checked_in_at).equal_to nil unless user.profile.save_checkout_history
           end
         else
           if current_user == user

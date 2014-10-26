@@ -1,3 +1,3 @@
 module EnjuCirculation
-  VERSION = "0.1.0.pre41"
+  VERSION = "0.1.0.pre42"
 end
