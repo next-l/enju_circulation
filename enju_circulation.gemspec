@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "enju_message", "~> 0.1.14.pre20"
   s.add_dependency "enju_event", "~> 0.1.17.pre23"
 
-  s.add_development_dependency "enju_leaf", "~> 1.1.0.rc15"
+  s.add_development_dependency "enju_leaf", "~> 1.1.0.rc16"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "pg"
