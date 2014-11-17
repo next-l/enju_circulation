@@ -2,7 +2,8 @@
       <tr>
         <th>
           <%= t('activerecord.models.library') %>
-          -
+	</th>
+	<th>
           <%= t('activerecord.models.shelf') %>
         </th>
         <% CheckoutType.order(:position).each do |checkout_type| %>
@@ -10,39 +11,39 @@
         <% end %>
         <th><%= t('page.total') %></th>
       </tr>
-      <% (Shelf.order(:position) << nil).each do |shelf| %>
-        <tr>
-          <td>
-            <% if shelf %>
-              <strong>
-                <%= shelf.library.display_name.localize %>
-                -
-                <%= shelf.display_name.localize %>
-              </strong>
-            <% else %>
-              <strong><%= t('page.unknown') %></strong>
-            <% end %>
-          </td>
-          <% CheckoutType.order(:position).each do |checkout_type| %>
+      <% Library.order(:position).each do |library| %>
+        <% library.shelves.order(:position).each do |shelf| %>
+          <tr>
             <td>
-              <% if shelf %>
-                <%= @checkout_type_results[[shelf.id, checkout_type.id]] %>
-              <% else %>
-                <%= @checkout_type_results[[nil, checkout_type.id]] %>
-              <% end %>
+              <%= library.display_name.localize %>
             </td>
-          <% end %>
-          <td>
-            <% if shelf %>
-              <%= @checkout_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
-            <% else %>
-              <%= @checkout_type_results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+            <td>
+              <%= shelf.display_name.localize %>
+            </td>
+            <% CheckoutType.order(:position).each do |checkout_type| %>
+              <td>
+                <%= @checkout_type_results[[shelf.id, checkout_type.id]] %>
+              </td>
             <% end %>
-          </td>
-        </tr>
+            <td>
+              <%= @checkout_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
       <tr>
-        <td><strong><%= t('page.total') %></strong></td>
+        <td colspan="2"><%= t('page.unknown') %></th>
+        <% CheckoutType.order(:position).each do |checkout_type| %>
+          <td>
+            <%= @checkout_type_results[[nil, checkout_type.id]] %>
+          </td>
+        <% end %>
+        <td>
+          <%= @checkout_type_results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2"><%= t('page.total') %></th>
         <% CheckoutType.order(:position).each do |checkout_type| %>
           <td>
             <%= @checkout_type_results.select{|r| r[1] == checkout_type.id}.sum{|k, v| v} %>

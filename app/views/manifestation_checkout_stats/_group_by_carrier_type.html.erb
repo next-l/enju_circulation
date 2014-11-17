@@ -2,7 +2,8 @@
       <tr>
         <th>
           <%= t('activerecord.models.library') %>
-          -
+	</th>
+	<th>
           <%= t('activerecord.models.shelf') %>
         </th>
         <% CarrierType.order(:position).each do |carrier_type| %>
@@ -10,39 +11,39 @@
         <% end %>
         <th><%= t('page.total') %></th>
       </tr>
-      <% (Shelf.order(:position) << nil).each do |shelf| %>
-        <tr>
-          <td>
-            <% if shelf %>
-              <strong>
-                <%= shelf.library.display_name.localize %>
-                -
-                <%= shelf.display_name.localize %>
-              </strong>
-            <% else %>
-              <strong><%= t('page.unknown') %></strong>
-            <% end %>
-          </td>
-          <% CarrierType.order(:position).each do |carrier_type| %>
-            <td>
-              <% if shelf %>
-                <%= @carrier_type_results[[shelf.id, carrier_type.id]] %>
-              <% else %>
-                <%= @carrier_type_results[[nil, carrier_type.id]] %>
-              <% end %>
+      <% Library.order(:position).each do |library| %>
+        <% library.shelves.order(:position).each do |shelf| %>
+          <tr>
+	    <td>
+              <%= library.display_name.localize %>
             </td>
-          <% end %>
-          <td>
-            <% if shelf %>
-              <%= @carrier_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
-            <% else %>
-              <%= @carrier_type_results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+            <td>
+              <%= shelf.display_name.localize %>
+            </td>
+            <% CarrierType.order(:position).each do |carrier_type| %>
+              <td>
+                <%= @carrier_type_results[[shelf.id, carrier_type.id]] %>
+              </td>
             <% end %>
-          </td>
-        </tr>
+            <td>
+              <%= @carrier_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v} %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
       <tr>
-        <td><strong><%= t('page.total') %></strong></td>
+        <td colspan="2"><%= t('page.unknown') %></td>
+        <% CarrierType.order(:position).each do |carrier_type| %>
+          <td>
+            <%= @carrier_type_results[[nil, carrier_type.id]] %>
+          </td>
+	<% end %>
+        <td>
+          <%= @carrier_type_results.select{|r| r[0].nil?}.sum{|k, v| v} %>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2"><%= t('page.total') %></th>
         <% CarrierType.order(:position).each do |carrier_type| %>
           <td>
             <%= @carrier_type_results.select{|r| r[1] == carrier_type.id}.sum{|k, v| v} %>
