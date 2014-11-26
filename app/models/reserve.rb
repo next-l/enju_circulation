@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   attr_accessible :manifestation_id, :user_number, :expired_at
   attr_accessible :expired_at, as: :user_update
   attr_accessible :manifestation_id, :item_identifier, :user_number,
@@ -388,6 +388,10 @@ class Reserve < ActiveRecord::Base
 
   def self.transition_class
     ReserveTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 

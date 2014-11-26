@@ -1,5 +1,5 @@
 class UserReserveStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   attr_accessible :start_date, :end_date, :note, :mode
   default_scope {order('user_reserve_stats.id DESC')}
@@ -40,6 +40,10 @@ class UserReserveStat < ActiveRecord::Base
   private
   def self.transition_class
     UserReserveStatTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 
