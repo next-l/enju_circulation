@@ -1,12 +1,13 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
-  attr_accessible :manifestation_id, :user_number, :expired_at
-  attr_accessible :expired_at, as: :user_update
+  attr_accessible :manifestation_id, :user_number, :expired_at,
+    :pickup_location_id
+  attr_accessible :expired_at, :pickup_location_id, as: :user_update
   attr_accessible :manifestation_id, :item_identifier, :user_number,
     :expired_at, :request_status_type, :canceled_at, :checked_out_at,
     :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-    :retained_at, :postponed_at, :force_retaining,
+    :retained_at, :postponed_at, :force_retaining, :pickup_location_id,
     as: :admin
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
@@ -18,17 +19,18 @@ class Reserve < ActiveRecord::Base
   scope :will_expire_retained, lambda {|datetime| in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :will_expire_pending, lambda {|datetime| in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => false)}
-  scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => false)}
-  scope :sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => true)}
-  scope :sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => true)}
-  scope :not_sent_cancel_notice_to_patron, -> {in_state(:canceled).where(:expiration_notice_to_patron => false)}
-  scope :not_sent_cancel_notice_to_library, -> {in_state(:canceled).where(:expiration_notice_to_library => false)}
+  scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(expiration_notice_to_patron: false)}
+  scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(expiration_notice_to_library: false)}
+  scope :sent_expiration_notice_to_patron, -> {in_state(:expired).where(expiration_notice_to_patron: true)}
+  scope :sent_expiration_notice_to_library, -> {in_state(:expired).where(expiration_notice_to_library: true)}
+  scope :not_sent_cancel_notice_to_patron, -> {in_state(:canceled).where(expiration_notice_to_patron: false)}
+  scope :not_sent_cancel_notice_to_library, -> {in_state(:canceled).where(expiration_notice_to_library: false)}
   belongs_to :user
   belongs_to :manifestation, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :item, touch: true
   belongs_to :request_status_type
+  belongs_to :pickup_location, :class_name => 'Library'
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true #, on: :create
@@ -405,13 +407,14 @@ end
 #  item_id                      :integer
 #  request_status_type_id       :integer          not null
 #  checked_out_at               :datetime
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
+#  created_at                   :datetime
+#  updated_at                   :datetime
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

@@ -27,7 +27,6 @@ end
 #  fine           :integer          default(0), not null
 #  note           :text
 #  position       :integer
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  created_at     :datetime
+#  updated_at     :datetime
 #
-

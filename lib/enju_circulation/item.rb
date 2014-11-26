@@ -90,17 +90,17 @@ module EnjuCirculation
       end
 
       def checkout!(user)
-        self.circulation_status = CirculationStatus.where(:name => 'On Loan').first
-        if self.reserved_by_user?(user)
-          manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
+        self.circulation_status = CirculationStatus.where(name: 'On Loan').first
+        if reserved_by_user?(user)
+          manifestation.next_reservation.update_attributes(checked_out_at: Time.zone.now)
           manifestation.next_reservation.sm_complete!
         end
         save!
       end
 
       def checkin!
-        self.circulation_status = CirculationStatus.where(:name => 'Available On Shelf').first
-        save(:validate => false)
+        self.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
+        save(validate: false)
       end
 
       def retain(librarian)
@@ -123,16 +123,22 @@ module EnjuCirculation
       end
 
       def lending_rule(user)
-        lending_policies.where(:user_group_id => user.profile.user_group.id).first
+        lending_policies.where(user_group_id: user.profile.user_group.id).first
       end
 
       def not_for_loan?
         !manifestation.items.for_checkout.include?(self)
       end
 
-     def create_lending_policy
+      def create_lending_policy
         UserGroupHasCheckoutType.available_for_item(self).each do |rule|
-          LendingPolicy.create!(:item_id => id, :user_group_id => rule.user_group_id, :fixed_due_date => rule.fixed_due_date, :loan_period => rule.checkout_period, :renewal => rule.checkout_renewal_limit)
+          LendingPolicy.create!(
+            item_id: id,
+            user_group_id: rule.user_group_id,
+            fixed_due_date: rule.fixed_due_date,
+            loan_period: rule.checkout_period,
+            renewal: rule.checkout_renewal_limit
+          )
         end
       end
 

@@ -3,6 +3,7 @@ class ReservesController < ApplicationController
   before_filter :store_location, only: [:index, :new]
   load_and_authorize_resource except: :index
   authorize_resource only: :index
+  before_filter :prepare_options, only: [:new, :edit]
   before_filter :get_user, only: [:index, :new]
   before_filter :store_page
   helper_method :get_manifestation
@@ -95,7 +96,7 @@ class ReservesController < ApplicationController
       order_by sort_column, order
       with(:state).equal_to state if state
       facet :state
-      paginate :page => page.to_i, :per_page => per_page
+      paginate page: page.to_i, per_page: per_page
     end
 
     @reserves = search.execute.results
@@ -122,7 +123,7 @@ class ReservesController < ApplicationController
   # GET /reserves/new
   # GET /reserves/new.json
   def new
-    @reserve = Reserve.new(params[:reserve])
+    @reserve = Reserve.new
 
     if current_user.has_role?('Librarian')
       @reserve.user = @user
@@ -157,7 +158,11 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    @reserve = Reserve.new(params[:reserve])
+    if current_user.has_role?('Librarian')
+      @reserve = Reserve.new(params[:reserve], as: :admin)
+    else
+      @reserve = Reserve.new(params[:reserve])
+    end
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
@@ -179,6 +184,7 @@ class ReservesController < ApplicationController
         format.html { redirect_to @reserve, notice: t('controller.successfully_created', model: t('activerecord.models.reserve')) }
         format.json { render json: @reserve, status: :created, location: reserve_url(@reserve) }
       else
+        prepare_options
         format.html { render action: "new" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
@@ -202,11 +208,11 @@ class ReservesController < ApplicationController
         @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
-          if @reserve.item_identifier and @reserve.force_retaining == '1'
+          if @reserve.item_identifier.present? and @reserve.force_retaining == '1'
             @reserve.transition_to!(:retained)
           end
         else
-          @reserve.transition_to!(:retained) if @reserve.item_identifier
+          @reserve.transition_to!(:retained) if @reserve.item_identifier.present?
         end
       end
     end
@@ -221,6 +227,7 @@ class ReservesController < ApplicationController
         format.html { redirect_to @reserve }
         format.json { head :no_content }
       else
+        prepare_options
         format.html { render action: "edit" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
@@ -246,5 +253,10 @@ class ReservesController < ApplicationController
       format.html { redirect_to reserves_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.reserve')) }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def prepare_options
+    @libraries = Library.real.order(:position)
   end
 end
