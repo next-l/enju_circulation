@@ -1,14 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
-  attr_accessible :manifestation_id, :user_number, :expired_at,
-    :pickup_location_id
-  attr_accessible :expired_at, :pickup_location_id, as: :user_update
-  attr_accessible :manifestation_id, :item_identifier, :user_number,
-    :expired_at, :request_status_type, :canceled_at, :checked_out_at,
-    :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-    :retained_at, :postponed_at, :force_retaining, :pickup_location_id,
-    as: :admin
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}

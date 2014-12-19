@@ -86,6 +86,12 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
+  def carrier_type_has_checkout_type_params
+    params.require(:carrier_type_has_checkout_type).permit(
+      :carrier_type_id, :checkout_type_id, :note
+    )
+  end
+
   def prepare_options
     @checkout_types = CheckoutType.all
     @carrier_types = CarrierType.all

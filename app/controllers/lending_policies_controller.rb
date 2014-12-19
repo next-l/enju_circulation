@@ -78,6 +78,13 @@ class LendingPoliciesController < ApplicationController
   end
 
   private
+  def lending_policy_params
+    params.require(:lending_policy).permit(
+      :item_id, :user_group_id, :loan_period, :fixed_due_date,
+      :renewal, :fine, :note, :position
+    )
+  end
+
   def prepare_options
     @user_groups = UserGroup.order(:position)
   end

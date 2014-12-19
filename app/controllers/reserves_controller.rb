@@ -256,6 +256,18 @@ class ReservesController < ApplicationController
   end
 
   private
+  def reserve_params
+    params.require(:reserve).permit(
+      :manifestation_id, :user_number, :expired_at,
+      :pickup_location_id, :expired_at, :pickup_location_id, #as: :user_update
+      :manifestation_id, :item_identifier, :user_number,
+      :expired_at, :request_status_type, :canceled_at, :checked_out_at,
+      :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+      :retained_at, :postponed_at, :force_retaining, :pickup_location_id #,
+      #as: :admin
+    )
+  end
+
   def prepare_options
     @libraries = Library.real.order(:position)
   end

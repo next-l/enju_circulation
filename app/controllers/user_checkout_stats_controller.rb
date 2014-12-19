@@ -90,4 +90,11 @@ class UserCheckoutStatsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def user_checkout_stat_params
+    params.require(:user_checkout_stat).permit(
+      :start_date, :end_date, :note, :mode
+    )
+  end
 end

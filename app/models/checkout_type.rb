@@ -1,5 +1,4 @@
 class CheckoutType < ActiveRecord::Base
-  attr_accessible :name, :display_name, :note
   include MasterModel
   default_scope { order('checkout_types.position') }
   scope :available_for_carrier_type, lambda {|carrier_type| includes(:carrier_types).where('carrier_types.name = ?', carrier_type.name).order('carrier_types.position')}

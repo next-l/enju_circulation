@@ -177,4 +177,9 @@ class CheckoutsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def checkout_params
+    params.require(:checkout).permit(:due_date)
+  end
 end

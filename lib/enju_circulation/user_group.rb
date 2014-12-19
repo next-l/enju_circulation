@@ -9,7 +9,6 @@ module EnjuCirculation
         has_many :user_group_has_checkout_types, dependent: :destroy
         has_many :checkout_types, through: :user_group_has_checkout_types
         has_many :lending_policies
-        attr_accessible :user_group_has_checkout_types_attributes
         accepts_nested_attributes_for :user_group_has_checkout_types, :allow_destroy => true, :reject_if => :all_blank
 
         validates_numericality_of :number_of_day_to_notify_due_date,

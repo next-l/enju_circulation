@@ -90,4 +90,11 @@ class ManifestationReserveStatsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def manifestation_reserve_stat_params
+    params.require(:manifestation_reserve_stat).permit(
+      :start_date, :end_date, :note, :mode
+    )
+  end
 end

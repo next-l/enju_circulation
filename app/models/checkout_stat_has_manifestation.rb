@@ -1,6 +1,6 @@
 class CheckoutStatHasManifestation < ActiveRecord::Base
-  attr_accessible :manifestation_checkout_stat_id, :manifestation_id,
-    as: :admin
+  #attr_accessible :manifestation_checkout_stat_id, :manifestation_id,
+  #  as: :admin
   belongs_to :manifestation_checkout_stat
   belongs_to :manifestation
 

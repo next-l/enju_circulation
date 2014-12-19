@@ -86,4 +86,11 @@ class ItemHasUseRestrictionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def item_has_use_restriction_params
+    params.require(:item_has_use_restriction).permit(
+      :item_id, :use_restriction_id, :use_restriction
+    )
+  end
 end

@@ -81,4 +81,9 @@ class UseRestrictionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def use_restriction_params
+    params.require(:use_restriction).permit(:name, :display_name, :note)
+  end
 end

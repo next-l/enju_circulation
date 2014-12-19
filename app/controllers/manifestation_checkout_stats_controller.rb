@@ -118,4 +118,11 @@ class ManifestationCheckoutStatsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def manifestation_checkout_stat_params
+    params.require(:manifestation_checkout_stat).permit(
+      :start_date, :end_date, :note, :mode
+    )
+  end
 end

@@ -101,4 +101,9 @@ class CheckoutTypesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def checkout_type_params
+    params.require(:checkout_type).permit(:name, :display_name, :note)
+  end
 end

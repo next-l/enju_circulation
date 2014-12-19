@@ -107,4 +107,11 @@ class CheckedItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def checked_item_params
+    params.require(:checked_item).permit(
+      :item_identifier, :ignore_restriction, :due_date_string
+    )
+  end
 end

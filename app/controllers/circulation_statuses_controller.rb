@@ -81,4 +81,9 @@ class CirculationStatusesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def circulation_status_params
+    params.require(:circulation_status).permit(:name, :display_name, :note)
+  end
 end

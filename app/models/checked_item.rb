@@ -1,5 +1,4 @@
 class CheckedItem < ActiveRecord::Base
-  attr_accessible :item_identifier, :ignore_restriction, :due_date_string
   belongs_to :item #, validate: true
   belongs_to :basket #, validate: true
   belongs_to :librarian, class_name: 'User' #, validate: true
@@ -15,7 +14,7 @@ class CheckedItem < ActiveRecord::Base
   before_validation :set_due_date, on: :create
   normalize_attributes :item_identifier
 
-  attr_protected :user_id
+  #attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
