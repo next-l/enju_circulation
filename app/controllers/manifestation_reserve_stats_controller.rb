@@ -48,7 +48,7 @@ class ManifestationReserveStatsController < ApplicationController
   # POST /manifestation_reserve_stats
   # POST /manifestation_reserve_stats.json
   def create
-    @manifestation_reserve_stat = ManifestationReserveStat.new(params[:manifestation_reserve_stat])
+    @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
     @manifestation_reserve_stat.user = current_user
 
     respond_to do |format|
@@ -67,7 +67,7 @@ class ManifestationReserveStatsController < ApplicationController
   # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_reserve_stat.update_attributes(params[:manifestation_reserve_stat])
+      if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
         if @manifestation_reserve_stat.mode == 'import'
           Resque.enqueue(ManifestationReserveStatQueue, @manifestation_reserve_stat.id)
         end

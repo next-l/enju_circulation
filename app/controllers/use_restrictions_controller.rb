@@ -39,7 +39,7 @@ class UseRestrictionsController < ApplicationController
   # POST /use_restrictions
   # POST /use_restrictions.json
   def create
-    @use_restriction = UseRestriction.new(params[:use_restriction])
+    @use_restriction = UseRestriction.new(use_restriction_params)
 
     respond_to do |format|
       if @use_restriction.save
@@ -61,7 +61,7 @@ class UseRestrictionsController < ApplicationController
     end
 
     respond_to do |format|
-      if @use_restriction.update_attributes(params[:use_restriction])
+      if @use_restriction.update_attributes(use_restriction_params)
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.use_restriction')) }
         format.json { head :no_content }
       else

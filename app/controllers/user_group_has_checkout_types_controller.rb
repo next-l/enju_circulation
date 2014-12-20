@@ -44,7 +44,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # POST /user_group_has_checkout_types
   # POST /user_group_has_checkout_types.json
   def create
-    @user_group_has_checkout_type = UserGroupHasCheckoutType.new(params[:user_group_has_checkout_type])
+    @user_group_has_checkout_type = UserGroupHasCheckoutType.new(user_group_has_checkout_type_params)
 
     respond_to do |format|
       if @user_group_has_checkout_type.save
@@ -62,7 +62,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # PUT /user_group_has_checkout_types/1.json
   def update
     respond_to do |format|
-      if @user_group_has_checkout_type.update_attributes(params[:user_group_has_checkout_type])
+      if @user_group_has_checkout_type.update_attributes(user_group_has_checkout_type_params)
         format.html { redirect_to @user_group_has_checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.user_group_has_checkout_type')) }
         format.json { head :no_content }
       else

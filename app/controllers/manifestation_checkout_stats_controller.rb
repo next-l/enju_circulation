@@ -74,7 +74,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # POST /manifestation_checkout_stats
   # POST /manifestation_checkout_stats.json
   def create
-    @manifestation_checkout_stat = ManifestationCheckoutStat.new(params[:manifestation_checkout_stat])
+    @manifestation_checkout_stat = ManifestationCheckoutStat.new(manifestation_checkout_stat_params)
     @manifestation_checkout_stat.user = current_user
 
     respond_to do |format|
@@ -95,7 +95,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # PUT /manifestation_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_checkout_stat.update_attributes(params[:manifestation_checkout_stat])
+      if @manifestation_checkout_stat.update_attributes(manifestation_checkout_stat_params)
         if @manifestation_checkout_stat.mode == 'import'
           Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
         end

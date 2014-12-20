@@ -39,7 +39,7 @@ class CirculationStatusesController < ApplicationController
   # POST /circulation_statuses
   # POST /circulation_statuses.json
   def create
-    @circulation_status = CirculationStatus.new(params[:circulation_status])
+    @circulation_status = CirculationStatus.new(circulation_status_params)
 
     respond_to do |format|
       if @circulation_status.save
@@ -61,7 +61,7 @@ class CirculationStatusesController < ApplicationController
     end
 
     respond_to do |format|
-      if @circulation_status.update_attributes(params[:circulation_status])
+      if @circulation_status.update_attributes(circulation_status_params)
         format.html { redirect_to @circulation_status, notice: t('controller.successfully_updated', model: t('activerecord.models.circulation_status')) }
         format.json { head :no_content }
       else

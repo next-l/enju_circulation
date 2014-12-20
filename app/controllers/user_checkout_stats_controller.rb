@@ -48,7 +48,7 @@ class UserCheckoutStatsController < ApplicationController
   # POST /user_checkout_stats
   # POST /user_checkout_stats.json
   def create
-    @user_checkout_stat = UserCheckoutStat.new(params[:user_checkout_stat])
+    @user_checkout_stat = UserCheckoutStat.new(user_checkout_stat_params)
     @user_checkout_stat.user = current_user
 
     respond_to do |format|
@@ -67,7 +67,7 @@ class UserCheckoutStatsController < ApplicationController
   # PUT /user_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @user_checkout_stat.update_attributes(params[:user_checkout_stat])
+      if @user_checkout_stat.update_attributes(user_checkout_stat_params)
         if @user_checkout_stat.mode == 'import'
           Resque.enqueue(UserCheckoutStatQueue, @user_checkout_stat.id)
         end

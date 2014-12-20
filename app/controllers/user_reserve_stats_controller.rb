@@ -48,7 +48,7 @@ class UserReserveStatsController < ApplicationController
   # POST /user_reserve_stats
   # POST /user_reserve_stats.json
   def create
-    @user_reserve_stat = UserReserveStat.new(params[:user_reserve_stat])
+    @user_reserve_stat = UserReserveStat.new(user_reserve_stat_params)
     @user_reserve_stat.user = current_user
 
     respond_to do |format|
@@ -67,7 +67,7 @@ class UserReserveStatsController < ApplicationController
   # PUT /user_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @user_reserve_stat.update_attributes(params[:user_reserve_stat])
+      if @user_reserve_stat.update_attributes(user_reserve_stat_params)
         if @user_reserve_stat.mode == 'import'
           Resque.enqueue(UserReserveStatQueue, @user_reserve_stat.id)
         end

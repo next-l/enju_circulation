@@ -158,11 +158,7 @@ class ReservesController < ApplicationController
   # POST /reserves
   # POST /reserves.json
   def create
-    if current_user.has_role?('Librarian')
-      @reserve = Reserve.new(params[:reserve], as: :admin)
-    else
-      @reserve = Reserve.new(params[:reserve])
-    end
+    @reserve = Reserve.new(reserve_params)
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
@@ -195,12 +191,12 @@ class ReservesController < ApplicationController
   # PUT /reserves/1.json
   def update
     if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(params[:reserve], as: :admin)
+      @reserve.assign_attributes(reserve_params)
     else
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(params[:reserve], as: :user_update)
+      @reserve.assign_attributes(reserve_params)
     end
 
     if @reserve.valid?
