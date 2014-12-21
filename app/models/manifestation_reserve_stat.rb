@@ -1,5 +1,9 @@
 class ManifestationReserveStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordQueries
+  if Rails::VERSION::MAJOR >= 4
+    include Statesman::Adapters::ActiveRecordQueries
+  else
+    include Statesman::Adapters::ActiveRecordModel
+  end
   include CalculateStat
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
