@@ -1,10 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
-  if Rails::VERSION::MAJOR >= 4
-    include Statesman::Adapters::ActiveRecordQueries
-  else
-    include Statesman::Adapters::ActiveRecordModel
-  end
+  include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}

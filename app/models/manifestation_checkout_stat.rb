@@ -1,9 +1,5 @@
 class ManifestationCheckoutStat < ActiveRecord::Base
-  if Rails::VERSION::MAJOR >= 4
-    include Statesman::Adapters::ActiveRecordQueries
-  else
-    include Statesman::Adapters::ActiveRecordModel
-  end
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('manifestation_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
