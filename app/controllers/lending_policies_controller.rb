@@ -55,7 +55,7 @@ class LendingPoliciesController < ApplicationController
   # PUT /lending_policies/1.json
   def update
     respond_to do |format|
-      if @lending_policy.update_attributes(params[:lending_policy])
+      if @lending_policy.update_attributes(lending_policy_params)
         format.html { redirect_to @lending_policy, notice: t('controller.successfully_updated', model: t('activerecord.models.lending_policy')) }
         format.json { head :no_content }
       else
