@@ -180,6 +180,6 @@ class CheckoutsController < ApplicationController
 
   private
   def checkout_params
-    params.require(:checkout).permit(:due_date)
+    params.fetch(:checkout, {}).permit(:due_date)
   end
 end

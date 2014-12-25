@@ -190,14 +190,12 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(reserve_params)
-    else
+    unless current_user.has_role?('Librarian')
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(reserve_params)
     end
+    @reserve.assign_attributes(reserve_update_params)
 
     if @reserve.valid?
       if params[:mode] == 'cancel'
@@ -253,15 +251,37 @@ class ReservesController < ApplicationController
 
   private
   def reserve_params
-    params.require(:reserve).permit(
-      :manifestation_id, :user_number, :expired_at,
-      :pickup_location_id, :expired_at, :pickup_location_id, #as: :user_update
-      :manifestation_id, :item_identifier, :user_number,
-      :expired_at, :request_status_type, :canceled_at, :checked_out_at,
-      :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-      :retained_at, :postponed_at, :force_retaining, :pickup_location_id #,
-      #as: :admin
-    )
+    if current_user.try(:has_role, 'Librarian')
+      params.fetch(:reserve, {}).permit(
+        :manifestation_id, :user_number, :expired_at,
+        :pickup_location_id, :expired_at,
+        :manifestation_id, :item_identifier, :user_number,
+        :request_status_type, :canceled_at, :checked_out_at,
+        :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+        :retained_at, :postponed_at, :force_retaining
+      )
+    elsif current_user.try(:has_role?, 'User')
+      params.fetch(:reserve, {}).permit(
+        :user_number, :manifestation_id, :expired_at, :pickup_location_id
+      )
+    end
+  end
+
+  def reserve_update_params
+    if current_user.try(:has_role?, 'Librarian')
+      params.fetch(:reserve, {}).permit(
+        :manifestation_id, :user_number, :expired_at,
+        :pickup_location_id, :expired_at,
+        :manifestation_id, :item_identifier, :user_number,
+        :request_status_type, :canceled_at, :checked_out_at,
+        :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+        :retained_at, :postponed_at, :force_retaining
+      )
+    elsif current_user.try(:has_role?, 'User')
+      params.fetch(:reserve, {}).permit(
+        :expired_at, :pickup_location_id
+      )
+    end
   end
 
   def prepare_options

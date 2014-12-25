@@ -197,8 +197,8 @@ describe CheckedItemsController do
 
   describe "POST create" do
     before(:each) do
-      @attrs = {:item_identifier => '00011'}
-      @invalid_attrs = {:item_identifier => 'invalid'}
+      @attrs = {item_identifier: '00011'}
+      @invalid_attrs = {item_identifier: 'invalid'}
     end
 
     describe "When logged in as Administrator" do
@@ -206,7 +206,7 @@ describe CheckedItemsController do
 
       describe "When the item is missing" do
         it "assigns a newly created checked_item as @checked_item" do
-          post :create, :checked_item => {:item_identifier => 'not found'} , :basket_id => 1
+          post :create, :checked_item => {item_identifier: 'not found'} , :basket_id => 1
           assigns(:checked_item).should_not be_valid
           assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.item_not_found')).should be_truthy
         end
@@ -214,7 +214,7 @@ describe CheckedItemsController do
 
       describe "When the item is not for checkout" do
         it "assigns a newly created checked_item as @checked_item" do
-          post :create, :checked_item => {:item_identifier => '00017'} , :basket_id => 1
+          post :create, :checked_item => {item_identifier: '00017'} , :basket_id => 1
           assigns(:checked_item).should_not be_valid
           assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')).should be_truthy
         end
@@ -222,7 +222,7 @@ describe CheckedItemsController do
 
       describe "When the item is already checked out" do
         it "assigns a newly created checked_item as @checked_item" do
-          post :create, :checked_item => {:item_identifier => '00013'} , :basket_id => 8
+          post :create, :checked_item => {item_identifier: '00013'} , :basket_id => 8
           assigns(:checked_item).should_not be_valid
           assigns(:checked_item).errors[:base].include?(I18n.t('activerecord.errors.messages.checked_item.already_checked_out')).should be_truthy
         end
@@ -231,7 +231,7 @@ describe CheckedItemsController do
       describe "When the item is reserved" do
         it "assigns a newly created checked_item as @checked_item" do
           old_count = items(:item_00021).manifestation.reserves.waiting.count
-          post :create, :checked_item => {:item_identifier => '00021'} , :basket_id => 11
+          post :create, :checked_item => {item_identifier: '00021'} , :basket_id => 11
           assigns(:checked_item).should be_valid
           assigns(:checked_item).item.manifestation.reserves.waiting.count.should eq old_count - 1
           assigns(:checked_item).librarian.should eq users(:admin)
@@ -239,12 +239,12 @@ describe CheckedItemsController do
       end
 
       it "should not create checked_item without basket_id" do
-        post :create, :checked_item => {:item_identifier => '00004'}
+        post :create, :checked_item => {item_identifier: '00004'}
         response.should be_forbidden
       end
 
       it "should not create checked_item without item_id" do
-        post :create, :checked_item => { }, :basket_id => 1
+        post :create, :checked_item => {item_identifier: '00004' }, :basket_id => 1
         response.should be_success
       end
     end
@@ -259,41 +259,41 @@ describe CheckedItemsController do
       end
 
       it "should create checked_item with item_identifier" do
-        post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 3
+        post :create, :checked_item => {item_identifier: '00011'}, :basket_id => 3
         assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end 
 
       it "should override due_date" do
-        post :create, :checked_item => {:item_identifier => '00011', :due_date_string => 1.year.from_now.strftime('%Y-%m-%d')}, :basket_id => 3
+        post :create, :checked_item => {item_identifier: '00011', :due_date_string => 1.year.from_now.strftime('%Y-%m-%d')}, :basket_id => 3
         assigns(:checked_item).should be_truthy
         assigns(:checked_item).due_date.should eq 1.year.from_now.end_of_day
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end 
 
       it "should not create checked_item with an invalid due_date" do
-        post :create, :checked_item => {:item_identifier => '00011', :due_date_string => "invalid"}, :basket_id => 3
+        post :create, :checked_item => {item_identifier: '00011', :due_date_string => "invalid"}, :basket_id => 3
         assigns(:checked_item).should_not be_valid
         assigns(:checked_item).due_date.should be_nil
         response.should be_success
       end 
 
       it "should not create checked_item if excessed checkout_limit" do
-        post :create, :checked_item => {:item_identifier => '00011'}, :basket_id => 1
+        post :create, :checked_item => {item_identifier: '00011'}, :basket_id => 1
         response.should be_success
         assigns(:checked_item).errors["base"].include?(I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')).should be_truthy
       end
 
       it "should show message when the item includes supplements" do
-        post :create, :checked_item => {:item_identifier => '00006'}, :basket_id => 3
+        post :create, :checked_item => {item_identifier: '00006'}, :basket_id => 3
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
         flash[:message].index(I18n.t('item.this_item_include_supplement')).should be_truthy
       end 
 
       it "should create checked_item when ignore_restriction is checked" do
-        post :create, :checked_item => {:item_identifier => '00011', :ignore_restriction => "1"}, :basket_id => 2
+        post :create, :checked_item => {item_identifier: '00011', :ignore_restriction => "1"}, :basket_id => 2
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
@@ -303,14 +303,14 @@ describe CheckedItemsController do
       login_fixture_user
 
       it "should not create checked_item" do
-        post :create, :checked_item => {:item_identifier => '00004'}, :basket_id => 3
+        post :create, :checked_item => {item_identifier: '00004'}, :basket_id => 3
         response.should be_forbidden
       end
     end
 
     describe "When not logged in as" do
       it "should not create checked_item" do
-        post :create, :checked_item => {:item_identifier => '00004'}, :basket_id => 1
+        post :create, :checked_item => {item_identifier: '00004'}, :basket_id => 1
         response.should redirect_to new_user_session_url
       end
     end
@@ -318,8 +318,8 @@ describe CheckedItemsController do
 
   describe "PUT update" do
     before(:each) do
-      @attrs = {:item_identifier => '00011'}
-      @invalid_attrs = {:item_identifier => 'invalid'}
+      @attrs = {item_identifier: '00011'}
+      @invalid_attrs = {item_identifier: 'invalid'}
     end
 
     describe "When logged in as Administrator" do

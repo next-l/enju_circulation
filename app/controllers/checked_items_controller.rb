@@ -87,7 +87,7 @@ class CheckedItemsController < ApplicationController
     end
 
     respond_to do |format|
-      if @checked_item.update_attributes(params[:checked_item])
+      if @checked_item.update_attributes(checked_item_params)
         format.html { redirect_to checked_item_url(@checked_item), notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
@@ -110,7 +110,7 @@ class CheckedItemsController < ApplicationController
 
   private
   def checked_item_params
-    params.require(:checked_item).permit(
+    params.fetch(:checked_item, {}).permit(
       :item_identifier, :ignore_restriction, :due_date_string
     )
   end
