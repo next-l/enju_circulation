@@ -251,7 +251,7 @@ class ReservesController < ApplicationController
 
   private
   def reserve_params
-    if current_user.try(:has_role, 'Librarian')
+    if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
         :manifestation_id, :user_number, :expired_at,
         :pickup_location_id, :expired_at,
