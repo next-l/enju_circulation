@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :demands
+
   get "/users/:user_id/checkouts" => redirect("/checkouts?user_id=%{user_id}")
   get "/users/:user_id/reserves" => redirect("/reserves?user_id=%{user_id}")
   get "/users/:user_id/baskets" => redirect("/baskets?user_id=%{user_id}")

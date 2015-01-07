@@ -23,6 +23,7 @@ en:
       reserve_stat_has_user: Reserve stat has user
       user_group_has_checkout_type: User group has checkout type
       carrier_type_has_checkout_type: Carrier type and checkout type
+      demand: Demand
 
     attributes:
       basket:

@@ -21,6 +21,7 @@ ja:
       reserve_stat_has_user: 利用者別予約統計
       user_group_has_checkout_type: 利用者グループと貸出区分の関係
       carrier_type_has_checkout_type: 資料の形態と貸出区分の関係
+      demand: 督促
 
     attributes:
       basket:
