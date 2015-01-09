@@ -1,13 +1,11 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
-  before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
-  before_action :prepare_options, only: [:new, :edit]
-  after_action :verify_authorized
+  load_and_authorize_resource
   helper_method :get_user_group, :get_checkout_type
+  before_filter :prepare_options, only: [:new, :edit]
 
   # GET /user_group_has_checkout_types
   # GET /user_group_has_checkout_types.json
   def index
-    authorize UserGroupHasCheckoutType
     @user_group_has_checkout_types = UserGroupHasCheckoutType.includes([:user_group, :checkout_type]).order('user_groups.position, checkout_types.position').page(params[:page])
 
     respond_to do |format|
@@ -19,6 +17,10 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # GET /user_group_has_checkout_types/1
   # GET /user_group_has_checkout_types/1.json
   def show
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user_group_has_checkout_type }
+    end
   end
 
   # GET /user_group_has_checkout_types/new
@@ -28,7 +30,6 @@ class UserGroupHasCheckoutTypesController < ApplicationController
       :checkout_type => get_checkout_type,
       :user_group => get_user_group
     )
-    authorize @user_group_has_checkout_type
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,7 +45,6 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # POST /user_group_has_checkout_types.json
   def create
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(user_group_has_checkout_type_params)
-    authorize @user_group_has_checkout_type
 
     respond_to do |format|
       if @user_group_has_checkout_type.save
@@ -85,11 +85,6 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   end
 
   private
-  def set_user_group_has_checkout_type
-    @user_group_has_checkout_type = UserGroupHasCheckoutType.find(params[:id])
-    authorize @user_group_has_checkout_type
-  end
-
   def user_group_has_checkout_type_params
     params.require(:user_group_has_checkout_type).permit(
       :user_group_id, :checkout_type_id,

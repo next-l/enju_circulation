@@ -1,7 +1,9 @@
 require 'spec_helper'
+require 'sunspot/rails/spec_helper'
 
 describe UseRestrictionsController do
   fixtures :all
+  disconnect_sunspot
 
   def valid_attributes
      FactoryGirl.attributes_for(:use_restriction)
@@ -35,7 +37,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :index
-        assigns(:use_restrictions).should be_nil
+        assigns(:use_restrictions).should be_empty
         response.should be_forbidden
       end
     end
@@ -43,7 +45,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should be_nil
+        assigns(:use_restrictions).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end

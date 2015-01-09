@@ -35,7 +35,7 @@
     <th style="width: 30px">Id</th>
     <th><%= t('activerecord.models.manifestation') -%></th>
     <th style="width: 80px"><%= t('activerecord.attributes.reserve.state') -%></th>
-    <%- if policy(Reserve).create? -%>
+    <%- if can? :update, @reserves.first -%>
       <th style="width: 70px"></th>
     <% end %>
   </tr>
@@ -50,6 +50,8 @@
       <%= t('activerecord.attributes.reserve.created_at') %>: <%= l(reserve.created_at, format: :short) -%>
       <br />
       <%= t('activerecord.attributes.reserve.expired_at') %>: <%= l(reserve.expired_at, format: :short) -%>
+      <br />
+      <%= t('activerecord.attributes.reserve.pickup_location_id') %>: <%= link_to reserve.pickup_location.display_name.localize, reserve.pickup_location if reserve.pickup_location %>
     </td>
     <td>
       <%= i18n_state(reserve.current_state) -%>
@@ -58,7 +60,7 @@
         (<%= link_to reserve.item.item_identifier, reserve.item %>)
       <% end %>
     </td>
-    <%- if policy(reserve).destroy? -%>
+    <%- if can? :delete, reserve -%>
       <td>
         <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>

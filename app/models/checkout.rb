@@ -1,6 +1,4 @@
 class Checkout < ActiveRecord::Base
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
   scope :not_returned, -> { where(checkin_id: nil) }
   scope :returned, -> { where('checkin_id IS NOT NULL') }
   scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
@@ -14,6 +12,8 @@ class Checkout < ActiveRecord::Base
   belongs_to :checkin
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
+  belongs_to :shelf
+  belongs_to :library
 
   validates_associated :user, :item, :librarian, :checkin #, :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
@@ -24,44 +24,24 @@ class Checkout < ActiveRecord::Base
   validate :renewable?, on: :update
   validates_date :due_date
 
-  index_name "#{name.downcase.pluralize}-#{Rails.env}"
-
-  settings do
-    mappings dynamic: 'false', _routing: {required: false} do
-      indexes :username
-      indexes :user_number
-      indexes :item_identifier
-      indexes :created_at, type: 'date'
-      indexes :checked_in_at, type: 'date'
-      indexes :reserved, type: 'boolean'
-      indexes :due_date, type: 'date'
+  searchable do
+    string :username do
+      user.try(:username)
     end
-  end
-
-  after_commit on: :create do
-    index_document
-  end
-
-  after_commit on: :update do
-    update_document
-  end
-
-  after_commit on: :destroy do
-    delete_document
-  end
-
-  def as_indexed_json(options={})
-    as_json(
-      #include: {
-      #  creators: {only: :full_name},
-      #}
-    ).merge(
-      username: user.try(:username),
-      user_number: user.try(:user_number),
-      item_identifier: item.try(:item_identifier),
-      checked_in_at: checkin.try(:created_at),
-      reserved: reserved?
-    )
+    string :user_number do
+      user.try(:profile).try(:user_number)
+    end
+    string :item_identifier do
+      item.try(:item_identifier)
+    end
+    time :due_date
+    time :created_at
+    time :checked_in_at do
+      checkin.try(:created_at)
+    end
+    boolean :reserved do
+      reserved?
+    end
   end
 
   attr_accessor :operator
@@ -104,22 +84,22 @@ class Checkout < ActiveRecord::Base
 
   def over_checkout_renewal_limit?
     return nil unless item.checkout_status(user)
-    true if item.checkout_status(user).checkout_renewal_limit < checkout_renewal_count
+    return true if item.checkout_status(user).checkout_renewal_limit < checkout_renewal_count
   end
 
   def overdue?
     if Time.zone.now > due_date.tomorrow.beginning_of_day
-      true
+      return true
     else
-      false
+      return false
     end
   end
 
   def is_today_due_date?
     if Time.zone.now.beginning_of_day == due_date.beginning_of_day
-      true
+      return true
     else
-      false
+      return false
     end
   end
 
@@ -129,7 +109,7 @@ class Checkout < ActiveRecord::Base
       if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
         new_due_date = Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day
       else
-        due_date
+        new_due_date = due_date
       end
     end
   end
@@ -192,4 +172,6 @@ end
 #  lock_version           :integer          default(0), not null
 #  created_at             :datetime
 #  updated_at             :datetime
+#  shelf_id               :integer
+#  library_id             :integer
 #

@@ -1,11 +1,10 @@
 class ManifestationReserveStatsController < ApplicationController
-  before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
-  after_action :verify_authorized
-  after_action :convert_charset, only: :show
+  load_and_authorize_resource
+  after_filter :convert_charset, only: :show
 
   # GET /manifestation_reserve_stats
+  # GET /manifestation_reserve_stats.json
   def index
-    authorize ManifestationReserveStat
     @manifestation_reserve_stats = ManifestationReserveStat.page(params[:page])
 
     respond_to do |format|
@@ -15,6 +14,7 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # GET /manifestation_reserve_stats/1
+  # GET /manifestation_reserve_stats/1.json
   def show
     if params[:format] == 'txt'
       per_page = 65534
@@ -31,9 +31,9 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # GET /manifestation_reserve_stats/new
+  # GET /manifestation_reserve_stats/new.json
   def new
     @manifestation_reserve_stat = ManifestationReserveStat.new
-    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,10 +46,10 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # POST /manifestation_reserve_stats
+  # POST /manifestation_reserve_stats.json
   def create
     @manifestation_reserve_stat = ManifestationReserveStat.new(manifestation_reserve_stat_params)
     @manifestation_reserve_stat.user = current_user
-    authorize @manifestation_reserve_stat
 
     respond_to do |format|
       if @manifestation_reserve_stat.save
@@ -64,6 +64,7 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # PUT /manifestation_reserve_stats/1
+  # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
       if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
@@ -80,6 +81,7 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   # DELETE /manifestation_reserve_stats/1
+  # DELETE /manifestation_reserve_stats/1.json
   def destroy
     @manifestation_reserve_stat.destroy
 
@@ -90,14 +92,9 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   private
-  def set_manifestation_reserve_stat
-    @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
-    authorize @manifestation_reserve_stat
-  end
-
   def manifestation_reserve_stat_params
     params.require(:manifestation_reserve_stat).permit(
-      :start_date, :end_date, :note
+      :start_date, :end_date, :note, :mode
     )
   end
 end

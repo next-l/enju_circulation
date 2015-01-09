@@ -1,5 +1,5 @@
 class ManifestationCheckoutStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('manifestation_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
@@ -23,7 +23,7 @@ class ManifestationCheckoutStat < ActiveRecord::Base
     self.started_at = Time.zone.now
     Manifestation.find_each do |manifestation|
       daily_count = Checkout.manifestations_count(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day, manifestation)
-      #manifestation.update_attributes({:daily_checkouts_count => daily_count, :total_count => manifestation.total_count + daily_count})
+      #manifestation.update_attributes({daily_checkouts_count: daily_count, total_count: manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE checkout_stat_has_manifestations SET checkouts_count = ? WHERE manifestation_checkout_stat_id = ? AND manifestation_id = ?', daily_count, id, manifestation.id]
@@ -34,13 +34,16 @@ class ManifestationCheckoutStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
-  
     send_message
   end
 
   private
   def self.transition_class
     ManifestationCheckoutStatTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 
@@ -52,8 +55,8 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
 #  user_id      :integer

@@ -3,6 +3,7 @@ class ManifestationReserveStatTransition < ActiveRecord::Base
 
   
   belongs_to :manifestation_reserve_stat, inverse_of: :manifestation_reserve_stat_transitions
+  #attr_accessible :to_state, :sort_key, :metadata
 end
 
 # == Schema Information
@@ -14,6 +15,6 @@ end
 #  metadata                      :text             default("{}")
 #  sort_key                      :integer
 #  manifestation_reserve_stat_id :integer
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
+#  created_at                    :datetime
+#  updated_at                    :datetime
 #

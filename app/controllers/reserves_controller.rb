@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
-  before_action :set_reserve, only: [:show, :edit, :update, :destroy]
-  before_action :store_location, only: [:index, :new]
-  before_action :get_user, only: [:index, :new]
-  before_action :store_page
-  after_action :verify_authorized
-  after_action :convert_charset, only: :index
+  before_filter :store_location, only: [:index, :new]
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :prepare_options, only: [:new, :edit]
+  before_filter :get_user, only: [:index, :new]
+  before_filter :store_page
   helper_method :get_manifestation
   helper_method :get_item
+  after_filter :convert_charset, only: :index
 
   # GET /reserves
   # GET /reserves.json
   def index
-    authorize Reserve
     unless current_user.has_role?('Librarian')
       if @user
         if current_user == @user
@@ -114,13 +114,16 @@ class ReservesController < ApplicationController
   # GET /reserves/1
   # GET /reserves/1.json
   def show
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @reserve }
+    end
   end
 
   # GET /reserves/new
   # GET /reserves/new.json
   def new
     @reserve = Reserve.new
-    authorize @reserve
 
     if current_user.has_role?('Librarian')
       @reserve.user = @user
@@ -157,7 +160,6 @@ class ReservesController < ApplicationController
   def create
     @reserve = Reserve.new(reserve_params)
     @reserve.set_user
-    authorize @reserve
 
     if current_user.has_role?('Librarian')
       unless @reserve.user
@@ -178,6 +180,7 @@ class ReservesController < ApplicationController
         format.html { redirect_to @reserve, notice: t('controller.successfully_created', model: t('activerecord.models.reserve')) }
         format.json { render json: @reserve, status: :created, location: reserve_url(@reserve) }
       else
+        prepare_options
         format.html { render action: "new" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
@@ -187,25 +190,23 @@ class ReservesController < ApplicationController
   # PUT /reserves/1
   # PUT /reserves/1.json
   def update
-    if current_user.has_role?('Librarian')
-      @reserve.assign_attributes(admin_reserve_params)
-    else
+    unless current_user.has_role?('Librarian')
       if @reserve.user != current_user
         access_denied; return
       end
-      @reserve.assign_attributes(admin_reserve_params)
     end
+    @reserve.assign_attributes(reserve_update_params)
 
     if @reserve.valid?
       if params[:mode] == 'cancel'
         @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
-          if @reserve.item_identifier and @reserve.force_retaining == '1'
+          if @reserve.item_identifier.present? and @reserve.force_retaining == '1'
             @reserve.transition_to!(:retained)
           end
         else
-          @reserve.transition_to!(:retained) if @reserve.item_identifier
+          @reserve.transition_to!(:retained) if @reserve.item_identifier.present?
         end
       end
     end
@@ -220,6 +221,7 @@ class ReservesController < ApplicationController
         format.html { redirect_to @reserve }
         format.json { head :no_content }
       else
+        prepare_options
         format.html { render action: "edit" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
@@ -232,7 +234,7 @@ class ReservesController < ApplicationController
     @reserve.destroy
     #flash[:notice] = t('reserve.reservation_was_canceled')
 
-    if @reserve.manifestation.try(:is_reserved?)
+    if @reserve.manifestation.is_reserved?
       if @reserve.item
         retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
         if retain.nil?
@@ -248,29 +250,41 @@ class ReservesController < ApplicationController
   end
 
   private
-  def set_reserve
-    @reserve = Reserve.find(params[:id])
-    authorize @reserve
-  end
-
   def reserve_params
-    params.require(:reserve).permit(
-      :manifestation_id, :user_number, :expired_at
-    )
+    if current_user.try(:has_role?, 'Librarian')
+      params.fetch(:reserve, {}).permit(
+        :manifestation_id, :user_number, :expired_at,
+        :pickup_location_id, :expired_at,
+        :manifestation_id, :item_identifier, :user_number,
+        :request_status_type, :canceled_at, :checked_out_at,
+        :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+        :retained_at, :postponed_at, :force_retaining
+      )
+    elsif current_user.try(:has_role?, 'User')
+      params.fetch(:reserve, {}).permit(
+        :user_number, :manifestation_id, :expired_at, :pickup_location_id
+      )
+    end
   end
 
-  def user_reserve_params
-    params.require(:reserve).permit(
-      :expired_at
-    )
+  def reserve_update_params
+    if current_user.try(:has_role?, 'Librarian')
+      params.fetch(:reserve, {}).permit(
+        :manifestation_id, :user_number, :expired_at,
+        :pickup_location_id, :expired_at,
+        :manifestation_id, :item_identifier, :user_number,
+        :request_status_type, :canceled_at, :checked_out_at,
+        :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
+        :retained_at, :postponed_at, :force_retaining
+      )
+    elsif current_user.try(:has_role?, 'User')
+      params.fetch(:reserve, {}).permit(
+        :expired_at, :pickup_location_id
+      )
+    end
   end
 
-  def admin_reserve_params
-    params.require(:reserve).permit(
-      :manifestation_id, :item_identifier, :user_number,
-      :expired_at, :request_status_type, :canceled_at, :checked_out_at,
-      :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-      :retained_at, :postponed_at, :force_retaining
-    )
+  def prepare_options
+    @libraries = Library.real.order(:position)
   end
 end

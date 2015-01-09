@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-  get "/users/:user_id/checkouts" => redirect("/checkouts?user_id=%{user_id}")
-  get "/users/:user_id/reserves" => redirect("/reserves?user_id=%{user_id}")
-  get "/users/:user_id/baskets" => redirect("/baskets?user_id=%{user_id}")
-  get "/baskets/:basket_id/checked_items" => redirect("/checked_items?basket_id=%{basket_id}")
-  get "/baskets/:basket_id/checkins" => redirect("/checkins?basket_id=%{basket_id}")
-
+  resources :demands
   resources :use_restrictions
   resources :item_has_use_restrictions
   resources :lending_policies

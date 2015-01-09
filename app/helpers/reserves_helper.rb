@@ -16,8 +16,6 @@ module ReservesHelper
       t('reserve.postponed')
     when 'completed'
       t('reserve.completed')
-    else
-      nil
     end
   end
 end

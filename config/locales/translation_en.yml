@@ -23,6 +23,7 @@ en:
       reserve_stat_has_user: Reserve stat has user
       user_group_has_checkout_type: User group has checkout type
       carrier_type_has_checkout_type: Carrier type and checkout type
+      demand: Demand
 
     attributes:
       basket:
@@ -48,6 +49,7 @@ en:
         state: State
         force_retaining: Force retaining
         item_identifier: Item identifier
+        pickup_location_id: Pickup location
       checkout_type:
         name: Name
         display_name: Display name
@@ -196,4 +198,5 @@ en:
     successfully_created: "%{model} task was created successfully. When the task is completed, its status on the list will be updated to 'completed' and you can check the results by following the 'show' link."
     breakdown: Brakedown
     by_carrier_type: By carrier type
+    by_checkout_type: By checkout type
     by_manifestation: By manifestation

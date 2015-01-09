@@ -1,23 +1,25 @@
 class CheckoutsController < ApplicationController
-  before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-  before_action :store_location, only: :index
-  before_action :get_user, only: [:index, :remove_all]
-  before_action :get_item, only: :index
-  after_action :convert_charset, only: :index
-  after_action :verify_authorized, except: :index
+  before_filter :store_location, only: :index
+  load_and_authorize_resource except: [:index, :remove_all]
+  authorize_resource only: [:index, :remove_all]
+  before_filter :get_user, only: [:index, :remove_all]
+  before_filter :get_item, only: :index
+  after_filter :convert_charset, only: :index
 
   # GET /checkouts
   # GET /checkouts.json
   def index
     if params[:icalendar_token].present?
-      icalendar_user = Profile.where(:checkout_icalendar_token => params[:icalendar_token]).first.try(:user)
+      icalendar_user = Profile.where(checkout_icalendar_token: params[:icalendar_token]).first.try(:user)
       if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
       else
         @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
       end
     else
-      authorize Checkout
+      unless current_user
+        access_denied; return
+      end
     end
 
     if params[:format] == 'txt'
@@ -33,7 +35,7 @@ class CheckoutsController < ApplicationController
         if current_user.try(:has_role?, 'Librarian')
           search.build do
             with(:username).equal_to user.username
-            with(:checked_in_at).equal_to nil unless user.save_checkout_history
+            with(:checked_in_at).equal_to nil unless user.profile.save_checkout_history
           end
         else
           if current_user == user
@@ -97,7 +99,7 @@ class CheckoutsController < ApplicationController
         facet :reserved
       end
       page = params[:page] || 1
-      search.query.paginate(page.to_i, per_page)
+      search.query.paginate(page.to_i, Checkout.default_per_page)
       @checkouts = search.execute!.results
       @checkouts_facet = search.facet(:reserved).rows
     end
@@ -115,7 +117,12 @@ class CheckoutsController < ApplicationController
   end
 
   # GET /checkouts/1
+  # GET /checkouts/1.json
   def show
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @checkout }
+    end
   end
 
   # GET /checkouts/1/edit
@@ -124,6 +131,7 @@ class CheckoutsController < ApplicationController
   end
 
   # PUT /checkouts/1
+  # PUT /checkouts/1.json
   def update
     @checkout.assign_attributes(checkout_params)
     @checkout.due_date = @checkout.due_date.end_of_day
@@ -171,12 +179,7 @@ class CheckoutsController < ApplicationController
   end
 
   private
-  def set_checkout
-    @checkout = Checkout.find(params[:id])
-    authorize @checkout
-  end
-
   def checkout_params
-    params.require(:checkout).permit(:due_date)
+    params.fetch(:checkout, {}).permit(:due_date)
   end
 end

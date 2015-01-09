@@ -24,7 +24,6 @@ module EnjuCirculation
       ]
 
       def enju_circulation_item_model
-        include Statesman::Adapters::ActiveRecordModel
         include InstanceMethods
         has_many :reserves, :foreign_key => :manifestation_id
 
@@ -44,30 +43,19 @@ module EnjuCirculation
         has_one :use_restriction, :through => :item_has_use_restriction
         validates_associated :circulation_status, :checkout_type
         validates_presence_of :circulation_status, :checkout_type
-        settings do
-          mappings dynamic: 'false', _routing: {required: false} do
-            indexes :circulation_status_id, type: 'integer'
-          end
+        searchable do
+          integer :circulation_status_id
         end
         accepts_nested_attributes_for :item_has_use_restriction
 
         after_create :create_lending_policy
         before_update :update_lending_policy
-        has_many :item_transitions
-
-        delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
-          to: :state_machine
-      end
-
-      private
-      def transition_class
-        ItemTransition
       end
     end
 
     module InstanceMethods
-      def state_machine
-        @state_machine ||= ItemStateMachine.new(self, transition_class: ItemTransition)
+      def set_circulation_status
+        self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
       end
 
       def checkout_status(user)
@@ -81,7 +69,7 @@ module EnjuCirculation
       end
 
       def rent?
-        return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
+        return true if self.checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
         false
       end
 
@@ -93,7 +81,7 @@ module EnjuCirculation
       end
 
       def available_for_checkout?
-        if current_state == 'on_loan'
+        if circulation_status.name == 'On Loan'
           false
         else
           manifestation.items.for_checkout.include?(self)
@@ -101,19 +89,17 @@ module EnjuCirculation
       end
 
       def checkout!(user)
-        self.class.transaction do
-          transition_to(:on_loan)
-          if reserved_by_user?(user)
-            manifestation.next_reservation.update_attributes(:checked_out_at => Time.zone.now)
-            manifestation.next_reservation.transition_to!(:completed)
-          end
-          save!
+        self.circulation_status = CirculationStatus.where(name: 'On Loan').first
+        if reserved_by_user?(user)
+          manifestation.next_reservation.update_attributes(checked_out_at: Time.zone.now)
+          manifestation.next_reservation.sm_complete!
         end
+        save!
       end
 
       def checkin!
-        transition_to!(:available_on_shelf)
-        save(:validate => false)
+        self.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
+        save(validate: false)
       end
 
       def retain(librarian)
@@ -129,27 +115,28 @@ module EnjuCirculation
 
       def retained?
         if manifestation.next_reservation.try(:current_state) == 'retained' and  manifestation.next_reservation.item == self
-          true
+          return true
         else
           false
         end
       end
 
       def lending_rule(user)
-        lending_policies.where(:user_group_id => user.profile.user_group.id).first
+        lending_policies.where(user_group_id: user.profile.user_group.id).first
       end
 
       def not_for_loan?
         !manifestation.items.for_checkout.include?(self)
       end
 
-     def create_lending_policy
+      def create_lending_policy
         UserGroupHasCheckoutType.available_for_item(self).each do |rule|
           LendingPolicy.create!(
-            :item_id => id, :user_group_id => rule.user_group_id,
-            :fixed_due_date => rule.fixed_due_date,
-            :loan_period => rule.checkout_period,
-            :renewal => rule.checkout_renewal_limit
+            item_id: id,
+            user_group_id: rule.user_group_id,
+            fixed_due_date: rule.fixed_due_date,
+            loan_period: rule.checkout_period,
+            renewal: rule.checkout_renewal_limit
           )
         end
       end

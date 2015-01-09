@@ -1,12 +1,10 @@
 class ManifestationCheckoutStatsController < ApplicationController
-  before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
-  after_action :verify_authorized
-  after_action :convert_charset, only: :show
+  load_and_authorize_resource
+  after_filter :convert_charset, only: :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json
   def index
-    authorize ManifestationCheckoutStat
     @manifestation_checkout_stats = ManifestationCheckoutStat.page(params[:page])
 
     respond_to do |format|
@@ -23,20 +21,32 @@ class ManifestationCheckoutStatsController < ApplicationController
     else
       per_page = CheckoutStatHasManifestation.default_per_page
     end
+
+    @carrier_type_results = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: :manifestation).group(
+      'checkouts.shelf_id', :carrier_type_id
+    ).merge(
+      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
+    ).count(:id)
+
+    @checkout_type_results = Checkout.where(
+      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+    ).where(
+      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+    ).joins(item: :manifestation).group(
+      'checkouts.shelf_id', :checkout_type_id
+    ).count(:id)
+
     @stats = Checkout.where(
       Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
     ).where(
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
-    ).joins(item: [:manifestation]).group(:manifestation_id).merge(
+    ).joins(item: :manifestation).group(:manifestation_id).merge(
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).order('count_id DESC').page(params[:page])
-    @breakdown = Checkout.where(
-      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
-    ).where(
-      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
-    ).joins(item: [:shelf, :manifestation]).group(:carrier_type_id).merge(
-      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).order('manifestations.carrier_type_id').count(:id)
+    ).order('count_id DESC').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -50,7 +60,6 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/new.json
   def new
     @manifestation_checkout_stat = ManifestationCheckoutStat.new
-    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -67,12 +76,13 @@ class ManifestationCheckoutStatsController < ApplicationController
   def create
     @manifestation_checkout_stat = ManifestationCheckoutStat.new(manifestation_checkout_stat_params)
     @manifestation_checkout_stat.user = current_user
-    authorize @manifestation_checkout_stat
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
-        Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
-        format.html { redirect_to @manifestation_checkout_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
+        @manifestation_checkout_stat.transition_to(:started)
+        @manifestation_checkout_stat.transition_to!(:completed)
+        #Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
+        format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render json: @manifestation_checkout_stat, status: :created, location: @manifestation_checkout_stat }
       else
         format.html { render action: "new" }
@@ -110,14 +120,9 @@ class ManifestationCheckoutStatsController < ApplicationController
   end
 
   private
-  def set_manifestation_checkout_stat
-    @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
-    authorize @manifestation_checkout_stat
-  end
-
   def manifestation_checkout_stat_params
     params.require(:manifestation_checkout_stat).permit(
-      :start_date, :end_date, :note
+      :start_date, :end_date, :note, :mode
     )
   end
 end

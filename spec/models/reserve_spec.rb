@@ -11,7 +11,6 @@ describe Reserve do
   it "should notify a next reservation" do
     old_count = Message.count
     reserve = reserves(:reserve_00014)
-    reserve.current_state.should eq 'pending'
     item = reserve.next_reservation.item
     reserve.transition_to!(:expired)
     reserve.current_state.should eq 'expired'
@@ -89,9 +88,9 @@ describe Reserve do
 
   it "should not be valid if item_identifier is invalid" do
     reservation = reserves(:reserve_00014)
-    reservation.item_identifier = 'invalid item'
+    reservation.item_identifier = 'invalid'
     reservation.save
-    reservation.valid?.should eq false
+    assert reservation.valid?.should eq false
   end
 
   it "should be valid if the reservation is completed and its item is destroyed" do
@@ -119,6 +118,7 @@ end
 #  deleted_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

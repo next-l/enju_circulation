@@ -1,12 +1,10 @@
 class UserReserveStatsController < ApplicationController
-  before_action :set_user_reserve_stat, only: [:show, :edit, :update, :destroy]
-  after_action :verify_authorized
-  after_action :convert_charset, only: :show
+  load_and_authorize_resource
+  after_filter :convert_charset, only: :show
 
   # GET /user_reserve_stats
   # GET /user_reserve_stats.json
   def index
-    authorize UserReserveStat
     @user_reserve_stats = UserReserveStat.order('id DESC').page(params[:page])
 
     respond_to do |format|
@@ -36,7 +34,6 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/new.json
   def new
     @user_reserve_stat = UserReserveStat.new
-    authorize @user_reserve_stat
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,7 +50,6 @@ class UserReserveStatsController < ApplicationController
   def create
     @user_reserve_stat = UserReserveStat.new(user_reserve_stat_params)
     @user_reserve_stat.user = current_user
-    authorize @user_reserve_stat
 
     respond_to do |format|
       if @user_reserve_stat.save
@@ -96,14 +92,9 @@ class UserReserveStatsController < ApplicationController
   end
 
   private
-  def set_user_reserve_stat
-    @user_reserve_stat = UserReserveStat.find(params[:id])
-    authorize @user_reserve_stat
-  end
-
   def user_reserve_stat_params
     params.require(:user_reserve_stat).permit(
-      :start_date, :end_date, :note
+      :start_date, :end_date, :note, :mode
     )
   end
 end

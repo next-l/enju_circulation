@@ -5,7 +5,4 @@ class ApplicationController < ActionController::Base
   enju_biblio
   enju_library
   enju_circulation
-
-  include Pundit
-  rescue_from Pundit::NotAuthorizedError, with: :render_403
 end

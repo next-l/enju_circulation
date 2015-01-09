@@ -1,6 +1,6 @@
 class UserGroupHasCheckoutType < ActiveRecord::Base
-  scope :available_for_item, lambda{|item| where(:checkout_type_id => item.checkout_type.id)}
-  scope :available_for_carrier_type, lambda{|carrier_type| includes(:checkout_type => :carrier_types).where('carrier_types.id' => carrier_type.id)}
+  scope :available_for_item, lambda{|item| where(checkout_type_id: item.checkout_type.id)}
+  scope :available_for_carrier_type, lambda{|carrier_type| includes(checkout_type: :carrier_types).where('carrier_types.id' => carrier_type.id)}
 
   belongs_to :user_group, validate: true
   belongs_to :checkout_type, validate: true
@@ -15,10 +15,10 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
 
   def create_lending_policy
     self.checkout_type.items.find_each do |item|
-      policy = LendingPolicy.where(item_id: item.id, :user_group_id => user_group_id).select(:id).first
+      policy = LendingPolicy.where(item_id: item.id, user_group_id: user_group_id).select(:id).first
       unless policy
         sql = ['INSERT INTO lending_policies (item_id, user_group_id, loan_period, renewal, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)', item.id, user_group_id, checkout_period, checkout_renewal_limit, Time.zone.now, Time.zone.now]
-        UserGroupHasCheckoutType.connection.execute(
+        ActiveRecord::Base.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end
@@ -28,7 +28,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   def update_lending_policy
     self.checkout_type.items.each do |item|
       sql = ['UPDATE lending_policies SET loan_period = ?, renewal = ?, updated_at = ? WHERE user_group_id = ? AND item_id = ?', self.checkout_period, self.checkout_renewal_limit, Time.zone.now, self.user_group_id, item.id]
-      UserGroupHasCheckoutType.connection.execute(
+      ActiveRecord::Base.connection.execute(
         self.class.send(:sanitize_sql_array, sql)
       )
     end
@@ -39,7 +39,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
       'SELECT count(checkouts.id) as current_checkout_count,
         profiles.user_group_id,
         items.checkout_type_id
-        FROM checkouts, profiles LEFT OUTER JOIN items
+        FROM profiles, checkouts LEFT OUTER JOIN items
         ON (checkouts.item_id = items.id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)
@@ -53,7 +53,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
           WHERE user_group_id = ? AND checkout_type_id = ?;',
           result.current_checkout_count, result.user_group_id, result.checkout_type_id
       ]
-      UserGroupHasCheckoutType.connection.execute(
+      ActiveRecord::Base.connection.execute(
         self.send(:sanitize_sql_array, update_sql)
       )
     end

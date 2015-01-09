@@ -21,6 +21,7 @@ ja:
       reserve_stat_has_user: 利用者別予約統計
       user_group_has_checkout_type: 利用者グループと貸出区分の関係
       carrier_type_has_checkout_type: 資料の形態と貸出区分の関係
+      demand: 督促
 
     attributes:
       basket:
@@ -46,6 +47,7 @@ ja:
         state: 状態
         force_retaining: 強制的に取り置きを行う
         item_identifier: 個別資料ID
+        pickup_location_id: 受取館
       checkout_type:
         name: 名前
         display_name: 表示名
@@ -194,4 +196,5 @@ ja:
     successfully_created: "%{model}のタスクは正常に作成されました。タスクが完了すると「%{model}の一覧」の状態が「完了」となり、「表示」リンクをたどることで結果を確認できるようになります。"
     breakdown: 内訳
     by_carrier_type: 資料の形態別
+    by_checkout_type: 貸出区分別
     by_manifestation: 書誌別

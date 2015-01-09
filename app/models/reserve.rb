@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND expired_at > ?', Time.zone.now).order('reserves.id DESC')}
@@ -12,17 +11,18 @@ class Reserve < ActiveRecord::Base
   scope :will_expire_retained, lambda {|datetime| in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :will_expire_pending, lambda {|datetime| in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at')}
   scope :created, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => false)}
-  scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => false)}
-  scope :sent_expiration_notice_to_patron, -> {in_state(:expired).where(:expiration_notice_to_patron => true)}
-  scope :sent_expiration_notice_to_library, -> {in_state(:expired).where(:expiration_notice_to_library => true)}
-  scope :not_sent_cancel_notice_to_patron, -> {in_state(:canceled).where(:expiration_notice_to_patron => false)}
-  scope :not_sent_cancel_notice_to_library, -> {in_state(:canceled).where(:expiration_notice_to_library => false)}
+  scope :not_sent_expiration_notice_to_patron, -> {in_state(:expired).where(expiration_notice_to_patron: false)}
+  scope :not_sent_expiration_notice_to_library, -> {in_state(:expired).where(expiration_notice_to_library: false)}
+  scope :sent_expiration_notice_to_patron, -> {in_state(:expired).where(expiration_notice_to_patron: true)}
+  scope :sent_expiration_notice_to_library, -> {in_state(:expired).where(expiration_notice_to_library: true)}
+  scope :not_sent_cancel_notice_to_patron, -> {in_state(:canceled).where(expiration_notice_to_patron: false)}
+  scope :not_sent_cancel_notice_to_library, -> {in_state(:canceled).where(expiration_notice_to_library: false)}
   belongs_to :user
   belongs_to :manifestation, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :item, touch: true
   belongs_to :request_status_type
+  belongs_to :pickup_location, :class_name => 'Library'
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true #, on: :create
@@ -62,45 +62,6 @@ class Reserve < ActiveRecord::Base
 
   attr_accessor :user_number, :item_identifier, :force_retaining
 
-  include Statesman::Adapters::ActiveRecordModel
-
-  index_name "#{name.downcase.pluralize}-#{Rails.env}"
-
-  settings do
-    mappings dynamic: 'false', _routing: {required: false} do
-      indexes :username
-      indexes :user_number
-      indexes :created_at, type: 'date'
-      indexes :item_identifier
-      indexes :title
-      indexes :hold, type: 'boolean'
-      indexes :state
-    end
-  end
-
-  def as_indexed_json(options={})
-    as_json.merge(
-      username: user.try(:username),
-      user_number: user.try(:user_number),
-      item_identifier: manifestation.items.pluck(:item_identifier),
-      title: manifestation.try(:titles),
-      hold: Reserve.hold.include?(self),
-      state: current_state
-    )
-  end
-
-  after_commit on: :create do
-    index_document
-  end
-
-  after_commit on: :update do
-    update_document
-  end
-
-  after_commit on: :destroy do
-    delete_document
-  end
-
   paginates_per 10
 
   def state_machine
@@ -111,6 +72,34 @@ class Reserve < ActiveRecord::Base
 
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
     to: :state_machine
+
+  searchable do
+    text :username do
+      user.try(:username)
+    end
+    string :username do
+      user.try(:username)
+    end
+    string :user_number do
+      user.profile.try(:user_number)
+    end
+    time :created_at
+    text :item_identifier do
+      manifestation.items.pluck(:item_identifier)
+    end
+    text :title do
+      manifestation.try(:titles)
+    end
+    boolean :hold do |reserve|
+      self.hold.include?(reserve)
+    end
+    string :state do
+      current_state
+    end
+    string :title_transcription do
+      manifestation.try(:title_transcription)
+    end
+  end
 
   def set_manifestation
     self.manifestation = item.manifestation if item
@@ -179,58 +168,58 @@ class Reserve < ActiveRecord::Base
       when 'requested'
         message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # 受付時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # 受付時は即時送信
       when 'canceled'
         message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # キャンセル時は即時送信
         message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent) # キャンセル時は即時送信
       when 'expired'
         message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_to_patron})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent)
         reload
         self.update_attribute(:expiration_notice_to_patron, true)
         message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
         request.save_message_body(manifestations: Array[manifestation], user: sender)
         request.transition_to!(:sent)
       when 'retained'
         message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_for_patron}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_for_patron})
         request.save_message_body(manifestations: Array[item.manifestation], user: user)
         request.transition_to!(:sent)
         message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_for_library}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_for_library})
         request.save_message_body(manifestations: Array[item.manifestation], user: user)
         request.transition_to!(:sent)
       when 'postponed'
         message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_for_patron}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: user, message_template: message_template_for_patron})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent)
         message_template_for_library = MessageTemplate.localized_template('reservation_postponed_for_library', user.profile.locale)
         request = MessageRequest.new
-        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_for_library}, as: :admin)
+        request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_for_library})
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent)
       else
@@ -245,7 +234,7 @@ class Reserve < ActiveRecord::Base
     when 'expired'
       message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
       request = MessageRequest.new
-      request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library}, as: :admin)
+      request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
       request.save_message_body(manifestations: options[:manifestations])
       self.not_sent_expiration_notice_to_library.readonly(false).each do |reserve|
         reserve.expiration_notice_to_library = true
@@ -254,7 +243,7 @@ class Reserve < ActiveRecord::Base
     #when 'canceled'
     #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', sender.locale)
     #  request = MessageRequest.new
-    #  request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library}, as: :admin)
+    #  request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
     #  request.save_message_body(manifestations: self.not_sent_expiration_notice_to_library.collect(&:manifestation))
     #  self.not_sent_cancel_notice_to_library.each do |reserve|
     #    reserve.update_attribute(:expiration_notice_to_library, true)
@@ -287,7 +276,7 @@ class Reserve < ActiveRecord::Base
 
   def checked_out_now?
     if user and manifestation
-      true unless (user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
+      true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
     end
   end
 
@@ -322,13 +311,13 @@ class Reserve < ActiveRecord::Base
 
   private
   def do_request
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
     Reserve.transaction do
       if item.try(:next_reservation)
         reservation = item.next_reservation
@@ -340,7 +329,7 @@ class Reserve < ActiveRecord::Base
 
   def expire
     Reserve.transaction do
-      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now}, as: :admin)
+      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now})
       reserve = next_reservation
       if reserve
         reserve.item = item
@@ -354,7 +343,7 @@ class Reserve < ActiveRecord::Base
 
   def cancel
     Reserve.transaction do
-      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now}, as: :admin)
+      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now})
       save!
       reserve = next_reservation
       if reserve
@@ -367,7 +356,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def checkout
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now}, as: :admin)
+    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now})
     save!
   end
 
@@ -377,7 +366,7 @@ class Reserve < ActiveRecord::Base
       item_id: nil,
       retained_at: nil,
       postponed_at: Time.zone.now
-    }, as: :admin)
+    })
     save!
   end
 
@@ -393,6 +382,10 @@ class Reserve < ActiveRecord::Base
 
   def self.transition_class
     ReserveTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 
@@ -413,6 +406,7 @@ end
 #  deleted_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

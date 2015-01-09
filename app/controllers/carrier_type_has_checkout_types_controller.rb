@@ -1,12 +1,11 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
-  before_action :set_carrier_type_has_checkout_type, only: [:show, :edit, :update, :destroy]
-  before_action :get_checkout_type
-  before_action :prepare_options, only: [:new, :edit]
-  after_action :verify_authorized
+  load_and_authorize_resource
+  before_filter :get_checkout_type
+  before_filter :prepare_options, only: [:new, :edit]
 
   # GET /carrier_type_has_checkout_types
+  # GET /carrier_type_has_checkout_types.json
   def index
-    authorize CarrierTypeHasCheckoutType
     @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.all
 
     respond_to do |format|
@@ -16,13 +15,18 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   # GET /carrier_type_has_checkout_types/1
+  # GET /carrier_type_has_checkout_types/1.json
   def show
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @carrier_type_has_checkout_type }
+    end
   end
 
   # GET /carrier_type_has_checkout_types/new
+  # GET /carrier_type_has_checkout_types/new.json
   def new
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.new
-    authorize @carrier_type_has_checkout_type
     @carrier_type_has_checkout_type.carrier_type = @carrier_type
     @carrier_type_has_checkout_type.checkout_type = @checkout_type
 
@@ -37,9 +41,9 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   # POST /carrier_type_has_checkout_types
+  # POST /carrier_type_has_checkout_types.json
   def create
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.new(carrier_type_has_checkout_type_params)
-    authorize @carrier_type_has_checkout_type
 
     respond_to do |format|
       if @carrier_type_has_checkout_type.save
@@ -55,10 +59,12 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   # PUT /carrier_type_has_checkout_types/1
+  # PUT /carrier_type_has_checkout_types/1.json
   def update
     respond_to do |format|
       if @carrier_type_has_checkout_type.update_attributes(carrier_type_has_checkout_type_params)
-        format.html { redirect_to @carrier_type_has_checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.carrier_type_has_checkout_type')) }
+        flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.carrier_type_has_checkout_type'))
+        format.html { redirect_to @carrier_type_has_checkout_type }
         format.json { head :no_content }
       else
         prepare_options
@@ -69,6 +75,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   # DELETE /carrier_type_has_checkout_types/1
+  # DELETE /carrier_type_has_checkout_types/1.json
   def destroy
     @carrier_type_has_checkout_type.destroy
 
@@ -79,11 +86,6 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
-  def set_carrier_type_has_checkout_type
-    @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.find(params[:id])
-    authorize @carrier_type_has_checkout_type
-  end
-
   def carrier_type_has_checkout_type_params
     params.require(:carrier_type_has_checkout_type).permit(
       :carrier_type_id, :checkout_type_id, :note

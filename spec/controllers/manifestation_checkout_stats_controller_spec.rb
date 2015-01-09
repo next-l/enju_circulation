@@ -174,6 +174,7 @@ describe ManifestationCheckoutStatsController do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @attrs
           assigns(:manifestation_checkout_stat).should be_valid
+          assigns(:manifestation_checkout_stat).current_state.should eq 'completed'
         end
 
         it "redirects to the created manifestation_checkout_stat" do
@@ -186,6 +187,7 @@ describe ManifestationCheckoutStatsController do
         it "assigns a newly created but unsaved manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @invalid_attrs
           assigns(:manifestation_checkout_stat).should_not be_valid
+          assigns(:manifestation_checkout_stat).current_state.should eq 'pending'
         end
 
         it "re-renders the 'new' template" do

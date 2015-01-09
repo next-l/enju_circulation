@@ -1,7 +1,9 @@
 require 'spec_helper'
+require 'sunspot/rails/spec_helper'
 
 describe LendingPoliciesController do
   fixtures :all
+  disconnect_sunspot
 
   def valid_attributes
     FactoryGirl.attributes_for(:lending_policy)
@@ -33,16 +35,16 @@ describe LendingPoliciesController do
     describe "When logged in as User" do
       login_fixture_user
 
-      it "assigns nil as @lending_policies" do
+      it "assigns empty as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_nil
+        assigns(:lending_policies).should be_empty
       end
     end
 
     describe "When not logged in" do
-      it "assigns nil lending_policies as @lending_policies" do
+      it "assigns empty lending_policies as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_nil
+        assigns(:lending_policies).should be_empty
       end
     end
   end

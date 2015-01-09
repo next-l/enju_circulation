@@ -1,12 +1,10 @@
 class CheckedItemsController < ApplicationController
-  before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
-  before_action :get_basket, only: [:index, :new, :create, :update]
-  after_action :verify_authorized
+  load_and_authorize_resource
+  before_filter :get_basket, only: [:index, :new, :create, :update]
 
   # GET /checked_items
   # GET /checked_items.json
   def index
-    authorize CheckedItem
     if @basket
       @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
     else
@@ -33,12 +31,11 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items/new
   # GET /checked_items/new.json
   def new
-    @checked_item = CheckedItem.new
-    authorize @checked_item
     unless @basket
       redirect_to new_basket_url
       return
     end
+    @checked_item = CheckedItem.new
     @checked_items = @basket.checked_items
 
     respond_to do |format|
@@ -54,13 +51,11 @@ class CheckedItemsController < ApplicationController
   # POST /checked_items
   # POST /checked_items.json
   def create
-    #unless @basket
-    #  access_denied; return
-    #end
-    @checked_item = CheckedItem.new(checked_item_params)
+    unless @basket
+      access_denied; return
+    end
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
-    authorize @checked_item
 
     flash[:message] = ''
 
@@ -93,7 +88,7 @@ class CheckedItemsController < ApplicationController
 
     respond_to do |format|
       if @checked_item.update_attributes(checked_item_params)
-        format.html { redirect_to @checked_item, notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
+        format.html { redirect_to checked_item_url(@checked_item), notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -114,13 +109,8 @@ class CheckedItemsController < ApplicationController
   end
 
   private
-  def set_checked_item
-    @checked_item = CheckedItem.find(params[:id])
-    authorize @checked_item
-  end
-
   def checked_item_params
-    params.require(:checked_item).permit(
+    params.fetch(:checked_item, {}).permit(
       :item_identifier, :ignore_restriction, :due_date_string
     )
   end

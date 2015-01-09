@@ -1,6 +1,13 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 3.2.19"
+gem "rails", "~> 3.2.21"
 gem "jquery-rails"
+gem "statesman", "~> 1.0.0"
+gem "strong_parameters"
+gem "coveralls", require: false
+gem "enju_leaf", github: "next-l/enju_leaf", branch: "1.1"
+gem "enju_biblio", github: "next-l/enju_biblio", branch: "1.1"
+gem "enju_event", github: "next-l/enju_event", branch: "1.1"
+gem "enju_message", github: "next-l/enju_message", branch: "1.1"
 
 gemspec path: "../"

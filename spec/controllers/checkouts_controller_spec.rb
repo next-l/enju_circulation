@@ -5,8 +5,7 @@ describe CheckoutsController do
 
   describe "GET index", :solr => true do
     before do
-      Checkout.__elasticsearch__.create_index!
-      Checkout.import
+      Checkout.reindex
     end
 
     before(:each) do
@@ -249,6 +248,7 @@ describe CheckoutsController do
         end
 
         it "assigns the requested checkout as @checkout" do
+          old_due_date = @checkout.due_date
           put :update, :id => @checkout.id, :checkout => @attrs
           assigns(:checkout).should eq(@checkout)
           response.should redirect_to(assigns(:checkout))
@@ -315,7 +315,7 @@ describe CheckoutsController do
       end
   
       it "should update other user's checkout" do
-        put :update, :id => 1, :checkout => {:checkout_renewal_count => 1}
+        put :update, :id => 1, :checkout => { }
         response.should redirect_to checkout_url(assigns(:checkout))
       end
 
@@ -355,7 +355,7 @@ describe CheckoutsController do
       end
 
       it "should not update other user's checkout" do
-        put :update, :id => 1, :checkout => {:checkout_renewal_count => 1}
+        put :update, :id => 1, :checkout => { }
         response.should be_forbidden
       end
   
@@ -366,7 +366,7 @@ describe CheckoutsController do
       end
 
       it "should update my checkout" do
-        put :update, :id => 3, :checkout => {:checkout_renewal_count => 1}
+        put :update, :id => 3, :checkout => { }
         assigns(:checkout).should be_valid
         response.should redirect_to checkout_url(assigns(:checkout))
       end

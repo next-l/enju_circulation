@@ -3,6 +3,7 @@ class ReserveTransition < ActiveRecord::Base
 
   
   belongs_to :reserve, inverse_of: :reserve_transitions
+  #attr_accessible :to_state, :sort_key, :metadata
 end
 
 # == Schema Information
@@ -14,6 +15,6 @@ end
 #  metadata   :text             default("{}")
 #  sort_key   :integer
 #  reserve_id :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #

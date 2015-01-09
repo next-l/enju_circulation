@@ -19,6 +19,7 @@ module EnjuCirculation
           CheckoutStatHasManifestation,
           CheckoutStatHasUser,
           CheckoutType,
+	  Demand,
           ItemHasUseRestriction,
           ManifestationCheckoutStat,
           ManifestationReserveStat,
@@ -50,6 +51,7 @@ module EnjuCirculation
           Basket,
           CheckedItem,
           Checkin,
+	  Demand,
           ManifestationCheckoutStat,
           ManifestationReserveStat,
           Reserve

@@ -56,12 +56,7 @@ class CheckedItem < ActiveRecord::Base
       if item.manifestation.next_reservation.user == basket.user
         item.manifestation.next_reservation.transition_to!(:completed)
       else
-        reserve = item.manifestation.reserves.order(:id).where(:user_id => basket.user_id).first
-        if reserve
-          reserve.transition_to!(:completed)
-        else
-          errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
-        end
+        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
       end
     end
 
@@ -108,7 +103,7 @@ class CheckedItem < ActiveRecord::Base
         end
       end
     end
-    due_date
+    return due_date
   end
 
   def set_item

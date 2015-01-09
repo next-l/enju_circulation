@@ -1,5 +1,5 @@
 class UserCheckoutStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
@@ -40,6 +40,10 @@ class UserCheckoutStat < ActiveRecord::Base
   def self.transition_class
     UserCheckoutStatTransition
   end
+
+  def self.initial_state
+    :pending
+  end
 end
 
 # == Schema Information
@@ -50,8 +54,8 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
 #  user_id      :integer
