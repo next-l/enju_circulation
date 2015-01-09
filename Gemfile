@@ -10,13 +10,13 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem "jquery-rails"
-gem "friendly_id", "~> 5.1.0.beta.1"
-gem "coveralls", require: false
-gem "enju_leaf", github: "next-l/enju_leaf", branch: "1.1"
-gem "enju_library", github: "next-l/enju_library", branch: "1.1"
-gem "enju_biblio", github: "next-l/enju_biblio", branch: "1.1"
+gem "enju_leaf", github: "next-l/enju_leaf", branch: "master"
+gem "enju_library", github: "next-l/enju_library", branch: "master"
+gem "enju_biblio", github: "next-l/enju_biblio", branch: "master"
 gem "enju_event", github: "next-l/enju_event", branch: "1.1"
 gem "enju_message", github: "next-l/enju_message", branch: "1.1"
+gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "1.1"
+gem "coveralls", require: false
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
