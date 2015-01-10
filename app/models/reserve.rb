@@ -99,6 +99,7 @@ class Reserve < ActiveRecord::Base
     string :title_transcription do
       manifestation.try(:title_transcription)
     end
+    integer :manifestation_id
   end
 
   def set_manifestation
