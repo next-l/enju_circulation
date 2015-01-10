@@ -16,7 +16,7 @@ gem "enju_biblio", github: "next-l/enju_biblio", branch: "master"
 gem "enju_event", github: "next-l/enju_event", branch: "master"
 gem "enju_message", github: "next-l/enju_message", branch: "master"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "master"
-gem "coveralls", require: false
+gem "coveralls", require: false, group: :test
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
