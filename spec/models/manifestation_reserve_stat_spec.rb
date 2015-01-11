@@ -12,7 +12,7 @@ describe ManifestationReserveStat do
   end
 
   it "should calculate in background" do
-    ManifestationReserveStatQueue.perform(manifestation_reserve_stats(:one).id).should be_truthy
+    ManifestationReserveStatJob.perform_later(manifestation_reserve_stats(:one)).should be_truthy
   end
 end
 

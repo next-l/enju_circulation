@@ -12,7 +12,7 @@ describe UserCheckoutStat do
   end
 
   it "should calculate in background" do
-    UserCheckoutStatQueue.perform(user_checkout_stats(:one).id).should be_truthy
+    UserCheckoutStatJob.perform_later(user_checkout_stats(:one)).should be_truthy
   end
 end
 
