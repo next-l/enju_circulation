@@ -81,7 +81,7 @@ class ManifestationCheckoutStatsController < ApplicationController
       if @manifestation_checkout_stat.save
         @manifestation_checkout_stat.transition_to(:started)
         @manifestation_checkout_stat.transition_to!(:completed)
-        #Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
+        #ManifestationCheckoutStatJob.perform_later(@manifestation_checkout_stat)
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render json: @manifestation_checkout_stat, status: :created, location: @manifestation_checkout_stat }
       else
@@ -97,7 +97,7 @@ class ManifestationCheckoutStatsController < ApplicationController
     respond_to do |format|
       if @manifestation_checkout_stat.update_attributes(manifestation_checkout_stat_params)
         if @manifestation_checkout_stat.mode == 'import'
-          Resque.enqueue(ManifestationCheckoutStatQueue, @manifestation_checkout_stat.id)
+          #ManifestationCheckoutStatJob.perform_later(@manifestation_checkout_stat)
         end
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }

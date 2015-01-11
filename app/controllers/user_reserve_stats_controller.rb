@@ -53,7 +53,7 @@ class UserReserveStatsController < ApplicationController
 
     respond_to do |format|
       if @user_reserve_stat.save
-        Resque.enqueue(UserReserveStatQueue, @user_reserve_stat.id)
+        UserReserveStatJob.perform_later(@user_reserve_stat)
         format.html { redirect_to @user_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.user_reserve_stat')) }
         format.json { render json: @user_reserve_stat, status: :created, location: @user_reserve_stat }
       else
@@ -69,7 +69,7 @@ class UserReserveStatsController < ApplicationController
     respond_to do |format|
       if @user_reserve_stat.update_attributes(user_reserve_stat_params)
         if @user_reserve_stat.mode == 'import'
-          Resque.enqueue(UserReserveStatQueue, @user_reserve_stat.id)
+          UserReserveStatJob.perform_later(@user_reserve_stat)
         end
         format.html { redirect_to @user_reserve_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.user_reserve_stat')) }
         format.json { head :no_content }
