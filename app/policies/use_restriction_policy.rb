@@ -1,2 +1,0 @@
-class UseRestrictionPolicy < AdminPolicy
-end
