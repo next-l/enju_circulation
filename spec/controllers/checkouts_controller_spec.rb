@@ -17,7 +17,7 @@ describe CheckoutsController do
 
       it "assigns all checkouts as @checkouts" do
         get :index
-        assigns(:checkouts).should eq Checkout.not_returned.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq Checkout.order('checkouts.created_at DESC').page(1)
       end
 
       it "should get other user's index" do
@@ -81,7 +81,7 @@ describe CheckoutsController do
 
       it "assigns all checkouts as @checkouts" do
         get :index
-        assigns(:checkouts).should eq(users(:user1).checkouts.not_returned.order('checkouts.id DESC').page(1))
+        assigns(:checkouts).should eq(users(:user1).checkouts.order('checkouts.created_at DESC').page(1))
         response.should be_success
       end
 
@@ -95,7 +95,7 @@ describe CheckoutsController do
       it "should get my index feed" do
         get :index, :format => 'rss'
         response.should be_success
-        assigns(:checkouts).should eq(users(:user1).checkouts.not_returned.order('checkouts.id DESC').page(1))
+        assigns(:checkouts).should eq(users(:user1).checkouts.order('checkouts.created_at DESC').page(1))
       end
 
       it "should get my index with user_id" do
