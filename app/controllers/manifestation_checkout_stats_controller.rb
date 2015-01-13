@@ -60,6 +60,8 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/new.json
   def new
     @manifestation_checkout_stat = ManifestationCheckoutStat.new
+    @manifestation_checkout_stat.start_date = Time.zone.now.beginning_of_day
+    @manifestation_checkout_stat.end_date = Time.zone.tomorrow.beginning_of_day
 
     respond_to do |format|
       format.html # new.html.erb
