@@ -44,7 +44,9 @@ module EnjuCirculation
         validates_associated :circulation_status, :checkout_type
         validates_presence_of :circulation_status, :checkout_type
         searchable do
-          integer :circulation_status_id
+          string :circulation_status do
+            circulation_status.name
+          end
         end
         accepts_nested_attributes_for :item_has_use_restriction
 
