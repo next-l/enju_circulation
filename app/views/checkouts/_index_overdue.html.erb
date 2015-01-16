@@ -11,7 +11,7 @@
     </p>
   <%- end -%>
 
-<%= render 'list' -%>
+<%= render 'list', checkouts: @checkouts -%>
 
 <%- if @checkouts.size == 0 -%>
   <p><%= t('checkout.no_checkout') -%></p>
