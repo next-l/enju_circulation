@@ -6,8 +6,7 @@
     <th></th>
   </tr>
 
-<%- if @checkouts -%>
-  <%- @checkouts.each_with_index do |checkout, i| %>
+  <%- checkouts.each_with_index do |checkout, i| %>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
       <% if checkout.user %>
@@ -46,7 +45,6 @@
     </td>
   </tr>
   <%- end -%>
-<%- end -%>
 </table>
 
-<%= paginate(@checkouts) %>
+<%= paginate(checkouts) %>

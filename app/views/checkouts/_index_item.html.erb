@@ -6,7 +6,7 @@
   <h2><%= link_to item.item_identifier, item %></h2>
   <p>(<%= link_to item.manifestation.original_title, item.manifestation %>)
 
-<%= render 'list' -%>
+<%= render 'list', checkouts: @checkouts -%>
 
 <%- if @checkouts.size == 0 -%>
   <p><%= t('checkout.no_checkout') -%></p>
