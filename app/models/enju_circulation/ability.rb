@@ -23,7 +23,6 @@ module EnjuCirculation
           ItemHasUseRestriction,
           ManifestationCheckoutStat,
           ManifestationReserveStat,
-          Reserve,
           ReserveStatHasManifestation,
           ReserveStatHasUser,
           UserCheckoutStat,
@@ -82,13 +81,6 @@ module EnjuCirculation
         end
         can [:destroy, :delete], Checkout do |checkout|
           checkout.user == user && checkout.checkin
-        end
-        can :index, Reserve
-        can :create, Reserve do |reserve|
-          user.profile.user_number.try(:present?)
-        end
-        can [:show, :update, :destroy, :delete], Reserve do |reserve|
-          reserve.user == user
         end
         can :read, [
           CirculationStatus,
