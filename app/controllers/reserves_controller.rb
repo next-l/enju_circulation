@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
   before_filter :store_location, only: [:index, :new]
-  load_and_authorize_resource except: :index
-  authorize_resource only: :index
-  before_filter :prepare_options, only: [:new, :edit]
+  before_action :set_reserve, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
   before_filter :get_user, only: [:index, :new]
+  before_filter :prepare_options, only: [:new, :edit]
   before_filter :store_page
   helper_method :get_manifestation
   helper_method :get_item
@@ -250,6 +250,14 @@ class ReservesController < ApplicationController
   end
 
   private
+  def set_reserve
+    @reserve = Reserve.find(params[:id])
+    authorize @reserve
+  end
+
+  def check_policy
+    authorize Reserve
+  end
   def reserve_params
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
