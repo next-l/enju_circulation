@@ -17,7 +17,7 @@
 <%- @checkout_types.each do |checkout_type| -%>
   <tr class="line<%= cycle("0", "1") -%>">
     <td>
-      <%- if can? :update, checkout_type -%>
+      <%- if policy(checkout_type).update? -%>
         <%= move_position(checkout_type) -%>
       <%- end -%>
     </td>
@@ -28,10 +28,10 @@
       <%= checkout_type.note %>
     </td>
     <td>
-      <%- if can? :update, checkout_type -%>
+      <%- if policy(checkout_type).update? -%>
         <%= link_to t('page.edit'), edit_checkout_type_path(checkout_type) -%>
       <% end %>
-      <%- if can? :delete, checkout_type -%>
+      <%- if policy(checkout_type).destroy? -%>
         <%= link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <%- end -%>
     </td>
@@ -44,7 +44,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- if can? :create, CheckoutType -%>
+    <%- if policy(CheckoutType).create? -%>
       <li><%= link_to t('page.new', model: t('activerecord.models.checkout_type')), new_checkout_type_path -%></li>
     <%- end -%>
   </ul>

@@ -107,7 +107,7 @@ describe ManifestationCheckoutStatsController do
 
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
-        assigns(:manifestation_checkout_stat).should_not be_valid
+        assigns(:manifestation_checkout_stat).should be_nil
         response.should be_forbidden
       end
     end
@@ -115,7 +115,7 @@ describe ManifestationCheckoutStatsController do
     describe "When not logged in" do
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
-        assigns(:manifestation_checkout_stat).should_not be_valid
+        assigns(:manifestation_checkout_stat).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -231,7 +231,7 @@ describe ManifestationCheckoutStatsController do
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @attrs
-          assigns(:manifestation_checkout_stat).should be_valid
+          assigns(:manifestation_checkout_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -243,7 +243,7 @@ describe ManifestationCheckoutStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @invalid_attrs
-          assigns(:manifestation_checkout_stat).should_not be_valid
+          assigns(:manifestation_checkout_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -257,7 +257,7 @@ describe ManifestationCheckoutStatsController do
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @attrs
-          assigns(:manifestation_checkout_stat).should be_valid
+          assigns(:manifestation_checkout_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -269,7 +269,7 @@ describe ManifestationCheckoutStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_checkout_stat as @manifestation_checkout_stat" do
           post :create, :manifestation_checkout_stat => @invalid_attrs
-          assigns(:manifestation_checkout_stat).should_not be_valid
+          assigns(:manifestation_checkout_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -408,7 +408,7 @@ describe ManifestationCheckoutStatsController do
 
       it "redirects to the manifestation_checkout_stats list" do
         delete :destroy, :id => @manifestation_checkout_stat.id
-        response.should redirect_to(manifestation_checkout_stats_url)
+        response.should be_forbidden
       end
     end
 

@@ -1,5 +1,6 @@
 class ManifestationReserveStatsController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
   after_filter :convert_charset, only: :show
 
   # GET /manifestation_reserve_stats
@@ -92,6 +93,15 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   private
+  def set_manifestation_reserve_stat
+    @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
+    authorize @manifestation_reserve_stat
+  end
+
+  def check_policy
+    authorize ManifestationReserveStat
+  end
+
   def manifestation_reserve_stat_params
     params.require(:manifestation_reserve_stat).permit(
       :start_date, :end_date, :note, :mode

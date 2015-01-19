@@ -123,7 +123,7 @@ describe CheckinsController do
 
       it "should not assign the requested checkin as @checkin" do
         get :new
-        assigns(:checkin).should_not be_valid
+        assigns(:checkin).should be_nil
         response.should be_forbidden
       end
     end
@@ -131,7 +131,7 @@ describe CheckinsController do
     describe "When not logged in" do
       it "should not assign the requested checkin as @checkin" do
         get :new
-        assigns(:checkin).should_not be_valid
+        assigns(:checkin).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -189,7 +189,7 @@ describe CheckinsController do
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
           post :create, :checkin => @attrs
-          assigns(:checkin).should_not be_valid
+          assigns(:checkin).should be_nil
         end
 
         it "should not create checkin without basket_id" do
@@ -216,7 +216,7 @@ describe CheckinsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved checkin as @checkin" do
           post :create, :checkin => @invalid_attrs
-          assigns(:checkin).should_not be_valid
+          assigns(:checkin).should be_nil
         end
 
         it "should be forbidden" do
@@ -238,7 +238,7 @@ describe CheckinsController do
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
           post :create, :checkin => @attrs
-          assigns(:checkin).should_not be_valid
+          assigns(:checkin).should be_nil
         end
 
         it "should not create checkin without basket_id" do
@@ -277,7 +277,7 @@ describe CheckinsController do
       describe "with valid params" do
         it "assigns a newly created checkin as @checkin" do
           post :create, :checkin => @attrs
-          assigns(:checkin).should_not be_valid
+          assigns(:checkin).should be_nil
         end
 
         it "should be forbidden" do

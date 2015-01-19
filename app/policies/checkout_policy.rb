@@ -1,6 +1,6 @@
 class CheckoutPolicy < ApplicationPolicy
   def index?
-    user.try(:has_role?, 'User')
+    true
   end
 
   def show?
@@ -31,5 +31,9 @@ class CheckoutPolicy < ApplicationPolicy
         true
       end
     end
+  end
+
+  def remove_all?
+    true if user.try(:has_role?, 'User')
   end
 end

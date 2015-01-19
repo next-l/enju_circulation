@@ -14,29 +14,16 @@ module EnjuCirculation
         can :manage, [
           Basket,
           CarrierTypeHasCheckoutType,
-          CheckedItem,
-          Checkin,
           CheckoutStatHasManifestation,
           CheckoutStatHasUser,
-          CheckoutType,
           Demand,
           ItemHasUseRestriction,
-          ManifestationCheckoutStat,
-          ManifestationReserveStat,
           ReserveStatHasManifestation,
           ReserveStatHasUser,
-          UserCheckoutStat,
           UserGroupHasCheckoutType,
-          UserReserveStat
         ]
-        can [:read, :create, :update, :remove_all], Checkout
-        can [:destroy, :delete], Checkout do |checkout|
-          checkout.checkin
-        end
         can [:read, :update], [
-          CirculationStatus,
           LendingPolicy,
-          UseRestriction
         ]
         can [:destroy, :delete], LendingPolicy
       when 'Librarian'
@@ -48,55 +35,17 @@ module EnjuCirculation
         end
         can :manage, [
           Basket,
-          CheckedItem,
-          Checkin,
           Demand,
-          ManifestationCheckoutStat,
-          ManifestationReserveStat,
-          Reserve
         ]
-        can [:read, :create, :update, :remove_all], Checkout
-        can [:destroy, :delete], Checkout do |checkout|
-          checkout.checkin
-        end
-        can [:read, :create, :update], UserCheckoutStat
-        can [:read, :create, :update], UserReserveStat
         can :read, [
           CarrierTypeHasCheckoutType,
-          CheckoutType,
           CheckoutStatHasManifestation,
           CheckoutStatHasUser,
-          CirculationStatus,
           ItemHasUseRestriction,
           LendingPolicy,
           ReserveStatHasManifestation,
           ReserveStatHasUser,
-          UseRestriction,
           UserGroupHasCheckoutType
-        ]
-      when 'User'
-        can [:index, :create, :remove_all], Checkout
-        can [:show, :update], Checkout do |checkout|
-          checkout.user == user
-        end
-        can [:destroy, :delete], Checkout do |checkout|
-          checkout.user == user && checkout.checkin
-        end
-        can :read, [
-          CirculationStatus,
-          ManifestationCheckoutStat,
-          ManifestationReserveStat,
-          UserCheckoutStat,
-          UserReserveStat,
-        ]
-      else
-        can :index, Checkout
-        can :read, [
-          CirculationStatus,
-          ManifestationCheckoutStat,
-          ManifestationReserveStat,
-          UserCheckoutStat,
-          UserReserveStat
         ]
       end
     end
