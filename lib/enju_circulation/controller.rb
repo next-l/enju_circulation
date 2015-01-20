@@ -15,6 +15,7 @@ module EnjuCirculation
 
       def get_checkout_type
         @checkout_type = CheckoutType.find(params[:checkout_type_id]) if params[:checkout_type_id]
+        authorize @checkout_type, :show? if @checkout_type
       end
     end
   end

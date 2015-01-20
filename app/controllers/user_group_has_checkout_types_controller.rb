@@ -1,7 +1,8 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
   helper_method :get_user_group, :get_checkout_type
-  before_filter :prepare_options, only: [:new, :edit]
+  before_action :prepare_options, only: [:new, :edit]
 
   # GET /user_group_has_checkout_types
   # GET /user_group_has_checkout_types.json
@@ -85,6 +86,15 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   end
 
   private
+  def set_user_group_has_checkout_type
+    @user_group_has_checkout_type = UserGroupHasCheckoutType.find(params[:id])
+    authorize @user_group_has_checkout_type
+  end
+
+  def check_policy
+    authorize UserGroupHasCheckoutType
+  end
+
   def user_group_has_checkout_type_params
     params.require(:user_group_has_checkout_type).permit(
       :user_group_id, :checkout_type_id,

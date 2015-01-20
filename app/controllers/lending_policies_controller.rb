@@ -1,5 +1,6 @@
 class LendingPoliciesController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_lending_policy, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
   before_filter :get_user_group, :get_item
   before_filter :prepare_options, only: [:new, :edit]
 
@@ -78,6 +79,16 @@ class LendingPoliciesController < ApplicationController
   end
 
   private
+  def set_lending_policy
+    @lending_policy = LendingPolicy.find(params[:id])
+    authorize @lending_policy
+    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
+  end
+
+  def check_policy
+    authorize LendingPolicy
+  end
+
   def lending_policy_params
     params.require(:lending_policy).permit(
       :item_id, :user_group_id, :loan_period, :fixed_due_date,

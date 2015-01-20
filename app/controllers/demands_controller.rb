@@ -1,10 +1,11 @@
 class DemandsController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_demand, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
 
   # GET /demands
   # GET /demands.json
   def index
-    @demands = Demand.order('id DESC').page(params[:page])
+    @demands = Demand.order(created_at: :desc).page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +45,7 @@ class DemandsController < ApplicationController
 
     respond_to do |format|
       if @demand.save
-        format.html { redirect_to @demand, notice: t('statistic.successfully_created', model: t('activerecord.models.demand')) }
+        format.html { redirect_to @demand, notice: t('controller.successfully_created', model: t('activerecord.models.demand')) }
         format.json { render json: @demand, status: :created, location: @demand }
       else
         format.html { render action: "new" }
@@ -79,7 +80,17 @@ class DemandsController < ApplicationController
   end
 
   private
+  def set_demand
+    @demand = Demand.find(params[:id])
+    authorize @demand
+    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
+  end
+
+  def check_policy
+    authorize Demand
+  end
+
   def demand_params
-    params.fetch(:demand, {}).permit()
+    params.require(:demand).permit(:user_id, :item_id)
   end
 end
