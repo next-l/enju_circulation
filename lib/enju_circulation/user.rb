@@ -60,6 +60,10 @@ module EnjuCirculation
         return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(:user_group_id => profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
         false
       end
+
+      def has_overdue?(day = 1)
+        true if checkouts.where(checkin_id: nil).where(Checkout.arel_table[:due_date].lt day.days.ago).count >= 1
+      end
     end
   end
 end
