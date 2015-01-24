@@ -93,7 +93,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   def prepare_options
-    @checkout_types = CheckoutType.all
-    @carrier_types = CarrierType.all
+    @checkout_types = CheckoutType.order(:position)
+    @carrier_types = CarrierType.order(:position)
   end
 end
