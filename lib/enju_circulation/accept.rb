@@ -2,7 +2,6 @@ module EnjuCirculation
   module EnjuAccept
     def self.included(base)
       base.extend ClassMethods
-      before_save :accept!, on: :create
     end
 
     module ClassMethods
