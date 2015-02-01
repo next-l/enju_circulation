@@ -2,12 +2,12 @@ module EnjuCirculation
   module EnjuAccept
     def self.included(base)
       base.extend ClassMethods
-      before_save :accept!, on: :create
     end
 
     module ClassMethods
       def enju_circulation_accept_model
         include InstanceMethods
+        before_save :accept!, on: :create
       end
     end
 
