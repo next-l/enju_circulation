@@ -22,6 +22,8 @@ class ManifestationPolicy < ApplicationPolicy
 
   def edit?
     case user.try(:role).try(:name)
+    when 'Administrator'
+      true
     when 'Librarian'
       true
     when 'User'
