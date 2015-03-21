@@ -13,7 +13,6 @@ h1.title
   .actions
     = f.hidden_field :lock_version
     = f.submit
-  - - end
   = link_to t('page.show'), checked_item_path(@checked_item)
   |  | 
   = link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id)

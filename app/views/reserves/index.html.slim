@@ -18,7 +18,6 @@ div[style="color: red"]
           = t('reserve.reserved_to')
           = text_field_tag 'reserved_to', @reserved_to, {class: 'date_field', placeholder: "#{t('page.example')}: 2012-05-11"}
           = submit_tag t('page.search')
-        - - end
     p
       = t('page.sort_by')
       | : 
@@ -32,7 +31,6 @@ div[style="color: red"]
           = t('page.title')
       - else
         = link_to t('page.title'), url_for(params.merge(sort_by: 'title', only_path: true))
-        - - end
     table.table.table-striped.index
       tr
         th[style="width: 30px"]
@@ -82,9 +80,6 @@ div[style="color: red"]
             - else
               br
               = link_to t('page.destroy'), reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
-              - - end
-          - - end
-          - - end
     = paginate(@reserves)
 #submenu.ui-corner-all.ui-widget-content
   ul
@@ -99,11 +94,9 @@ div[style="color: red"]
         = link_to t('reserve.all_reservation'), reserves_path
       li
         = link_to t('reserve.my_reservation'), reserves_path(user_id: current_user.username)
-      - - end
       - if @user
         li
           = link_to t('page.listing', model: t('activerecord.models.checkout')), checkouts_path(user_id: @user.username)
-        - - end
   = render 'state_facet'
   p
     - if @user
@@ -124,4 +117,3 @@ div[style="color: red"]
       |  (
       = link_to 'TSV', reserves_path(format: :txt, locale: @locale.to_s)
       | ) 
-      - - end

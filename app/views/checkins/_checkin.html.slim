@@ -26,13 +26,10 @@ table.table.table-striped.index
           - - unless checkin.item.shelf.library == current_user.library
           span[style="color: red"]
             = link_to t('activerecord.models.inter_library_loan'), item_inter_library_loans_path(checkin.item)
-          - - end
     td
       - if checkin.checkout
         = l(checkin.checkout.due_date, format: :only_date)
-        - - end
     td
       - if checkin.checkout.try(:user)
         = link_to checkin.checkout.user.username, checkin.checkout.user.profile
-    - - end
 = javascript_tag("$(function(){$('#checkin_item_identifier').focus().select()})")

@@ -74,6 +74,5 @@
     - else
       li
         = link_to t('page.destroy'), @reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
-      - - end
       li
         = link_to t('page.back'), reserves_path(page: flash[:page] ||= nil)

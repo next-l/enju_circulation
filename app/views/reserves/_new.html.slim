@@ -12,7 +12,6 @@
           = f.label t('activerecord.models.manifestation')
           br
           = f.text_field :manifestation_id
-          - - end
       .field
         = f.label :expired_at
         br
@@ -29,7 +28,6 @@
         = f.hidden_field :user_number, class: 'resource_user_number'
       .actions
         = f.submit
-      - - end
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
 #submenu.ui-corner-all.ui-widget-content
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
@@ -39,4 +37,3 @@
     - if @reserve.manifestation
       li
         = link_to t('page.showing', model: t('activerecord.models.manifestation')), manifestation_path(@reserve.manifestation)
-      - - end

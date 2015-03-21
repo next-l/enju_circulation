@@ -21,7 +21,6 @@
       - @checkout_type.user_group_has_checkout_types.each do |available_user_group|
         li
           = link_to available_user_group.user_group.display_name.localize, available_user_group.user_group
-        - - end
     p
       strong
         = t('activerecord.attributes.checkout_type.note')

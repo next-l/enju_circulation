@@ -14,11 +14,9 @@ div[style="color: red"]
       = t('checked_item.ignore_restriction')
       | : 
       = f.check_box :ignore_restriction
-    - - end
     script[type="text/javascript"]
       |  $(document).ready(function(){ $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'}); $('#checked_item_item_identifier').focus().select(); }); 
 = render 'checked_item'
 = form_for(:basket, url: basket_path(@basket), html: { method: :put }) do |f|
   div
     = f.submit t('checked_item.checkout'), 'data-disable-with' => t('page.saving')
-  - - end

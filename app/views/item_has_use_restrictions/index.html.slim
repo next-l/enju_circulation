@@ -26,11 +26,9 @@ table
         = link_to t('page.edit'), edit_item_has_use_restriction_path(item_has_use_restriction)
       td
         = link_to t('page.destroy'), item_has_use_restriction, data: {confirm: t('page.are_you_sure')}, method: :delete
-    - - end
 = paginate(@item_has_use_restrictions)
 br
 - if @item
   = link_to t('page.new', model: t('activerecord.models.item_has_use_restriction')), new_item_item_has_use_restriction_path(@item)
 - else
   = link_to t('page.new', model: t('activerecord.models.item_has_use_restriction')), new_item_has_use_restriction_path
-  - - end

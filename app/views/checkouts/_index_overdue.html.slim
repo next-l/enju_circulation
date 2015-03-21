@@ -9,12 +9,10 @@
         = text_field_tag 'days_overdue', h(@days_overdue), class: 'resource_integer'
         = hidden_field_tag 'view', 'overdue'
         = submit_tag t('page.search')
-      - - end
       = render 'list', checkouts: @checkouts
       - if @checkouts.size == 0
         p
           = t('checkout.no_checkout')
-        - - end
 #submenu.ui-corner-all.ui-widget-content
   ul
     li

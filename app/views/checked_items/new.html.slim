@@ -19,7 +19,6 @@
         = @basket.user.checked_item_count[:"#{available_checkout_type.checkout_type.name}"]
         |  / 
         = available_checkout_type.checkout_limit
-      - - end
   ul
     li
       = link_to t('activerecord.models.checkin'), checkins_path

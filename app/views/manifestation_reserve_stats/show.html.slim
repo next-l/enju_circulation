@@ -38,7 +38,6 @@
           = render 'manifestations/show_index', manifestation: stat.manifestation if stat.manifestation
         td
           = stat.reserves_count
-        - - end
     = paginate(@stats)
 #submenu.ui-corner-all.ui-widget-content
   = form_for(@manifestation_reserve_stat) do |f|

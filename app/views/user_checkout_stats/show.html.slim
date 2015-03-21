@@ -38,7 +38,6 @@
           = link_to stat.user.username, stat.user.profile if stat.user.try(:profile)
         td
           = stat.checkouts_count
-        - - end
     = paginate(@stats)
 #submenu.ui-corner-all.ui-widget-content
   = form_for(@user_checkout_stat) do |f|

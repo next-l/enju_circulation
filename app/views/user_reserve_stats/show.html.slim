@@ -38,7 +38,6 @@
           = link_to stat.user.username, stat.user.profile if stat.user.try(:profile)
         td
           = stat.reserves_count
-        - - end
     = paginate(@stats)
 #submenu.ui-corner-all.ui-widget-content
   = form_for(@user_reserve_stat) do |f|

@@ -8,6 +8,5 @@ div[style="color: red"]
       | : 
       = f.search_field :item_identifier, class: 'resource_item_identifier'
       = f.submit t('checkin.checkin'), 'data-disable-with' => t('page.saving')
-    - - end
     = javascript_tag("$(function(){$('#checkin_item_identifier').focus().select()})")
 = render 'checkin'

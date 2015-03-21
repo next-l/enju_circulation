@@ -41,6 +41,5 @@
           = link_to t('page.show'), lending_policy
           = link_to t('page.edit'), edit_lending_policy_path(lending_policy)
           = link_to t('page.destroy'), lending_policy, data: {confirm: t('page.are_you_sure')}, method: :delete
-        - - end
     = paginate(@lending_policies)
 #submenu.ui-corner-all.ui-widget-content

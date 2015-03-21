@@ -13,11 +13,9 @@
         = f.hidden_field :due_date, value: @new_due_date
         br
         = f.submit
-        - - end
       - else
         .field
           = t('checkout.this_item_cant_be_renewed')
-        - - end
         - if current_user.has_role?('Librarian')
           h3
             = t('checkout.editing_due_date')
@@ -34,8 +32,6 @@
               = f.text_field :checkout_renewal_count, class: 'resource_integer'
             .actions
               = f.submit
-            - - end
-            - - end
 #submenu.ui-corner-all.ui-widget-content
   = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation if @checkout.item
   ul

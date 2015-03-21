@@ -1,7 +1,6 @@
 - if @user.checkout_icalendar_token?
   = checkouts_url(icalendar_token: @user.checkout_icalendar_token, format: :ics)
   = hidden_field_tag 'user[checkout_icalendar_token]', @user.checkout_icalendar_token
-  - - end
   br
   - if @user.checkout_icalendar_token?
     |  <input onclick="$.ajax({data:'authenticity_token=' + encodeURIComponent('
@@ -23,4 +22,3 @@
     | " /> 
     br
     = t('user.you_have_to_save_profile_to_deactivate_feed_url')
-    - - end
