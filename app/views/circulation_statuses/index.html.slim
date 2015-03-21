@@ -1,0 +1,41 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.listing', model: t('activerecord.models.circulation_status'))
+  #content_list
+    table.table.table-striped.index
+      tr
+        th#position
+        th
+          = t('activerecord.attributes.circulation_status.name')
+        th
+          = t('activerecord.attributes.circulation_status.display_name')
+          |  / 
+          = t('activerecord.attributes.circulation_status.note')
+        th
+      - @circulation_statuses.each do |circulation_status|
+        |  <tr class="line
+        = cycle("0", "1")
+        | "> 
+        td
+          - - policy(circulation_status).update?
+          = move_position(circulation_status)
+          - - end
+        td
+          = circulation_status.name
+        td
+          = link_to circulation_status.display_name.localize, circulation_status
+          br
+          = circulation_status.note
+        td
+          - - policy(circulation_status).update?
+          = link_to t('page.edit'), edit_circulation_status_path(circulation_status)
+      - - policy(circulation_status).destroy?
+      = link_to t('page.destroy'), circulation_status_path(circulation_status), data: {confirm: t('page.are_you_sure')}, method: :delete
+      - - end
+      - - end
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    - if policy(CirculationStatus).create?
+      li
+        = link_to t('page.new', model: t('activerecord.models.circulation_status')), new_circulation_status_path
+      - - end

@@ -1,0 +1,22 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.showing', model: t('activerecord.models.checkin'))
+  #content_list
+    p#notice
+      = notice
+    p
+      strong
+        = t('activerecord.models.item')
+        | :
+      = link_to @checkin.item.manifestation.original_title, @checkin.item
+    p
+      strong
+        = t('activerecord.models.user')
+        | :
+      = link_to @checkin.librarian.username, @checkin.librarian
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('page.edit'), edit_checkin_path(@checkin)
+    li
+      = back_to_index(flash[:page_info])

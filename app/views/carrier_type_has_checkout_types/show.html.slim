@@ -1,0 +1,28 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.showing', model: t('activerecord.models.carrier_type_has_checkout_type'))
+  #content_list
+    p#notice
+      = notice
+    p
+      strong
+        = t('activerecord.models.carrier_type')
+        | :
+      = link_to @carrier_type_has_checkout_type.carrier_type.display_name.localize, @carrier_type_has_checkout_type.carrier_type
+    p
+      strong
+        = t('activerecord.models.checkout_type')
+        | :
+      = link_to @carrier_type_has_checkout_type.checkout_type.display_name.localize, @carrier_type_has_checkout_type.checkout_type
+    p
+      strong
+        = t('activerecord.attributes.carrier_type_has_checkout_type.note')
+        | :
+      = @carrier_type_has_checkout_type.note
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    - if policy(@carrier_type_has_checkout_type).update?
+      li
+        = link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(@carrier_type_has_checkout_type)
+    li
+      = back_to_index(flash[:page_info])

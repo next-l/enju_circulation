@@ -1,0 +1,27 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.new', model: t('activerecord.models.checked_item'))
+  #content_list
+    #checked_item_list
+      p#notice
+        = notice
+      = render 'list'
+    = render 'checkout'
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to @basket.user.username, @basket.user.profile
+  ul
+    - @basket.user.profile.user_group.user_group_has_checkout_types.each do |available_checkout_type|
+      li
+        = available_checkout_type.checkout_type.display_name.localize
+        | : 
+        = @basket.user.checked_item_count[:"#{available_checkout_type.checkout_type.name}"]
+        |  / 
+        = available_checkout_type.checkout_limit
+      - - end
+  ul
+    li
+      = link_to t('activerecord.models.checkin'), checkins_path
+    li
+      = link_to t('activerecord.models.reserve'), reserves_path(user_id: @basket.user.username)

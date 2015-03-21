@@ -1,0 +1,24 @@
+h1.title
+  = t('page.new', model: t('activerecord.models.item_has_use_restriction'))
+= form_for(@item_has_use_restriction) do |f|
+  = f.error_messages
+  .field
+    = f.label t('activerecord.models.item')
+    br
+    - if @item
+      = link_to @item.item_identifier, @item
+      |  (
+      = link_to @item.manifestation.original_title, @item.manifestation
+      | ) 
+      = f.hidden_field :item_id, value: @item.id
+    - else
+      = f.text_field :item_id
+      - - end
+  .field
+    = f.label t('activerecord.models.use_restriction')
+    br
+    = f.select(:use_restriction_id, @use_restrictions.collect{|u| [u.name, u.id]})
+  .actions
+    = f.submit
+  - - end
+  = link_to t('page.back'), item_has_use_restrictions_path

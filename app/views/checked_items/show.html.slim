@@ -1,0 +1,22 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.showing', model: t('activerecord.models.checked_item'))
+  #content_list
+    p#notice
+      = notice
+    p
+      strong
+        = t('activerecord.models.item')
+        | :
+      = link_to @checked_item.item_identifier, @checked_item.item
+    p
+      strong
+        = t('activerecord.models.basket')
+        | :
+      = link_to @checked_item.basket.id, @checked_item.basket
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('page.edit'), edit_checked_item_path(@checked_item)
+    li
+      = link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id)

@@ -1,0 +1,17 @@
+p#notice
+  = notice
+p
+  strong
+    | User:
+  = @demand.user_id
+p
+  strong
+    | Item:
+  = @demand.item_id
+p
+  strong
+    | Message:
+  = @demand.message_id
+= link_to 'Edit', edit_demand_path(@demand)
+|  | 
+= link_to 'Back', demands_path

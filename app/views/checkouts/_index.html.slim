@@ -1,0 +1,25 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.listing', model: t('activerecord.models.checkout'))
+  #content_list
+    p#notice
+      = notice
+    = render 'list', checkouts: @checkouts
+    - if @checkouts.size == 0
+      p
+        = t('checkout.no_checkout')
+      - - end
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('checkout.my_checkout'), checkouts_path(user_id: current_user.username)
+    li
+      = link_to t('page.overdue'), checkouts_path(view: 'overdue')
+  = render 'reserved_facet'
+  ul
+    li
+      = link_to 'RSS', checkouts_path(format: :rss)
+      = link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(format: :rss)
+    li
+      = link_to 'TSV', checkouts_path(format: :txt, locale: @locale.to_s)
+      = link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), checkouts_path(format: :txt, locale: @locale.to_s)

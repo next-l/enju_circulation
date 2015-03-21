@@ -1,0 +1,37 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.showing', model: t('activerecord.models.checkout_type'))
+  #content_list
+    p#notice
+      = notice
+    p
+      strong
+        = t('activerecord.attributes.checkout_type.name')
+        | :
+      = @checkout_type.name
+    p
+      strong
+        = t('activerecord.attributes.checkout_type.display_name')
+        | :
+      = @checkout_type.display_name.localize
+    p
+      strong
+        = t('activerecord.models.user_group')
+    ul
+      - @checkout_type.user_group_has_checkout_types.each do |available_user_group|
+        li
+          = link_to available_user_group.user_group.display_name.localize, available_user_group.user_group
+        - - end
+    p
+      strong
+        = t('activerecord.attributes.checkout_type.note')
+        | :
+      = @checkout_type.note
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('page.edit'), edit_checkout_type_path(@checkout_type)
+    li
+      = back_to_index(flash[:page_info])
+    li
+      = link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type)

@@ -1,0 +1,9 @@
+.field
+  = f.label t('activerecord.models.carrier_type_has_checkout_type')
+  br
+  = f.fields_for :carrier_type_has_checkout_types do |checkout_form|
+    = checkout_form.label :checkout_type_id
+    = checkout_form.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name.localize, c.id]})
+    = checkout_form.link_to_remove t('page.remove'), confirm: t('page.are_you_sure')
+  p
+    = f.link_to_add t('page.add'), :carrier_type_has_checkout_types

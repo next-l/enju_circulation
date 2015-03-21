@@ -1,0 +1,12 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.listing', model: t('activerecord.models.checkin'))
+  #content_list
+    = render 'checkin'
+    = paginate @checkins
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('page.new', model: t('activerecord.models.checkin')), new_checkin_path
+    li
+      = link_to t('activerecord.models.checkout'), new_basket_path

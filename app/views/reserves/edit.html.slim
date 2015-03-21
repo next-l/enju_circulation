@@ -1,0 +1,55 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.editing', model: t('activerecord.models.reserve'))
+  #content_list
+    = form_for(@reserve) do |f|
+      = f.error_messages
+      .field
+        - if @reserve.manifestation
+          = render 'manifestations/title', manifestation: @reserve.manifestation
+          = f.hidden_field :manifestation_id
+        - else
+          = f.label t('activerecord.models.manifestation')
+          br
+          = f.text_field :manifestation_id
+          - - end
+      .field
+        = f.label t('activerecord.models.user')
+        = link_to @reserve.user.username, @reserve.user.profile
+        |  (
+        = @reserve.user.profile.user_number
+        | ) 
+      - unless @reserve.completed?
+      .field
+        = f.label :item_identifier
+        br
+        = f.text_field :item_identifier
+    .field
+      = f.label :expired_at
+      br
+      = f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
+    .field
+      = f.label :pickup_location_id
+      = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
+    p
+      strong
+        = t('activerecord.attributes.reserve.state')
+        | :
+      = i18n_state(@reserve.current_state)
+    - unless @reserve.errors[:base].empty?
+    .field
+      = f.label :force_retaining
+      br
+      = f.check_box :force_retaining
+    .actions
+      - if @reserve.retained?
+        = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}"
+      - else
+        = f.submit
+    - - end
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    li
+      = link_to t('page.show'), @reserve
+    li
+      = link_to t('page.back'), :back

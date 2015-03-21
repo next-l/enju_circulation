@@ -1,0 +1,24 @@
+= form_for(@demand) do |f|
+  - if @demand.errors.any?
+    #error_explanation
+      h2
+        = pluralize(@demand.errors.count, "error")
+        |  prohibited this demand from being saved:
+      ul
+        - @demand.errors.full_messages.each do |message|
+          li
+            = message
+  .field
+    = f.label :user_id
+    br
+    = f.number_field :user_id
+  .field
+    = f.label :item_id
+    br
+    = f.number_field :item_id
+  .field
+    = f.label :message_id
+    br
+    = f.number_field :message_id
+  .actions
+    = f.submit

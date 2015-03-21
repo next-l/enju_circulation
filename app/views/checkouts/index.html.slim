@@ -1,0 +1,17 @@
+- if current_user.has_role?('Librarian')
+  - if @user
+    = render 'index_user', user: @user
+  - elsif @item
+    = render 'index_item', item: @item
+  - else
+    - if params[:view] == 'overdue'
+      = render 'index_overdue'
+    - else
+      = render 'index'
+- else
+  - if params[:view] == 'overdue'
+    = render 'index_overdue'
+  - else
+    = render 'index_user', user: current_user
+    - - end
+    - - end

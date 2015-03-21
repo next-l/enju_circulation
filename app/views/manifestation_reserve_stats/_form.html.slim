@@ -1,0 +1,18 @@
+= form_for(@manifestation_reserve_stat) do |f|
+  = f.error_messages
+  .field
+    = f.label :start_date
+    br
+    = f.datetime_select :start_date
+  .field
+    = f.label :end_date
+    br
+    = f.datetime_select :end_date
+  .field
+    = f.label :note
+    br
+    = f.text_area :note
+  .actions
+    = f.hidden_field :mode, value: 'import'
+    = f.submit t('page.start_counting')
+  - - end

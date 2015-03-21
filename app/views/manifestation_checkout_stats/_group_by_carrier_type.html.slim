@@ -1,0 +1,39 @@
+table.table.table-striped.index
+  tr
+    th
+      = t('activerecord.models.library')
+    th
+      = t('activerecord.models.shelf')
+    - CarrierType.order(:position).each do |carrier_type|
+      th
+        = carrier_type.display_name.localize
+    th
+      = t('page.total')
+  - Library.order(:position).each do |library|
+    - library.shelves.order(:position).each do |shelf|
+      tr
+        td
+          = library.display_name.localize
+        td
+          = shelf.display_name.localize
+        - CarrierType.order(:position).each do |carrier_type|
+          td
+            = @carrier_type_results[[shelf.id, carrier_type.id]]
+        td
+          = @carrier_type_results.select{|r| r[0] == shelf.id}.sum{|k, v| v}
+  tr
+    td[colspan="2"]
+      = t('page.unknown')
+    - CarrierType.order(:position).each do |carrier_type|
+      td
+        = @carrier_type_results[[nil, carrier_type.id]]
+    td
+      = @carrier_type_results.select{|r| r[0].nil?}.sum{|k, v| v}
+  tr
+    th[colspan="2"]
+      = t('page.total')
+    - CarrierType.order(:position).each do |carrier_type|
+      td
+        = @carrier_type_results.select{|r| r[1] == carrier_type.id}.sum{|k, v| v}
+    td
+      = @carrier_type_results.sum{|k, v| v}

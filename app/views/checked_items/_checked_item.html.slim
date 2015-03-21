@@ -1,0 +1,22 @@
+table.table.table-striped.index
+  tr
+    th.checked_item_title
+      = t('page.title')
+    th
+      = t('activerecord.attributes.item.item_identifier')
+    th
+      = t('activerecord.attributes.checkout.due_date')
+    th
+  - @checked_items.each_with_index do |checked_item, i|
+    |  <tr class="line
+    = cycle("0", "1")
+    | "> 
+    td
+      = render 'manifestations/show_index', manifestation: checked_item.item.manifestation
+    td
+      = link_to checked_item.item.item_identifier, checked_item.item
+    td
+      = l(checked_item.due_date, format: :only_date)
+    td
+      = link_to t('page.destroy'), checked_item, data: {confirm: t('page.are_you_sure')}, method: :delete
+    - - end

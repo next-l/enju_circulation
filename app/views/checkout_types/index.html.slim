@@ -1,0 +1,41 @@
+#content_detail.ui-corner-all.ui-widget-content
+  h1.title
+    = t('page.listing', model: t('activerecord.models.checkout_type'))
+  #content_list
+    table.table.table-striped.index
+      tr
+        th#position
+        th
+          = t('activerecord.attributes.checkout_type.name')
+        th
+          = t('activerecord.attributes.checkout_type.display_name')
+          |  / 
+          = t('activerecord.attributes.checkout_type.note')
+        th
+      - @checkout_types.each do |checkout_type|
+        |  <tr class="line
+        = cycle("0", "1")
+        | "> 
+        td
+          - if policy(checkout_type).update?
+            = move_position(checkout_type)
+            - - end
+        td
+          = checkout_type.name
+        td
+          = link_to checkout_type.display_name.localize, checkout_type
+          br
+          = checkout_type.note
+        td
+          - if policy(checkout_type).update?
+            = link_to t('page.edit'), edit_checkout_type_path(checkout_type)
+          - if policy(checkout_type).destroy?
+            = link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete
+            - - end
+        - - end
+#submenu.ui-corner-all.ui-widget-content
+  ul
+    - if policy(CheckoutType).create?
+      li
+        = link_to t('page.new', model: t('activerecord.models.checkout_type')), new_checkout_type_path
+      - - end
