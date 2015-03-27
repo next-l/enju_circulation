@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.manifestation_reserve_stat'))
   #content_list
@@ -25,7 +25,7 @@
           = link_to t('page.show'), manifestation_reserve_stat
           = link_to t('page.destroy'), manifestation_reserve_stat, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@manifestation_reserve_stats)
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.new', model: t('activerecord.models.manifestation_reserve_stat')), new_manifestation_reserve_stat_path

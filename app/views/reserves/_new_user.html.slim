@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.new', model: t('activerecord.models.reserve'))
   #content_list
@@ -35,7 +35,7 @@
         = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
       .actions
         = f.submit
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
   ul
     li

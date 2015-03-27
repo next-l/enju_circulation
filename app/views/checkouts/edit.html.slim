@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.editing', model: t('activerecord.models.checkout'))
   #content_list
@@ -32,7 +32,7 @@
               = f.text_field :checkout_renewal_count, class: 'resource_integer'
             .actions
               = f.submit
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation if @checkout.item
   ul
     li

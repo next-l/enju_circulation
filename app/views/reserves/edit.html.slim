@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.editing', model: t('activerecord.models.reserve'))
   #content_list
@@ -45,7 +45,7 @@
         = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}"
       - else
         = f.submit
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.show'), @reserve

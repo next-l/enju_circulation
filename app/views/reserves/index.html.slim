@@ -1,6 +1,6 @@
 div[style="color: red"]
   = flash[:message]
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.reserve'))
   #content_list
@@ -81,7 +81,7 @@ div[style="color: red"]
               br
               = link_to t('page.destroy'), reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@reserves)
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.new', model: t('activerecord.models.reserve')), manifestations_path(reservable: true)

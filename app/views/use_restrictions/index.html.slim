@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.use_restriction'))
   #content_list
@@ -30,7 +30,7 @@
             = link_to t('page.edit'), edit_use_restriction_path(use_restriction)
           - if policy(use_restriction).destroy?
             = link_to t('page.destroy'), use_restriction_path(use_restriction), data: {confirm: t('page.are_you_sure')}, method: :delete
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     - if policy(UseRestriction).create?
       li

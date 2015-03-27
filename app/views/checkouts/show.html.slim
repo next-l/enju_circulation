@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.checkout'))
   #content_list
@@ -21,7 +21,7 @@
           = t('checkout.current_user')
         br
         = link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile)
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
   ul
     li

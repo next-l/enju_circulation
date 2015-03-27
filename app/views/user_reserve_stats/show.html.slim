@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.user_reserve_stat'))
   #content_list
@@ -39,7 +39,7 @@
         td
           = stat.reserves_count
     = paginate(@stats)
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = form_for(@user_reserve_stat) do |f|
     ul
       li

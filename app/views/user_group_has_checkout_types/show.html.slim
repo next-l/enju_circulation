@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.user_group_has_checkout_type'))
   #content_list
@@ -54,7 +54,7 @@
         = t('activerecord.attributes.user_group_has_checkout_type.current_checkout_count')
         | :
       = @user_group_has_checkout_type.current_checkout_count.to_i
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     - if policy(@user_group_has_checkout_type).update?
       li

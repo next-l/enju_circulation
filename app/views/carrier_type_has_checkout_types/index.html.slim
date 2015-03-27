@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.carrier_type_has_checkout_type'))
   #content_list
@@ -27,7 +27,7 @@
             = link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(carrier_type_has_checkout_type)
           - if policy(carrier_type_has_checkout_type).destroy?
             = link_to t('page.destroy'), carrier_type_has_checkout_type, data: {confirm: t('page.are_you_sure')}, method: :delete
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     - if policy(CarrierTypeHasCheckoutType).create?
       li

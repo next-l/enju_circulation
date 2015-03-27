@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.checkout_type'))
   #content_list
@@ -30,7 +30,7 @@
             = link_to t('page.edit'), edit_checkout_type_path(checkout_type)
           - if policy(checkout_type).destroy?
             = link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     - if policy(CheckoutType).create?
       li

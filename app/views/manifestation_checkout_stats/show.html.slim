@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.manifestation_checkout_stat'))
   #content_list
@@ -45,7 +45,7 @@
       #tab3
         #group_by_manifestation
           = render 'group_by_manifestation', stats: @stats
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = form_for(@manifestation_checkout_stat) do |f|
     ul
       li

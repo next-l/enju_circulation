@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.item_has_use_restriction'))
   #content_list
@@ -22,7 +22,7 @@
         = t('activerecord.models.use_restriction')
         | :
       = link_to @item_has_use_restriction.use_restriction.display_name.localize, @item_has_use_restriction.use_restriction
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_item_has_use_restriction_path(@item_has_use_restriction)

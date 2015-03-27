@@ -1,9 +1,9 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.new', model: t('activerecord.models.carrier_type_has_checkout_type'))
   #content_list
     = render 'form'
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.back'), carrier_type_has_checkout_types_path

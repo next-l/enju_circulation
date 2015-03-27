@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.lending_policy'))
   #content_list
@@ -42,7 +42,7 @@
         = t('activerecord.attributes.lending_policy.note')
         | :
       = @lending_policy.note
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_lending_policy_path(@lending_policy)

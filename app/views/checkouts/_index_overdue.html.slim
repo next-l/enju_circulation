@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('checkout.listing_overdue_item')
   #content_list
@@ -13,7 +13,7 @@
       - if @checkouts.size == 0
         p
           = t('checkout.no_checkout')
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.back_to', model: t('activerecord.models.checkout')), checkouts_path

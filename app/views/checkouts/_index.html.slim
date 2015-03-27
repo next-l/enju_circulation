@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.checkout'))
   #content_list
@@ -8,7 +8,7 @@
     - if @checkouts.size == 0
       p
         = t('checkout.no_checkout')
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('checkout.my_checkout'), checkouts_path(user_id: current_user.username)

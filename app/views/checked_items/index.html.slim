@@ -1,10 +1,10 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.checked_item'))
   #content_list
     = render 'checked_item'
     = paginate @checked_items
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('activerecord.models.checkin'), new_checkin_path

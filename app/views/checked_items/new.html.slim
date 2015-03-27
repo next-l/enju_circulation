@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.new', model: t('activerecord.models.checked_item'))
   #content_list
@@ -7,7 +7,7 @@
         = notice
       = render 'list'
     = render 'checkout'
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to @basket.user.username, @basket.user.profile

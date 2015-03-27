@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.checked_item'))
   #content_list
@@ -14,7 +14,7 @@
         = t('activerecord.models.basket')
         | :
       = link_to @checked_item.basket.id, @checked_item.basket
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_checked_item_path(@checked_item)

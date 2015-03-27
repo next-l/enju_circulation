@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.new', model: t('activerecord.models.reserve'))
   #content_list
@@ -29,7 +29,7 @@
       .actions
         = f.submit
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
   ul
     li

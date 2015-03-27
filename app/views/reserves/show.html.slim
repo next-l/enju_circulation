@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.showing', model: t('activerecord.models.reserve'))
   #content_list
@@ -63,7 +63,7 @@
         = t('activerecord.attributes.reserve.checked_out_at')
         | :
       = l(@reserve.checked_out_at) if @reserve.checked_out_at
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation if @reserve.manifestation
   ul
     li

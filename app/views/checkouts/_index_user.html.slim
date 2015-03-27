@@ -1,4 +1,4 @@
-#content_detail.ui-corner-all.ui-widget-content
+.row
   h1.title
     = t('page.listing', model: t('activerecord.models.checkout'))
   #content_list
@@ -8,7 +8,7 @@
     - if @checkouts.size == 0
       p
         = t('checkout.no_checkout')
-#submenu.ui-corner-all.ui-widget-content
+#submenu.col-md-3
   ul
     - user.profile.user_group.user_group_has_checkout_types.each do |available_checkout_type|
       li
