@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.reserve'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     = render 'manifestations/title', manifestation: @reserve.manifestation if @reserve.manifestation
@@ -63,7 +63,7 @@
         = t('activerecord.attributes.reserve.checked_out_at')
         | :
       = l(@reserve.checked_out_at) if @reserve.checked_out_at
-#submenu.col-md-3
+  #submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation if @reserve.manifestation
   ul
     li

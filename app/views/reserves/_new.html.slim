@@ -1,7 +1,7 @@
 .row
-  h1.title
-    = t('page.new', model: t('activerecord.models.reserve'))
-  #content_list
+  #content_list.col-md-9
+    h1.title
+      = t('page.new', model: t('activerecord.models.reserve'))
     = form_for(@reserve) do |f|
       = f.error_messages
       .field
@@ -29,7 +29,7 @@
       .actions
         = f.submit
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
-#submenu.col-md-3
+  #submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
   ul
     li

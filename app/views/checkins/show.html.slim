@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.checkin'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     p
@@ -14,7 +14,7 @@
         = t('activerecord.models.user')
         | :
       = link_to @checkin.librarian.username, @checkin.librarian
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_checkin_path(@checkin)

@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.user_reserve_stat'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     p
@@ -39,7 +39,7 @@
         td
           = stat.reserves_count
     = paginate(@stats)
-#submenu.col-md-3
+  #submenu.col-md-3
   = form_for(@user_reserve_stat) do |f|
     ul
       li

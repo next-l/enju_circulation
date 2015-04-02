@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.checkout'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     = render 'manifestations/title', manifestation: @checkout.item.manifestation
@@ -21,7 +21,7 @@
           = t('checkout.current_user')
         br
         = link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile)
-#submenu.col-md-3
+  #submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
   ul
     li

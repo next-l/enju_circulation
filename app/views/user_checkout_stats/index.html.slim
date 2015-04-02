@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.listing', model: t('activerecord.models.user_checkout_stat'))
-  #content_list
+  #content_list.col-md-9
     table.table.table-striped.index
       tr
         th
@@ -25,7 +25,7 @@
           = link_to t('page.show'), user_checkout_stat
           = link_to t('page.destroy'), user_checkout_stat, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@user_checkout_stats)
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.new', model: t('activerecord.models.user_checkout_stat')), new_user_checkout_stat_path

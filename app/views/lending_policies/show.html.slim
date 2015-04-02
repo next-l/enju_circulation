@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.lending_policy'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     p
@@ -42,7 +42,7 @@
         = t('activerecord.attributes.lending_policy.note')
         | :
       = @lending_policy.note
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_lending_policy_path(@lending_policy)

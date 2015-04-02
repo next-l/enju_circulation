@@ -1,9 +1,9 @@
 .row
   h1.title
     = t('page.new', model: t('activerecord.models.checkout_type'))
-  #content_list
+  #content_list.col-md-9
     = render 'form'
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.back'), checkout_types_path

@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.showing', model: t('activerecord.models.use_restriction'))
-  #content_list
+  #content_list.col-md-9
     p#notice
       = notice
     p
@@ -16,7 +16,7 @@
       strong
         = t('activerecord.attributes.use_restriction.note')
       = @use_restriction.note
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.edit'), edit_use_restriction_path(@use_restriction)

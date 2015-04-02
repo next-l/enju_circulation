@@ -1,9 +1,9 @@
 div[style="color: red"]
   = flash[:message]
 .row
-  h1.title
-    = t('page.listing', model: t('activerecord.models.reserve'))
-  #content_list
+  #content_list.col-md-9
+    h1.title
+      = t('page.listing', model: t('activerecord.models.reserve'))
     .search_form
       = form_for :reserves, url: reserves_path, html: {method: 'get'} do
         p
@@ -81,7 +81,7 @@ div[style="color: red"]
               br
               = link_to t('page.destroy'), reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@reserves)
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.new', model: t('activerecord.models.reserve')), manifestations_path(reservable: true)

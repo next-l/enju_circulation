@@ -1,13 +1,13 @@
 h4
   = t('activerecord.attributes.reserve.state')
-- - unless @state_facet.blank?
-ul
-  - @state_facet.each do |state|
-    li
-      - if state.value == params[:state].to_s.downcase
-        strong
-      = link_to "#{i18n_state(state.value)} (#{state.count})", url_for(params.merge(state: state.value, page: nil, view: nil, only_path: true))
-      - if state.value == params[:state].to_s.downcase
+- unless @state_facet.blank?
+  ul
+    - @state_facet.each do |state|
+      li
+        - if state.value == params[:state].to_s.downcase
+          strong
+        = link_to "#{i18n_state(state.value)} (#{state.count})", url_for(params.merge(state: state.value, page: nil, view: nil, only_path: true))
+        - if state.value == params[:state].to_s.downcase
 
   - if params[:state]
     li

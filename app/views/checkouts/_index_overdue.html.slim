@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('checkout.listing_overdue_item')
-  #content_list
+  #content_list.col-md-9
     = form_for(:checkouts, url: checkouts_path, html: {method: 'get'}) do
       p
         = t('checkout.number_of_day_overdue')
@@ -13,7 +13,7 @@
       - if @checkouts.size == 0
         p
           = t('checkout.no_checkout')
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.back_to', model: t('activerecord.models.checkout')), checkouts_path

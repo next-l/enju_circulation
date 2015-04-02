@@ -1,8 +1,9 @@
 .row
   h1.title
     = t('page.editing', model: t('activerecord.models.checkout'))
-  #content_list
-    = render 'manifestations/title', manifestation: @checkout.item.manifestation if @checkout.item
+  #content_list.col-md-9
+    if @checkout.item
+      = render 'manifestations/title', manifestation: @checkout.item.manifestation
     h3
       = t('checkout.renewal')
     - if @checkout.renewable?
@@ -13,27 +14,28 @@
         = f.hidden_field :due_date, value: @new_due_date
         br
         = f.submit
-      - else
-        .field
-          = t('checkout.this_item_cant_be_renewed')
-        - if current_user.has_role?('Librarian')
-          h3
-            = t('checkout.editing_due_date')
-          = form_for(@checkout) do |f|
-            = f.error_messages
-            .field
-              = f.label :due_date
-              = f.hidden_field :user_id
-              = f.hidden_field :item_id
-              = f.text_field :due_date, value: @checkout.due_date.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-            .field
-              = t('checkout.renewal_count')
-              | : 
-              = f.text_field :checkout_renewal_count, class: 'resource_integer'
-            .actions
-              = f.submit
-#submenu.col-md-3
-  = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation if @checkout.item
+    - else
+      .field
+        = t('checkout.this_item_cant_be_renewed')
+      - if current_user.has_role?('Librarian')
+        h3
+          = t('checkout.editing_due_date')
+        = form_for(@checkout) do |f|
+          = f.error_messages
+          .field
+            = f.label :due_date
+            = f.hidden_field :user_id
+            = f.hidden_field :item_id
+            = f.text_field :due_date, value: @checkout.due_date.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
+          .field
+            = t('checkout.renewal_count')
+            | : 
+            = f.text_field :checkout_renewal_count, class: 'resource_integer'
+          .actions
+            = f.submit
+  #submenu.col-md-3
+  - if @checkout.item
+    = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
   ul
     li
       = link_to t('page.show'), @checkout

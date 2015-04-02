@@ -1,7 +1,7 @@
 .row
   h1.title
     = t('page.editing', model: t('activerecord.models.user_group_has_checkout_type'))
-  #content_list
+  #content_list.col-md-9
     = form_for(@user_group_has_checkout_type) do |f|
       = f.error_messages
       .field
@@ -41,7 +41,7 @@
         = f.text_area :note, class: 'resource_textarea'
       .actions
         = f.submit
-#submenu.col-md-3
+  #submenu.col-md-3
   ul
     li
       = link_to t('page.show'), @user_group_has_checkout_type
