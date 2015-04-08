@@ -27,7 +27,7 @@
       - else
         = f.hidden_field :user_number, class: 'resource_user_number'
       .actions
-        = f.submit
+        = f.submit class: 'btn btn-default'
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
   #submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation

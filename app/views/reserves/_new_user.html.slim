@@ -34,7 +34,7 @@
         = f.label :pickup_location_id
         = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
       .actions
-        = f.submit
+        = f.submit class: 'btn btn-default'
   #submenu.col-md-3
   = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
   ul

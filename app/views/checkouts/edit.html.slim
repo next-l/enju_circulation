@@ -13,7 +13,7 @@
         = l(@new_due_date, format: :only_date) if @new_due_date
         = f.hidden_field :due_date, value: @new_due_date
         br
-        = f.submit
+        = f.submit class: 'btn btn-default'
     - else
       .field
         = t('checkout.this_item_cant_be_renewed')
@@ -32,7 +32,7 @@
             | : 
             = f.text_field :checkout_renewal_count, class: 'resource_integer'
           .actions
-            = f.submit
+            = f.submit class: 'btn btn-default'
   #submenu.col-md-3
   - if @checkout.item
     = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation

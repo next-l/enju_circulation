@@ -23,9 +23,9 @@ table.table.table-striped.index
         | ) 
         - if defined?(EnjuInterLibraryLoan)
           br
-          - - unless checkin.item.shelf.library == current_user.library
-          span[style="color: red"]
-            = link_to t('activerecord.models.inter_library_loan'), item_inter_library_loans_path(checkin.item)
+          - unless checkin.item.shelf.library == current_user.library
+            span[style="color: red"]
+              = link_to t('activerecord.models.inter_library_loan'), item_inter_library_loans_path(checkin.item)
     td
       - if checkin.checkout
         = l(checkin.checkout.due_date, format: :only_date)

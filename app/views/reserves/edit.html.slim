@@ -44,7 +44,7 @@
       - if @reserve.retained?
         = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}"
       - else
-        = f.submit
+        = f.submit class: 'btn btn-default'
   #submenu.col-md-3
   ul
     li

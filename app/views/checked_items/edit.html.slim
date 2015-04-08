@@ -12,7 +12,7 @@ h1.title
     = f.text_field :basket_id
   .actions
     = f.hidden_field :lock_version
-    = f.submit
+    = f.submit class: 'btn btn-default'
   = link_to t('page.show'), checked_item_path(@checked_item)
   |  | 
   = link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id)
