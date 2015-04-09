@@ -75,10 +75,10 @@ class ReservesController < ApplicationController
     end
 
     begin
-      reserved_to = Time.zone.parse(params[:reserved_to])
-      @reserved_to = params[:reserved_to].to_s.strip
+      reserved_until = Time.zone.parse(params[:reserved_until])
+      @reserved_until = params[:reserved_until].to_s.strip
     rescue
-      reserved_to = nil
+      reserved_until = nil
     end
 
     if params[:state].present?
@@ -90,8 +90,8 @@ class ReservesController < ApplicationController
       if reserved_from
         with(:created_at).greater_than_or_equal_to reserved_from.beginning_of_day
       end
-      if reserved_to
-        with(:created_at).less_than reserved_to.tomorrow.beginning_of_day
+      if reserved_until
+        with(:created_at).less_than reserved_until.tomorrow.beginning_of_day
       end
       order_by sort_column, order
       with(:state).equal_to state if state

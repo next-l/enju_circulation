@@ -1,7 +1,7 @@
 .row
-  h1.title
-    = t('page.editing', model: t('activerecord.models.reserve'))
   #content_list.col-md-9
+    h1.title
+      = t('page.editing', model: t('activerecord.models.reserve'))
     = form_for(@reserve) do |f|
       = f.error_messages
       .field
@@ -42,12 +42,12 @@
       = f.check_box :force_retaining
     .actions
       - if @reserve.retained?
-        = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}"
+        = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}", class: 'form-control'
       - else
         = f.submit class: 'btn btn-default'
   #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.show'), @reserve
-    li
-      = link_to t('page.back'), :back
+    ul
+      li
+        = link_to t('page.show'), @reserve
+      li
+        = link_to t('page.back'), :back

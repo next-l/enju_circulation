@@ -30,10 +30,10 @@
         = f.submit class: 'btn btn-default'
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
   #submenu.col-md-3
-  = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
-  ul
-    li
-      = link_to t('page.listing', model: t('activerecord.models.reserve')), reserves_path
-    - if @reserve.manifestation
+    = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
+    ul
       li
-        = link_to t('page.showing', model: t('activerecord.models.manifestation')), manifestation_path(@reserve.manifestation)
+        = link_to t('page.listing', model: t('activerecord.models.reserve')), reserves_path
+      - if @reserve.manifestation
+        li
+          = link_to t('page.showing', model: t('activerecord.models.manifestation')), manifestation_path(@reserve.manifestation)
