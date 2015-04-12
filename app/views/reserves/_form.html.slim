@@ -8,11 +8,11 @@
         - @reserve.errors.full_messages.each do |msg|
           li
             = msg
-  .field
+  .form-group
     = f.label :user_id
     br
     = f.text_field :user_id
-  .field
+  .form-group
     = f.label :manifestation_id
     br
     - if @reserve.manifestation
@@ -20,25 +20,25 @@
       = f.hidden_field :manifestation_id
     - else
       = f.text_field :manifestation_id
-  .field
+  .form-group
     = f.label :item_id
     br
     = f.text_field :item_id
-  .field
+  .form-group
     = f.label :state
     br
     = f.text_field :state
-  .field
+  .form-group
     = f.label :checked_out_at
     br
     = f.datetime_select :checked_out_at
-  .field
+  .form-group
     = f.label :canceled_at
     br
     = f.datetime_select :canceled_at
-  .field
+  .form-group
     = f.label :expired_at
     br
     = f.datetime_select :expired_at
-  .actions
+  .form-control
     = f.submit class: 'btn btn-default'

@@ -1,16 +1,16 @@
 = simple_form_for(@checkout_type, validate: true) do |f|
   = f.error_messages
-  .field
+  .form-group
     = f.label :name
     br
     = f.text_field :name
-  .field
+  .form-group
     = f.label :display_name
     br
     = f.text_area :display_name
-  .field
+  .form-group
     = f.label :note
     br
     = f.text_area :note
-  .actions
+  .form-control
     = f.submit class: 'btn btn-default'

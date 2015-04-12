@@ -2,14 +2,14 @@ h1.title
   = t('page.new', model: t('activerecord.models.checkouts'))
 = form_for(@checkout) do |f|
   = f.error_messages
-  .field
+  .form-group
     = f.label t('activerecord.models.user')
     br
     = f.text_field :user_id
-  .field
+  .form-group
     = f.label t('activerecord.models.item')
     br
     = f.text_field :item_id
-  .actions
+  .form-control
     = f.submit class: 'btn btn-default'
   = link_to t('page.back'), checkouts_path(user_id: @user.username)

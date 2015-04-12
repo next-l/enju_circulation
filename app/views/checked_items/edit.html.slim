@@ -2,15 +2,15 @@ h1.title
   = t('page.editing', model: t('activerecord.models.checked_item'))
 = form_for(@checked_item) do |f|
   = f.error_messages
-  .field
+  .form-group
     = f.label t('activerecord.models.item')
     br
     = f.text_field :item_id
-  .field
+  .form-group
     = f.label t('activerecord.models.basket')
     br
     = f.text_field :basket_id
-  .actions
+  .form-control
     = f.hidden_field :lock_version
     = f.submit class: 'btn btn-default'
   = link_to t('page.show'), checked_item_path(@checked_item)

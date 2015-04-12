@@ -8,17 +8,17 @@
         - @demand.errors.full_messages.each do |message|
           li
             = message
-  .field
+  .form-group
     = f.label :user_id
     br
     = f.number_field :user_id
-  .field
+  .form-group
     = f.label :item_id
     br
     = f.number_field :item_id
-  .field
+  .form-group
     = f.label :message_id
     br
     = f.number_field :message_id
-  .actions
+  .form-control
     = f.submit class: 'btn btn-default'

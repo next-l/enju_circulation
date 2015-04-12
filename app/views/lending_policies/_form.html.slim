@@ -1,6 +1,6 @@
 = form_for(@lending_policy) do |f|
   = f.error_messages
-  .field
+  .form-group
     = f.label :item_id, t('activerecord.models.item')
     br
     - if @lending_policy.item
@@ -11,29 +11,29 @@
       = f.hidden_field :item_id
     - else
       = f.text_field :item_id
-  .field
+  .form-group
     = f.label :user_group_id, t('activerecord.models.user_group')
     br
     = f.select :user_group_id, @user_groups.collect{|u| [u.display_name.localize, u.id]}
-  .field
+  .form-group
     = f.label :loan_period
     br
     = f.text_field :loan_period
-  .field
+  .form-group
     = f.label :fixed_due_date
     br
     = f.text_field :fixed_due_date, value: @lending_policy.fixed_due_date.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-  .field
+  .form-group
     = f.label :renewal
     br
     = f.text_field :renewal
-  .field
+  .form-group
     = f.label :fine
     br
     = f.text_field :fine
-  .field
+  .form-group
     = f.label :note
     br
     = f.text_area :note
-  .actions
+  .form-control
     = f.submit class: 'btn btn-default'

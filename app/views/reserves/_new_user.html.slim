@@ -4,7 +4,7 @@
       = t('page.new', model: t('activerecord.models.reserve'))
     = form_for(@reserve, url: reserves_path(user_id: @user.username)) do |f|
       = f.error_messages
-      .field
+      .form-group
         - if @item
           = render 'manifestations/title', manifestation: @reserve.manifestation
           |  (
@@ -19,21 +19,21 @@
           = f.label t('activerecord.models.manifestation')
           br
           = f.text_field :manifestation_id
-      .field
+      .form-group
         = f.label t('activerecord.models.user')
         = link_to @reserve.user.username, profile_path(@reserve.user.profile)
         |  (
         = @reserve.user.profile.user_number
         | ) 
         = f.hidden_field :user_number, value: @user.profile.user_number
-      .field
+      .form-group
         = f.label :expired_at
         br
         = f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-      .field
+      .form-group
         = f.label :pickup_location_id
         = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
-      .actions
+      .form-control
         = f.submit class: 'btn btn-default'
   #submenu.col-md-3
     = render 'manifestations/book_jacket', manifestation: @reserve.manifestation

@@ -4,7 +4,7 @@
       = t('page.new', model: t('activerecord.models.reserve'))
     = form_for(@reserve) do |f|
       = f.error_messages
-      .field
+      .form-group
         - if @reserve.manifestation
           = render 'manifestations/title', manifestation: @reserve.manifestation
           = f.hidden_field :manifestation_id
@@ -12,21 +12,21 @@
           = f.label t('activerecord.models.manifestation')
           br
           = f.text_field :manifestation_id
-      .field
+      .form-group
         = f.label :expired_at
         br
         = f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-      .field
+      .form-group
         = f.label :pickup_location_id
         = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
       - if current_user.has_role?('Librarian')
-        .field
+        .form-group
           = f.label t('activerecord.attributes.profile.user_number')
           br
           = f.text_field :user_number, class: 'resource_user_number'
       - else
         = f.hidden_field :user_number, class: 'resource_user_number'
-      .actions
+      .form-control
         = f.submit class: 'btn btn-default'
       = javascript_tag("$(function(){$('#reserve_user_number').focus().select()})")
   #submenu.col-md-3

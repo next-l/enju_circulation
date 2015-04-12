@@ -4,7 +4,7 @@
       = t('page.editing', model: t('activerecord.models.reserve'))
     = form_for(@reserve) do |f|
       = f.error_messages
-      .field
+      .form-group
         - if @reserve.manifestation
           = render 'manifestations/title', manifestation: @reserve.manifestation
           = f.hidden_field :manifestation_id
@@ -12,22 +12,22 @@
           = f.label t('activerecord.models.manifestation')
           br
           = f.text_field :manifestation_id
-      .field
+      .form-group
         = f.label t('activerecord.models.user')
         = link_to @reserve.user.username, @reserve.user.profile
         |  (
         = @reserve.user.profile.user_number
         | ) 
       - unless @reserve.completed?
-      .field
+      .form-group
         = f.label :item_identifier
         br
         = f.text_field :item_identifier
-    .field
+    .form-group
       = f.label :expired_at
       br
       = f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-    .field
+    .form-group
       = f.label :pickup_location_id
       = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
     p
@@ -36,11 +36,11 @@
         | :
       = i18n_state(@reserve.current_state)
     - unless @reserve.errors[:base].empty?
-    .field
+    .form-group
       = f.label :force_retaining
       br
       = f.check_box :force_retaining
-    .actions
+    .form-control
       - if @reserve.retained?
         = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}", class: 'form-control'
       - else
