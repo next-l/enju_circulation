@@ -17,8 +17,8 @@
         = cycle("0", "1")
         | "> 
         td
-          - - policy(circulation_status).update?
-          = move_position(circulation_status)
+          - policy(circulation_status).update?
+            = move_position(circulation_status)
         td
           = circulation_status.name
         td
@@ -26,10 +26,10 @@
           br
           = circulation_status.note
         td
-          - - policy(circulation_status).update?
-          = link_to t('page.edit'), edit_circulation_status_path(circulation_status)
-      - - policy(circulation_status).destroy?
-      = link_to t('page.destroy'), circulation_status_path(circulation_status), data: {confirm: t('page.are_you_sure')}, method: :delete
+          - policy(circulation_status).update?
+            = link_to t('page.edit'), edit_circulation_status_path(circulation_status)
+        - policy(circulation_status).destroy?
+          = link_to t('page.destroy'), circulation_status_path(circulation_status), data: {confirm: t('page.are_you_sure')}, method: :delete
   #submenu.col-md-3
     ul
       - if policy(CirculationStatus).create?

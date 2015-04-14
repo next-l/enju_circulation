@@ -1,7 +1,7 @@
 .row
-  h1.title
-    = t('page.new', model: t('activerecord.models.user_group_has_checkout_type'))
   #content_list.col-md-9
+    h1.title
+      = t('page.new', model: t('activerecord.models.user_group_has_checkout_type'))
     = form_for(@user_group_has_checkout_type) do |f|
       = f.error_messages
       .form-group
@@ -42,6 +42,6 @@
       .form-control
         = f.submit class: 'btn btn-default'
   #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.back'), user_group_has_checkout_types_path
+    ul
+      li
+        = link_to t('page.back'), user_group_has_checkout_types_path

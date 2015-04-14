@@ -1,7 +1,7 @@
 .row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.user_group_has_checkout_type'))
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.user_group_has_checkout_type'))
     p#notice
       = notice
     p
@@ -55,9 +55,9 @@
         | :
       = @user_group_has_checkout_type.current_checkout_count.to_i
   #submenu.col-md-3
-  ul
-    - if policy(@user_group_has_checkout_type).update?
+    ul
+      - if policy(@user_group_has_checkout_type).update?
+        li
+          = link_to t('page.edit'), edit_user_group_has_checkout_type_path(@user_group_has_checkout_type)
       li
-        = link_to t('page.edit'), edit_user_group_has_checkout_type_path(@user_group_has_checkout_type)
-    li
-      = back_to_index(flash[:page_info])
+        = back_to_index(flash[:page_info])

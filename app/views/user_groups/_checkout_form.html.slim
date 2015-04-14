@@ -2,22 +2,6 @@
   = f.label t('activerecord.models.user_group_has_checkout_type')
   br
   = f.fields_for :user_group_has_checkout_types do |checkout_form|
-    = checkout_form.label :checkout_type_id
-    = checkout_form.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name.localize, c.id]})
-    = checkout_form.link_to_remove t('page.remove'), confirm: t('page.are_you_sure')
-    br
-    = checkout_form.label :checkout_limit
-    = checkout_form.text_field :checkout_limit, class: 'resource_integer'
-    = checkout_form.label :checkout_period
-    = checkout_form.text_field :checkout_period, class: 'resource_integer'
-    = checkout_form.label :checkout_renewal_limit
-    = checkout_form.text_field :checkout_renewal_limit, class: 'resource_integer'
-    br
-    = checkout_form.label :reservation_limit
-    = checkout_form.text_field :reservation_limit, class: 'resource_integer'
-    = checkout_form.label :reservation_expired_period
-    = checkout_form.text_field :reservation_expired_period, class: 'resource_integer'
-    = checkout_form.label :set_due_date_before_closing_day
-    = checkout_form.check_box :set_due_date_before_closing_day
+    = render 'user_group_has_checkout_type_fields', f: checkout_form
   p
-    = f.link_to_add t('page.add'), :user_group_has_checkout_types
+    = link_to_add_association t('page.add'), f, :user_group_has_checkout_types

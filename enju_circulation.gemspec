@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   #s.add_dependency "enju_library", "~> 0.2.0.pre1"
   #s.add_dependency "enju_message", "~> 0.2.0.pre1"
   #s.add_dependency "enju_event", "~> 0.2.0.pre1"
+  s.add_dependency "cocoon"
 
   #s.add_development_dependency "enju_leaf", "~> 1.2.0.beta.1"
   s.add_development_dependency "sqlite3"
