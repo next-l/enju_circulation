@@ -1,7 +1,7 @@
 .row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.circulation_status'))
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.circulation_status'))
     p#notice
       = notice
     p
@@ -20,8 +20,8 @@
         | :
       = @circulation_status.note
   #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.edit'), edit_circulation_status_path(@circulation_status)
-    li
-      = back_to_index(flash[:page_info])
+    ul
+      li
+        = link_to t('page.edit'), edit_circulation_status_path(@circulation_status)
+      li
+        = back_to_index(flash[:page_info])
