@@ -22,7 +22,7 @@
       .form-group
         = f.label :item_identifier
         br
-        = f.text_field :item_identifier
+        = f.text_field :item_identifier, class: 'form-control'
     .form-group
       = f.label :expired_at
       br
@@ -40,7 +40,7 @@
       = f.label :force_retaining
       br
       = f.check_box :force_retaining
-    .form-control
+    .form-group
       - if @reserve.retained?
         = f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}", class: 'form-control'
       - else

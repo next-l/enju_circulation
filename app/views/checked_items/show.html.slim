@@ -1,7 +1,13 @@
 .row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.checked_item'))
+  #submenu.col-md-3
+    ul
+      li
+        = link_to t('page.edit'), edit_checked_item_path(@checked_item)
+      li
+        = link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id)
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.checked_item'))
     p#notice
       = notice
     p
@@ -14,9 +20,3 @@
         = t('activerecord.models.basket')
         | :
       = link_to @checked_item.basket.id, @checked_item.basket
-  #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.edit'), edit_checked_item_path(@checked_item)
-    li
-      = link_to t('page.back'), checked_items_path(basket_id: @checked_item.basket_id)
