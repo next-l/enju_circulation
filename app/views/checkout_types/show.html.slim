@@ -1,7 +1,15 @@
 .row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.checkout_type'))
+  #submenu.col-md-3
+    ul
+      li
+        = link_to t('page.edit'), edit_checkout_type_path(@checkout_type)
+      li
+        = back_to_index(flash[:page_info])
+      li
+        = link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type)
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.checkout_type'))
     p#notice
       = notice
     p
@@ -26,11 +34,3 @@
         = t('activerecord.attributes.checkout_type.note')
         | :
       = @checkout_type.note
-  #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.edit'), edit_checkout_type_path(@checkout_type)
-    li
-      = back_to_index(flash[:page_info])
-    li
-      = link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type)
