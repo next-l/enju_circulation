@@ -1,6 +1,6 @@
     = f.label :checkout_type_id
     = f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name.localize, c.id]})
-    = link_to_remove t('page.remove'), f, confirm: t('page.are_you_sure')
+    = link_to_remove_association t('page.remove'), f, confirm: t('page.are_you_sure')
     br
     = f.label :checkout_limit
     = f.text_field :checkout_limit, class: 'resource_integer'

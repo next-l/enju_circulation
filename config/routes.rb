@@ -14,12 +14,8 @@ Rails.application.routes.draw do
   resources :manifestation_reserve_stats
   resources :carrier_type_has_checkout_types
   resources :user_group_has_checkout_types
-  resources :checkout_types do
-    resources :user_group_has_checkout_types
-  end
-  resources :user_groups do
-    resources :user_group_has_checkout_types
-  end
+  resources :checkout_types
+  resources :user_group
   resources :checkins
   resources :checked_items
   resources :checkouts

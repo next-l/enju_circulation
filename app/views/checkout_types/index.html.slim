@@ -32,6 +32,6 @@
           = checkout_type.note
         td
           - if policy(checkout_type).update?
-            = link_to t('page.edit'), edit_checkout_type_path(checkout_type)
+            => link_to t('page.edit'), edit_checkout_type_path(checkout_type)
           - if policy(checkout_type).destroy?
-            = link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete
+            => link_to t('page.destroy'), checkout_type_path(checkout_type), data: {confirm: t('page.are_you_sure')}, method: :delete
