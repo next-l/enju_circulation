@@ -10,8 +10,8 @@ end
 # Table name: item_transitions
 #
 #  id         :integer          not null, primary key
-#  to_state   :string(255)
-#  metadata   :text             default("{}")
+#  to_state   :string
+#  metadata   :text             default({})
 #  sort_key   :integer
 #  item_id    :integer
 #  created_at :datetime

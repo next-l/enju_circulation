@@ -1856,7 +1856,7 @@ manifestation_00216:
 #  subscription_master             :boolean         default(FALSE), not null
 #  ipaper_id                       :integer
 #  ipaper_access_key               :string(255)
-#  attachment_file_name            :string(255)
+#  attachment_filename            :string(255)
 #  attachment_content_type         :string(255)
 #  attachment_file_size            :integer
 #  attachment_updated_at           :datetime
