@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   resources :carrier_type_has_checkout_types
   resources :user_group_has_checkout_types
   resources :checkout_types
-  resources :user_group
   resources :checkins
   resources :checked_items
   resources :checkouts
