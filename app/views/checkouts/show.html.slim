@@ -1,7 +1,18 @@
 .row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.checkout'))
+  #submenu.col-md-3
+    = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
+    ul
+      li
+        = link_to t('page.edit'), edit_checkout_path(@checkout)
+      - if @checkout.user
+        li
+          = link_to t('page.back'), checkouts_path(user_id: @checkout.user.username)
+      - if current_user.has_role?('Librarian')
+        li
+          = link_to t('page.back_to', model: t('activerecord.models.checkout')), checkouts_path
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.checkout'))
     p#notice
       = notice
     = render 'manifestations/title', manifestation: @checkout.item.manifestation
@@ -21,14 +32,3 @@
           = t('checkout.current_user')
         br
         = link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile)
-  #submenu.col-md-3
-  = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
-  ul
-    li
-      = link_to t('page.edit'), edit_checkout_path(@checkout)
-    - if @checkout.user
-      li
-        = link_to t('page.back'), checkouts_path(user_id: @checkout.user.username)
-    - if current_user.has_role?('Librarian')
-      li
-        = link_to t('page.back_to', model: t('activerecord.models.checkout')), checkouts_path

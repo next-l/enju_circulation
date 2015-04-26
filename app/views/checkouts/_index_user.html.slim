@@ -1,13 +1,4 @@
 .row
-  #content_list.col-md-9
-    h1.title
-      = t('page.listing', model: t('activerecord.models.checkout'))
-    p#notice
-      = notice
-    = render 'list', checkouts: @checkouts
-    - if @checkouts.size == 0
-      p
-        = t('checkout.no_checkout')
   #submenu.col-md-3
     ul
       - user.profile.user_group.user_group_has_checkout_types.each do |available_checkout_type|
@@ -46,3 +37,12 @@
       - if @user == current_user
         li
           = link_to t('checkout.remove_all_history'), remove_all_checkouts_path(user_id: current_user.id), method: :put, data: {confirm: t('page.are_you_sure')}
+  #content_list.col-md-9
+    h1.title
+      = t('page.listing', model: t('activerecord.models.checkout'))
+    p#notice
+      = notice
+    = render 'list', checkouts: @checkouts
+    - if @checkouts.size == 0
+      p
+        = t('checkout.no_checkout')

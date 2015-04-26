@@ -1,7 +1,16 @@
 .row
-  h1.title
-    = t('page.editing', model: t('activerecord.models.checkout'))
+  #submenu.col-md-3
+    - if @checkout.item
+      = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
+    ul
+      li
+        = link_to t('page.show'), @checkout
+      - if @checkout.user
+        li
+          = link_to t('page.back'), checkouts_path(user_id: @checkout.user.username)
   #content_list.col-md-9
+    h1.title
+      = t('page.editing', model: t('activerecord.models.checkout'))
     if @checkout.item
       = render 'manifestations/title', manifestation: @checkout.item.manifestation
     h3
@@ -33,12 +42,3 @@
             = f.text_field :checkout_renewal_count, class: 'resource_integer'
           .form-control
             = f.submit class: 'btn btn-default'
-  #submenu.col-md-3
-  - if @checkout.item
-    = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
-  ul
-    li
-      = link_to t('page.show'), @checkout
-    - if @checkout.user
-      li
-        = link_to t('page.back'), checkouts_path(user_id: @checkout.user.username)

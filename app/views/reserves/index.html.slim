@@ -1,7 +1,43 @@
-div[style="color: red"]
-  = flash[:message]
 .row
+  #submenu.col-md-3
+    ul
+      li
+        = link_to t('page.new', model: t('activerecord.models.reserve')), manifestations_path(reservable: true)
+        br
+        |  (
+        = t('page.search_resource', model: t('page.resource'))
+        | ) 
+      - if current_user.has_role?('Librarian')
+        li
+          = link_to t('reserve.all_reservation'), reserves_path
+        li
+          = link_to t('reserve.my_reservation'), reserves_path(user_id: current_user.username)
+        - if @user
+          li
+            = link_to t('page.listing', model: t('activerecord.models.checkout')), checkouts_path(user_id: @user.username)
+    = render 'state_facet'
+    p
+      - if @user
+        = link_to (image_tag 'icons/feed.png', size: '16x16', alt: t('page.feed'), class: 'icon'), reserves_path(user_id: @user.username, format: :rss)
+        |  (
+        = link_to 'RSS', reserves_path(user_id: @user.username, format: :rss)
+        | ) 
+        = link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), reserves_path(user_id: @user.username, format: :txt, locale: @locale.to_s)
+        |  (
+        = link_to 'TSV', reserves_path(user_id: @user.username, format: :txt, locale: @locale.to_s)
+        | ) 
+      - else
+        = link_to (image_tag 'icons/feed.png', size: '16x16', alt: t('page.feed'), class: 'icon'), reserves_path(format: :rss)
+        |  (
+        = link_to 'RSS', reserves_path(format: :rss)
+        | ) 
+        = link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), reserves_path(format: :txt, locale: @locale.to_s)
+        |  (
+        = link_to 'TSV', reserves_path(format: :txt, locale: @locale.to_s)
+        | ) 
   #content_list.col-md-9
+    div[style="color: red"]
+      = flash[:message]
     h1.title
       = t('page.listing', model: t('activerecord.models.reserve'))
     .search_form
@@ -81,39 +117,3 @@ div[style="color: red"]
               br
               = link_to t('page.destroy'), reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@reserves)
-  #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.new', model: t('activerecord.models.reserve')), manifestations_path(reservable: true)
-      br
-      |  (
-      = t('page.search_resource', model: t('page.resource'))
-      | ) 
-    - if current_user.has_role?('Librarian')
-      li
-        = link_to t('reserve.all_reservation'), reserves_path
-      li
-        = link_to t('reserve.my_reservation'), reserves_path(user_id: current_user.username)
-      - if @user
-        li
-          = link_to t('page.listing', model: t('activerecord.models.checkout')), checkouts_path(user_id: @user.username)
-  = render 'state_facet'
-  p
-    - if @user
-      = link_to (image_tag 'icons/feed.png', size: '16x16', alt: t('page.feed'), class: 'icon'), reserves_path(user_id: @user.username, format: :rss)
-      |  (
-      = link_to 'RSS', reserves_path(user_id: @user.username, format: :rss)
-      | ) 
-      = link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), reserves_path(user_id: @user.username, format: :txt, locale: @locale.to_s)
-      |  (
-      = link_to 'TSV', reserves_path(user_id: @user.username, format: :txt, locale: @locale.to_s)
-      | ) 
-    - else
-      = link_to (image_tag 'icons/feed.png', size: '16x16', alt: t('page.feed'), class: 'icon'), reserves_path(format: :rss)
-      |  (
-      = link_to 'RSS', reserves_path(format: :rss)
-      | ) 
-      = link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), reserves_path(format: :txt, locale: @locale.to_s)
-      |  (
-      = link_to 'TSV', reserves_path(format: :txt, locale: @locale.to_s)
-      | ) 

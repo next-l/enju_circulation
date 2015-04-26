@@ -1,4 +1,10 @@
 .row
+  #submenu.col-md-3
+    ul
+      li
+        = link_to t('page.new', model: t('activerecord.models.checkout')), new_basket_path
+      li
+        = link_to t('page.listing', model: t('activerecord.models.checkin')), checkins_path
   #content_list.col-md-9
     h1.title
       = t('page.new', model: t('activerecord.models.checkin'))
@@ -6,9 +12,3 @@
       p#notice
         = notice
       = render 'list'
-  #submenu.col-md-3
-    ul
-      li
-        = link_to t('page.new', model: t('activerecord.models.checkout')), new_basket_path
-      li
-        = link_to t('page.listing', model: t('activerecord.models.checkin')), checkins_path

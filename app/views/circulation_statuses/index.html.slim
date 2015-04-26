@@ -1,5 +1,6 @@
 .row
-  #content_list.col-md-12
+  #submenu.col-md-3
+  #content_list.col-md-9
     h1.title
       = t('page.listing', model: t('activerecord.models.circulation_status'))
     - if policy(CirculationStatus).create?
