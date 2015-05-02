@@ -1,8 +1,8 @@
 .row
   #submenu.col-md-3
-    ul
+    ul.list-group
       - if policy(UserGroupHasCheckoutType).create?
-        li
+        li.list-group-item
           = link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_user_group_has_checkout_type_path
   #content_list.col-md-9
     h1.title

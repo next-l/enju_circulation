@@ -26,6 +26,6 @@
           = link_to t('page.destroy'), manifestation_reserve_stat, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@manifestation_reserve_stats)
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.new', model: t('activerecord.models.manifestation_reserve_stat')), new_manifestation_reserve_stat_path

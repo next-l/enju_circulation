@@ -46,8 +46,8 @@
       - else
         = f.submit class: 'btn btn-default'
   #submenu.col-md-3
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.show'), @reserve
-      li
+      li.list-group-item
         = link_to t('page.back'), :back

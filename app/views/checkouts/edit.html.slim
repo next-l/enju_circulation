@@ -2,11 +2,11 @@
   #submenu.col-md-3
     - if @checkout.item
       = render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.show'), @checkout
       - if @checkout.user
-        li
+        li.list-group-item
           = link_to t('page.back'), checkouts_path(user_id: @checkout.user.username)
   #content_list.col-md-9
     h1.title

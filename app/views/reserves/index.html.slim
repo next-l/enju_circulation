@@ -1,19 +1,19 @@
 .row
   #submenu.col-md-3
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.new', model: t('activerecord.models.reserve')), manifestations_path(reservable: true)
         br
         |  (
         = t('page.search_resource', model: t('page.resource'))
         | ) 
       - if current_user.has_role?('Librarian')
-        li
+        li.list-group-item
           = link_to t('reserve.all_reservation'), reserves_path
-        li
+        li.list-group-item
           = link_to t('reserve.my_reservation'), reserves_path(user_id: current_user.username)
         - if @user
-          li
+          li.list-group-item
             = link_to t('page.listing', model: t('activerecord.models.checkout')), checkouts_path(user_id: @user.username)
     = render 'state_facet'
     p

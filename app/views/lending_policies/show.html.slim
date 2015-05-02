@@ -43,8 +43,8 @@
         | :
       = @lending_policy.note
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.edit'), edit_lending_policy_path(@lending_policy)
-    li
+    li.list-group-item
       = back_to_index(flash[:page_info])

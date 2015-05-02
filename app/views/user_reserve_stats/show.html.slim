@@ -41,11 +41,11 @@
     = paginate(@stats)
   #submenu.col-md-3
   = form_for(@user_reserve_stat) do |f|
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = back_to_index(flash[:page_info])
   h4
     = t('page.export')
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to 'TSV', user_reserve_stat_path(@user_reserve_stat, format: :txt, locale: @locale.to_s)

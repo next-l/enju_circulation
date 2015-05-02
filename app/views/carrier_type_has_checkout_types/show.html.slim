@@ -20,9 +20,9 @@
         | :
       = @carrier_type_has_checkout_type.note
   #submenu.col-md-3
-  ul
+  ul.list-group
     - if policy(@carrier_type_has_checkout_type).update?
-      li
+      li.list-group-item
         = link_to t('page.edit'), edit_carrier_type_has_checkout_type_path(@carrier_type_has_checkout_type)
-    li
+    li.list-group-item
       = back_to_index(flash[:page_info])

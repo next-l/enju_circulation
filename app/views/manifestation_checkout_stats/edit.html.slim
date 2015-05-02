@@ -4,8 +4,8 @@
   #content_list.col-md-9
     = render 'form'
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.show'), @manifestation_checkout_stat
-    li
+    li.list-group-item
       = link_to t('page.back'), manifestation_checkout_stats_path

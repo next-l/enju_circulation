@@ -55,9 +55,9 @@
         | :
       = @user_group_has_checkout_type.current_checkout_count.to_i
   #submenu.col-md-3
-    ul
+    ul.list-group
       - if policy(@user_group_has_checkout_type).update?
-        li
+        li.list-group-item
           = link_to t('page.edit'), edit_user_group_has_checkout_type_path(@user_group_has_checkout_type)
-      li
+      li.list-group-item
         = back_to_index(flash[:page_info])

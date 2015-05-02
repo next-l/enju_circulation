@@ -1,9 +1,9 @@
 .row
   #submenu.col-md-3
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.edit'), edit_circulation_status_path(@circulation_status)
-      li
+      li.list-group-item
         = back_to_index(flash[:page_info])
   #content_list.col-md-9
     h1.title

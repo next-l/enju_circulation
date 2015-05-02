@@ -4,8 +4,8 @@
       = t('page.editing', model: t('activerecord.models.user_checkout_stat'))
     = render 'form'
   #submenu.col-md-3
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.show'), @user_checkout_stat
-      li
+      li.list-group-item
         = link_to t('page.back'), user_checkout_stats_path

@@ -15,8 +15,8 @@
         | :
       = link_to @checkin.librarian.username, @checkin.librarian
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.edit'), edit_checkin_path(@checkin)
-    li
+    li.list-group-item
       = back_to_index(flash[:page_info])

@@ -23,8 +23,8 @@
         | :
       = link_to @item_has_use_restriction.use_restriction.display_name.localize, @item_has_use_restriction.use_restriction
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.edit'), edit_item_has_use_restriction_path(@item_has_use_restriction)
-    li
+    li.list-group-item
       = back_to_index(flash[:page_info])
