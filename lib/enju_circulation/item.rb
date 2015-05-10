@@ -50,7 +50,6 @@ module EnjuCirculation
         end
         accepts_nested_attributes_for :item_has_use_restriction
 
-        after_create :create_lending_policy
         before_update :update_lending_policy
       end
     end
@@ -124,23 +123,28 @@ module EnjuCirculation
       end
 
       def lending_rule(user)
-        lending_policies.where(user_group_id: user.profile.user_group.id).first
+        policy = lending_policies.where(user_group_id: user.profile.user_group.id).first
+        if policy
+          policy
+        else
+          create_lending_policy(user)
+        end
       end
 
       def not_for_loan?
         !manifestation.items.for_checkout.include?(self)
       end
 
-      def create_lending_policy
-        UserGroupHasCheckoutType.available_for_item(self).each do |rule|
-          LendingPolicy.create!(
-            item_id: id,
-            user_group_id: rule.user_group_id,
-            fixed_due_date: rule.fixed_due_date,
-            loan_period: rule.checkout_period,
-            renewal: rule.checkout_renewal_limit
-          )
-        end
+      def create_lending_policy(user)
+        rule = user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: checkout_type_id).first
+        return nil unless rule
+        LendingPolicy.create!(
+          item_id: id,
+          user_group_id: rule.user_group_id,
+          fixed_due_date: rule.fixed_due_date,
+          loan_period: rule.checkout_period,
+          renewal: rule.checkout_renewal_limit
+        )
       end
 
       def update_lending_policy

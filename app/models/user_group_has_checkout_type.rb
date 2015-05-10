@@ -8,7 +8,6 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   validates_presence_of :user_group, :checkout_type
   validates_associated :user_group, :checkout_type
   validates_uniqueness_of :checkout_type_id, scope: :user_group_id
-  after_create :create_lending_policy
   after_update :update_lending_policy
 
   acts_as_list scope: :user_group_id
