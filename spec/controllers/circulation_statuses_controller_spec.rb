@@ -124,7 +124,7 @@ describe CirculationStatusesController do
       it "should be redirected" do
         get :new
         assigns(:circulation_status).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -164,7 +164,7 @@ describe CirculationStatusesController do
       it "should not assign the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
         get :edit, :id => circulation_status.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -268,7 +268,7 @@ describe CirculationStatusesController do
 
         it "should be forbidden" do
           post :create, :circulation_status => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -280,7 +280,7 @@ describe CirculationStatusesController do
 
         it "should be forbidden" do
           post :create, :circulation_status => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -374,14 +374,14 @@ describe CirculationStatusesController do
 
         it "should be forbidden" do
           put :update, :id => @circulation_status.id, :circulation_status => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested circulation_status as @circulation_status" do
           put :update, :id => @circulation_status.id, :circulation_status => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -438,7 +438,7 @@ describe CirculationStatusesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @circulation_status.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

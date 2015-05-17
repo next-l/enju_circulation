@@ -94,7 +94,7 @@ describe CheckinsController do
         checkin = checkins(:checkin_00001)
         get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
@@ -132,7 +132,7 @@ describe CheckinsController do
       it "should not assign the requested checkin as @checkin" do
         get :new
         assigns(:checkin).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -172,7 +172,7 @@ describe CheckinsController do
       it "should not assign the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
         get :edit, :id => checkin.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -263,7 +263,6 @@ describe CheckinsController do
       end
 
       it "should show notice when other library's item is checked in" do
-        sign_in users(:librarian2)
         post :create, :checkin => {:item_identifier => '00009'}, :basket_id => 9
         assigns(:checkin).should be_valid
         flash[:message].to_s.index(I18n.t('checkin.other_library_item')).should be_truthy
@@ -300,7 +299,7 @@ describe CheckinsController do
 
         it "should redirect to new session url" do
           post :create, :checkin => @attrs
-          response.should redirect_to new_user_session_url
+          response.should redirect_to new_session_url
         end
       end
     end
@@ -405,14 +404,14 @@ describe CheckinsController do
 
         it "should be forbidden" do
           put :update, :id => @checkin.id, :checkin => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested checkin as @checkin" do
           put :update, :id => @checkin.id, :checkin => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -469,7 +468,7 @@ describe CheckinsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @checkin.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

@@ -116,7 +116,7 @@ describe ManifestationReserveStatsController do
       it "should not assign the requested manifestation_reserve_stat as @manifestation_reserve_stat" do
         get :new
         assigns(:manifestation_reserve_stat).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -156,7 +156,7 @@ describe ManifestationReserveStatsController do
       it "should not assign the requested manifestation_reserve_stat as @manifestation_reserve_stat" do
         manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
         get :edit, :id => manifestation_reserve_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -260,7 +260,7 @@ describe ManifestationReserveStatsController do
 
         it "should be forbidden" do
           post :create, :manifestation_reserve_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -272,7 +272,7 @@ describe ManifestationReserveStatsController do
 
         it "should be forbidden" do
           post :create, :manifestation_reserve_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -366,14 +366,14 @@ describe ManifestationReserveStatsController do
 
         it "should be forbidden" do
           put :update, :id => @manifestation_reserve_stat.id, :manifestation_reserve_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat" do
           put :update, :id => @manifestation_reserve_stat.id, :manifestation_reserve_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -430,7 +430,7 @@ describe ManifestationReserveStatsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @manifestation_reserve_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

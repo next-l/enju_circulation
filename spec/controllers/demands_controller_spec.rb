@@ -78,7 +78,7 @@ describe DemandsController do
         demand = FactoryGirl.create(:demand)
         get :show, :id => demand.id
         assigns(:demand).should eq(demand)
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
@@ -116,7 +116,7 @@ describe DemandsController do
       it "should not assign the requested demand as @demand" do
         get :new
         assigns(:demand).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -191,7 +191,7 @@ describe DemandsController do
 
         it "should redirect to new session url" do
           post :create, :demand => @attrs
-          response.should redirect_to new_user_session_url
+          response.should redirect_to new_session_url
         end
       end
     end
@@ -248,7 +248,7 @@ describe DemandsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @demand.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

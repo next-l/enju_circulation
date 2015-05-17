@@ -40,7 +40,7 @@ describe CarrierTypeHasCheckoutTypesController do
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
         assigns(:carrier_type_has_checkout_types).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -120,7 +120,7 @@ describe CarrierTypeHasCheckoutTypesController do
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
         assigns(:carrier_type_has_checkout_type).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -160,7 +160,7 @@ describe CarrierTypeHasCheckoutTypesController do
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
         get :edit, :id => carrier_type_has_checkout_type.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -264,7 +264,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :carrier_type_has_checkout_type => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -276,7 +276,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :carrier_type_has_checkout_type => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -370,14 +370,14 @@ describe CarrierTypeHasCheckoutTypesController do
 
         it "should be forbidden" do
           put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -434,7 +434,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @carrier_type_has_checkout_type.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

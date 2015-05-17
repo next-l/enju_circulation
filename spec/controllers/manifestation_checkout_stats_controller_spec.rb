@@ -116,7 +116,7 @@ describe ManifestationCheckoutStatsController do
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         get :new
         assigns(:manifestation_checkout_stat).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -156,7 +156,7 @@ describe ManifestationCheckoutStatsController do
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
         get :edit, :id => manifestation_checkout_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -262,7 +262,7 @@ describe ManifestationCheckoutStatsController do
 
         it "should be forbidden" do
           post :create, :manifestation_checkout_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -274,7 +274,7 @@ describe ManifestationCheckoutStatsController do
 
         it "should be forbidden" do
           post :create, :manifestation_checkout_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -368,14 +368,14 @@ describe ManifestationCheckoutStatsController do
 
         it "should be forbidden" do
           put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
           put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -432,7 +432,7 @@ describe ManifestationCheckoutStatsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @manifestation_checkout_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

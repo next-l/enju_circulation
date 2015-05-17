@@ -85,10 +85,10 @@ describe LendingPoliciesController do
     end
 
     describe "When not logged in" do
-      it "should be redirected to new_user_session_url" do
+      it "should be redirected to new_session_url" do
         get :show, :id => @lending_policy.id
         assigns(:lending_policy).should eq(@lending_policy)
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
@@ -128,7 +128,7 @@ describe LendingPoliciesController do
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
         assigns(:lending_policy).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -168,7 +168,7 @@ describe LendingPoliciesController do
       it "should not assign the requested lending_policy as @lending_policy" do
         lending_policy = FactoryGirl.create(:lending_policy)
         get :edit, :id => lending_policy.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -272,7 +272,7 @@ describe LendingPoliciesController do
 
         it "should be forbidden" do
           post :create, :lending_policy => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -284,7 +284,7 @@ describe LendingPoliciesController do
 
         it "should be forbidden" do
           post :create, :lending_policy => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -373,14 +373,14 @@ describe LendingPoliciesController do
 
         it "should be forbidden" do
           put :update, :id => @lending_policy.id, :lending_policy => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested lending_policy as @lending_policy" do
           put :update, :id => @lending_policy.id, :lending_policy => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -437,7 +437,7 @@ describe LendingPoliciesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @lending_policy.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

@@ -46,7 +46,7 @@ describe UseRestrictionsController do
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
         assigns(:use_restrictions).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -126,7 +126,7 @@ describe UseRestrictionsController do
       it "should be redirected" do
         get :new
         assigns(:use_restriction).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -166,7 +166,7 @@ describe UseRestrictionsController do
       it "should not assign the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
         get :edit, :id => use_restriction.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -270,7 +270,7 @@ describe UseRestrictionsController do
 
         it "should be forbidden" do
           post :create, :use_restriction => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -282,7 +282,7 @@ describe UseRestrictionsController do
 
         it "should be forbidden" do
           post :create, :use_restriction => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -376,14 +376,14 @@ describe UseRestrictionsController do
 
         it "should be forbidden" do
           put :update, :id => @use_restriction.id, :use_restriction => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested use_restriction as @use_restriction" do
           put :update, :id => @use_restriction.id, :use_restriction => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -440,7 +440,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @use_restriction.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

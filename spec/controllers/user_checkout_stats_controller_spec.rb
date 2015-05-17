@@ -116,7 +116,7 @@ describe UserCheckoutStatsController do
       it "should not assign the requested user_checkout_stat as @user_checkout_stat" do
         get :new
         assigns(:user_checkout_stat).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -156,7 +156,7 @@ describe UserCheckoutStatsController do
       it "should not assign the requested user_checkout_stat as @user_checkout_stat" do
         user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
         get :edit, :id => user_checkout_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -260,7 +260,7 @@ describe UserCheckoutStatsController do
 
         it "should be forbidden" do
           post :create, :user_checkout_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
@@ -272,7 +272,7 @@ describe UserCheckoutStatsController do
 
         it "should be forbidden" do
           post :create, :user_checkout_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -366,14 +366,14 @@ describe UserCheckoutStatsController do
 
         it "should be forbidden" do
           put :update, :id => @user_checkout_stat.id, :user_checkout_stat => @attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested user_checkout_stat as @user_checkout_stat" do
           put :update, :id => @user_checkout_stat.id, :user_checkout_stat => @invalid_attrs
-          response.should redirect_to(new_user_session_url)
+          response.should redirect_to(new_session_url)
         end
       end
     end
@@ -430,7 +430,7 @@ describe UserCheckoutStatsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @user_checkout_stat.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end

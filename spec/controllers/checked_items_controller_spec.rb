@@ -57,13 +57,13 @@ describe CheckedItemsController do
       it "assigns empty as @checked_items" do
         get :index
         assigns(:checked_items).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
 
       it "should not get index with basket_id and item_id" do
         get :index, :basket_id => 1, :item_id => 1
         assigns(:checked_items).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -103,7 +103,7 @@ describe CheckedItemsController do
       it "assigns the requested checked_item as @checked_item" do
         get :show, :id => 1
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -149,7 +149,7 @@ describe CheckedItemsController do
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
         assigns(:checked_item).should be_nil
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -190,7 +190,7 @@ describe CheckedItemsController do
       it "should not assign the requested checked_item as @checked_item" do
         checked_item = checked_items(:checked_item_00001)
         get :edit, :id => checked_item.id
-        response.should redirect_to(new_user_session_url)
+        response.should redirect_to(new_session_url)
       end
     end
   end
@@ -311,7 +311,7 @@ describe CheckedItemsController do
     describe "When not logged in as" do
       it "should not create checked_item" do
         post :create, :checked_item => {item_identifier: '00004'}, :basket_id => 1
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
@@ -358,7 +358,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not update checed_item" do
         put :update, :id => 1, :checked_item => { }, :basket_id => 1
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
@@ -394,7 +394,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not destroy checked_item" do
         delete :destroy, :id => 1
-        response.should redirect_to new_user_session_url
+        response.should redirect_to new_session_url
       end
     end
   end
