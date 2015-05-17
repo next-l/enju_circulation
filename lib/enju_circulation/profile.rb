@@ -12,7 +12,7 @@ module EnjuCirculation
 
     module InstanceMethods
       def reset_checkout_icalendar_token
-        self.checkout_icalendar_token = Devise.friendly_token
+        self.checkout_icalendar_token = SecureRandom.hex(16)
       end
 
       def delete_checkout_icalendar_token

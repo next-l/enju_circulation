@@ -32,14 +32,6 @@ module EnjuCirculation
         end
       end
 
-      def reset_checkout_icalendar_token
-        self.checkout_icalendar_token = Devise.friendly_token
-      end
-
-      def delete_checkout_icalendar_token
-        self.checkout_icalendar_token = nil
-      end
-
       def checked_item_count
         checkout_count = {}
         CheckoutType.all.each do |checkout_type|
