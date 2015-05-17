@@ -31,8 +31,12 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to t('page.edit'), edit_checkout_type_path(@checkout_type) -%></li>
+    <%- if can? :update, @checkout_type -%>
+      <li><%= link_to t('page.edit'), edit_checkout_type_path(@checkout_type) -%></li>
+    <%- end -%>
     <li><%= back_to_index(flash[:page_info]) -%></li>
-    <li><%= link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type) -%></li>
+    <%- if can? :create, UserGroupHasCheckoutType -%>
+      <li><%= link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type) -%></li>
+    <%- end -%>
   </ul>
 </div>

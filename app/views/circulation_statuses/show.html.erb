@@ -23,7 +23,9 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to t('page.edit'), edit_circulation_status_path(@circulation_status) -%></li>
+    <%- if can? :update, @circulation_status -%>
+      <li><%= link_to t('page.edit'), edit_circulation_status_path(@circulation_status) -%></li>
+    <%- end -%>
     <li><%= back_to_index(flash[:page_info]) -%></li>
   </ul>
 </div>
