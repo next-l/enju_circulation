@@ -1,43 +1,48 @@
 module ControllerMacros
   def login_admin
     before(:each) do
-      @user = FactoryGirl.create(:admin)
-      controller.stub(:current_user) { @user }
+      @request.env["devise.mapping"] = Devise.mappings[:admin]
+      sign_in FactoryGirl.create(:admin)
     end
   end
 
   def login_librarian
     before(:each) do
-      @user = FactoryGirl.create(:librarian)
-      controller.stub(:current_user) { @user }
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      user = FactoryGirl.create(:librarian)
+      sign_in user
     end
   end
 
   def login_user
     before(:each) do
-      @user = FactoryGirl.create(:user)
-      controller.stub(:current_user) { @user }
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      user = FactoryGirl.create(:user)
+      sign_in user
     end
   end
 
   def login_fixture_admin
     before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:admin]
       @user = users(:admin)
-      controller.stub(:current_user) { @user }
+      sign_in @user
     end
   end
 
   def login_fixture_librarian
     before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
       @user = users(:librarian1)
-      controller.stub(:current_user) { @user }
+      sign_in @user
     end
   end
 
   def login_fixture_user
     before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
       @user = users(:user1)
-      controller.stub(:current_user) { @user }
+      sign_in @user
     end
   end
 end

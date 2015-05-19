@@ -258,7 +258,6 @@ class ReservesController < ApplicationController
   def check_policy
     authorize Reserve
   end
-
   def reserve_params
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(

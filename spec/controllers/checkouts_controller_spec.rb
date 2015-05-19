@@ -126,7 +126,7 @@ describe CheckoutsController do
       it "assigns nil as @checkouts" do
         get :index
         assigns(:checkouts).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
 
       it "assigns his own checkouts as @checkouts" do
@@ -185,7 +185,7 @@ describe CheckoutsController do
     describe "When not logged in" do
       it "should not assign the requested checkout as @checkout" do
         get :show, :id => 1
-        response.should redirect_to new_session_url
+        response.should redirect_to new_user_session_url
       end
     end
   end
@@ -213,6 +213,7 @@ describe CheckoutsController do
       login_fixture_user
 
       it "should edit my checkout" do
+        sign_in users(:user1)
         get :edit, :id => 3
         response.should be_success
       end
@@ -226,7 +227,7 @@ describe CheckoutsController do
     describe "When not logged in" do
       it "should not edit checkout" do
         get :edit, :id => 1
-        response.should redirect_to new_session_url
+        response.should redirect_to new_user_session_url
       end
     end
   end
@@ -398,14 +399,14 @@ describe CheckoutsController do
 
         it "should be forbidden" do
           put :update, :id => @checkout.id, :checkout => @attrs, :user_id => @checkout.user.username
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested checkout as @checkout" do
           put :update, :id => @checkout.id, :checkout => @invalid_attrs, :user_id => @checkout.user.username
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -478,7 +479,7 @@ describe CheckoutsController do
 
       it "should be forbidden" do
         delete :destroy, :id => @checkout.id, :user_id => @checkout.user.username
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end

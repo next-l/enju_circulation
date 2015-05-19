@@ -36,7 +36,7 @@ describe UserGroupHasCheckoutTypesController do
       it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
         get :index
         assigns(:user_group_has_checkout_types).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -116,7 +116,7 @@ describe UserGroupHasCheckoutTypesController do
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
         assigns(:user_group_has_checkout_type).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -156,7 +156,7 @@ describe UserGroupHasCheckoutTypesController do
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
         get :edit, :id => user_group_has_checkout_type.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -260,7 +260,7 @@ describe UserGroupHasCheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :user_group_has_checkout_type => @attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
@@ -272,7 +272,7 @@ describe UserGroupHasCheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :user_group_has_checkout_type => @invalid_attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -361,14 +361,14 @@ describe UserGroupHasCheckoutTypesController do
 
         it "should be forbidden" do
           put :update, :id => @user_group_has_checkout_type.id, :user_group_has_checkout_type => @attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
           put :update, :id => @user_group_has_checkout_type.id, :user_group_has_checkout_type => @invalid_attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -425,7 +425,7 @@ describe UserGroupHasCheckoutTypesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @user_group_has_checkout_type.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end

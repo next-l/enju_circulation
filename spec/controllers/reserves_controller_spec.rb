@@ -111,8 +111,12 @@ describe ReservesController do
       end
 
       describe "When other user_id is specified" do
+        before(:each) do
+          @user = users(:user3)
+        end
+
         it "should not get any reserve as @reserves" do
-          get :index, :user_id => users(:user3).username
+          get :index, :user_id => @user.username
           response.should be_forbidden
         end
       end
@@ -127,7 +131,7 @@ describe ReservesController do
       it "assigns empty as @reserves" do
         get :index
         assigns(:reserves).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -193,9 +197,9 @@ describe ReservesController do
         assigns(:reserve).should eq(@reserve)
       end
 
-      it "should be redirected to new_session_url" do
+      it "should be redirected to new_user_session_url" do
         get :show, :id => @reserve.id
-        response.should redirect_to new_session_url
+        response.should redirect_to new_user_session_url
       end
     end
   end
@@ -256,6 +260,7 @@ describe ReservesController do
       end
 
       it "should not get new reservation when user_number is not set" do
+        sign_in users(:user2)
         get :new, :user_id => users(:user2).username, :manifestation_id => 3
         response.should be_forbidden
       end
@@ -265,7 +270,7 @@ describe ReservesController do
       it "should not assign the requested reserve as @reserve" do
         get :new
         assigns(:reserve).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -325,7 +330,7 @@ describe ReservesController do
       it "should not assign the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
         get :edit, :id => reserve.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -485,7 +490,7 @@ describe ReservesController do
 
         it "redirects to the login page" do
           post :create, :reserve => @attrs
-          response.should redirect_to new_session_url
+          response.should redirect_to new_user_session_url
         end
       end
 
@@ -498,7 +503,7 @@ describe ReservesController do
         it "redirects to the login page" do
           post :create, :reserve => @invalid_attrs
           assigns(:reserve).should be_nil
-          response.should redirect_to new_session_url
+          response.should redirect_to new_user_session_url
         end
       end
     end
@@ -677,14 +682,14 @@ describe ReservesController do
 
         it "should be forbidden" do
           put :update, :id => @reserve.id, :reserve => @attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested reserve as @reserve" do
           put :update, :id => @reserve.id, :reserve => @invalid_attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -761,7 +766,7 @@ describe ReservesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @reserve.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end

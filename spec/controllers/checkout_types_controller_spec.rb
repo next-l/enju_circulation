@@ -40,7 +40,7 @@ describe CheckoutTypesController do
       it "assigns all checkout_types as @checkout_types" do
         get :index
         assigns(:checkout_types).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -120,7 +120,7 @@ describe CheckoutTypesController do
       it "should not assign the requested checkout_type as @checkout_type" do
         get :new
         assigns(:checkout_type).should be_nil
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -160,7 +160,7 @@ describe CheckoutTypesController do
       it "should not assign the requested checkout_type as @checkout_type" do
         checkout_type = FactoryGirl.create(:checkout_type)
         get :edit, :id => checkout_type.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -264,7 +264,7 @@ describe CheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :checkout_type => @attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
@@ -276,7 +276,7 @@ describe CheckoutTypesController do
 
         it "should be forbidden" do
           post :create, :checkout_type => @invalid_attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -370,14 +370,14 @@ describe CheckoutTypesController do
 
         it "should be forbidden" do
           put :update, :id => @checkout_type.id, :checkout_type => @attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested checkout_type as @checkout_type" do
           put :update, :id => @checkout_type.id, :checkout_type => @invalid_attrs
-          response.should redirect_to(new_session_url)
+          response.should redirect_to(new_user_session_url)
         end
       end
     end
@@ -434,7 +434,7 @@ describe CheckoutTypesController do
 
       it "should be forbidden" do
         delete :destroy, :id => @checkout_type.id
-        response.should redirect_to(new_session_url)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
