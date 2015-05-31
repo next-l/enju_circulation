@@ -46,18 +46,18 @@
     h1.title
       = t('page.listing', model: t('activerecord.models.reserve'))
     .search_form
-      = form_for :reserves, url: reserves_path, html: {method: 'get'} do
+      = form_for :reserves, url: reserves_path, html: {method: 'get', class: 'form-inline'} do
         p
           = t('page.search_term')
           | : 
-          = search_field_tag 'query', h(@query), {id: 'search_form_top', class: 'search_form', placeholder: t('page.search_term')}
+          = search_field_tag 'query', h(@query), {id: 'search_form_top', class: 'form-control', placeholder: t('page.search_term')}
           br
           = t('activerecord.attributes.reserve.created_at')
           | : 
-          = t('reserve.reserved_from')
-          = text_field_tag 'reserved_from', @reserved_from, {class: 'date_field', placeholder: "#{t('page.example')}: 2012-04-12"}
-          = t('reserve.reserved_until')
-          = text_field_tag 'reserved_until', @reserved_until, {class: 'date_field', placeholder: "#{t('page.example')}: 2012-05-11"}
+          => t('reserve.reserved_from')
+          => text_field_tag 'reserved_from', @reserved_from, {class: 'form-control', placeholder: "#{t('page.example')}: 2012-04-12"}
+          => t('reserve.reserved_until')
+          => text_field_tag 'reserved_until', @reserved_until, {class: 'form-control', placeholder: "#{t('page.example')}: 2012-05-11"}
           = submit_tag t('page.search'), class: 'form-control'
     p
       = t('page.sort_by')
