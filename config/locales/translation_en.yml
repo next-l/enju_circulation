@@ -200,3 +200,5 @@ en:
     by_carrier_type: By carrier type
     by_checkout_type: By checkout type
     by_manifestation: By manifestation
+  manifestation:
+    currently_checked_out: Currently checked out

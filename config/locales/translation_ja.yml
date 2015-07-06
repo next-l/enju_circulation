@@ -198,3 +198,5 @@ ja:
     by_carrier_type: 資料の形態別
     by_checkout_type: 貸出区分別
     by_manifestation: 書誌別
+  manifestation:
+    currently_checked_out: 貸出中
