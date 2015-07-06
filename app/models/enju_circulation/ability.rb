@@ -18,7 +18,6 @@ module EnjuCirculation
           Checkin,
           CheckoutStatHasManifestation,
           CheckoutStatHasUser,
-          CheckoutType,
 	  Demand,
           ItemHasUseRestriction,
           ManifestationCheckoutStat,
@@ -30,6 +29,10 @@ module EnjuCirculation
           UserGroupHasCheckoutType,
           UserReserveStat
         ]
+        can [:read, :create, :update], CheckoutType
+        can [:destroy, :delete], CheckoutType do |checkout_type|
+          true if checkout_type.empty?
+        end
         can [:read, :create, :update, :remove_all], Checkout
         can [:destroy, :delete], Checkout do |checkout|
           checkout.checkin
