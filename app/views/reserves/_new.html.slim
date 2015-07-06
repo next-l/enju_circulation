@@ -1,12 +1,16 @@
 .row
   #submenu.col-md-3
-    = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
-    ul
-      li
-        = link_to t('page.listing', model: t('activerecord.models.reserve')), reserves_path
-      - if @reserve.manifestation
-        li
-          = link_to t('page.showing', model: t('activerecord.models.manifestation')), manifestation_path(@reserve.manifestation)
+    .panel.panel-default
+      .panel-heading
+        h2.panel-title
+          = t('activerecord.models.reserve')
+      = render 'manifestations/book_jacket', manifestation: @reserve.manifestation
+      ul.list-group
+        li.list-group-item
+          = link_to t('page.listing', model: t('activerecord.models.reserve')), reserves_path
+        - if @reserve.manifestation
+          li.list-group-item
+            = link_to t('page.showing', model: t('activerecord.models.manifestation')), manifestation_path(@reserve.manifestation)
   #content_list.col-md-9
     h1.title
       = t('page.new', model: t('activerecord.models.reserve'))

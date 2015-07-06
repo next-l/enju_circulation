@@ -1,17 +1,21 @@
 .row
   #submenu.col-md-3
-    = render 'manifestations/book_jacket', manifestation: @reserve.manifestation if @reserve.manifestation
-    ul.list-group
-      li.list-group-item
-        = link_to t('page.edit'), edit_reserve_path(@reserve)
-      - if @reserve.user.reserves.waiting.include?(@reserve)
+    .panel.panel-default
+      .panel-heading
+        h2.panel-title
+          = t('activerecord.models.reserve')
+      = render 'manifestations/book_jacket', manifestation: @reserve.manifestation if @reserve.manifestation
+      ul.list-group
         li.list-group-item
-          = link_to t('page.cancel'), reserve_path(@reserve, mode: 'cancel'), data: {confirm: t('page.are_you_sure')}, method: :put
-      - else
-        li.list-group-item
-          = link_to t('page.destroy'), @reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
-        li.list-group-item
-          = link_to t('page.back'), reserves_path(page: flash[:page] ||= nil)
+          = link_to t('page.edit'), edit_reserve_path(@reserve)
+        - if @reserve.user.reserves.waiting.include?(@reserve)
+          li.list-group-item
+            = link_to t('page.cancel'), reserve_path(@reserve, mode: 'cancel'), data: {confirm: t('page.are_you_sure')}, method: :put
+        - else
+          li.list-group-item
+            = link_to t('page.destroy'), @reserve, data: {confirm: t('page.are_you_sure')}, method: :delete
+          li.list-group-item
+            = link_to t('page.back'), reserves_path(page: flash[:page] ||= nil)
   #content_list.col-md-9
     h1.title
       = t('page.showing', model: t('activerecord.models.reserve'))
