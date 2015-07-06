@@ -31,7 +31,7 @@ module EnjuCirculation
         ]
         can [:read, :create, :update], CheckoutType
         can [:destroy, :delete], CheckoutType do |checkout_type|
-          true if checkout_type.empty?
+          true if checkout_type.items.empty?
         end
         can [:read, :create, :update, :remove_all], Checkout
         can [:destroy, :delete], Checkout do |checkout|
