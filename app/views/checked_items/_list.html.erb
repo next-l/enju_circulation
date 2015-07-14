@@ -4,7 +4,7 @@
 <%= form_for :checked_item, html: {method: :post}, url: checked_items_path(basket_id: @basket.id), remote: true do |f| -%>
   <%= f.error_messages -%>
   <p>
-    <%= f.label :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier -%>
+    <%= f.label :item_identifier, t('activerecord.attributes.item.item_identifier') -%>: <%= f.search_field :item_identifier, class: 'resource_item_identifier' -%>
     <%= f.submit t('page.read'), 'data-disable-with' => t('page.saving') -%><br />
     <%= f.label :due_date %>
     <%= f.text_field :due_date_string, class: 'datepicker' %>
