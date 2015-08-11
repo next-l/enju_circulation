@@ -8,6 +8,11 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   validates_presence_of :user_group, :checkout_type
   validates_associated :user_group, :checkout_type
   validates_uniqueness_of :checkout_type_id, scope: :user_group_id
+  validates :checkout_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :checkout_period, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :checkout_renewal_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :reservation_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :reservation_expired_period, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   after_update :update_lending_policy
 
   acts_as_list scope: :user_group_id
