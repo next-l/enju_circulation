@@ -39,6 +39,18 @@ describe Basket do
     lambda{basket_2.basket_checkout(users(:librarian1))}.should raise_exception ActiveRecord::RecordInvalid
     items(:item_00011).checkouts.order('id DESC').first.user.should eq users(:admin)
   end
+
+  it "should change reservation status" do
+    basket = Basket.new
+    basket.user = users(:librarian2)
+    basket.save
+    checked_item = basket.checked_items.new
+    checked_item.item = items(:item_00023)
+    checked_item.save
+    checked_item.item.circulation_status.name.should eq 'Available On Shelf'
+    basket.basket_checkout(users(:librarian1))
+    checked_item.item.circulation_status.name.should eq 'On Loan'
+  end
 end
 
 # == Schema Information

@@ -233,7 +233,7 @@ describe CheckedItemsController do
           old_count = items(:item_00021).manifestation.reserves.waiting.count
           post :create, :checked_item => {item_identifier: '00021'} , :basket_id => 11
           assigns(:checked_item).should be_valid
-          assigns(:checked_item).item.manifestation.reserves.waiting.count.should eq old_count - 1
+          assigns(:checked_item).item.manifestation.reserves.waiting.count.should eq old_count
           assigns(:checked_item).librarian.should eq users(:admin)
         end
       end
