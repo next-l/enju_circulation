@@ -320,10 +320,7 @@ class Reserve < ActiveRecord::Base
     # TODO: 「取り置き中」の状態を正しく表す
     self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
     Reserve.transaction do
-      if item.try(:next_reservation)
-        reservation = item.next_reservation
-        reservation.transition_to!(:postponed)
-      end
+      item.next_reservation.try(:transition_to!, :postponed)
       save!
     end
   end
