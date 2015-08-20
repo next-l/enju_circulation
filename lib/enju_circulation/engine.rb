@@ -1,6 +1,4 @@
-require "enju_biblio"
-require "enju_library"
-require "enju_message"
+require "enju_leaf"
 require "enju_event"
 
 module EnjuCirculation
