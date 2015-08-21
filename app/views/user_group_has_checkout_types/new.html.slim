@@ -33,10 +33,6 @@
         br
         = f.number_field :reservation_limit, class: 'form-control'
       .form-group
-        = f.label :reservation_expired_period
-        br
-        = f.number_field :reservation_expired_period, class: 'form-control'
-      .form-group
         .checkbox-inline
           = f.check_box :set_due_date_before_closing_day
           = f.label :set_due_date_before_closing_day

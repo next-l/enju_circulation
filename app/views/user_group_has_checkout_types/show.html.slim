@@ -41,11 +41,6 @@
       = @user_group_has_checkout_type.reservation_limit
     p
       strong
-        = t('activerecord.attributes.user_group_has_checkout_type.reservation_expired_period')
-        | :
-      = @user_group_has_checkout_type.reservation_expired_period
-    p
-      strong
         = t('activerecord.attributes.user_group_has_checkout_type.set_due_date_before_closing_day')
         | :
       = localized_boolean(@user_group_has_checkout_type.set_due_date_before_closing_day)
