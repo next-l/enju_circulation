@@ -24,10 +24,6 @@
         br
         = f.text_field :item_identifier, class: 'form-control'
     .form-group
-      = f.label :expired_at
-      br
-      = f.text_field :expired_at, value: @reserve.expired_at.try(:strftime, "%Y-%m-%d"), class: 'date_field', placeholder: "#{t('page.example')}: 2011-04-12"
-    .form-group
       = f.label :pickup_location_id
       = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
     p

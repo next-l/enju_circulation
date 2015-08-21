@@ -57,11 +57,6 @@
       = l(@reserve.created_at)
     p
       strong
-        = t('activerecord.attributes.reserve.expired_at')
-        | :
-      = l(@reserve.expired_at) if @reserve.expired_at
-    p
-      strong
         = t('activerecord.attributes.reserve.retained_at')
         | :
       = l(@reserve.retained_at) if @reserve.retained_at
