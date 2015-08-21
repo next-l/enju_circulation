@@ -55,7 +55,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :show, id: circulation_status.id
+        get :show, :id => circulation_status.id
         assigns(:circulation_status).should eq(circulation_status)
       end
     end
@@ -65,7 +65,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :show, id: circulation_status.id
+        get :show, :id => circulation_status.id
         assigns(:circulation_status).should eq(circulation_status)
       end
     end
@@ -75,7 +75,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :show, id: circulation_status.id
+        get :show, :id => circulation_status.id
         assigns(:circulation_status).should eq(circulation_status)
       end
     end
@@ -83,7 +83,7 @@ describe CirculationStatusesController do
     describe "When not logged in" do
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :show, id: circulation_status.id
+        get :show, :id => circulation_status.id
         assigns(:circulation_status).should eq(circulation_status)
       end
     end
@@ -135,7 +135,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :edit, id: circulation_status.id
+        get :edit, :id => circulation_status.id
         assigns(:circulation_status).should eq(circulation_status)
       end
     end
@@ -145,7 +145,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :edit, id: circulation_status.id
+        get :edit, :id => circulation_status.id
         response.should be_forbidden
       end
     end
@@ -155,7 +155,7 @@ describe CirculationStatusesController do
 
       it "assigns the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :edit, id: circulation_status.id
+        get :edit, :id => circulation_status.id
         response.should be_forbidden
       end
     end
@@ -163,7 +163,7 @@ describe CirculationStatusesController do
     describe "When not logged in" do
       it "should not assign the requested circulation_status as @circulation_status" do
         circulation_status = FactoryGirl.create(:circulation_status)
-        get :edit, id: circulation_status.id
+        get :edit, :id => circulation_status.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -298,23 +298,23 @@ describe CirculationStatusesController do
 
       describe "with valid params" do
         it "updates the requested circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
         end
 
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
           assigns(:circulation_status).should eq(@circulation_status)
         end
 
         it "moves its position when specified" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs, :move => 'lower'
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs, :move => 'lower'
           response.should redirect_to(circulation_statuses_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @invalid_attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -325,11 +325,11 @@ describe CirculationStatusesController do
 
       describe "with valid params" do
         it "updates the requested circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
         end
 
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
           assigns(:circulation_status).should eq(@circulation_status)
           response.should be_forbidden
         end
@@ -337,7 +337,7 @@ describe CirculationStatusesController do
 
       describe "with invalid params" do
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @invalid_attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -348,11 +348,11 @@ describe CirculationStatusesController do
 
       describe "with valid params" do
         it "updates the requested circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
         end
 
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
           assigns(:circulation_status).should eq(@circulation_status)
           response.should be_forbidden
         end
@@ -360,7 +360,7 @@ describe CirculationStatusesController do
 
       describe "with invalid params" do
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @invalid_attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -369,18 +369,18 @@ describe CirculationStatusesController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @circulation_status.id, :circulation_status => @attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested circulation_status as @circulation_status" do
-          put :update, id: @circulation_status.id, :circulation_status => @invalid_attrs
+          put :update, :id => @circulation_status.id, :circulation_status => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -396,11 +396,11 @@ describe CirculationStatusesController do
       login_fixture_admin
 
       it "destroys the requested circulation_status" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
         response.should be_forbidden
       end
     end
@@ -409,11 +409,11 @@ describe CirculationStatusesController do
       login_fixture_librarian
 
       it "destroys the requested circulation_status" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
         response.should be_forbidden
       end
     end
@@ -422,22 +422,22 @@ describe CirculationStatusesController do
       login_fixture_user
 
       it "destroys the requested circulation_status" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested circulation_status" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @circulation_status.id
+        delete :destroy, :id => @circulation_status.id
         response.should redirect_to(new_user_session_url)
       end
     end

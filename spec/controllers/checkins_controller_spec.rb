@@ -63,7 +63,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :show, id: checkin.id
+        get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
       end
     end
@@ -73,7 +73,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :show, id: checkin.id
+        get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
       end
     end
@@ -83,7 +83,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :show, id: checkin.id
+        get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
         response.should be_forbidden
       end
@@ -92,7 +92,7 @@ describe CheckinsController do
     describe "When not logged in" do
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :show, id: checkin.id
+        get :show, :id => checkin.id
         assigns(:checkin).should eq(checkin)
         response.should redirect_to new_user_session_url
       end
@@ -143,7 +143,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :edit, id: checkin.id
+        get :edit, :id => checkin.id
         assigns(:checkin).should eq(checkin)
       end
     end
@@ -153,7 +153,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :edit, id: checkin.id
+        get :edit, :id => checkin.id
         assigns(:checkin).should eq(checkin)
       end
     end
@@ -163,7 +163,7 @@ describe CheckinsController do
 
       it "assigns the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :edit, id: checkin.id
+        get :edit, :id => checkin.id
         response.should be_forbidden
       end
     end
@@ -171,7 +171,7 @@ describe CheckinsController do
     describe "When not logged in" do
       it "should not assign the requested checkin as @checkin" do
         checkin = checkins(:checkin_00001)
-        get :edit, id: checkin.id
+        get :edit, :id => checkin.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -318,11 +318,11 @@ describe CheckinsController do
 
       describe "with valid params" do
         it "updates the requested checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
         end
 
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
           assigns(:checkin).should eq(@checkin)
           response.should redirect_to(@checkin)
         end
@@ -330,16 +330,16 @@ describe CheckinsController do
 
       describe "with invalid params" do
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
           response.should render_template("edit")
         end
 
         it "should not update checkin without item_identifier" do
-          put :update, id: @checkin.id, :checkin => @attrs.merge(:item_identifier => nil)
+          put :update, :id => @checkin.id, :checkin => @attrs.merge(:item_identifier => nil)
           assigns(:checkin).should be_valid
           response.should redirect_to(@checkin)
         end
@@ -351,11 +351,11 @@ describe CheckinsController do
 
       describe "with valid params" do
         it "updates the requested checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
         end
 
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
           assigns(:checkin).should eq(@checkin)
           response.should redirect_to(@checkin)
         end
@@ -363,12 +363,12 @@ describe CheckinsController do
 
       describe "with invalid params" do
         it "assigns the checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
           assigns(:checkin).should_not be_valid
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -379,11 +379,11 @@ describe CheckinsController do
 
       describe "with valid params" do
         it "updates the requested checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
         end
 
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
           assigns(:checkin).should eq(@checkin)
           response.should be_forbidden
         end
@@ -391,7 +391,7 @@ describe CheckinsController do
 
       describe "with invalid params" do
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -400,18 +400,18 @@ describe CheckinsController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested checkin" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @checkin.id, :checkin => @attrs
+          put :update, :id => @checkin.id, :checkin => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested checkin as @checkin" do
-          put :update, id: @checkin.id, :checkin => @invalid_attrs
+          put :update, :id => @checkin.id, :checkin => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -427,11 +427,11 @@ describe CheckinsController do
       login_fixture_admin
 
       it "destroys the requested checkin" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
       end
 
       it "redirects to the checkins list" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
         response.should redirect_to(checkins_url)
       end
     end
@@ -440,11 +440,11 @@ describe CheckinsController do
       login_fixture_librarian
 
       it "destroys the requested checkin" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
       end
 
       it "redirects to the checkins list" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
         response.should redirect_to(checkins_url)
       end
     end
@@ -453,22 +453,22 @@ describe CheckinsController do
       login_fixture_user
 
       it "destroys the requested checkin" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested checkin" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @checkin.id
+        delete :destroy, :id => @checkin.id
         response.should redirect_to(new_user_session_url)
       end
     end

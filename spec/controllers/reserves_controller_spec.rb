@@ -142,12 +142,12 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :show, id: reserve.id
+        get :show, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
 
       it "should show other user's reservation" do
-        get :show, id: 3
+        get :show, :id => 3
         response.should be_success
       end
     end
@@ -157,12 +157,12 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :show, id: reserve.id
+        get :show, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
 
       it "should show other user's reservation" do
-        get :show, id: 3
+        get :show, :id => 3
         response.should be_success
       end
     end
@@ -172,17 +172,17 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :show, id: reserve.id
+        get :show, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
 
       it "should show my reservation" do
-        get :show, id: 3
+        get :show, :id => 3
         response.should be_success
       end
   
       it "should not show other user's reservation" do
-        get :show, id: 5
+        get :show, :id => 5
         response.should be_forbidden
       end
     end
@@ -193,12 +193,12 @@ describe ReservesController do
       end
 
       it "assigns the requested reserve as @reserve" do
-        get :show, id: @reserve.id
+        get :show, :id => @reserve.id
         assigns(:reserve).should eq(@reserve)
       end
 
       it "should be redirected to new_user_session_url" do
-        get :show, id: @reserve.id
+        get :show, :id => @reserve.id
         response.should redirect_to new_user_session_url
       end
     end
@@ -281,12 +281,12 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :edit, id: reserve.id
+        get :edit, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
   
       it "should edit other user's reservation" do
-        get :edit, id: 3
+        get :edit, :id => 3
         response.should be_success
       end
     end
@@ -296,12 +296,12 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :edit, id: reserve.id
+        get :edit, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
 
       it "should edit reserve without user_id" do
-        get :edit, id: 3
+        get :edit, :id => 3
         response.should be_success
       end
     end
@@ -311,17 +311,17 @@ describe ReservesController do
 
       it "assigns the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :edit, id: reserve.id
+        get :edit, :id => reserve.id
         assigns(:reserve).should eq(reserve)
       end
 
       it "should edit my reservation" do
-        get :edit, id: 3
+        get :edit, :id => 3
         response.should be_success
       end
   
       it "should not edit other user's reservation" do
-        get :edit, id: 5
+        get :edit, :id => 5
         response.should be_forbidden
       end
     end
@@ -329,7 +329,7 @@ describe ReservesController do
     describe "When not logged in" do
       it "should not assign the requested reserve as @reserve" do
         reserve = FactoryGirl.create(:reserve)
-        get :edit, id: reserve.id
+        get :edit, :id => reserve.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -337,8 +337,8 @@ describe ReservesController do
 
   describe "POST create" do
     before(:each) do
-      @attrs = {user_number: users(:user1).profile.user_number, :manifestation_id => 5}
-      @invalid_attrs = {user_number: users(:user1).profile.user_number, :manifestation_id => 'invalid'}
+      @attrs = {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
+      @invalid_attrs = {:user_number => users(:user1).profile.user_number, :manifestation_id => 'invalid'}
     end
 
     describe "When logged in as Administrator" do
@@ -346,42 +346,50 @@ describe ReservesController do
 
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           assigns(:reserve).should be_valid
         end
 
         it "redirects to the created reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
+          assigns(:reserve).expired_at.should be_truthy
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved reserve as @reserve" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).should_not be_valid
         end
 
         it "redirects to the list" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).expired_at.should be_nil
           response.should render_template("new")
           response.should be_success
         end
       end
 
+      it "should not create reservation with past date" do
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5, :expired_at => '1901-01-01'}
+        assigns(:reserve).should_not be_valid
+        response.should be_success
+      end
+
       it "should create other user's reserve" do
-        post :create, reserve: {user_number: users(:user1).profile.user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
+        assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not create reserve without manifestation_id" do
-        post :create, reserve: {user_number: users(:admin).profile.user_number}
+        post :create, :reserve => {:user_number => users(:admin).profile.user_number}
         response.should be_success
       end
 
       it "should not create reserve with missing user_number" do
-        post :create, reserve: {user_number: 'missing', :manifestation_id => 5}
+        post :create, :reserve => {:user_number => 'missing', :manifestation_id => 5}
         response.should render_template("new")
         response.should be_success
       end
@@ -392,30 +400,31 @@ describe ReservesController do
 
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           assigns(:reserve).should be_valid
         end
 
         it "redirects to the created reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
+          assigns(:reserve).expired_at.should be_truthy
         end
 
         it "should send accepted messages" do
           old_count = Message.count
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           Message.count.should eq old_count + 2
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved reserve as @reserve" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).should_not be_valid
         end
 
         it "re-renders the 'new' template" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).expired_at.should be_nil
           response.should render_template("new")
           response.should be_success
@@ -423,13 +432,14 @@ describe ReservesController do
       end
 
       it "should create other user's reserve" do
-        post :create, reserve: {user_number: users(:user1).profile.user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).should be_valid
+        assigns(:reserve).expired_at.should be_truthy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not create reserve over reserve_limit" do
-        post :create, reserve: {user_number: users(:admin).profile.user_number, :manifestation_id => 5}
+        post :create, :reserve => {:user_number => users(:admin).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end
@@ -439,24 +449,25 @@ describe ReservesController do
 
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           assigns(:reserve).should be_valid
         end
 
         it "redirects to the created reserve" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
+          assigns(:reserve).expired_at.should be > Time.zone.now
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved reserve as @reserve" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).should_not be_valid
         end
 
         it "re-renders the 'new' template" do
-          post :create, reserve: @invalid_attrs
+          post :create, :reserve => @invalid_attrs
           assigns(:reserve).expired_at.should be_nil
           response.should render_template("new")
           response.should be_success
@@ -464,7 +475,7 @@ describe ReservesController do
       end
 
       it "should not create other user's reservation" do
-        post :create, reserve: {user_number: users(:user2).profile.user_number, :manifestation_id => 6}
+        post :create, :reserve => {:user_number => users(:user2).profile.user_number, :manifestation_id => 6}
         assigns(:reserve).expired_at.should be_nil
         response.should be_forbidden
       end
@@ -478,7 +489,7 @@ describe ReservesController do
         end
 
         it "redirects to the login page" do
-          post :create, reserve: @attrs
+          post :create, :reserve => @attrs
           response.should redirect_to new_user_session_url
         end
       end
@@ -510,11 +521,11 @@ describe ReservesController do
 
       describe "with valid params" do
         it "updates the requested reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
         end
 
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
           assigns(:reserve).should eq(@reserve)
           response.should redirect_to(assigns(:reserve))
         end
@@ -522,35 +533,35 @@ describe ReservesController do
 
       describe "with invalid params" do
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
           response.should render_template("edit")
         end
       end
 
       it "should not update reserve without manifestation_id" do
-        put :update, id: 1, reserve: {user_number: users(:admin).profile.user_number, :manifestation_id => nil}
+        put :update, :id => 1, :reserve => {:user_number => users(:admin).profile.user_number, :manifestation_id => nil}
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
   
       it "should update other user's reservation without user_id" do
-        put :update, id: 3, reserve: {user_number: users(:user1).profile.user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not update retained reservations if item_identifier is invalid" do
-        put :update, id: 14, reserve: {:item_identifier => 'invalid'}
+        put :update, :id => 14, :reserve => {:item_identifier => 'invalid'}
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should not update retained reservations if force_retaining is disabled" do
-        put :update, id: 15, reserve: {:item_identifier => '00021'}
+        put :update, :id => 15, :reserve => {:item_identifier => '00021'}
         assigns(:reserve).should_not be_valid
         response.should be_success
         assigns(:reserve).current_state.should eq 'requested'
@@ -558,7 +569,7 @@ describe ReservesController do
       end
 
       it "should update retained reservations if force_retaining is enabled" do
-        put :update, id: 15, reserve: {:item_identifier => '00021', :force_retaining => '1'}
+        put :update, :id => 15, :reserve => {:item_identifier => '00021', :force_retaining => '1'}
         assigns(:reserve).should be_valid
         assigns(:reserve).current_state.should eq 'retained'
         response.should redirect_to reserve_url(assigns(:reserve))
@@ -571,11 +582,11 @@ describe ReservesController do
 
       describe "with valid params" do
         it "updates the requested reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
         end
 
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
           assigns(:reserve).should eq(@reserve)
           response.should redirect_to(assigns(:reserve))
         end
@@ -583,19 +594,19 @@ describe ReservesController do
 
       describe "with invalid params" do
         it "assigns the reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
           assigns(:reserve).should_not be_valid
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
           response.should render_template("edit")
         end
       end
 
       it "should cancel other user's reservation" do
         old_message_requests_count = MessageRequest.count
-        put :update, id: 3, reserve: {user_number: users(:user1).profile.user_number}, :mode => 'cancel'
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
@@ -603,13 +614,13 @@ describe ReservesController do
       end
 
       it "should update reserve without user_id" do
-        put :update, id: 3, reserve: {user_number: users(:user1).profile.user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should update other user's reservation" do
-        put :update, id: 3, reserve: {user_number: users(:user1).profile.user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -620,11 +631,11 @@ describe ReservesController do
 
       describe "with valid params" do
         it "updates the requested reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
         end
 
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
           assigns(:reserve).should eq(@reserve)
           response.should be_forbidden
         end
@@ -632,14 +643,14 @@ describe ReservesController do
 
       describe "with invalid params" do
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
           response.should be_forbidden
         end
       end
 
       it "should cancal my reservation" do
         old_message_requests_count = MessageRequest.count
-        put :update, id: 3, :mode => 'cancel'
+        put :update, :id => 3, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
@@ -647,18 +658,18 @@ describe ReservesController do
       end
 
       it "should update my reservation" do
-        put :update, id: 3, reserve: {user_number: users(:user1).profile.user_number}
+        put :update, :id => 3, :reserve => {:user_number => users(:user1).profile.user_number}
         flash[:notice].should eq I18n.t('controller.successfully_updated', :model => I18n.t('activerecord.models.reserve'))
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not update other user's reservation" do
-        put :update, id: 5, reserve: {user_number: users(:user2).profile.user_number}
+        put :update, :id => 5, :reserve => {:user_number => users(:user2).profile.user_number}
         response.should be_forbidden
       end
   
       it "should not cancel other user's reservation" do
-        put :update, id: 5, reserve: {user_number: users(:user1).profile.user_number}, :mode => 'cancel'
+        put :update, :id => 5, :reserve => {:user_number => users(:user1).profile.user_number}, :mode => 'cancel'
         response.should be_forbidden
       end
     end
@@ -666,18 +677,18 @@ describe ReservesController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested reserve" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @reserve.id, reserve: @attrs
+          put :update, :id => @reserve.id, :reserve => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested reserve as @reserve" do
-          put :update, id: @reserve.id, reserve: @invalid_attrs
+          put :update, :id => @reserve.id, :reserve => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -693,16 +704,16 @@ describe ReservesController do
       login_fixture_admin
 
       it "destroys the requested reserve" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
       end
 
       it "redirects to the reserves list" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
         response.should redirect_to(reserves_url)
       end
 
       it "should destroy other user's reservation" do
-        delete :destroy, id: 3
+        delete :destroy, :id => 3
         response.should redirect_to reserves_url
       end
     end
@@ -711,16 +722,16 @@ describe ReservesController do
       login_fixture_librarian
 
       it "destroys the requested reserve" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
       end
 
       it "redirects to the reserves list" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
         response.should redirect_to(reserves_url)
       end
 
       it "should destroy other user's reservation" do
-        delete :destroy, id: 3
+        delete :destroy, :id => 3
         response.should redirect_to reserves_url
       end
     end
@@ -729,32 +740,32 @@ describe ReservesController do
       login_fixture_user
 
       it "destroys the requested reserve" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
         response.should be_forbidden
       end
 
       it "should destroy my reservation" do
-        delete :destroy, id: 3
+        delete :destroy, :id => 3
         response.should redirect_to reserves_url
       end
 
       it "should not destroy other user's reservation" do
-        delete :destroy, id: 5
+        delete :destroy, :id => 5
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested reserve" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @reserve.id
+        delete :destroy, :id => @reserve.id
         response.should redirect_to(new_user_session_url)
       end
     end
