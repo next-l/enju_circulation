@@ -49,7 +49,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :show, :id => manifestation_checkout_stat.id
+        get :show, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -59,7 +59,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :show, :id => manifestation_checkout_stat.id
+        get :show, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -69,7 +69,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :show, :id => manifestation_checkout_stat.id
+        get :show, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -77,7 +77,7 @@ describe ManifestationCheckoutStatsController do
     describe "When not logged in" do
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :show, :id => manifestation_checkout_stat.id
+        get :show, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -127,7 +127,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :edit, :id => manifestation_checkout_stat.id
+        get :edit, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -137,7 +137,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :edit, :id => manifestation_checkout_stat.id
+        get :edit, id: manifestation_checkout_stat.id
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
     end
@@ -147,7 +147,7 @@ describe ManifestationCheckoutStatsController do
 
       it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :edit, :id => manifestation_checkout_stat.id
+        get :edit, id: manifestation_checkout_stat.id
         response.should be_forbidden
       end
     end
@@ -155,7 +155,7 @@ describe ManifestationCheckoutStatsController do
     describe "When not logged in" do
       it "should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
         manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-        get :edit, :id => manifestation_checkout_stat.id
+        get :edit, id: manifestation_checkout_stat.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -172,26 +172,26 @@ describe ManifestationCheckoutStatsController do
 
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           assigns(:manifestation_checkout_stat).should be_valid
           assigns(:manifestation_checkout_stat).current_state.should eq 'completed'
         end
 
         it "redirects to the created manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           response.should redirect_to(manifestation_checkout_stat_url(assigns(:manifestation_checkout_stat)))
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_checkout_stat as @manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           assigns(:manifestation_checkout_stat).should_not be_valid
           assigns(:manifestation_checkout_stat).current_state.should eq 'pending'
         end
 
         it "re-renders the 'new' template" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           response.should render_template("new")
         end
       end
@@ -202,24 +202,24 @@ describe ManifestationCheckoutStatsController do
 
       describe "with valid params" do
         it "assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           assigns(:manifestation_checkout_stat).should be_valid
         end
 
         it "redirects to the created manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           response.should redirect_to(manifestation_checkout_stat_url(assigns(:manifestation_checkout_stat)))
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_checkout_stat as @manifestation_checkout_stat" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           assigns(:manifestation_checkout_stat).should_not be_valid
         end
 
         it "re-renders the 'new' template" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           response.should render_template("new")
         end
       end
@@ -235,7 +235,7 @@ describe ManifestationCheckoutStatsController do
         end
 
         it "should be forbidden" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           response.should be_forbidden
         end
       end
@@ -247,7 +247,7 @@ describe ManifestationCheckoutStatsController do
         end
 
         it "should be forbidden" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -261,7 +261,7 @@ describe ManifestationCheckoutStatsController do
         end
 
         it "should be forbidden" do
-          post :create, :manifestation_checkout_stat => @attrs
+          post :create, manifestation_checkout_stat: @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -273,7 +273,7 @@ describe ManifestationCheckoutStatsController do
         end
 
         it "should be forbidden" do
-          post :create, :manifestation_checkout_stat => @invalid_attrs
+          post :create, manifestation_checkout_stat: @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -292,18 +292,18 @@ describe ManifestationCheckoutStatsController do
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
         end
 
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
           assigns(:manifestation_checkout_stat).should eq(@manifestation_checkout_stat)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @invalid_attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -314,11 +314,11 @@ describe ManifestationCheckoutStatsController do
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
         end
 
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
           assigns(:manifestation_checkout_stat).should eq(@manifestation_checkout_stat)
           response.should redirect_to(@manifestation_checkout_stat)
         end
@@ -326,12 +326,12 @@ describe ManifestationCheckoutStatsController do
 
       describe "with invalid params" do
         it "assigns the manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat, :manifestation_checkout_stat => @invalid_attrs
+          put :update, id: @manifestation_checkout_stat, manifestation_checkout_stat: @invalid_attrs
           assigns(:manifestation_checkout_stat).should_not be_valid
         end
 
         it "re-renders the 'edit' template" do
-          put :update, :id => @manifestation_checkout_stat, :manifestation_checkout_stat => @invalid_attrs
+          put :update, id: @manifestation_checkout_stat, manifestation_checkout_stat: @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -342,11 +342,11 @@ describe ManifestationCheckoutStatsController do
 
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
         end
 
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
           assigns(:manifestation_checkout_stat).should eq(@manifestation_checkout_stat)
           response.should be_forbidden
         end
@@ -354,7 +354,7 @@ describe ManifestationCheckoutStatsController do
 
       describe "with invalid params" do
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @invalid_attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -363,18 +363,18 @@ describe ManifestationCheckoutStatsController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
         end
 
         it "should be forbidden" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat" do
-          put :update, :id => @manifestation_checkout_stat.id, :manifestation_checkout_stat => @invalid_attrs
+          put :update, id: @manifestation_checkout_stat.id, manifestation_checkout_stat: @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -390,11 +390,11 @@ describe ManifestationCheckoutStatsController do
       login_fixture_admin
 
       it "destroys the requested manifestation_checkout_stat" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
       end
 
       it "redirects to the manifestation_checkout_stats list" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
         response.should redirect_to(manifestation_checkout_stats_url)
       end
     end
@@ -403,11 +403,11 @@ describe ManifestationCheckoutStatsController do
       login_fixture_librarian
 
       it "destroys the requested manifestation_checkout_stat" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
       end
 
       it "redirects to the manifestation_checkout_stats list" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
         response.should be_forbidden
       end
     end
@@ -416,22 +416,22 @@ describe ManifestationCheckoutStatsController do
       login_fixture_user
 
       it "destroys the requested manifestation_checkout_stat" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
       end
 
       it "should be forbidden" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested manifestation_checkout_stat" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
       end
 
       it "should be forbidden" do
-        delete :destroy, :id => @manifestation_checkout_stat.id
+        delete :destroy, id: @manifestation_checkout_stat.id
         response.should redirect_to(new_user_session_url)
       end
     end

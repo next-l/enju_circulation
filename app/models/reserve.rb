@@ -56,7 +56,7 @@ class Reserve < ActiveRecord::Base
   validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, on: :create
-  before_validation :set_item, :set_expired_at
+  before_validation :set_item
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
 
@@ -144,10 +144,7 @@ class Reserve < ActiveRecord::Base
   def set_expired_at
     if user and manifestation
       if canceled_at.blank?
-        if expired_at.blank?
-          expired_period = manifestation.reservation_expired_period(user)
-          self.expired_at = (expired_period + 1).days.from_now.beginning_of_day
-        elsif !completed?
+        if !completed?
           if expired_at.beginning_of_day < Time.zone.now
             errors[:base] << I18n.t('reserve.invalid_date')
           end
