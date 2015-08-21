@@ -474,7 +474,7 @@ describe ReservesController do
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
           post :create, reserve: @attrs
-          assigns(:reserve).should_not be_valid
+          assigns(:reserve).should be_nil
         end
 
         it "redirects to the login page" do
