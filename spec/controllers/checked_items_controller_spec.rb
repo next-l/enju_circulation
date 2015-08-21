@@ -73,7 +73,7 @@ describe CheckedItemsController do
       login_fixture_admin
 
       it "assigns the requested checked_item as @checked_item" do
-        get :show, :id => 1
+        get :show, id: 1
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
         response.should be_success
       end
@@ -83,7 +83,7 @@ describe CheckedItemsController do
       login_fixture_librarian
 
       it "assigns the requested checked_item as @checked_item" do
-        get :show, :id => 1
+        get :show, id: 1
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
         response.should be_success
       end
@@ -93,7 +93,7 @@ describe CheckedItemsController do
       login_fixture_user
 
       it "assigns the requested checked_item as @checked_item" do
-        get :show, :id => 1
+        get :show, id: 1
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
         response.should be_forbidden
       end
@@ -101,7 +101,7 @@ describe CheckedItemsController do
 
     describe "When not logged in" do
       it "assigns the requested checked_item as @checked_item" do
-        get :show, :id => 1
+        get :show, id: 1
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
         response.should redirect_to(new_user_session_url)
       end
@@ -160,7 +160,7 @@ describe CheckedItemsController do
 
       it "assigns the requested checked_item as @checked_item" do
         checked_item = checked_items(:checked_item_00001)
-        get :edit, :id => checked_item.id
+        get :edit, id: checked_item.id
         assigns(:checked_item).should eq(checked_item)
       end
     end
@@ -170,7 +170,7 @@ describe CheckedItemsController do
 
       it "assigns the requested checked_item as @checked_item" do
         checked_item = checked_items(:checked_item_00001)
-        get :edit, :id => checked_item.id
+        get :edit, id: checked_item.id
         assigns(:checked_item).should eq(checked_item)
         response.should be_success
       end
@@ -181,7 +181,7 @@ describe CheckedItemsController do
 
       it "assigns the requested checked_item as @checked_item" do
         checked_item = checked_items(:checked_item_00001)
-        get :edit, :id => checked_item.id
+        get :edit, id: checked_item.id
         response.should be_forbidden
       end
     end
@@ -189,7 +189,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not assign the requested checked_item as @checked_item" do
         checked_item = checked_items(:checked_item_00001)
-        get :edit, :id => checked_item.id
+        get :edit, id: checked_item.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -326,7 +326,7 @@ describe CheckedItemsController do
       login_fixture_admin
 
       it "should not update checked_item without basket_id" do
-        put :update, :id => 1, :checked_item => { }
+        put :update, id: 1, :checked_item => { }
         response.should be_forbidden
       end
     end
@@ -335,12 +335,12 @@ describe CheckedItemsController do
       login_fixture_librarian
 
       it "should not update checked_item without basket_id" do
-        put :update, :id => 1, :checked_item => {}
+        put :update, id: 1, :checked_item => {}
         response.should be_forbidden
       end
 
       it "should update checked_item" do
-        put :update, :id => 4, :checked_item => { }, :basket_id => 8
+        put :update, id: 4, :checked_item => { }, :basket_id => 8
         assigns(:checked_item).should be_valid
         response.should redirect_to checked_item_url(assigns(:checked_item))
       end
@@ -350,14 +350,14 @@ describe CheckedItemsController do
       login_fixture_user
 
       it "should not update checked_item" do
-        put :update, :id => 1, :checked_item => { }, :basket_id => 3
+        put :update, id: 1, :checked_item => { }, :basket_id => 3
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "should not update checed_item" do
-        put :update, :id => 1, :checked_item => { }, :basket_id => 1
+        put :update, id: 1, :checked_item => { }, :basket_id => 1
         response.should redirect_to new_user_session_url
       end
     end
@@ -368,7 +368,7 @@ describe CheckedItemsController do
       login_fixture_admin
 
       it "should destroy checked_item" do
-        delete :destroy, :id => 1
+        delete :destroy, id: 1
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
     end
@@ -377,7 +377,7 @@ describe CheckedItemsController do
       login_fixture_librarian
 
       it "should destroy checked_item" do
-        delete :destroy, :id => 1
+        delete :destroy, id: 1
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
     end
@@ -386,14 +386,14 @@ describe CheckedItemsController do
       login_fixture_user
 
       it "should not destroy checked_item" do
-        delete :destroy, :id => 3
+        delete :destroy, id: 3
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "should not destroy checked_item" do
-        delete :destroy, :id => 1
+        delete :destroy, id: 1
         response.should redirect_to new_user_session_url
       end
     end

@@ -140,7 +140,6 @@ class ReservesController < ApplicationController
     if @manifestation
       @reserve.manifestation = @manifestation
       if @reserve.user
-        @reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
         if @manifestation.is_reserved_by?(@reserve.user)
           flash[:notice] = t('reserve.this_manifestation_is_already_reserved')
           redirect_to @manifestation
@@ -253,8 +252,8 @@ class ReservesController < ApplicationController
   def reserve_params
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
-        :manifestation_id, :user_number, :expired_at,
-        :pickup_location_id, :expired_at,
+        :manifestation_id, :user_number,
+        :pickup_location_id,
         :manifestation_id, :item_identifier, :user_number,
         :request_status_type, :canceled_at, :checked_out_at,
         :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
@@ -262,7 +261,7 @@ class ReservesController < ApplicationController
       )
     elsif current_user.try(:has_role?, 'User')
       params.fetch(:reserve, {}).permit(
-        :user_number, :manifestation_id, :expired_at, :pickup_location_id
+        :user_number, :manifestation_id, :pickup_location_id
       )
     end
   end
@@ -270,8 +269,8 @@ class ReservesController < ApplicationController
   def reserve_update_params
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
-        :manifestation_id, :user_number, :expired_at,
-        :pickup_location_id, :expired_at,
+        :manifestation_id, :user_number,
+        :pickup_location_id,
         :manifestation_id, :item_identifier, :user_number,
         :request_status_type, :canceled_at, :checked_out_at,
         :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
@@ -279,7 +278,7 @@ class ReservesController < ApplicationController
       )
     elsif current_user.try(:has_role?, 'User')
       params.fetch(:reserve, {}).permit(
-        :expired_at, :pickup_location_id
+        :pickup_location_id
       )
     end
   end
