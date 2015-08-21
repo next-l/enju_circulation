@@ -57,7 +57,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :show, id: use_restriction.id
+        get :show, :id => use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
     end
@@ -67,7 +67,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :show, id: use_restriction.id
+        get :show, :id => use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
     end
@@ -77,7 +77,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :show, id: use_restriction.id
+        get :show, :id => use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
     end
@@ -85,7 +85,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :show, id: use_restriction.id
+        get :show, :id => use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
     end
@@ -137,7 +137,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :edit, id: use_restriction.id
+        get :edit, :id => use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
     end
@@ -147,7 +147,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :edit, id: use_restriction.id
+        get :edit, :id => use_restriction.id
         response.should be_forbidden
       end
     end
@@ -157,7 +157,7 @@ describe UseRestrictionsController do
 
       it "assigns the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :edit, id: use_restriction.id
+        get :edit, :id => use_restriction.id
         response.should be_forbidden
       end
     end
@@ -165,7 +165,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "should not assign the requested use_restriction as @use_restriction" do
         use_restriction = FactoryGirl.create(:use_restriction)
-        get :edit, id: use_restriction.id
+        get :edit, :id => use_restriction.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -182,24 +182,24 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           assigns(:use_restriction).should be_valid
         end
 
         it "redirects to the created patron" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           response.should be_forbidden
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           assigns(:use_restriction).should_not be_valid
         end
 
         it "should be successful" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -210,24 +210,24 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           response.should be_forbidden
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -238,24 +238,24 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           response.should be_forbidden
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -264,24 +264,24 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @attrs
+          post :create, :use_restriction => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
-          post :create, use_restriction: @invalid_attrs
+          post :create, :use_restriction => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -300,23 +300,23 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "updates the requested use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
         end
 
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
           assigns(:use_restriction).should eq(@use_restriction)
         end
 
         it "moves its position when specified" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs, :move => 'lower'
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs, :move => 'lower'
           response.should redirect_to(use_restrictions_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @invalid_attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -327,11 +327,11 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "updates the requested use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
         end
 
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
           assigns(:use_restriction).should eq(@use_restriction)
           response.should be_forbidden
         end
@@ -339,7 +339,7 @@ describe UseRestrictionsController do
 
       describe "with invalid params" do
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @invalid_attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -350,11 +350,11 @@ describe UseRestrictionsController do
 
       describe "with valid params" do
         it "updates the requested use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
         end
 
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
           assigns(:use_restriction).should eq(@use_restriction)
           response.should be_forbidden
         end
@@ -362,7 +362,7 @@ describe UseRestrictionsController do
 
       describe "with invalid params" do
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @invalid_attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -371,18 +371,18 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @use_restriction.id, use_restriction: @attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested use_restriction as @use_restriction" do
-          put :update, id: @use_restriction.id, use_restriction: @invalid_attrs
+          put :update, :id => @use_restriction.id, :use_restriction => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -398,11 +398,11 @@ describe UseRestrictionsController do
       login_fixture_admin
 
       it "destroys the requested use_restriction" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
       end
 
       it "redirects to the use_restrictions list" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
         response.should be_forbidden
       end
     end
@@ -411,11 +411,11 @@ describe UseRestrictionsController do
       login_fixture_librarian
 
       it "destroys the requested use_restriction" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
         response.should be_forbidden
       end
     end
@@ -424,22 +424,22 @@ describe UseRestrictionsController do
       login_fixture_user
 
       it "destroys the requested use_restriction" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested use_restriction" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @use_restriction.id
+        delete :destroy, :id => @use_restriction.id
         response.should redirect_to(new_user_session_url)
       end
     end

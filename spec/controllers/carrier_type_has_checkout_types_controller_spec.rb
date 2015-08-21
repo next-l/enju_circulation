@@ -51,7 +51,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :show, id: carrier_type_has_checkout_type.id
+        get :show, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -61,7 +61,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :show, id: carrier_type_has_checkout_type.id
+        get :show, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -71,7 +71,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :show, id: carrier_type_has_checkout_type.id
+        get :show, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -79,7 +79,7 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When not logged in" do
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :show, id: carrier_type_has_checkout_type.id
+        get :show, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -131,7 +131,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :edit, id: carrier_type_has_checkout_type.id
+        get :edit, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -141,7 +141,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :edit, id: carrier_type_has_checkout_type.id
+        get :edit, :id => carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
     end
@@ -151,7 +151,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :edit, id: carrier_type_has_checkout_type.id
+        get :edit, :id => carrier_type_has_checkout_type.id
         response.should be_forbidden
       end
     end
@@ -159,7 +159,7 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When not logged in" do
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-        get :edit, id: carrier_type_has_checkout_type.id
+        get :edit, :id => carrier_type_has_checkout_type.id
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -294,11 +294,11 @@ describe CarrierTypeHasCheckoutTypesController do
 
       describe "with valid params" do
         it "updates the requested carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
         end
 
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
           assigns(:carrier_type_has_checkout_type).should eq(@carrier_type_has_checkout_type)
           response.should redirect_to(@carrier_type_has_checkout_type)
         end
@@ -306,7 +306,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       describe "with invalid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
           response.should render_template("edit")
         end
       end
@@ -317,23 +317,23 @@ describe CarrierTypeHasCheckoutTypesController do
 
       describe "with valid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
           response.should be_forbidden
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
           assigns(:carrier_type_has_checkout_type).should eq(@carrier_type_has_checkout_type)
         end
 
         it "should be forbidden" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -344,11 +344,11 @@ describe CarrierTypeHasCheckoutTypesController do
 
       describe "with valid params" do
         it "updates the requested carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
           assigns(:carrier_type_has_checkout_type).should eq(@carrier_type_has_checkout_type)
           response.should be_forbidden
         end
@@ -356,7 +356,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       describe "with invalid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
           response.should be_forbidden
         end
       end
@@ -365,18 +365,18 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
         end
 
         it "should be forbidden" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @attrs
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
-          put :update, id: @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
+          put :update, :id => @carrier_type_has_checkout_type.id, :carrier_type_has_checkout_type => @invalid_attrs
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -392,11 +392,11 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_admin
 
       it "destroys the requested carrier_type_has_checkout_type" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
       end
 
       it "redirects to the carrier_type_has_checkout_types list" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
         response.should redirect_to(carrier_type_has_checkout_types_url)
       end
     end
@@ -405,11 +405,11 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_librarian
 
       it "destroys the requested carrier_type_has_checkout_type" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
       end
 
       it "redirects to the carrier_type_has_checkout_types list" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
         response.should be_forbidden
       end
     end
@@ -418,22 +418,22 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_user
 
       it "destroys the requested carrier_type_has_checkout_type" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "destroys the requested carrier_type_has_checkout_type" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
       end
 
       it "should be forbidden" do
-        delete :destroy, id: @carrier_type_has_checkout_type.id
+        delete :destroy, :id => @carrier_type_has_checkout_type.id
         response.should redirect_to(new_user_session_url)
       end
     end
