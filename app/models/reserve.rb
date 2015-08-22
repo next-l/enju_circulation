@@ -56,7 +56,8 @@ class Reserve < ActiveRecord::Base
   validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, on: :create
-  before_validation :set_item, :set_expired_at
+  before_validation :set_item
+  validate :check_expired_at
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
 
@@ -141,16 +142,11 @@ class Reserve < ActiveRecord::Base
     self.request_status_type = RequestStatusType.where(name: 'In Process').first
   end
 
-  def set_expired_at
-    if user and manifestation
-      if canceled_at.blank?
-        if expired_at.blank?
-          expired_period = manifestation.reservation_expired_period(user)
-          self.expired_at = (expired_period + 1).days.from_now.beginning_of_day
-        elsif !completed?
-          if expired_at.beginning_of_day < Time.zone.now
-            errors[:base] << I18n.t('reserve.invalid_date')
-          end
+  def check_expired_at
+    if canceled_at.blank? and expired_at?
+      if !completed?
+        if expired_at.beginning_of_day < Time.zone.now
+          errors[:base] << I18n.t('reserve.invalid_date')
         end
       end
     end
