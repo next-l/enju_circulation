@@ -353,7 +353,7 @@ describe ReservesController do
         it "redirects to the created reserve" do
           post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_truthy
+          assigns(:reserve).expired_at.should be_nil
         end
       end
 
@@ -379,7 +379,7 @@ describe ReservesController do
 
       it "should create other user's reserve" do
         post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
-        assigns(:reserve).expired_at.should be_truthy
+        assigns(:reserve).expired_at.should be_nil
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
@@ -407,7 +407,7 @@ describe ReservesController do
         it "redirects to the created reserve" do
           post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_truthy
+          assigns(:reserve).expired_at.should be_nil
         end
 
         it "should send accepted messages" do
@@ -434,7 +434,7 @@ describe ReservesController do
       it "should create other user's reserve" do
         post :create, :reserve => {:user_number => users(:user1).profile.user_number, :manifestation_id => 5}
         assigns(:reserve).should be_valid
-        assigns(:reserve).expired_at.should be_truthy
+        assigns(:reserve).expired_at.should be_nil
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
@@ -456,7 +456,7 @@ describe ReservesController do
         it "redirects to the created reserve" do
           post :create, :reserve => @attrs
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be > Time.zone.now
+          assigns(:reserve).expired_at.should be_nil
         end
       end
 
