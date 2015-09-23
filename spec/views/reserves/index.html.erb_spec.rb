@@ -17,4 +17,11 @@ describe "reserves/index" do
     assert_select "tr>td:nth-child(2)", :text => /#{reserves(:reserve_00001).user.username}/
     assert_select "tr>td:nth-child(2)", :text => /#{reserves(:reserve_00002).manifestation.original_title}/
   end
+
+  it "renders a list of reserves when a reserve does not have expired_at" do
+    reserve = FactoryGirl.create(:reserve, :expired_at => nil)
+    assign(:reserves, Reserve.page(2))
+    render
+    rendered.should match /<td/
+  end
 end
