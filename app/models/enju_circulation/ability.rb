@@ -96,18 +96,14 @@ module EnjuCirculation
         can :read, [
           CirculationStatus,
           ManifestationCheckoutStat,
-          ManifestationReserveStat,
-          UserCheckoutStat,
-          UserReserveStat,
+          ManifestationReserveStat
         ]
       else
         can :index, Checkout
         can :read, [
           CirculationStatus,
           ManifestationCheckoutStat,
-          ManifestationReserveStat,
-          UserCheckoutStat,
-          UserReserveStat
+          ManifestationReserveStat
         ]
       end
     end

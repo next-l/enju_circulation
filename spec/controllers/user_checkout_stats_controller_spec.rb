@@ -31,14 +31,16 @@ describe UserCheckoutStatsController do
 
       it "assigns all user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
+        assigns(:user_checkout_stats).should be_empty
+        response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "should not assign user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should eq(UserCheckoutStat.order('id DESC').page(1))
+        assigns(:user_checkout_stats).should be_empty
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -71,6 +73,7 @@ describe UserCheckoutStatsController do
         user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
         get :show, :id => user_checkout_stat.id
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
+        response.should be_forbidden
       end
     end
 
@@ -79,6 +82,7 @@ describe UserCheckoutStatsController do
         user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
         get :show, :id => user_checkout_stat.id
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
