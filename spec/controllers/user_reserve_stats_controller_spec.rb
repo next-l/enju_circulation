@@ -31,14 +31,16 @@ describe UserReserveStatsController do
 
       it "assigns all user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
+        assigns(:user_reserve_stats).should be_nil
+        response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
       it "should not assign user_reserve_stats as @user_reserve_stats" do
         get :index
-        assigns(:user_reserve_stats).should eq(UserReserveStat.order('id DESC').page(1))
+        assigns(:user_reserve_stats).should be_nil
+        response.should redirect_to(new_user_session_url)
       end
     end
   end
@@ -71,6 +73,7 @@ describe UserReserveStatsController do
         user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
         get :show, :id => user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
+        response.should be_forbidden
       end
     end
 
@@ -79,6 +82,7 @@ describe UserReserveStatsController do
         user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
         get :show, :id => user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
+        response.should redirect_to(new_user_session_url)
       end
     end
   end

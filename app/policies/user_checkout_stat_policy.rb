@@ -1,10 +1,10 @@
 class UserCheckoutStatPolicy < ApplicationPolicy
   def index?
-    true
+    user.try(:has_role?, 'Librarian')
   end
 
   def show?
-    true
+    user.try(:has_role?, 'Librarian')
   end
 
   def create?
