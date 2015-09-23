@@ -75,12 +75,12 @@ ja:
         note: 注記
         position: 位置
         user_group_id: 利用者グループ
-        checkout_type_id: 貸出種別
+        checkout_type_id: 貸出区分
         current_checkout_count: 現在の貸出数
       carrier_type_has_checkout_type:
         note: 注記
         position: 位置
-        checkout_type_id: 貸出種別
+        checkout_type_id: 貸出区分
       manifestation_checkout_stat:
         start_date: 開始日
         end_date: 終了日
@@ -117,7 +117,7 @@ ja:
         note: 注記
         position: 位置
       item:
-        checkout_type: 貸出種別
+        checkout_type: 貸出区分
         circulation_status: 貸出状態
       profile:
         checkout_icalendar_token: 貸出iCalendarのトークン
