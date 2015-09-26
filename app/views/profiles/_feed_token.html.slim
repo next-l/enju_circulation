@@ -1,6 +1,6 @@
 - if profile.checkout_icalendar_token?
   = checkouts_url(icalendar_token: profile.checkout_icalendar_token, format: :ics)
-  = hidden_field_tag 'user[checkout_icalendar_token]', profile.checkout_icalendar_token
+  = hidden_field_tag 'profile[checkout_icalendar_token]', profile.checkout_icalendar_token
   br
   - if profile.checkout_icalendar_token?
     |  <input onclick="$.ajax({data:'authenticity_token=' + encodeURIComponent('
