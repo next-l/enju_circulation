@@ -18,11 +18,6 @@ module EnjuCirculation
         use_restriction = UseRestriction.where(name: 'Limited Circulation, Normal Loan Period').first
         item.use_restriction = use_restriction if use_restriction
       end
-
-      def withdraw!
-        circulation_status = CirculationStatus.where(name: 'Removed')
-        item.update_column(:circulation_status_id, circulation_status.id) if circulation_status
-      end
     end
   end
 end
