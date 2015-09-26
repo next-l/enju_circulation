@@ -1,12 +1,12 @@
-- if @user.checkout_icalendar_token?
-  = checkouts_url(icalendar_token: @user.checkout_icalendar_token, format: :ics)
-  = hidden_field_tag 'user[checkout_icalendar_token]', @user.checkout_icalendar_token
+- if profile.checkout_icalendar_token?
+  = checkouts_url(icalendar_token: profile.checkout_icalendar_token, format: :ics)
+  = hidden_field_tag 'user[checkout_icalendar_token]', profile.checkout_icalendar_token
   br
-  - if @user.checkout_icalendar_token?
+  - if profile.checkout_icalendar_token?
     |  <input onclick="$.ajax({data:'authenticity_token=' + encodeURIComponent('
     = form_authenticity_token
     | '), success:function(request){$('#feed_token').html(request);}, type:'get', url:'
-    = edit_my_account_path(@user, disable: true, mode: 'feed_token')
+    = edit_profile_path(profile, disable: true, mode: 'feed_token')
     | '});" type="button" value="
     = t('page.delete')
     | " /> 
@@ -16,7 +16,7 @@
     |  <input onclick="$.ajax({data:'authenticity_token=' + encodeURIComponent('
     = form_authenticity_token
     | '), success:function(request){$('#feed_token').html(request);}, type:'get', url:'
-    = edit_my_account_path(@user, mode: 'feed_token')
+    = edit_profile_path(profile, mode: 'feed_token')
     | '});" type="button" value="
     = t('page.reset')
     | " /> 
