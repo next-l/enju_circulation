@@ -13,7 +13,7 @@ module EnjuCirculation
 
     module InstanceMethods
       def withdraw!
-        circulation_status = CirculationStatus.where(name: 'Removed')
+        circulation_status = CirculationStatus.where(name: 'Removed').first
         item.update_column(:circulation_status_id, circulation_status.id) if circulation_status
       end
     end
