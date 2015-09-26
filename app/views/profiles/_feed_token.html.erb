@@ -1,5 +1,5 @@
-<%- if profile.try(:checkout_icalendar_token?) -%>
-  <%= checkouts_url(icalendar_token: profile.checkout_icalendar_token, format: :ics) -%>
+<%- if profile.respond_to?(:checkout_icalendar_token?) -%>
+  <%= checkouts_url(icalendar_token: profile.checkout_icalendar_token, format: :ics) if profile.checkout_icalendar_token -%>
   <%= hidden_field_tag 'profile[checkout_icalendar_token]', profile.checkout_icalendar_token -%>
 <%- end -%>
 <br />
