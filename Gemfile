@@ -17,6 +17,7 @@ gem "enju_event", github: "next-l/enju_event", branch: "master"
 gem "enju_message", github: "next-l/enju_message", branch: "master"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer", branch: "master"
 gem "codeclimate-test-reporter", group: :test, require: false
+gem "rspec_junit_formatter", group: :test, require: false
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
