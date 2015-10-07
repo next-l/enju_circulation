@@ -99,6 +99,13 @@ describe Reserve do
     reservation.reload
     assert reservation.should be_valid
   end
+
+  it "should be treated as Waiting" do
+    reserve = FactoryGirl.create(:reserve)
+    expect(Reserve.waiting).to include reserve
+    reserve = FactoryGirl.create(:reserve, expired_at: nil)
+    expect(Reserve.waiting).to include reserve
+  end
 end
 
 # == Schema Information
