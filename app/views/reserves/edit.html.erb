@@ -24,7 +24,11 @@
   <% unless @reserve.completed? %>
     <div class="field">
       <%= f.label :item_identifier %><br />
-      <%= f.text_field :item_identifier %>
+      <% if current_user.has_role?('Librarian') %>
+        <%= f.text_field :item_identifier %>
+      <% else %>
+        <%= @reserve.item.try(:item_identifier) %>
+      <% end %>
     </div>
   <% end %>
 
