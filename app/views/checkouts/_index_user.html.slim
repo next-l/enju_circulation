@@ -14,6 +14,8 @@
             = available_checkout_type.checkout_limit
       .panel-body
         = render 'reserved_facet'
+        h4
+          = t('page.other_format')
         ul
           li
             = link_to t('activerecord.models.reserve'), reserves_path(user_id: user.username)

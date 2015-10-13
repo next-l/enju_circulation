@@ -11,6 +11,8 @@
           = link_to t('page.overdue'), checkouts_path(view: 'overdue')
       .panel-body
         = render 'reserved_facet'
+        h4
+          = t('page.other_format')
         ul.list-group
           li.list-group-item
             => link_to 'RSS', checkouts_path(format: :rss)
