@@ -18,11 +18,10 @@ module EnjuCirculation
           Checkin,
           CheckoutStatHasManifestation,
           CheckoutStatHasUser,
-	  Demand,
+          Demand,
           ItemHasUseRestriction,
           ManifestationCheckoutStat,
           ManifestationReserveStat,
-          Reserve,
           ReserveStatHasManifestation,
           ReserveStatHasUser,
           UserCheckoutStat,
@@ -36,6 +35,10 @@ module EnjuCirculation
         can [:read, :create, :update, :remove_all], Checkout
         can [:destroy, :delete], Checkout do |checkout|
           checkout.checkin
+        end
+        can [:read, :create, :update], Reserve
+        can [:destroy, :delete], Reserve do |reserve|
+          true unless reserve.retained?
         end
         can [:read, :update], [
           CirculationStatus,
@@ -54,7 +57,7 @@ module EnjuCirculation
           Basket,
           CheckedItem,
           Checkin,
-	  Demand,
+          Demand,
           ManifestationCheckoutStat,
           ManifestationReserveStat,
           Reserve
