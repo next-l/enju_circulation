@@ -20,7 +20,9 @@
       </li>
     <%- end -%>
     <li><%= link_to t('activerecord.models.reserve'), reserves_path(user_id: user.username) -%></li>
-    <li><%= link_to t('checkout.all_checkout'), checkouts_path -%></li>
+    <% if current_user.has_role?('Librarian') %>
+      <li><%= link_to t('checkout.all_checkout'), checkouts_path -%></li>
+    <% end %>
   </ul>
   <%= render 'reserved_facet' %>
   <h4><%= t('page.other_format') %></h4>
