@@ -17,6 +17,7 @@
     <li><%= link_to t('page.overdue'), checkouts_path(view: 'overdue') -%></li>
   </ul>
   <%= render 'reserved_facet' %>
+  <h4><%= t('page.other_format') %></h4>
   <ul>
     <li>
       <%= link_to 'RSS', checkouts_path(format: :rss) -%>
