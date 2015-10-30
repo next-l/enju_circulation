@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe User do
+  fixtures :all
   it "should get user's checkouts" do
     user = FactoryGirl.create(:user)
     checkout1 = FactoryGirl.create(:checkout, user: user)
