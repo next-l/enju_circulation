@@ -11,7 +11,7 @@ module EnjuCirculation
         #attr_accessible :save_checkout_history, :checkout_icalendar_token,
         #  :as => :admin
 
-        has_many :checkouts, :dependent => :nullify
+        has_many :checkouts, ->{ order('created_at DESC') }, :dependent => :nullify
         has_many :reserves, :dependent => :destroy
         has_many :reserved_manifestations, :through => :reserves, :source => :manifestation
         has_many :checkout_stat_has_users
