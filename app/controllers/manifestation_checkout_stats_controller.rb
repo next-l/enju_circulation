@@ -22,7 +22,7 @@ class ManifestationCheckoutStatsController < ApplicationController
       per_page = CheckoutStatHasManifestation.default_per_page
     end
 
-    @carrier_type_results = Checkout.unscoped.where(
+    @carrier_type_results = Checkout.where(
       Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
     ).where(
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
@@ -32,7 +32,7 @@ class ManifestationCheckoutStatsController < ApplicationController
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
     ).count(:id)
 
-    @checkout_type_results = Checkout.unscoped.where(
+    @checkout_type_results = Checkout.where(
       Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
     ).where(
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
@@ -40,7 +40,7 @@ class ManifestationCheckoutStatsController < ApplicationController
       'checkouts.shelf_id', :checkout_type_id
     ).count(:id)
 
-    @stats = Checkout.unscoped.where(
+    @stats = Checkout.where(
       Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
     ).where(
       Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
