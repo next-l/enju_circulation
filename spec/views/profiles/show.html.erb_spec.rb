@@ -1,15 +1,12 @@
 # -*- encoding: utf-8 -*-
 require 'spec_helper'
 
-describe "checkouts/show" do
-  fixtures :checkouts, :users, :user_has_roles, :roles
+describe "profiles/show" do
+  fixtures :all
 
   before(:each) do
-    @checkout = assign(:checkout, stub_model(Checkout,
-      user_id: 2,
-      item_id: 1
-    ))
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
+    assign(:profile, User.where(username: 'enjuadmin').first.profile)
   end
 
   it "renders attributes in <p>" do
@@ -17,6 +14,6 @@ describe "checkouts/show" do
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match(/返却期限/)
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    rendered.should match(/所蔵情報ID/)
+    assert_select "tr:nth-child(2)>td:nth-child(2)", /00014/
   end
 end
