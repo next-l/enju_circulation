@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe "checkouts/index" do
-  fixtures :users, :roles, :user_has_roles
+  fixtures :all
 
   before(:each) do
     view.extend EnjuLeaf::EnjuLeafHelper
@@ -17,5 +17,7 @@ describe "checkouts/index" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match(/これからの生命科学研究者のためのバイオ特許入門講座/)
+#    expect( rendered ).to have_selector( "div.holding_index tr td:first-child", count: 3, visible: false )
+    assert_select "tr:nth-child(2)>td:nth-child(2)", /00001/
   end
 end
