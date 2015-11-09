@@ -6,6 +6,7 @@ describe "checkouts/edit" do
   before(:each) do
     @checkout = assign(:checkout, checkouts(:checkout_00001))
     assign(:new_due_date, 1.day.from_now)
+    assign(:library_group, LibraryGroup.site_config)
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
   end
 

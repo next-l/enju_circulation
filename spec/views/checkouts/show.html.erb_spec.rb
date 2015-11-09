@@ -9,6 +9,7 @@ describe "checkouts/show" do
       user_id: 2,
       item_id: 1
     ))
+    assign(:library_group, LibraryGroup.site_config)
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
   end
 
