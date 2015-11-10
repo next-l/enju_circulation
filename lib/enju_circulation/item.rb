@@ -32,7 +32,7 @@ module EnjuCirculation
             'circulation_statuses.name' => FOR_CHECKOUT_CIRCULATION_STATUS,
             'use_restrictions.name' => FOR_CHECKOUT_USE_RESTRICTION
           ).where(identifier_conditions)
-	}
+        }
         scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
         has_many :checkouts
         has_many :reserves
