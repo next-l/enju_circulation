@@ -11,6 +11,5 @@ gem "cache_digests"
 gem "foreigner"
 gem "tins", "~> 1.5.4"
 gem "coveralls", :require => false
-gem "enju_leaf", :github => "next-l/enju_leaf", :branch => "1.1"
 
 gemspec :path => "../"
