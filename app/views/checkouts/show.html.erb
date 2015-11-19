@@ -12,7 +12,7 @@
     <strong><%= t('activerecord.attributes.checkout.due_date') -%></strong><br />
     <%= l(@checkout.due_date, format: :only_date) if @checkout.due_date -%>
   </p>
-  <%- if can? :update, @checkout -%>
+  <%- if policy(@checkout).update? -%>
     <p>
       <strong><%= t('checkout.current_user') -%></strong><br />
       <%= link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile) -%>

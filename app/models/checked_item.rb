@@ -12,7 +12,7 @@ class CheckedItem < ActiveRecord::Base
  
   before_validation :set_item
   before_validation :set_due_date, on: :create
-  normalize_attributes :item_identifier
+  strip_attributes only: :item_identifier
 
   #attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string

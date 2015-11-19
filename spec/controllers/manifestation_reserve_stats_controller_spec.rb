@@ -107,7 +107,7 @@ describe ManifestationReserveStatsController do
 
       it "should not assign the requested manifestation_reserve_stat as @manifestation_reserve_stat" do
         get :new
-        assigns(:manifestation_reserve_stat).should_not be_valid
+        assigns(:manifestation_reserve_stat).should be_nil
         response.should be_forbidden
       end
     end
@@ -115,7 +115,7 @@ describe ManifestationReserveStatsController do
     describe "When not logged in" do
       it "should not assign the requested manifestation_reserve_stat as @manifestation_reserve_stat" do
         get :new
-        assigns(:manifestation_reserve_stat).should_not be_valid
+        assigns(:manifestation_reserve_stat).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -229,7 +229,7 @@ describe ManifestationReserveStatsController do
       describe "with valid params" do
         it "assigns a newly created manifestation_reserve_stat as @manifestation_reserve_stat" do
           post :create, :manifestation_reserve_stat => @attrs
-          assigns(:manifestation_reserve_stat).should be_valid
+          assigns(:manifestation_reserve_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -241,7 +241,7 @@ describe ManifestationReserveStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_reserve_stat as @manifestation_reserve_stat" do
           post :create, :manifestation_reserve_stat => @invalid_attrs
-          assigns(:manifestation_reserve_stat).should_not be_valid
+          assigns(:manifestation_reserve_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -255,7 +255,7 @@ describe ManifestationReserveStatsController do
       describe "with valid params" do
         it "assigns a newly created manifestation_reserve_stat as @manifestation_reserve_stat" do
           post :create, :manifestation_reserve_stat => @attrs
-          assigns(:manifestation_reserve_stat).should be_valid
+          assigns(:manifestation_reserve_stat).should be_nil
         end
 
         it "should be forbidden" do
@@ -267,7 +267,7 @@ describe ManifestationReserveStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved manifestation_reserve_stat as @manifestation_reserve_stat" do
           post :create, :manifestation_reserve_stat => @invalid_attrs
-          assigns(:manifestation_reserve_stat).should_not be_valid
+          assigns(:manifestation_reserve_stat).should be_nil
         end
 
         it "should be forbidden" do

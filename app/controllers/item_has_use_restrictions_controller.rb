@@ -1,6 +1,7 @@
 class ItemHasUseRestrictionsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_item
+  before_action :set_item_has_use_restriction, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :get_item
 
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
@@ -29,6 +30,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   # GET /item_has_use_restrictions/new
   # GET /item_has_use_restrictions/new.json
   def new
+    @item_has_use_restriction = ItemHasUseRestriction.new
     @use_restrictions = UseRestriction.all
 
     respond_to do |format|
@@ -87,6 +89,15 @@ class ItemHasUseRestrictionsController < ApplicationController
   end
 
   private
+  def set_item_has_use_restriction
+    @item_has_use_restriction = ItemHasUseRestriction.find(params[:id])
+    authorize @item_has_use_restriction
+  end
+
+  def check_policy
+    authorize ItemHasUseRestriction
+  end
+
   def item_has_use_restriction_params
     params.require(:item_has_use_restriction).permit(
       :item_id, :use_restriction_id, :use_restriction

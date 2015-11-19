@@ -37,14 +37,14 @@ describe LendingPoliciesController do
 
       it "assigns empty as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_empty
+        assigns(:lending_policies).should be_nil
       end
     end
 
     describe "When not logged in" do
       it "assigns empty lending_policies as @lending_policies" do
         get :index
-        assigns(:lending_policies).should be_empty
+        assigns(:lending_policies).should be_nil
       end
     end
   end
@@ -99,7 +99,7 @@ describe LendingPoliciesController do
 
       it "assigns the requested lending_policy as @lending_policy" do
         get :new
-        assigns(:lending_policy).should_not be_valid
+        assigns(:lending_policy).should be_nil
         response.should be_forbidden
       end
     end
@@ -109,7 +109,7 @@ describe LendingPoliciesController do
 
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
-        assigns(:lending_policy).should_not be_valid
+        assigns(:lending_policy).should be_nil
         response.should be_forbidden
       end
     end
@@ -119,7 +119,7 @@ describe LendingPoliciesController do
 
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
-        assigns(:lending_policy).should_not be_valid
+        assigns(:lending_policy).should be_nil
         response.should be_forbidden
       end
     end
@@ -127,7 +127,7 @@ describe LendingPoliciesController do
     describe "When not logged in" do
       it "should not assign the requested lending_policy as @lending_policy" do
         get :new
-        assigns(:lending_policy).should_not be_valid
+        assigns(:lending_policy).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -185,7 +185,7 @@ describe LendingPoliciesController do
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
           post :create, :lending_policy => @attrs
-          assigns(:lending_policy).should be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -197,7 +197,7 @@ describe LendingPoliciesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved lending_policy as @lending_policy" do
           post :create, :lending_policy => @invalid_attrs
-          assigns(:lending_policy).should_not be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -213,7 +213,7 @@ describe LendingPoliciesController do
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
           post :create, :lending_policy => @attrs
-          assigns(:lending_policy).should be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -225,7 +225,7 @@ describe LendingPoliciesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved lending_policy as @lending_policy" do
           post :create, :lending_policy => @invalid_attrs
-          assigns(:lending_policy).should_not be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -241,7 +241,7 @@ describe LendingPoliciesController do
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
           post :create, :lending_policy => @attrs
-          assigns(:lending_policy).should be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -253,7 +253,7 @@ describe LendingPoliciesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved lending_policy as @lending_policy" do
           post :create, :lending_policy => @invalid_attrs
-          assigns(:lending_policy).should_not be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -267,7 +267,7 @@ describe LendingPoliciesController do
       describe "with valid params" do
         it "assigns a newly created lending_policy as @lending_policy" do
           post :create, :lending_policy => @attrs
-          assigns(:lending_policy).should be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do
@@ -279,7 +279,7 @@ describe LendingPoliciesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved lending_policy as @lending_policy" do
           post :create, :lending_policy => @invalid_attrs
-          assigns(:lending_policy).should_not be_valid
+          assigns(:lending_policy).should be_nil
         end
 
         it "should be forbidden" do

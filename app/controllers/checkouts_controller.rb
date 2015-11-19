@@ -1,10 +1,10 @@
 class CheckoutsController < ApplicationController
-  before_filter :store_location, only: :index
-  load_and_authorize_resource except: [:index, :remove_all]
-  authorize_resource only: [:index, :remove_all]
-  before_filter :get_user, only: [:index, :remove_all]
-  before_filter :get_item, only: :index
-  after_filter :convert_charset, only: :index
+  before_action :set_checkout, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create, :remove_all]
+  before_action :store_location, only: :index
+  before_action :get_user, only: [:index, :remove_all]
+  before_action :get_item, only: :index
+  after_action :convert_charset, only: :index
 
   # GET /checkouts
   # GET /checkouts.json
@@ -181,6 +181,15 @@ class CheckoutsController < ApplicationController
   end
 
   private
+  def set_checkout
+    @checkout = Checkout.find(params[:id])
+    authorize @checkout
+  end
+
+  def check_policy
+    authorize Checkout
+  end
+
   def checkout_params
     params.fetch(:checkout, {}).permit(:due_date)
   end

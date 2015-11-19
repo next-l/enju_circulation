@@ -1,12 +1,13 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_checkout_type
-  before_filter :prepare_options, only: [:new, :edit]
+  before_action :set_carrier_type_has_checkout_type, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :get_checkout_type
+  before_action :prepare_options, only: [:new, :edit]
 
   # GET /carrier_type_has_checkout_types
   # GET /carrier_type_has_checkout_types.json
   def index
-    @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.all
+    @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -86,6 +87,15 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
+  def set_carrier_type_has_checkout_type
+    @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.find(params[:id])
+    authorize @carrier_type_has_checkout_type
+  end
+
+  def check_policy
+    authorize CarrierTypeHasCheckoutType
+  end
+
   def carrier_type_has_checkout_type_params
     params.require(:carrier_type_has_checkout_type).permit(
       :carrier_type_id, :checkout_type_id, :note
