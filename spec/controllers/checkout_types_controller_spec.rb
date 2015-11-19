@@ -31,7 +31,7 @@ describe CheckoutTypesController do
 
       it "assigns all checkout_types as @checkout_types" do
         get :index
-        assigns(:checkout_types).should be_empty
+        assigns(:checkout_types).should be_nil
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe CheckoutTypesController do
     describe "When not logged in" do
       it "assigns all checkout_types as @checkout_types" do
         get :index
-        assigns(:checkout_types).should be_empty
+        assigns(:checkout_types).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -101,7 +101,7 @@ describe CheckoutTypesController do
 
       it "should not assign the requested checkout_type as @checkout_type" do
         get :new
-        assigns(:checkout_type).should_not be_valid
+        assigns(:checkout_type).should be_nil
         response.should be_forbidden
       end
     end
@@ -111,7 +111,7 @@ describe CheckoutTypesController do
 
       it "should not assign the requested checkout_type as @checkout_type" do
         get :new
-        assigns(:checkout_type).should_not be_valid
+        assigns(:checkout_type).should be_nil
         response.should be_forbidden
       end
     end
@@ -119,7 +119,7 @@ describe CheckoutTypesController do
     describe "When not logged in" do
       it "should not assign the requested checkout_type as @checkout_type" do
         get :new
-        assigns(:checkout_type).should_not be_valid
+        assigns(:checkout_type).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -205,7 +205,7 @@ describe CheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created checkout_type as @checkout_type" do
           post :create, :checkout_type => @attrs
-          assigns(:checkout_type).should be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do
@@ -217,7 +217,7 @@ describe CheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved checkout_type as @checkout_type" do
           post :create, :checkout_type => @invalid_attrs
-          assigns(:checkout_type).should_not be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe CheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created checkout_type as @checkout_type" do
           post :create, :checkout_type => @attrs
-          assigns(:checkout_type).should be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do
@@ -245,7 +245,7 @@ describe CheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved checkout_type as @checkout_type" do
           post :create, :checkout_type => @invalid_attrs
-          assigns(:checkout_type).should_not be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe CheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created checkout_type as @checkout_type" do
           post :create, :checkout_type => @attrs
-          assigns(:checkout_type).should be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do
@@ -271,7 +271,7 @@ describe CheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved checkout_type as @checkout_type" do
           post :create, :checkout_type => @invalid_attrs
-          assigns(:checkout_type).should_not be_valid
+          assigns(:checkout_type).should be_nil
         end
 
         it "should be forbidden" do

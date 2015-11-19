@@ -1,14 +1,13 @@
-# -*- encoding: utf-8 -*-
 class ReservesController < ApplicationController
-  before_filter :store_location, only: [:index, :new]
-  load_and_authorize_resource except: :index
-  authorize_resource only: :index
-  before_filter :prepare_options, only: [:new, :edit]
-  before_filter :get_user, only: [:index, :new]
-  before_filter :store_page
+  before_action :store_location, only: [:index, :new]
+  before_action :set_reserve, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :prepare_options, only: [:new, :edit]
+  before_action :get_user, only: [:index, :new]
+  before_action :store_page
+  after_action :convert_charset, only: :index
   helper_method :get_manifestation
   helper_method :get_item
-  after_filter :convert_charset, only: :index
 
   # GET /reserves
   # GET /reserves.json
@@ -136,8 +135,9 @@ class ReservesController < ApplicationController
       @reserve.user_number = current_user.profile.user_number
     end
 
-    get_manifestation
+    @manifestation = Manifestation.where(id: params[:manifestation_id]).first
     if @manifestation
+      authorize @manifestation, :show?
       @reserve.manifestation = @manifestation
       if @reserve.user
         #@reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
@@ -250,6 +250,15 @@ class ReservesController < ApplicationController
   end
 
   private
+  def set_reserve
+    @reserve = Reserve.find(params[:id])
+    authorize @reserve
+  end
+
+  def check_policy
+    authorize Reserve
+  end
+
   def reserve_params
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(

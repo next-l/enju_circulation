@@ -1,6 +1,7 @@
 class CheckoutTypesController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_user_group
+  before_action :set_checkout_type, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :get_user_group
 
   # GET /checkout_types
   # GET /checkout_types.json
@@ -103,6 +104,15 @@ class CheckoutTypesController < ApplicationController
   end
 
   private
+  def set_checkout_type
+    @checkout_type = CheckoutType.find(params[:id])
+    authorize @checkout_type
+  end
+
+  def check_policy
+    authorize CheckoutType
+  end
+
   def checkout_type_params
     params.require(:checkout_type).permit(:name, :display_name, :note)
   end

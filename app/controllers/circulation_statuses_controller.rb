@@ -1,5 +1,6 @@
 class CirculationStatusesController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_circulation_status, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
 
   # GET /circulation_statuses
   # GET /circulation_statuses.json
@@ -83,6 +84,15 @@ class CirculationStatusesController < ApplicationController
   end
 
   private
+  def set_circulation_status
+    @circulation_status = CirculationStatus.find(params[:id])
+    authorize @circulation_status
+  end
+
+  def check_policy
+    authorize CirculationStatus
+  end
+
   def circulation_status_params
     params.require(:circulation_status).permit(:name, :display_name, :note)
   end

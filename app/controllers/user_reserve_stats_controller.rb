@@ -1,6 +1,7 @@
 class UserReserveStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, only: :show
+  before_action :set_user_reserve_stat, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  after_action :convert_charset, only: :show
 
   # GET /user_reserve_stats
   # GET /user_reserve_stats.json
@@ -92,6 +93,15 @@ class UserReserveStatsController < ApplicationController
   end
 
   private
+  def set_user_reserve_stat
+    @user_reserve_stat = UserReserveStat.find(params[:id])
+    authorize @user_reserve_stat
+  end
+
+  def check_policy
+    authorize UserReserveStat
+  end
+
   def user_reserve_stat_params
     params.require(:user_reserve_stat).permit(
       :start_date, :end_date, :note, :mode
