@@ -37,7 +37,7 @@ describe ItemHasUseRestrictionsController do
 
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should be_nil
+        assigns(:item_has_use_restrictions).should be_empty
         response.should be_forbidden
       end
     end
@@ -45,7 +45,7 @@ describe ItemHasUseRestrictionsController do
     describe "When not logged in" do
       it "assigns all item_has_use_restrictions as @item_has_use_restrictions" do
         get :index
-        assigns(:item_has_use_restrictions).should be_nil
+        assigns(:item_has_use_restrictions).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -107,7 +107,7 @@ describe ItemHasUseRestrictionsController do
 
       it "should not assign the requested item_has_use_restriction as @item_has_use_restriction" do
         get :new
-        assigns(:item_has_use_restriction).should be_nil
+        assigns(:item_has_use_restriction).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -117,7 +117,7 @@ describe ItemHasUseRestrictionsController do
 
       it "should not assign the requested item_has_use_restriction as @item_has_use_restriction" do
         get :new
-        assigns(:item_has_use_restriction).should be_nil
+        assigns(:item_has_use_restriction).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -125,7 +125,7 @@ describe ItemHasUseRestrictionsController do
     describe "When not logged in" do
       it "should not assign the requested item_has_use_restriction as @item_has_use_restriction" do
         get :new
-        assigns(:item_has_use_restriction).should be_nil
+        assigns(:item_has_use_restriction).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -211,7 +211,7 @@ describe ItemHasUseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -223,7 +223,7 @@ describe ItemHasUseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @invalid_attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -239,7 +239,7 @@ describe ItemHasUseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -251,7 +251,7 @@ describe ItemHasUseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @invalid_attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -265,7 +265,7 @@ describe ItemHasUseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -277,7 +277,7 @@ describe ItemHasUseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved item_has_use_restriction as @item_has_use_restriction" do
           post :create, :item_has_use_restriction => @invalid_attrs
-          assigns(:item_has_use_restriction).should be_nil
+          assigns(:item_has_use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do

@@ -10,10 +10,9 @@ describe "profiles/show" do
   end
 
   it "renders attributes in <p>" do
-    allow(view).to receive(:policy).and_return double(update?: true, destroy?: true)
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    rendered.should match(/Due date/)
+    rendered.should match(/返却期限/)
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr:nth-child(2)>td:nth-child(2)", /00014/
   end

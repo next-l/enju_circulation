@@ -1,6 +1,5 @@
 class DemandsController < ApplicationController
-  before_action :set_demand, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
+  load_and_authorize_resource
 
   # GET /demands
   # GET /demands.json
@@ -80,15 +79,6 @@ class DemandsController < ApplicationController
   end
 
   private
-  def set_demand
-    @demand = Demand.find(params[:id])
-    authorize @demand
-  end
-
-  def check_policy
-    authorize Demand
-  end
-
   def demand_params
     params.fetch(:demand, {}).permit()
   end

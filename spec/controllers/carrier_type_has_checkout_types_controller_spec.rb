@@ -13,7 +13,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should eq(CarrierTypeHasCheckoutType.page(1))
+        assigns(:carrier_type_has_checkout_types).should eq(CarrierTypeHasCheckoutType.all)
       end
     end
 
@@ -22,7 +22,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should eq(CarrierTypeHasCheckoutType.page(1))
+        assigns(:carrier_type_has_checkout_types).should eq(CarrierTypeHasCheckoutType.all)
       end
     end
 
@@ -31,7 +31,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should be_nil
+        assigns(:carrier_type_has_checkout_types).should be_empty
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When not logged in" do
       it "assigns all carrier_type_has_checkout_types as @carrier_type_has_checkout_types" do
         get :index
-        assigns(:carrier_type_has_checkout_types).should be_nil
+        assigns(:carrier_type_has_checkout_types).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -101,7 +101,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
-        assigns(:carrier_type_has_checkout_type).should be_nil
+        assigns(:carrier_type_has_checkout_type).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -111,7 +111,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
-        assigns(:carrier_type_has_checkout_type).should be_nil
+        assigns(:carrier_type_has_checkout_type).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -119,7 +119,7 @@ describe CarrierTypeHasCheckoutTypesController do
     describe "When not logged in" do
       it "should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
         get :new
-        assigns(:carrier_type_has_checkout_type).should be_nil
+        assigns(:carrier_type_has_checkout_type).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -205,7 +205,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -217,7 +217,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @invalid_attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -233,7 +233,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -245,7 +245,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @invalid_attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -271,7 +271,7 @@ describe CarrierTypeHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved carrier_type_has_checkout_type as @carrier_type_has_checkout_type" do
           post :create, :carrier_type_has_checkout_type => @invalid_attrs
-          assigns(:carrier_type_has_checkout_type).should be_nil
+          assigns(:carrier_type_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do

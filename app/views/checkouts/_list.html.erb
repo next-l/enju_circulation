@@ -34,12 +34,12 @@
       <% end %>
     </td>
     <td>
-      <%- if policy(checkout).update? -%>
+      <%- if can? :update, checkout -%>
         <% unless checkout.checkin %>
           <%= link_to t('checkout.extend'), edit_checkout_path(checkout) -%>
         <% end %>
       <%- end -%>
-      <%- if policy(checkout).destroy? -%>
+      <%- if can? :delete, checkout -%>
         <%= link_to t('page.destroy'), checkout, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <%- end -%>
     </td>

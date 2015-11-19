@@ -1,7 +1,6 @@
 class ManifestationCheckoutStatsController < ApplicationController
-  before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
-  after_action :convert_charset, only: :show
+  load_and_authorize_resource
+  after_filter :convert_charset, only: :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json
@@ -123,15 +122,6 @@ class ManifestationCheckoutStatsController < ApplicationController
   end
 
   private
-  def set_manifestation_checkout_stat
-    @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
-    authorize @manifestation_checkout_stat
-  end
-
-  def check_policy
-    authorize ManifestationCheckoutStat
-  end
-
   def manifestation_checkout_stat_params
     params.require(:manifestation_checkout_stat).permit(
       :start_date, :end_date, :note, :mode

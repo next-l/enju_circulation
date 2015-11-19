@@ -27,7 +27,7 @@ describe UserGroupHasCheckoutTypesController do
 
       it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
         get :index
-        assigns(:user_group_has_checkout_types).should be_nil
+        assigns(:user_group_has_checkout_types).should be_empty
         response.should be_forbidden
       end
     end
@@ -35,7 +35,7 @@ describe UserGroupHasCheckoutTypesController do
     describe "When not logged in" do
       it "assigns all user_group_has_checkout_types as @user_group_has_checkout_types" do
         get :index
-        assigns(:user_group_has_checkout_types).should be_nil
+        assigns(:user_group_has_checkout_types).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -97,7 +97,7 @@ describe UserGroupHasCheckoutTypesController do
 
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
-        assigns(:user_group_has_checkout_type).should be_nil
+        assigns(:user_group_has_checkout_type).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -107,7 +107,7 @@ describe UserGroupHasCheckoutTypesController do
 
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
-        assigns(:user_group_has_checkout_type).should be_nil
+        assigns(:user_group_has_checkout_type).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -115,7 +115,7 @@ describe UserGroupHasCheckoutTypesController do
     describe "When not logged in" do
       it "should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type" do
         get :new
-        assigns(:user_group_has_checkout_type).should be_nil
+        assigns(:user_group_has_checkout_type).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -201,7 +201,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -213,7 +213,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @invalid_attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -229,7 +229,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -241,7 +241,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @invalid_attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -255,7 +255,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with valid params" do
         it "assigns a newly created user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should be_valid
         end
 
         it "should be forbidden" do
@@ -267,7 +267,7 @@ describe UserGroupHasCheckoutTypesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved user_group_has_checkout_type as @user_group_has_checkout_type" do
           post :create, :user_group_has_checkout_type => @invalid_attrs
-          assigns(:user_group_has_checkout_type).should be_nil
+          assigns(:user_group_has_checkout_type).should_not be_valid
         end
 
         it "should be forbidden" do

@@ -37,7 +37,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :index
-        assigns(:use_restrictions).should be_nil
+        assigns(:use_restrictions).should be_empty
         response.should be_forbidden
       end
     end
@@ -45,7 +45,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "assigns all use_restrictions as @use_restrictions" do
         get :index
-        assigns(:use_restrictions).should be_nil
+        assigns(:use_restrictions).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -97,7 +97,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :new
-        assigns(:use_restriction).should be_nil
+        assigns(:use_restriction).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -107,7 +107,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :new
-        assigns(:use_restriction).should be_nil
+        assigns(:use_restriction).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -117,7 +117,7 @@ describe UseRestrictionsController do
 
       it "should be forbidden" do
         get :new
-        assigns(:use_restriction).should be_nil
+        assigns(:use_restriction).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -125,7 +125,7 @@ describe UseRestrictionsController do
     describe "When not logged in" do
       it "should be redirected" do
         get :new
-        assigns(:use_restriction).should be_nil
+        assigns(:use_restriction).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -183,7 +183,7 @@ describe UseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
           post :create, :use_restriction => @attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should be_valid
         end
 
         it "redirects to the created patron" do
@@ -195,7 +195,7 @@ describe UseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
           post :create, :use_restriction => @invalid_attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should_not be_valid
         end
 
         it "should be successful" do
@@ -211,7 +211,7 @@ describe UseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
           post :create, :use_restriction => @attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -223,7 +223,7 @@ describe UseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
           post :create, :use_restriction => @invalid_attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -239,7 +239,7 @@ describe UseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
           post :create, :use_restriction => @attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -251,7 +251,7 @@ describe UseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
           post :create, :use_restriction => @invalid_attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -265,7 +265,7 @@ describe UseRestrictionsController do
       describe "with valid params" do
         it "assigns a newly created use_restriction as @use_restriction" do
           post :create, :use_restriction => @attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should be_valid
         end
 
         it "should be forbidden" do
@@ -277,7 +277,7 @@ describe UseRestrictionsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved use_restriction as @use_restriction" do
           post :create, :use_restriction => @invalid_attrs
-          assigns(:use_restriction).should be_nil
+          assigns(:use_restriction).should_not be_valid
         end
 
         it "should be forbidden" do

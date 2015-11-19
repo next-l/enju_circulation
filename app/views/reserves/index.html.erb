@@ -35,7 +35,7 @@
     <th style="width: 30px">Id</th>
     <th><%= t('activerecord.models.manifestation') -%></th>
     <th style="width: 80px"><%= t('activerecord.attributes.reserve.state') -%></th>
-    <%- if policy(@reserves.first).update? -%>
+    <%- if can? :update, @reserves.first -%>
       <th style="width: 70px"></th>
     <% end %>
   </tr>
@@ -60,7 +60,7 @@
         (<%= link_to reserve.item.item_identifier, reserve.item %>)
       <% end %>
     </td>
-    <%- if policy(reserve).destroy? -%>
+    <%- if can? :delete, reserve -%>
       <td>
         <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>

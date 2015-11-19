@@ -269,7 +269,7 @@ describe ReservesController do
     describe "When not logged in" do
       it "should not assign the requested reserve as @reserve" do
         get :new
-        assigns(:reserve).should be_nil
+        assigns(:reserve).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -485,7 +485,7 @@ describe ReservesController do
       describe "with valid params" do
         it "assigns a newly created reserve as @reserve" do
           post :create, :reserve => @attrs
-          assigns(:reserve).should be_nil
+          assigns(:reserve).should_not be_valid
         end
 
         it "redirects to the login page" do
@@ -497,12 +497,12 @@ describe ReservesController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved reserve as @reserve" do
           post :create, :reserve => @invalid_attrs
-          assigns(:reserve).should be_nil
+          assigns(:reserve).should_not be_valid
         end
 
         it "redirects to the login page" do
           post :create, :reserve => @invalid_attrs
-          assigns(:reserve).should be_nil
+          assigns(:reserve).expired_at.should be_nil
           response.should redirect_to new_user_session_url
         end
       end

@@ -14,7 +14,6 @@ describe "checkouts/index" do
   end
 
   it "renders a list of checkouts" do
-    allow(view).to receive(:policy).and_return double(update?: true, destroy?: true)
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr:nth-child(2)>td:nth-child(2)", /00001/

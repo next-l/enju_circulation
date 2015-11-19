@@ -1,6 +1,5 @@
 class UseRestrictionsController < ApplicationController
-  before_action :set_use_restriction, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
+  load_and_authorize_resource
 
   # GET /use_restrictions
   # GET /use_restrictions.json
@@ -84,15 +83,6 @@ class UseRestrictionsController < ApplicationController
   end
 
   private
-  def set_use_restriction
-    @use_restriction = UseRestriction.find(params[:id])
-    authorize @use_restriction
-  end
-
-  def check_policy
-    authorize UseRestriction
-  end
-
   def use_restriction_params
     params.require(:use_restriction).permit(:name, :display_name, :note)
   end

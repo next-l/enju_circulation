@@ -43,7 +43,7 @@ describe CheckedItemsController do
 
       it "assigns empty as @checked_items" do
         get :index
-        assigns(:checked_items).should be_nil
+        assigns(:checked_items).should be_empty
         response.should be_forbidden
       end
 
@@ -56,13 +56,13 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "assigns empty as @checked_items" do
         get :index
-        assigns(:checked_items).should be_nil
+        assigns(:checked_items).should be_empty
         response.should redirect_to(new_user_session_url)
       end
 
       it "should not get index with basket_id and item_id" do
         get :index, :basket_id => 1, :item_id => 1
-        assigns(:checked_items).should be_nil
+        assigns(:checked_items).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -140,7 +140,7 @@ describe CheckedItemsController do
 
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should be_nil
+        assigns(:checked_item).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -148,7 +148,7 @@ describe CheckedItemsController do
     describe "When not logged in" do
       it "should not assign the requested checked_item as @checked_item" do
         get :new, :basket_id => 3
-        assigns(:checked_item).should be_nil
+        assigns(:checked_item).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end

@@ -31,7 +31,7 @@ describe UserCheckoutStatsController do
 
       it "assigns all user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should be_nil
+        assigns(:user_checkout_stats).should be_empty
         response.should be_forbidden
       end
     end
@@ -39,7 +39,7 @@ describe UserCheckoutStatsController do
     describe "When not logged in" do
       it "should not assign user_checkout_stats as @user_checkout_stats" do
         get :index
-        assigns(:user_checkout_stats).should be_nil
+        assigns(:user_checkout_stats).should be_empty
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -111,7 +111,7 @@ describe UserCheckoutStatsController do
 
       it "should not assign the requested user_checkout_stat as @user_checkout_stat" do
         get :new
-        assigns(:user_checkout_stat).should be_nil
+        assigns(:user_checkout_stat).should_not be_valid
         response.should be_forbidden
       end
     end
@@ -119,7 +119,7 @@ describe UserCheckoutStatsController do
     describe "When not logged in" do
       it "should not assign the requested user_checkout_stat as @user_checkout_stat" do
         get :new
-        assigns(:user_checkout_stat).should be_nil
+        assigns(:user_checkout_stat).should_not be_valid
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -233,7 +233,7 @@ describe UserCheckoutStatsController do
       describe "with valid params" do
         it "assigns a newly created user_checkout_stat as @user_checkout_stat" do
           post :create, :user_checkout_stat => @attrs
-          assigns(:user_checkout_stat).should be_nil
+          assigns(:user_checkout_stat).should be_valid
         end
 
         it "should be forbidden" do
@@ -245,7 +245,7 @@ describe UserCheckoutStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved user_checkout_stat as @user_checkout_stat" do
           post :create, :user_checkout_stat => @invalid_attrs
-          assigns(:user_checkout_stat).should be_nil
+          assigns(:user_checkout_stat).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -259,7 +259,7 @@ describe UserCheckoutStatsController do
       describe "with valid params" do
         it "assigns a newly created user_checkout_stat as @user_checkout_stat" do
           post :create, :user_checkout_stat => @attrs
-          assigns(:user_checkout_stat).should be_nil
+          assigns(:user_checkout_stat).should be_valid
         end
 
         it "should be forbidden" do
@@ -271,7 +271,7 @@ describe UserCheckoutStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved user_checkout_stat as @user_checkout_stat" do
           post :create, :user_checkout_stat => @invalid_attrs
-          assigns(:user_checkout_stat).should be_nil
+          assigns(:user_checkout_stat).should_not be_valid
         end
 
         it "should be forbidden" do

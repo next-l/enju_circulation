@@ -1,7 +1,6 @@
 class CheckedItemsController < ApplicationController
-  before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_basket, only: [:index, :new, :create, :update]
+  load_and_authorize_resource
+  before_filter :get_basket, only: [:index, :new, :create, :update]
 
   # GET /checked_items
   # GET /checked_items.json
@@ -55,7 +54,6 @@ class CheckedItemsController < ApplicationController
     unless @basket
       access_denied; return
     end
-    @checked_item = CheckedItem.new(checked_item_params)
     @checked_item.basket = @basket
     @checked_item.librarian = current_user
 
@@ -111,15 +109,6 @@ class CheckedItemsController < ApplicationController
   end
 
   private
-  def set_checked_item
-    @checked_item = CheckedItem.find(params[:id])
-    authorize @checked_item
-  end
-
-  def check_policy
-    authorize CheckedItem
-  end
-
   def checked_item_params
     params.fetch(:checked_item, {}).permit(
       :item_identifier, :ignore_restriction, :due_date_string

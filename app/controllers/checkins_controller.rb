@@ -1,7 +1,7 @@
 class CheckinsController < ApplicationController
-  before_action :set_checkin, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_basket, only: [:index, :create]
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :get_basket, only: [:index, :create]
 
   # GET /checkins
   # GET /checkins.json
@@ -61,7 +61,6 @@ class CheckinsController < ApplicationController
     unless @basket
       access_denied; return
     end
-    @checkin = Checkin.new(checkin_params)
     @checkin.basket = @basket
     @checkin.librarian = current_user
 
@@ -118,15 +117,6 @@ class CheckinsController < ApplicationController
   end
 
   private
-  def set_checkin
-    @checkin = Checkin.find(params[:id])
-    authorize @checkin
-  end
-
-  def check_policy
-    authorize Checkin
-  end
-
   def checkin_params
     params.require(:checkin).permit(:item_identifier)
   end

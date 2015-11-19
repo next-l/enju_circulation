@@ -1,7 +1,6 @@
 class UserCheckoutStatsController < ApplicationController
-  before_action :set_user_checkout_stat, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
-  after_action :convert_charset, only: :show
+  load_and_authorize_resource
+  after_filter :convert_charset, only: :show
 
   # GET /user_checkout_stats
   # GET /user_checkout_stats.json
@@ -93,15 +92,6 @@ class UserCheckoutStatsController < ApplicationController
   end
 
   private
-  def set_user_checkout_stat
-    @user_checkout_stat = UserCheckoutStat.find(params[:id])
-    authorize @user_checkout_stat
-  end
-
-  def check_policy
-    authorize UserCheckoutStat
-  end
-
   def user_checkout_stat_params
     params.require(:user_checkout_stat).permit(
       :start_date, :end_date, :note, :mode
