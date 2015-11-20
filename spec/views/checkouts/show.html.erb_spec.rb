@@ -1,8 +1,7 @@
-# -*- encoding: utf-8 -*-
 require 'spec_helper'
 
 describe "checkouts/show" do
-  fixtures :checkouts, :users, :user_has_roles, :roles
+  fixtures :checkouts, :users, :user_has_roles, :roles, :profiles
 
   before(:each) do
     @checkout = assign(:checkout, stub_model(Checkout,
@@ -10,6 +9,7 @@ describe "checkouts/show" do
       item_id: 1
     ))
     assign(:library_group, LibraryGroup.site_config)
+    I18n.locale = :en
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
   end
 
