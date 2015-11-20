@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pg"
   s.add_development_dependency "rspec-rails", "~> 3.4"
   s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "sunspot_solr", "~> 2.2"
+  s.add_development_dependency "sunspot_solr", "~> 2.2.1"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "sunspot-rails-tester"
   s.add_development_dependency "annotate"
