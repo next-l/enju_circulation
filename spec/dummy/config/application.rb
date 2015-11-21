@@ -5,7 +5,6 @@ require 'rails/all'
 Bundler.require
 require 'enju_leaf'
 require 'enju_circulation'
-require 'resque/server'
 
 module Dummy
   class Application < Rails::Application
