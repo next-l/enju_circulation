@@ -1,5 +1,5 @@
 = EnjuCirculation
-{<img src="https://secure.travis-ci.org/next-l/enju_circulation.png?branch=1.2" alt="Build Status" />}[http://travis-ci.org/next-l/enju_circulation]
+{<img src="https://secure.travis-ci.org/next-l/enju_circulation.svg?branch=1.2" alt="Build Status" />}[http://travis-ci.org/next-l/enju_circulation]
 {<img src="https://coveralls.io/repos/next-l/enju_circulation/badge.svg?branch=1.2&service=github" alt="Coverage Status" />}[https://coveralls.io/github/next-l/enju_circulation?branch=1.2]
 {<img src="https://hakiri.io/github/next-l/enju_circulation/1.2.svg" alt="security" />}[https://hakiri.io/github/next-l/enju_circulation/1.2]
 
