@@ -82,8 +82,6 @@ class ManifestationCheckoutStatsController < ApplicationController
 
     respond_to do |format|
       if @manifestation_checkout_stat.save
-        @manifestation_checkout_stat.transition_to(:started)
-        @manifestation_checkout_stat.transition_to!(:completed)
         ManifestationCheckoutStatJob.perform_later(@manifestation_checkout_stat)
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render json: @manifestation_checkout_stat, status: :created, location: @manifestation_checkout_stat }
