@@ -13,7 +13,7 @@ describe ManifestationCheckoutStat do
   end
 
   it "should calculate in background" do
-    ManifestationCheckoutStatQueue.perform(manifestation_checkout_stats(:one).id).should be_truthy
+    ManifestationCheckoutStatJob.perform_later(manifestation_checkout_stats(:one)).should be_truthy
   end
 end
 

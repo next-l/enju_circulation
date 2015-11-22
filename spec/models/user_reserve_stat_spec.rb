@@ -12,7 +12,7 @@ describe UserReserveStat do
   end
 
   it "should calculate in background" do
-    UserReserveStatQueue.perform(user_reserve_stats(:one).id).should be_truthy
+    UserReserveStatJob.perform_later(user_reserve_stats(:one)).should be_truthy
   end
 end
 
