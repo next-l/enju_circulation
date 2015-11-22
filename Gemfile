@@ -12,6 +12,7 @@ gemspec
 gem 'enju_leaf', github: 'next-l/enju_leaf', branch: '1.2'
 gem 'enju_biblio', github: 'next-l/enju_biblio', branch: '1.2'
 gem 'enju_event', github: 'next-l/enju_event', branch: '1.2'
+gem 'enju_message', github: 'next-l/enju_message', branch: '1.2'
 
 # To use debugger
 # gem 'debugger'
