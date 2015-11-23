@@ -4,9 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, #:registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-
   include EnjuLeaf::EnjuUser
   include EnjuMessage::EnjuUser
-  enju_circulation_user_model
+  include EnjuCirculation::EnjuUser
 end
