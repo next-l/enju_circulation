@@ -4,8 +4,6 @@ describe "checkout_types/index" do
   fixtures :users, :roles, :user_has_roles
 
   before(:each) do
-    view.extend EnjuLeaf::EnjuLeafHelper
-
     assign(:checkout_types, Kaminari::paginate_array([
       stub_model(CheckoutType,
         :name => "book",

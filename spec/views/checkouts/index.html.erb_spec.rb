@@ -4,9 +4,6 @@ describe "checkouts/index" do
   fixtures :users, :roles, :user_has_roles
 
   before(:each) do
-    view.extend EnjuLeaf::EnjuLeafHelper
-    view.extend EnjuBiblio::BiblioHelper
-
     assign(:checkouts, Checkout.page(1))
     assign(:checkouts_facet, [])
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)

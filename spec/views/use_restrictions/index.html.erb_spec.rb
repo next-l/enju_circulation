@@ -4,8 +4,6 @@ describe "use_restrictions/index" do
   fixtures :users, :roles, :user_has_roles
 
   before(:each) do
-    view.extend EnjuLeaf::EnjuLeafHelper
-
     assign(:use_restrictions, Kaminari::paginate_array([
       stub_model(UseRestriction,
         :name => "Not For Loan",
