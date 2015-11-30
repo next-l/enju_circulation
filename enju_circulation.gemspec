@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "enju_leaf", "~> 1.1"
   s.add_dependency "enju_event", "~> 0.1.17"
+  s.add_dependency "cocoon"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
