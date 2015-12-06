@@ -80,7 +80,7 @@
           = t('activerecord.models.manifestation')
         th[style="width: 80px"]
           = t('activerecord.attributes.reserve.state')
-        - if @reserves.first and policy(@reserves.first).update?
+        - if policy(Reserve).create?
           th[style="width: 70px"]
       - @reserves.each_with_index do |reserve, i|
         |  <tr class="line
