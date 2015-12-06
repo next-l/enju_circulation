@@ -11,6 +11,7 @@ gemspec
 # your gem to rubygems.org.
 gem 'enju_leaf', github: 'next-l/enju_leaf', branch: '1.2'
 gem 'enju_biblio', github: 'next-l/enju_biblio', branch: '1.2'
+gem 'enju_library', github: 'next-l/enju_library', branch: '1.2'
 gem 'enju_event', github: 'next-l/enju_event', branch: '1.2'
 gem 'enju_message', github: 'next-l/enju_message', branch: '1.2'
 
