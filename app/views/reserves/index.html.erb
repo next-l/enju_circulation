@@ -35,7 +35,7 @@
     <th style="width: 30px">Id</th>
     <th><%= t('activerecord.models.manifestation') -%></th>
     <th style="width: 80px"><%= t('activerecord.attributes.reserve.state') -%></th>
-    <%- if policy(@reserves.first).update? -%>
+    <%- if policy(Reserve).create? -%>
       <th style="width: 70px"></th>
     <% end %>
   </tr>
