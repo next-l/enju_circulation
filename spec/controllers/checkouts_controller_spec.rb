@@ -18,7 +18,7 @@ describe CheckoutsController do
       it "assigns all checkouts as @checkouts" do
         get :index
         assigns(:checkouts).should eq Checkout.order('checkouts.created_at DESC').page(1)
-        assigns(:checkouts).total_entries.should eq 14
+        assigns(:checkouts).total_entries.should eq Checkout.count
       end
 
       it "should get other user's index" do
@@ -83,7 +83,7 @@ describe CheckoutsController do
       it "assigns all checkouts as @checkouts" do
         get :index
         assigns(:checkouts).should eq(users(:user1).checkouts.order('checkouts.created_at DESC').page(1))
-        assigns(:checkouts).total_entries.should eq 6
+        assigns(:checkouts).total_entries.should eq users(:user1).checkouts.count
         response.should be_success
       end
 
