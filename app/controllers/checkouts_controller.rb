@@ -1,7 +1,7 @@
 class CheckoutsController < ApplicationController
   before_action :store_location, only: :index
   before_action :set_checkout, only: [:show, :edit, :update, :destroy]
-  before_action :check_policy, only: [:index, :new, :create]
+  before_action :check_policy, only: [:index, :new, :create, :remove_all]
   before_action :get_user, only: [:index, :remove_all]
   before_action :get_item, only: :index
   after_action :convert_charset, only: :index
@@ -35,7 +35,6 @@ class CheckoutsController < ApplicationController
         if current_user.try(:has_role?, 'Librarian')
           search.build do
             with(:username).equal_to user.username
-            with(:checked_in_at).equal_to nil unless user.profile.save_checkout_history
           end
         else
           if current_user == user
@@ -50,12 +49,9 @@ class CheckoutsController < ApplicationController
         unless current_user.try(:has_role?, 'Librarian')
           search.build do
             with(:username).equal_to current_user.username
-          end
-        end
-
-        unless current_user.profile.save_checkout_history?
-          search.build do
-            with(:checked_in_at).equal_to nil
+            unless current_user.profile.save_checkout_history?
+              with(:checked_in_at).equal_to nil
+            end
           end
         end
       end
