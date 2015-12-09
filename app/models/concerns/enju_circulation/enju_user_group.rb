@@ -2,7 +2,7 @@ module EnjuCirculation
   module EnjuUserGroup
     extend ActiveSupport::Concern
 
-    incuded do
+    included do
       has_many :user_group_has_checkout_types, dependent: :destroy
       has_many :checkout_types, through: :user_group_has_checkout_types
       has_many :lending_policies
