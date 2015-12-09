@@ -1,6 +1,4 @@
 require "enju_circulation/engine"
-require "enju_circulation/manifestation"
-require "enju_circulation/item"
 require "enju_circulation/user_group"
 require "enju_circulation/accept"
 require "enju_circulation/basket"
@@ -12,9 +10,6 @@ require "enju_circulation/helper"
 module EnjuCirculation
 end
 
-ActionController::Base.send :include, EnjuCirculation::Controller
-ActiveRecord::Base.send :include, EnjuCirculation::EnjuManifestation
-ActiveRecord::Base.send :include, EnjuCirculation::EnjuItem
 ActiveRecord::Base.send :include, EnjuCirculation::EnjuUserGroup
 ActiveRecord::Base.send :include, EnjuCirculation::EnjuAccept
 ActiveRecord::Base.send :include, EnjuCirculation::EnjuBasket
