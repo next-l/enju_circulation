@@ -38,6 +38,7 @@ describe CheckoutsController do
 
       it "should get index txt" do
         get :index, :format => 'txt'
+        assigns(:checkouts).count.should eq Checkout.count
         response.should be_success
       end
 
