@@ -60,8 +60,8 @@
         (<%= link_to reserve.item.item_identifier, reserve.item %>)
       <% end %>
     </td>
-    <%- if can? :delete, reserve -%>
-      <td>
+    <td>
+      <%- if can? :delete, reserve -%>
         <%= link_to t('page.edit'), edit_reserve_path(reserve) -%>
         <%- if reserve.user.reserves.waiting.include?(reserve) -%>
           <br />
@@ -70,8 +70,8 @@
           <br />
           <%= link_to t('page.destroy'), reserve, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
         <%- end -%>
-      </td>
-    <%- end -%>
+      <%- end -%>
+    </td>
   </tr>
 <%- end -%>
 </table>
