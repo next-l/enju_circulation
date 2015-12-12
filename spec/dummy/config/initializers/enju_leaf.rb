@@ -1,2 +1,7 @@
+Manifestation.include(EnjuCirculation::EnjuManifestation)
+Basket.include(EnjuCirculation::EnjuBasket)
+Item.include(EnjuLibrary::EnjuItem)
+Item.include(EnjuCirculation::EnjuItem)
+User.include(EnjuCirculation::EnjuUser)
 Profile.include(EnjuCirculation::EnjuProfile)
-
+UserGroup.include(EnjuCirculation::EnjuUserGroup)
