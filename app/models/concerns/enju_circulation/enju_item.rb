@@ -21,8 +21,6 @@ module EnjuCirculation
         'Limited Circulation, Normal Loan Period'
       ]
 
-      has_many :reserves, :foreign_key => :manifestation_id
-
       scope :for_checkout, ->(identifier_conditions = 'item_identifier IS NOT NULL') {
         includes(:circulation_status, :use_restriction).where(
           'circulation_statuses.name' => FOR_CHECKOUT_CIRCULATION_STATUS,
