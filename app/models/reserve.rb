@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
@@ -60,6 +59,12 @@ class Reserve < ActiveRecord::Base
   validate :check_expired_at
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
+  after_save do
+    if item
+      item.checkouts.map{|checkout| checkout.index}
+      Sunspot.commit
+    end
+  end
 
   attr_accessor :user_number, :item_identifier, :force_retaining
 
