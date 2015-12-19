@@ -15,7 +15,13 @@
   <%- if policy(@checkout).update? -%>
     <p>
       <strong><%= t('checkout.current_user') -%></strong><br />
-      <%= link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile) -%>
+      <% if @checkout.user.try(:profile) -%>
+        <%= link_to @checkout.user_username, @checkout.user.profile if @checkout.user.try(:profile) -%>
+        (
+          <%= t('activerecord.attributes.profile.user_number') %>:
+          <%= @checkout.user.profile.user_number %>
+        )
+      <% end %>
     </p>
   <%- end -%>
 </div>
