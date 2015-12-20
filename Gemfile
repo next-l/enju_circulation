@@ -15,7 +15,7 @@ gem 'enju_library', github: 'next-l/enju_library', branch: '1.2'
 gem 'enju_event', github: 'next-l/enju_event', branch: '1.2'
 gem 'enju_message', github: 'next-l/enju_message', branch: '1.2'
 gem 'enju_manifestation_viewer', github: 'next-l/enju_manifestation_viewer', branch: '1.2'
-gem 'sprockets-rails', '~> 2.3'
+gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
