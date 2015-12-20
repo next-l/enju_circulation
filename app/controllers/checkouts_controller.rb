@@ -56,16 +56,10 @@ class CheckoutsController < ApplicationController
         end
       end
 
-      if current_user.try(:has_role?, 'Librarian')
-        if @item
-          item = @item
-          search.build do
-            with(:item_identifier).equal_to item.item_identifier
-          end
-        end
-      else
-        if @item
-          access_denied; return
+      if @item
+        item = @item
+        search.build do
+          with(:item_identifier).equal_to item.item_identifier
         end
       end
 
