@@ -7,7 +7,11 @@ class LendingPoliciesController < ApplicationController
   # GET /lending_policies
   # GET /lending_policies.json
   def index
-    @lending_policies = LendingPolicy.page(params[:page])
+    if @item
+      @lending_policies = @item.lending_policies.page(params[:page])
+    else
+      @lending_policies = LendingPolicy.page(params[:page])
+    end
 
     respond_to do |format|
       format.html # index.html.erb
