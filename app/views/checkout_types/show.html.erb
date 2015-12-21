@@ -34,7 +34,7 @@
     <%- if policy(@checkout_type).update? -%>
       <li><%= link_to t('page.edit'), edit_checkout_type_path(@checkout_type) -%></li>
     <%- end -%>
-    <li><%= back_to_index(flash[:page_info]) -%></li>
+    <li><%= link_to t('page.back'), :back -%></li>
     <%- if policy(UserGroupHasCheckoutType).create? -%>
       <li><%= link_to t('page.new', model: t('activerecord.models.user_group_has_checkout_type')), new_checkout_type_user_group_has_checkout_type_path(@checkout_type) -%></li>
     <%- end -%>
