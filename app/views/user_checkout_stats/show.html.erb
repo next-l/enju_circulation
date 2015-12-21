@@ -46,7 +46,7 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <%= form_for(@user_checkout_stat) do |f| %>
   <ul>
-    <li><%= back_to_index(flash[:page_info]) -%></li>
+    <li><%= link_to t('page.back'), :back -%></li>
   </ul>
   <% end %>
   <h4><%= t('page.export') -%></h4>
