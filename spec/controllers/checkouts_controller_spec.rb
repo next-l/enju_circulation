@@ -53,7 +53,7 @@ describe CheckoutsController do
         response.should be_success
       end
 
-      it "should get overdue index with nunber of days_overdue" do
+      it "should get overdue index with number of days_overdue" do
         get :index, :view => 'overdue', :days_overdue => 2
         response.should be_success
         assigns(:checkouts).size.should > 0

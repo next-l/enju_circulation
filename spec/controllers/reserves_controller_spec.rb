@@ -648,7 +648,7 @@ describe ReservesController do
         end
       end
 
-      it "should cancal my reservation" do
+      it "should cancel my reservation" do
         old_message_requests_count = MessageRequest.count
         put :update, :id => 3, :mode => 'cancel'
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')

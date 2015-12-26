@@ -356,7 +356,7 @@ describe CheckedItemsController do
     end
 
     describe "When not logged in" do
-      it "should not update checed_item" do
+      it "should not update checked_item" do
         put :update, :id => 1, :checked_item => { }, :basket_id => 1
         response.should redirect_to new_user_session_url
       end
