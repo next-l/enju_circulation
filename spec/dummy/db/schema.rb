@@ -1478,4 +1478,15 @@ ActiveRecord::Schema.define(version: 20151213072705) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
+  create_table "withdraws", force: :cascade do |t|
+    t.integer  "basket_id"
+    t.integer  "item_id"
+    t.integer  "librarian_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "withdraws", ["basket_id"], name: "index_withdraws_on_basket_id"
+  add_index "withdraws", ["item_id"], name: "index_withdraws_on_item_id"
+
 end
