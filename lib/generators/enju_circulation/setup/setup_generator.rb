@@ -10,10 +10,12 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     rake("enju_message_engine:install:migrations")
     generate("enju_event:setup")
     generate("enju_message:setup")
-    inject_into_file 'app/controllers/application_controller.rb',
-      "  enju_circulation\n", :after => "enju_library\n"
-    inject_into_file 'app/models/user.rb',
-      "  enju_circulation_user_model\n", :after => "enju_leaf_user_model\n"
+    inject_into_class "app/controllers/application_controller.rb", ApplicationController do
+      "  include EnjuCirculation::Controller\n"
+    end
+    inject_into_class 'app/models/user.rb', User do
+      "  include EnjuCirculation::EnjuUser\n"
+    end
     append_to_file "config/initializers/enju_leaf.rb", <<EOS
 Accept.include(EnjuCirculation::EnjuAccept)
 Basket.include(EnjuCirculation::EnjuBasket)
