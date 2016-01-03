@@ -63,14 +63,13 @@ class CheckoutsController < ApplicationController
         end
       end
 
-      if params[:days_overdue]
-        date = params[:days_overdue].to_i.days.ago.beginning_of_day
-      else
-        date = 1.days.ago.beginning_of_day
-      end
-      search.build do
-        with(:due_date).less_than date
-        with(:checked_in_at).equal_to nil
+      if params[:days_overdue].present?
+        days_overdue = params[:days_overdue].to_i
+        date = days_overdue.days.ago.beginning_of_day
+        search.build do
+          with(:due_date).less_than date
+          with(:checked_in_at).equal_to nil
+        end
       end
 
       if params[:reserved].present?
@@ -96,7 +95,7 @@ class CheckoutsController < ApplicationController
       @checkouts_facet = search.facet(:reserved).rows
     end
 
-    @days_overdue = params[:days_overdue] ||= 1
+    @days_overdue = days_overdue if days_overdue
 
     respond_to do |format|
       format.html # index.html.erb
