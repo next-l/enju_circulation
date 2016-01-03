@@ -63,16 +63,14 @@ class CheckoutsController < ApplicationController
         end
       end
 
-      if params[:view] == 'overdue'
-        if params[:days_overdue]
-          date = params[:days_overdue].to_i.days.ago.beginning_of_day
-        else
-          date = 1.days.ago.beginning_of_day
-        end
-        search.build do
-          with(:due_date).less_than date
-          with(:checked_in_at).equal_to nil
-        end
+      if params[:days_overdue]
+        date = params[:days_overdue].to_i.days.ago.beginning_of_day
+      else
+        date = 1.days.ago.beginning_of_day
+      end
+      search.build do
+        with(:due_date).less_than date
+        with(:checked_in_at).equal_to nil
       end
 
       if params[:reserved].present?

@@ -33,14 +33,14 @@
         <%= link_to (image_tag 'icons/date.png', size: '16x16', alt: 'iCalendar', class: 'icon'), checkouts_path(user_id: user.username, format: :ics) -%>
       </li>
     <% end %>
-    <%- if params[:view] == 'overdue' -%>
+    <%- if params[:days_overdue] -%>
       <li>
-        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss, view: 'overdue') -%>
-        <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(user_id: user.username, format: :rss, view: 'overdue') -%>
+        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss, days_overdue: 1 -%>
+        <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(user_id: user.username, format: :rss, days_overdue: 1) -%>
       </li>
       <li>
-        <%= link_to 'TSV', checkouts_path(user_id: user.username, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
-        <%= link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), checkouts_path(user_id: user.username, format: :txt, view: 'overdue', locale: @locale.to_s) -%>
+        <%= link_to 'TSV', checkouts_path(user_id: user.username, format: :txt, days_overdue: 1, locale: @locale.to_s) -%>
+        <%= link_to (image_tag 'icons/page_white_excel.png', size: '16x16', alt: 'TSV', class: 'icon'), checkouts_path(user_id: user.username, format: :txt, days_overdue: 1, locale: @locale.to_s) -%>
       </li>
     <%- else -%>
       <li>

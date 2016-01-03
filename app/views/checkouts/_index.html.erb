@@ -14,7 +14,7 @@
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
     <li><%= link_to t('checkout.my_checkout'), checkouts_path(user_id: current_user.username) -%></li>
-    <li><%= link_to t('page.overdue'), checkouts_path(view: 'overdue') -%></li>
+    <li><%= link_to t('page.overdue'), checkouts_path(days_overdue: 1) -%></li>
   </ul>
   <%= render 'reserved_facet' %>
   <h4><%= t('page.other_format') %></h4>
