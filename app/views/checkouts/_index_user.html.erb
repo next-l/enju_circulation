@@ -35,7 +35,7 @@
     <% end %>
     <%- if params[:days_overdue].present? -%>
       <li>
-        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss, days_overdue: 1 -%>
+        <%= link_to 'RSS', checkouts_path(user_id: user.username, format: :rss, days_overdue: 1) -%>
         <%= link_to (image_tag 'icons/feed.png', size: '16x16', alt: 'RSS', class: 'icon'), checkouts_path(user_id: user.username, format: :rss, days_overdue: 1) -%>
       </li>
       <li>
