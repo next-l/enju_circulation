@@ -44,7 +44,7 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <%- if policy(CirculationStatus).destroy -%>
+    <%- if policy(CirculationStatus).create? -%>
       <li><%= link_to t('page.new', model: t('activerecord.models.circulation_status')), new_circulation_status_path -%></li>
     <%- end -%>
   </ul>
