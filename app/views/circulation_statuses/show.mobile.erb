@@ -1,0 +1,24 @@
+<div data-role="header">
+  <a href="javascript:history.back()" data-icon="back" data-iconpos="notext" class="ui-btn-left"><%= t('page.back') %></a>
+  <h1 class="title"><%= t('page.showing', model: t('activerecord.models.item')) -%></h1>
+</div>
+<div data-role="content">
+  <div id="detail">
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong><%= t('activerecord.attributes.circulation_status.name') -%>:</strong>
+      <%= @circulation_status.name -%>
+    </p>
+
+    <p>
+      <strong><%= t('activerecord.attributes.circulation_status.display_name') -%>:</strong>
+      <%= @circulation_status.display_name.localize -%>
+    </p>
+
+    <p>
+      <strong><%= t('activerecord.attributes.circulation_status.note') -%>:</strong>
+      <%= @circulation_status.note -%>
+    </p>
+  </div>
+</div>
