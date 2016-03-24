@@ -8,7 +8,7 @@ namespace :enju_circulation do
   desc "create initial records for enju_circulation"
   task :setup => :environment do
     Dir.glob(Rails.root.to_s + '/db/fixtures/enju_circulation/*.yml').each do |file|
-      ActiveRecord::Fixtures.create_fixtures('db/fixtures/enju_circulation', File.basename(file, '.*'))
+      ActiveRecord::FixtureSet.create_fixtures('db/fixtures/enju_circulation', File.basename(file, '.*'))
     end
 
     Rake::Task['enju_event:setup'].invoke
