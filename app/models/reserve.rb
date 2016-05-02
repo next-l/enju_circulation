@@ -91,7 +91,7 @@ class Reserve < ActiveRecord::Base
     end
     time :created_at
     text :item_identifier do
-      manifestation.items.pluck(:item_identifier)
+      manifestation.items.pluck(:item_identifier) if manifestation
     end
     text :title do
       manifestation.try(:titles)
