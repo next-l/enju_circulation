@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids,default,development,test}/*"] - Dir["spec/dummy/tmp/*"]
 
   s.add_dependency "enju_leaf", "~> 1.1.3"
-  s.add_dependency "enju_event", "~> 0.1.18"
+  s.add_dependency "enju_event", "~> 0.1.19"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2", "~> 0.3.20"
