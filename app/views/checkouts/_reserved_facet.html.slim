@@ -6,8 +6,8 @@ ul
     li
       - if @reserved == facet_reserved
         strong
-          = link_to "#{localized_boolean(facet.value)} (#{facet.count})", url_for(params.merge(page: nil, reserved: facet.value.to_s, view: nil, only_path: true))
+          = link_to "#{localized_boolean(facet.value)} (#{facet.count})", url_for(params.permit.merge(page: nil, reserved: facet.value.to_s, view: nil, only_path: true))
           - if @reserved == facet_reserved
     - unless @reserved.nil?
       li
-        = link_to t('page.remove_this_facet'), url_for(params.merge(reserved: nil, page: nil, view: nil, only_path: true))
+        = link_to t('page.remove_this_facet'), url_for(params.permit.merge(reserved: nil, page: nil, view: nil, only_path: true))

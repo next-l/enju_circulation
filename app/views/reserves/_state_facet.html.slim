@@ -6,9 +6,9 @@ h4
       li
         - if state.value == params[:state].to_s.downcase
           strong
-        = link_to "#{i18n_state(state.value)} (#{state.count})", url_for(params.merge(state: state.value, page: nil, view: nil, only_path: true))
+        = link_to "#{i18n_state(state.value)} (#{state.count})", url_for(params.permit.merge(state: state.value, page: nil, view: nil, only_path: true))
         - if state.value == params[:state].to_s.downcase
 
   - if params[:state]
     li
-      = link_to t('page.remove_this_facet'), url_for(params.merge(state: nil, page: nil, view: nil, only_path: true))
+      = link_to t('page.remove_this_facet'), url_for(params.permit.merge(state: nil, page: nil, view: nil, only_path: true))

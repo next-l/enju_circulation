@@ -66,12 +66,12 @@
         strong
           = t('activerecord.attributes.reserve.created_at')
       - else
-        = link_to t('activerecord.attributes.reserve.created_at'), url_for(params.merge(sort_by: nil, only_path: true))
+        = link_to t('activerecord.attributes.reserve.created_at'), url_for(params.permit.merge(sort_by: nil, only_path: true))
       - if @sort_by == :title
         strong
           = t('page.title')
       - else
-        = link_to t('page.title'), url_for(params.merge(sort_by: 'title', only_path: true))
+        = link_to t('page.title'), url_for(params.permit.merge(sort_by: 'title', only_path: true))
     table.table.table-striped.index
       tr
         th[style="width: 30px"]
