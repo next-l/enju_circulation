@@ -1,10 +1,10 @@
 require 'simplecov'
 require 'codeclimate-test-reporter'
 SimpleCov.start do
-  formatter SimpleCov::Formatter::MultiFormatter[
+  formatter SimpleCov::Formatter::MultiFormatter.new([
     SimpleCov::Formatter::HTMLFormatter,
     CodeClimate::TestReporter::Formatter
-  ]
+  ])
 end
 CodeClimate::TestReporter.start
 
@@ -16,12 +16,10 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-require 'vcr'
 require 'factory_girl'
 require 'sunspot-rails-tester'
 require 'rspec/active_model/mocks'
 require 'pundit/rspec'
-require 'capybara/rspec'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

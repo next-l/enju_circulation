@@ -6,6 +6,7 @@ describe "reserves/index" do
   before(:each) do
     assign(:reserves, Reserve.page(1))
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
+    view.stub(:params).and_return(ActionController::Parameters.new)
   end
 
   it "renders a list of reserves" do
