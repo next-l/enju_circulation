@@ -77,7 +77,10 @@ class CheckinsController < ApplicationController
         flash[:message] << message if message
         format.html { redirect_to checkins_url(basket_id: @checkin.basket_id) }
         format.json { render json: @checkin, status: :created, location: @checkin }
-        format.js { redirect_to checkins_url(basket_id: @basket.id, format: :js) }
+        format.js {
+          @checkins = @basket.checkins.page(1)
+          render action: "index"
+        }
       else
         @checkins = @basket.checkins.page(1)
         format.html { render action: "new" }
