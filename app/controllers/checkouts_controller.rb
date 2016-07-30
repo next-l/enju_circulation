@@ -1,5 +1,4 @@
 class CheckoutsController < ApplicationController
-  before_action :store_location, only: :index
   before_action :set_checkout, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create, :remove_all]
   before_action :get_user, only: [:index, :remove_all]
