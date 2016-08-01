@@ -1,10 +1,8 @@
 class ReservesController < ApplicationController
-  before_action :store_location, only: [:index, :new]
   before_action :set_reserve, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
   before_action :prepare_options, only: [:new, :edit]
   before_action :get_user, only: [:index, :new]
-  before_action :store_page
   after_action :convert_charset, only: :index
   helper_method :get_manifestation
   helper_method :get_item
