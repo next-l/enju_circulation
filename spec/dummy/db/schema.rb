@@ -886,11 +886,12 @@ ActiveRecord::Schema.define(version: 20160703190209) do
 
   create_table "message_transitions", force: :cascade do |t|
     t.string   "to_state"
-    t.text     "metadata",   default: "{}"
+    t.text     "metadata",    default: "{}"
     t.integer  "sort_key"
     t.integer  "message_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "most_recent"
   end
 
   add_index "message_transitions", ["message_id"], name: "index_message_transitions_on_message_id"
