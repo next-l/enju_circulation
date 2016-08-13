@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "checkouts/edit" do
   fixtures :checkouts, :users, :user_has_roles, :roles

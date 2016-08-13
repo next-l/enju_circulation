@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "checkouts/show" do
   fixtures :checkouts, :users, :user_has_roles, :roles, :profiles

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "checkout_types/index" do
   fixtures :users, :roles, :user_has_roles

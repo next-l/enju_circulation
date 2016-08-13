@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "reserves/index" do
   fixtures :users, :roles, :user_has_roles, :reserves
