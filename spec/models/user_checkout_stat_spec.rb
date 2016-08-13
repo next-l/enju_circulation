@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserCheckoutStat do
   fixtures :user_checkout_stats
