@@ -11,10 +11,11 @@ end
 # Table name: manifestation_checkout_stat_transitions
 #
 #  id                             :integer          not null, primary key
-#  to_state                       :string(255)
-#  metadata                       :text             default("{}")
+#  to_state                       :string
+#  metadata                       :text             default({})
 #  sort_key                       :integer
 #  manifestation_checkout_stat_id :integer
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  most_recent                    :boolean
 #

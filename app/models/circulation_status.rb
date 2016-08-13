@@ -17,7 +17,7 @@ end
 # Table name: circulation_statuses
 #
 #  id           :integer          not null, primary key
-#  name         :string(255)      not null
+#  name         :string           not null
 #  display_name :text
 #  note         :text
 #  position     :integer
