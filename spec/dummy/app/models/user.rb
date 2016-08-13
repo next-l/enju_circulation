@@ -8,3 +8,9 @@ class User < ActiveRecord::Base
   include EnjuMessage::EnjuUser
   include EnjuCirculation::EnjuUser
 end
+
+Basket.include(EnjuCirculation::EnjuBasket)
+Manifestation.include(EnjuCirculation::EnjuManifestation)
+Item.include(EnjuCirculation::EnjuItem)
+Item.include(EnjuLibrary::EnjuItem)
+UserGroup.include(EnjuCirculation::EnjuUserGroup)
