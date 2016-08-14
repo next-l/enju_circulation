@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, #:registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  include EnjuLeaf::EnjuUser
+  include EnjuSeed::EnjuUser
   include EnjuMessage::EnjuUser
   include EnjuCirculation::EnjuUser
 end
