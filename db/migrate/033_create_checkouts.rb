@@ -4,8 +4,8 @@ class CreateCheckouts < ActiveRecord::Migration
       t.references :user, index: true, foreign_key: true
       t.references :item, index: true, foreign_key: true, null: false
       t.references :checkin, index: true, foreign_key: true
-      t.references :librarian, index: true, foreign_key: {to_table: :users}, null: false
-      t.references :basket, index: true, foreign_key: true
+      t.references :librarian, index: true
+      t.references :basket, index: true
       t.datetime :due_date
       t.integer :checkout_renewal_count, default: 0, null: false
       t.integer :lock_version, default: 0, null: false

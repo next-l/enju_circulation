@@ -1,7 +1,7 @@
 class CreateCheckoutStatHasManifestations < ActiveRecord::Migration
   def self.up
     create_table :checkout_stat_has_manifestations do |t|
-      t.references :manifestation_checkout_stat, index: false, foreign_key: true, null: false
+      t.references :manifestation_checkout_stat, index: false, null: false
       t.references :manifestation, index: false, foreign_key: true, null: false
       t.integer :checkouts_count
 

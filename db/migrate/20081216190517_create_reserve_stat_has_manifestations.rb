@@ -1,7 +1,7 @@
 class CreateReserveStatHasManifestations < ActiveRecord::Migration
   def self.up
     create_table :reserve_stat_has_manifestations do |t|
-      t.references :manifestation_reserve_stat, index: false, foreign_key: true, null: false
+      t.references :manifestation_reserve_stat, index: false, null: false
       t.references :manifestation, index: false, foreign_key: true, null: false
       t.integer :reserves_count
 
