@@ -3,7 +3,7 @@ class CreateReserves < ActiveRecord::Migration
     create_table :reserves do |t|
       t.references :user, index: true, foreign_key: true, null: false
       t.references :manifestation, index: true, null: false
-      t.references :item, index: true, foreign_key: true
+      t.references :item, index: true
       t.references :request_status_type, null: false
       t.datetime :checked_out_at
       t.timestamps

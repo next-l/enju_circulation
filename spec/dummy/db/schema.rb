@@ -221,9 +221,10 @@ ActiveRecord::Schema.define(version: 20160814165332) do
   end
 
   create_table "checked_items", force: :cascade do |t|
-    t.integer  "item_id",    null: false
-    t.integer  "basket_id",  null: false
-    t.datetime "due_date",   null: false
+    t.integer  "item_id",      null: false
+    t.integer  "basket_id",    null: false
+    t.integer  "librarian_id"
+    t.datetime "due_date",     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -231,11 +232,12 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   add_index "checked_items", ["basket_id"], name: "index_checked_items_on_basket_id"
   add_index "checked_items", ["item_id"], name: "index_checked_items_on_item_id"
+  add_index "checked_items", ["librarian_id"], name: "index_checked_items_on_librarian_id"
   add_index "checked_items", ["user_id"], name: "index_checked_items_on_user_id"
 
   create_table "checkins", force: :cascade do |t|
     t.integer  "item_id",                  null: false
-    t.integer  "user_id"
+    t.integer  "librarian_id"
     t.integer  "basket_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -244,7 +246,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   add_index "checkins", ["basket_id"], name: "index_checkins_on_basket_id"
   add_index "checkins", ["item_id"], name: "index_checkins_on_item_id"
-  add_index "checkins", ["user_id"], name: "index_checkins_on_user_id"
+  add_index "checkins", ["librarian_id"], name: "index_checkins_on_librarian_id"
 
   create_table "checkout_stat_has_manifestations", force: :cascade do |t|
     t.integer  "manifestation_checkout_stat_id", null: false
@@ -1086,7 +1088,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   create_table "reserves", force: :cascade do |t|
     t.integer  "user_id",                                      null: false
-    t.integer  "manifestation_id",                             null: false
+    t.integer  "manifestation_id"
     t.integer  "item_id"
     t.integer  "request_status_type_id",                       null: false
     t.datetime "checked_out_at"
