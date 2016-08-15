@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   create_table "checkins", force: :cascade do |t|
     t.integer  "item_id",                  null: false
-    t.integer  "librarian_id"
+    t.integer  "librarian_id",             null: false
     t.integer  "basket_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -283,7 +283,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
     t.integer  "user_id"
     t.integer  "item_id",                            null: false
     t.integer  "checkin_id"
-    t.integer  "librarian_id"
+    t.integer  "librarian_id",                       null: false
     t.integer  "basket_id"
     t.datetime "due_date"
     t.integer  "checkout_renewal_count", default: 0, null: false
