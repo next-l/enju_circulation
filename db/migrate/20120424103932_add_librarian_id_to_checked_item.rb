@@ -1,5 +1,5 @@
 class AddLibrarianIdToCheckedItem < ActiveRecord::Migration
   def change
-    add_column :checked_items, :librarian_id, :integer
+    add_reference :checked_items, :librarian, index: true, foreign_key: true
   end
 end

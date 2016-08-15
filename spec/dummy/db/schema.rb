@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   add_index "checked_items", ["basket_id"], name: "index_checked_items_on_basket_id"
   add_index "checked_items", ["item_id"], name: "index_checked_items_on_item_id"
+  add_index "checked_items", ["librarian_id"], name: "index_checked_items_on_librarian_id"
 
   create_table "checkins", force: :cascade do |t|
     t.integer  "item_id",                  null: false
@@ -1105,7 +1106,6 @@ ActiveRecord::Schema.define(version: 20160814165332) do
   add_index "reserves", ["item_id"], name: "index_reserves_on_item_id"
   add_index "reserves", ["manifestation_id"], name: "index_reserves_on_manifestation_id"
   add_index "reserves", ["pickup_location_id"], name: "index_reserves_on_pickup_location_id"
-  add_index "reserves", ["request_status_type_id"], name: "index_reserves_on_request_status_type_id"
   add_index "reserves", ["user_id"], name: "index_reserves_on_user_id"
 
   create_table "resource_export_file_transitions", force: :cascade do |t|
