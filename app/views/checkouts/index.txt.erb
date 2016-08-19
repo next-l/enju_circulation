@@ -1,4 +1,4 @@
-<%- if params[:view] == 'overdue' -%><%= 'Overdue items' -%><%- else -%><%= 'Checkout items' -%><%- end -%> (created_at: <%= Time.now -%>)<%= "\n" -%>
+username	item_identifier	title	checked_out_at	due_date	<%- if params[:days_overdue].present? -%><%= 'Overdue items' -%><%- else -%><%= 'Checkout items' -%><%- end -%> (created_at: <%= Time.now -%>)<%= "\n" -%>
 <%- @checkouts.each do |checkout| -%>
 "<%=h checkout.user.try(:username) -%>"	"<%=h checkout.item.item_identifier -%>"	"<%=h checkout.item.manifestation.original_title -%>"	"<%=h checkout.created_at -%>"	"<%= checkout.due_date -%>"<%= "\n" -%>
 <%- end -%>
