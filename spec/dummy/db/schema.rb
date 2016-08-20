@@ -1088,7 +1088,7 @@ ActiveRecord::Schema.define(version: 20160814165332) do
 
   create_table "reserves", force: :cascade do |t|
     t.integer  "user_id",                                      null: false
-    t.integer  "manifestation_id"
+    t.integer  "manifestation_id",                             null: false
     t.integer  "item_id"
     t.integer  "request_status_type_id",                       null: false
     t.datetime "checked_out_at"

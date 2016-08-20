@@ -21,10 +21,12 @@ class CheckoutsController < ApplicationController
       end
     end
 
-    if params[:format] == 'txt'
+    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
       per_page = 500
+      page = 1
     else
       per_page = Checkout.default_per_page
+      page = params[:page] || 1
     end
 
     unless icalendar_user
@@ -86,10 +88,7 @@ class CheckoutsController < ApplicationController
         order_by :created_at, :desc
         facet :reserved
       end
-      page = params[:page] || 1
-      unless params[:format].to_s.downcase == 'txt'
-        search.query.paginate(page.to_i, Checkout.default_per_page)
-      end
+      search.query.paginate(page.to_i, per_page)
       @checkouts = search.execute!.results
       @checkouts_facet = search.facet(:reserved).rows
     end

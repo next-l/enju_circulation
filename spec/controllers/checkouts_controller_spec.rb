@@ -38,12 +38,13 @@ describe CheckoutsController do
 
       it "should get index txt" do
         get :index, format: 'txt'
-        assigns(:checkouts).count.should eq Checkout.count
+        assigns(:checkouts).count.should eq assigns(:checkouts).total_entries
         response.should be_success
       end
 
       it "should get index rss" do
         get :index, format: 'rss'
+        assigns(:checkouts).count.should eq assigns(:checkouts).total_entries
         response.should be_success
       end
 

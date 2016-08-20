@@ -34,12 +34,12 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if params[:format].to_s.downcase == 'txt'
+    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
+      per_page = 500
       page = 1
-      per_page = 65534
     else
-      page ||= params[:page] || 1
-      per_page ||= Reserve.default_per_page
+      per_page = Reserve.default_per_page
+      page = params[:page] || 1
     end
 
     if params[:mode] == 'hold' and current_user.has_role?('Librarian')
