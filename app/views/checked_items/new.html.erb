@@ -12,7 +12,8 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to @basket.user.username, @basket.user.profile -%></li>
+    <li><%= t('activerecord.attributes.user.username') %>: <%= link_to @basket.user.username, @basket.user.profile -%></li>
+    <li><%= t('activerecord.attributes.user.user_number') %>: <%= @basket.user.profile.user_number %></li>
   </ul>
   <ul>
     <%- @basket.user.profile.user_group.user_group_has_checkout_types.each do |available_checkout_type| -%>
