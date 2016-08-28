@@ -5,6 +5,7 @@ class MyAccept < Accept
 end
 
 describe EnjuCirculation::EnjuAccept do
+  fixtures :all
   it "should successfully accept" do
     accept = MyAccept.new(FactoryGirl.attributes_for(:accept))
     expect(accept.item).to be_truthy
