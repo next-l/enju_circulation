@@ -21,8 +21,10 @@ class ReserveStateMachine
     # TODO: 「取り置き中」の状態を正しく表す
     reserve.update_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
     Reserve.transaction do
-      if reserve.item and reserve.next_reservation
-        reserve.item.reserves.waiting.readonly(false).map{|r|
+      if reserve.item
+        other_reserves = reserve.item.reserves.waiting
+        other_reserves += reserve.item.reserves.in_state(:retained)
+        other_reserves.each{|r|
           if r != reserve
             r.transition_to!(:postponed)
             r.item = nil

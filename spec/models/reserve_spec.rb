@@ -84,7 +84,7 @@ describe Reserve do
     old_count = MessageRequest.count
 
     reservation.item = old_reservation.item
-    reservation.item.retained?.should be_falsy
+    expect(reservation).not_to be_retained
     reservation.transition_to!(:retained)
     old_reservation.reload
     old_reservation.item.should be_nil
