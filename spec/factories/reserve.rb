@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :reserve do |f|
     before(:create) do |reserve|
       profile = FactoryGirl.create(:profile)
-      user = User.new(FactoryGirl.attributes_for(:user), as: :admin)
+      user = User.new(FactoryGirl.attributes_for(:user))
       user.profile = profile
       reserve.user = user
     end
