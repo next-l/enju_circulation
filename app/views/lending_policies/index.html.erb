@@ -27,7 +27,7 @@
     <td>
       <%= link_to t('page.show'), lending_policy -%>
       <%= link_to t('page.edit'), edit_lending_policy_path(lending_policy) if policy(lending_policy).update?-%>
-      <%= link_to t('page.destroy'), lending_policy, data: {confirm: t('page.are_you_sure')}, method: :delete if policy(lenging_policy).destroy? -%>
+      <%= link_to t('page.destroy'), lending_policy, data: {confirm: t('page.are_you_sure')}, method: :delete if policy(lending_policy).destroy? -%>
     </td>
   </tr>
 <%- end -%>
