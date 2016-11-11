@@ -23,10 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency "cocoon"
 
   #s.add_development_dependency "enju_leaf", "~> 1.2.0.beta.1"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "mysql2", "~> 0.3.20"
   s.add_development_dependency "pg"
-  s.add_development_dependency "rspec-rails", "~> 3.3"
+  s.add_development_dependency "rspec-rails", "~> 3.5"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "sunspot_solr", "2.2.0"
   s.add_development_dependency "simplecov"
@@ -34,5 +32,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "annotate"
   s.add_development_dependency "rspec-activemodel-mocks"
   s.add_development_dependency "redis-rails"
-  s.add_development_dependency "resque-scheduler", "~> 4.0"
 end
