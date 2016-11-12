@@ -48,7 +48,7 @@ class DemandsController < ApplicationController
         format.html { redirect_to @demand, notice: t('controller.successfully_created', model: t('activerecord.models.demand')) }
         format.json { render json: @demand, status: :created, location: @demand }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @demand.errors, status: :unprocessable_entity }
       end
     end
@@ -62,7 +62,7 @@ class DemandsController < ApplicationController
         format.html { redirect_to @demand, notice: t('controller.successfully_updated', model: t('activerecord.models.demand')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @demand.errors, status: :unprocessable_entity }
       end
     end
@@ -80,6 +80,7 @@ class DemandsController < ApplicationController
   end
 
   private
+
   def set_demand
     @demand = Demand.find(params[:id])
     authorize @demand

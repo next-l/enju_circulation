@@ -10,7 +10,7 @@ module EnjuCirculation
     end
 
     def basket_checkout(librarian)
-      return nil if checked_items.size == 0
+      return nil if checked_items.empty?
       Item.transaction do
         checked_items.each do |checked_item|
           checkout = user.checkouts.new
@@ -23,7 +23,7 @@ module EnjuCirculation
           checked_item.item.checkout!(user)
           checkout.save!
         end
-        CheckedItem.destroy_all(basket_id: id)
+        CheckedItem.where(basket_id: id).destroy_all
       end
     end
   end

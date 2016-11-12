@@ -47,7 +47,7 @@ class UseRestrictionsController < ApplicationController
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_created', model: t('activerecord.models.use_restriction')) }
         format.json { render json: @use_restriction, status: :created, location: @use_restriction }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -66,7 +66,7 @@ class UseRestrictionsController < ApplicationController
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.use_restriction')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -84,6 +84,7 @@ class UseRestrictionsController < ApplicationController
   end
 
   private
+
   def set_use_restriction
     @use_restriction = UseRestriction.find(params[:id])
     authorize @use_restriction

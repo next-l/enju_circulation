@@ -33,15 +33,15 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if params[:format].to_s.downcase == 'txt'
+    if params[:format].to_s.casecmp('txt').zero?
       page = 1
-      per_page = 65534
+      per_page = 65_534
     else
       page ||= params[:page] || 1
       per_page ||= Reserve.default_per_page
     end
 
-    if params[:mode] == 'hold' and current_user.has_role?('Librarian')
+    if (params[:mode] == 'hold') && current_user.has_role?('Librarian')
       search.build do
         with(:hold).equal_to true
       end
@@ -78,9 +78,7 @@ class ReservesController < ApplicationController
       reserved_until = nil
     end
 
-    if params[:state].present?
-      state = params[:state].downcase
-    end
+    state = params[:state].downcase if params[:state].present?
 
     search.build do
       fulltext query
@@ -138,7 +136,7 @@ class ReservesController < ApplicationController
       authorize @manifestation, :show?
       @reserve.manifestation = @manifestation
       if @reserve.user
-        #@reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
+        # @reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
         if @manifestation.is_reserved_by?(@reserve.user)
           flash[:notice] = t('reserve.this_manifestation_is_already_reserved')
           redirect_to @manifestation
@@ -160,9 +158,7 @@ class ReservesController < ApplicationController
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
-      unless @reserve.user
-        @reserve.user = @user
-      end
+      @reserve.user = @user unless @reserve.user
     else
       if @reserve.user != current_user
         if @user != current_user
@@ -179,7 +175,7 @@ class ReservesController < ApplicationController
         format.json { render json: @reserve, status: :created, location: reserve_url(@reserve) }
       else
         prepare_options
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
@@ -200,7 +196,7 @@ class ReservesController < ApplicationController
         @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
-          if @reserve.item_identifier.present? and @reserve.force_retaining == '1'
+          if @reserve.item_identifier.present? && (@reserve.force_retaining == '1')
             @reserve.transition_to!(:retained)
           end
         else
@@ -211,16 +207,16 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       if @reserve.save
-        if @reserve.current_state == 'canceled'
-          flash[:notice] = t('reserve.reservation_was_canceled')
-        else
-          flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.reserve'))
-        end
+        flash[:notice] = if @reserve.current_state == 'canceled'
+                           t('reserve.reservation_was_canceled')
+                         else
+                           t('controller.successfully_updated', model: t('activerecord.models.reserve'))
+                         end
         format.html { redirect_to @reserve }
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
@@ -230,14 +226,12 @@ class ReservesController < ApplicationController
   # DELETE /reserves/1.json
   def destroy
     @reserve.destroy
-    #flash[:notice] = t('reserve.reservation_was_canceled')
+    # flash[:notice] = t('reserve.reservation_was_canceled')
 
     if @reserve.manifestation.is_reserved?
       if @reserve.item
         retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
-        if retain.nil?
-          flash[:message] = t('reserve.this_item_is_not_reserved')
-        end
+        flash[:message] = t('reserve.this_item_is_not_reserved') if retain.nil?
       end
     end
 
@@ -248,6 +242,7 @@ class ReservesController < ApplicationController
   end
 
   private
+
   def set_reserve
     @reserve = Reserve.find(params[:id])
     authorize @reserve

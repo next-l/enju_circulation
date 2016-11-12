@@ -1,20 +1,20 @@
 class CheckedItem < ActiveRecord::Base
-  belongs_to :item #, validate: true
-  belongs_to :basket #, validate: true
-  belongs_to :librarian, class_name: 'User' #, validate: true
+  belongs_to :item # , validate: true
+  belongs_to :basket # , validate: true
+  belongs_to :librarian, class_name: 'User' # , validate: true
 
   validates_associated :item, :basket, on: :update
   validates_presence_of :item, :basket, :due_date, on: :update
   validates_uniqueness_of :item_id, scope: :basket_id
   validate :available_for_checkout?, on: :create
-  validates :due_date_string, format: {with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
+  validates :due_date_string, format: { with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/ }, allow_blank: true
   validate :check_due_date
- 
+
   before_validation :set_item
   before_validation :set_due_date, on: :create
   strip_attributes only: :item_identifier
 
-  #attr_protected :user_id
+  # attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
@@ -46,7 +46,7 @@ class CheckedItem < ActiveRecord::Base
     end
     # ここまでは絶対に貸出ができない場合
 
-    return true if ignore_restriction == "1"
+    return true if ignore_restriction == '1'
 
     if item.not_for_loan?
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
@@ -63,7 +63,7 @@ class CheckedItem < ActiveRecord::Base
     if checkout_count[:"#{checkout_type.name}"] >= item_checkout_type.checkout_limit
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
     end
-    
+
     if errors[:base].empty?
       true
     else
@@ -72,7 +72,7 @@ class CheckedItem < ActiveRecord::Base
   end
 
   def item_checkout_type
-    if item and basket
+    if item && basket
       basket.user.profile.user_group.user_group_has_checkout_types.available_for_item(item).first
     end
   end
@@ -85,23 +85,23 @@ class CheckedItem < ActiveRecord::Base
       lending_rule = item.lending_rule(basket.user)
       return nil if lending_rule.nil?
 
-      if lending_rule.fixed_due_date.blank?
-        #self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
-      else
-        #self.due_date = item_checkout_type.fixed_due_date
-        self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
-      end
+      self.due_date = if lending_rule.fixed_due_date.blank?
+                        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
+                        lending_rule.loan_period.days.since(Time.zone.now).end_of_day
+                      else
+                        # self.due_date = item_checkout_type.fixed_due_date
+                        lending_rule.fixed_due_date.tomorrow.end_of_day
+                      end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)
-        if item_checkout_type.set_due_date_before_closing_day
-          self.due_date = due_date.yesterday.end_of_day
-        else
-          self.due_date = due_date.tomorrow.end_of_day
-        end
+        self.due_date = if item_checkout_type.set_due_date_before_closing_day
+                          due_date.yesterday.end_of_day
+                        else
+                          due_date.tomorrow.end_of_day
+                        end
       end
     end
-    return due_date
+    due_date
   end
 
   def set_item
@@ -113,11 +113,10 @@ class CheckedItem < ActiveRecord::Base
   end
 
   private
+
   def check_due_date
     return nil unless due_date
-    if due_date <= Time.zone.now
-      errors.add(:due_date)
-    end
+    errors.add(:due_date) if due_date <= Time.zone.now
   end
 end
 

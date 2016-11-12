@@ -17,11 +17,11 @@ class UserCheckoutStatsController < ApplicationController
   # GET /user_checkout_stats/1
   # GET /user_checkout_stats/1.json
   def show
-    if params[:format] == 'txt'
-      per_page = 65534
-    else
-      per_page = CheckoutStatHasUser.default_per_page
-    end
+    per_page = if params[:format] == 'txt'
+                 65_534
+               else
+                 CheckoutStatHasUser.default_per_page
+               end
     @stats = @user_checkout_stat.checkout_stat_has_users.order('checkouts_count DESC, user_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
@@ -58,7 +58,7 @@ class UserCheckoutStatsController < ApplicationController
         format.html { redirect_to @user_checkout_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.user_checkout_stat')) }
         format.json { render json: @user_checkout_stat, status: :created, location: @user_checkout_stat }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @user_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -75,7 +75,7 @@ class UserCheckoutStatsController < ApplicationController
         format.html { redirect_to @user_checkout_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.user_checkout_stat')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @user_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -93,6 +93,7 @@ class UserCheckoutStatsController < ApplicationController
   end
 
   private
+
   def set_user_checkout_stat
     @user_checkout_stat = UserCheckoutStat.find(params[:id])
     authorize @user_checkout_stat

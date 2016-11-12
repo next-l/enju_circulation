@@ -6,7 +6,7 @@ FactoryGirl.define do
       user.profile = profile
       reserve.user = user
     end
-    f.manifestation_id{FactoryGirl.create(:manifestation).id}
-#    f.user{FactoryGirl.create(:user)}
+    f.manifestation_id { FactoryGirl.create(:manifestation).id }
+    #    f.user{FactoryGirl.create(:user)}
   end
 end

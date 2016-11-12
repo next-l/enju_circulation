@@ -53,7 +53,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
         format.json { render json: @carrier_type_has_checkout_type, status: :created, location: @carrier_type_has_checkout_type }
       else
         prepare_options
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -69,7 +69,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -87,6 +87,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
+
   def set_carrier_type_has_checkout_type
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.find(params[:id])
     authorize @carrier_type_has_checkout_type

@@ -1,7 +1,7 @@
 class ManifestationCheckoutStatsController < ApplicationController
   before_action :set_manifestation_checkout_stat, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  after_filter :convert_charset, only: :show
+  after_action :convert_charset, only: :show
 
   # GET /manifestation_checkout_stats
   # GET /manifestation_checkout_stats.json
@@ -17,16 +17,16 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/1
   # GET /manifestation_checkout_stats/1.json
   def show
-    if params[:format] == 'txt'
-      per_page = 65534
-    else
-      per_page = CheckoutStatHasManifestation.default_per_page
-    end
+    per_page = if params[:format] == 'txt'
+                 65_534
+               else
+                 CheckoutStatHasManifestation.default_per_page
+               end
 
     @carrier_type_results = Checkout.where(
-      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+      Checkout.arel_table[:created_at].gteq(@manifestation_checkout_stat.start_date)
     ).where(
-      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+      Checkout.arel_table[:created_at].lt(@manifestation_checkout_stat.end_date)
     ).joins(item: :manifestation).group(
       'checkouts.shelf_id', :carrier_type_id
     ).merge(
@@ -34,17 +34,17 @@ class ManifestationCheckoutStatsController < ApplicationController
     ).count(:id)
 
     @checkout_type_results = Checkout.where(
-      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+      Checkout.arel_table[:created_at].gteq(@manifestation_checkout_stat.start_date)
     ).where(
-      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+      Checkout.arel_table[:created_at].lt(@manifestation_checkout_stat.end_date)
     ).joins(item: :manifestation).group(
       'checkouts.shelf_id', :checkout_type_id
     ).count(:id)
 
     @stats = Checkout.where(
-      Checkout.arel_table[:created_at].gteq @manifestation_checkout_stat.start_date
+      Checkout.arel_table[:created_at].gteq(@manifestation_checkout_stat.start_date)
     ).where(
-      Checkout.arel_table[:created_at].lt @manifestation_checkout_stat.end_date
+      Checkout.arel_table[:created_at].lt(@manifestation_checkout_stat.end_date)
     ).joins(item: :manifestation).group(:manifestation_id).merge(
       Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
     ).order('count_id DESC').page(params[:page]).per(per_page)
@@ -86,7 +86,7 @@ class ManifestationCheckoutStatsController < ApplicationController
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { render json: @manifestation_checkout_stat, status: :created, location: @manifestation_checkout_stat }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @manifestation_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -103,7 +103,7 @@ class ManifestationCheckoutStatsController < ApplicationController
         format.html { redirect_to @manifestation_checkout_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.manifestation_checkout_stat')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @manifestation_checkout_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -121,6 +121,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   end
 
   private
+
   def set_manifestation_checkout_stat
     @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
     authorize @manifestation_checkout_stat

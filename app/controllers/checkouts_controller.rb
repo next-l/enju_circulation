@@ -21,10 +21,12 @@ class CheckoutsController < ApplicationController
       end
     end
 
-    if params[:format] == 'txt'
-      per_page = 65534
+    if %w(txt rss).include?(params[:format].to_s.downcase)
+      per_page = 500
+      page = 1
     else
       per_page = Checkout.default_per_page
+      page = params[:page] || 1
     end
 
     unless icalendar_user
@@ -55,25 +57,16 @@ class CheckoutsController < ApplicationController
         end
       end
 
-      if current_user.try(:has_role?, 'Librarian')
-        if @item
-          item = @item
-          search.build do
-            with(:item_identifier).equal_to item.item_identifier
-          end
-        end
-      else
-        if @item
-          access_denied; return
+      if @item
+        item = @item
+        search.build do
+          with(:item_identifier).equal_to item.item_identifier
         end
       end
 
-      if params[:view] == 'overdue'
-        if params[:days_overdue]
-          date = params[:days_overdue].to_i.days.ago.beginning_of_day
-        else
-          date = 1.days.ago.beginning_of_day
-        end
+      if params[:days_overdue].present?
+        days_overdue = params[:days_overdue].to_i
+        date = days_overdue.days.ago.beginning_of_day
         search.build do
           with(:due_date).less_than date
           with(:checked_in_at).equal_to nil
@@ -95,13 +88,12 @@ class CheckoutsController < ApplicationController
         order_by :created_at, :desc
         facet :reserved
       end
-      page = params[:page] || 1
-      search.query.paginate(page.to_i, Checkout.default_per_page)
+      search.query.paginate(page.to_i, per_page)
       @checkouts = search.execute!.results
       @checkouts_facet = search.facet(:reserved).rows
     end
 
-    @days_overdue = params[:days_overdue] ||= 1
+    @days_overdue = days_overdue if days_overdue
 
     respond_to do |format|
       format.html # index.html.erb
@@ -139,7 +131,7 @@ class CheckoutsController < ApplicationController
         format.html { redirect_to @checkout, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @checkout.errors, status: :unprocessable_entity }
       end
     end
@@ -176,6 +168,7 @@ class CheckoutsController < ApplicationController
   end
 
   private
+
   def set_checkout
     @checkout = Checkout.find(params[:id])
     authorize @checkout

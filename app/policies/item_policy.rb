@@ -20,8 +20,6 @@ class ItemPolicy < ApplicationPolicy
   end
 
   def destroy?
-    if user.try(:has_role?, 'Librarian')
-      record.removable?
-    end
+    record.removable? if user.try(:has_role?, 'Librarian')
   end
 end

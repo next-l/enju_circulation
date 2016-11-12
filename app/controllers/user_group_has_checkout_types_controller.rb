@@ -30,8 +30,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
     get_checkout_type
     get_user_group
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(
-      :checkout_type => @checkout_type,
-      :user_group => @user_group
+      checkout_type: @checkout_type,
+      user_group: @user_group
     )
 
     respond_to do |format|
@@ -55,7 +55,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
         format.json { render json: @user_group_has_checkout_type, status: :created, location: @user_group_has_checkout_type }
       else
         prepare_options
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -70,7 +70,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -88,6 +88,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   end
 
   private
+
   def set_user_group_has_checkout_type
     @user_group_has_checkout_type = UserGroupHasCheckoutType.find(params[:id])
     authorize @user_group_has_checkout_type

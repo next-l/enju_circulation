@@ -1,16 +1,16 @@
 class CheckinsController < ApplicationController
   before_action :set_checkin, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_filter :get_basket, only: [:index, :create]
+  before_action :get_basket, only: [:index, :create]
 
   # GET /checkins
   # GET /checkins.json
   def index
-    if @basket
-      @checkins = @basket.checkins.page(params[:page])
-    else
-      @checkins = Checkin.page(params[:page])
-    end
+    @checkins = if @basket
+                  @basket.checkins.page(params[:page])
+                else
+                  Checkin.page(params[:page])
+                end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -22,7 +22,7 @@ class CheckinsController < ApplicationController
   # GET /checkins/1
   # GET /checkins/1.json
   def show
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,7 +41,7 @@ class CheckinsController < ApplicationController
       @basket.save!
     end
     @checkin = Checkin.new
-    @checkins = Kaminari::paginate_array([]).page(1)
+    @checkins = Kaminari.paginate_array([]).page(1)
     flash[:checkin_basket_id] = @basket.id
 
     respond_to do |format|
@@ -52,7 +52,7 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/1/edit
   def edit
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
   end
 
   # POST /checkins
@@ -70,20 +70,20 @@ class CheckinsController < ApplicationController
     respond_to do |format|
       if @checkin.save
         message = @checkin.item_checkin(current_user)
-        if @checkin.checkout
-          flash[:message] << t('checkin.successfully_checked_in')
-        else
-          flash[:message] << t('checkin.not_checked_out')
-        end
+        flash[:message] << if @checkin.checkout
+                             t('checkin.successfully_checked_in')
+                           else
+                             t('checkin.not_checked_out')
+                           end
         flash[:message] << message if message
         format.html { redirect_to checkins_url(basket_id: @checkin.basket_id) }
         format.json { render json: @checkin, status: :created, location: @checkin }
         format.js { redirect_to checkins_url(basket_id: @basket.id, format: :js) }
       else
         @checkins = @basket.checkins.page(1)
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @checkin.errors, status: :unprocessable_entity }
-        format.js { render action: "index" }
+        format.js { render action: 'index' }
       end
     end
   end
@@ -99,7 +99,7 @@ class CheckinsController < ApplicationController
         format.html { redirect_to @checkin, notice: t('controller.successfully_updated', model: t('activerecord.models.checkin')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @checkin.errors, status: :unprocessable_entity }
       end
     end
@@ -108,7 +108,7 @@ class CheckinsController < ApplicationController
   # DELETE /checkins/1
   # DELETE /checkins/1.json
   def destroy
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
     @checkin.destroy
 
     respond_to do |format|
@@ -118,6 +118,7 @@ class CheckinsController < ApplicationController
   end
 
   private
+
   def set_checkin
     @checkin = Checkin.find(params[:id])
     authorize @checkin

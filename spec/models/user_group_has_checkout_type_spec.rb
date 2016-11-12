@@ -1,16 +1,15 @@
-# -*- encoding: utf-8 -*-
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserGroupHasCheckoutType do
   fixtures :all
 
-  it "should create lending_policy" do
+  it 'should create lending_policy' do
     old_count = LendingPolicy.count
     user_group_has_checkout_types(:user_group_has_checkout_type_00005).create_lending_policy
     (user_group_has_checkout_types(:user_group_has_checkout_type_00005).checkout_type.items.count + old_count).should eq LendingPolicy.count
   end
 
-  it "should update lending_policy" do
+  it 'should update lending_policy' do
     old_updated_at = lending_policies(:lending_policy_00004).updated_at
     user_group_has_checkout_types(:user_group_has_checkout_type_00002).checkout_period = 100
     user_group_has_checkout_types(:user_group_has_checkout_type_00002).checkout_renewal_limit = 5
@@ -21,7 +20,7 @@ describe UserGroupHasCheckoutType do
     lending_policies(:lending_policy_00004).renewal.should eq 5
   end
 
-  it "should respond to update_current_checkout_count" do
+  it 'should respond to update_current_checkout_count' do
     UserGroupHasCheckoutType.update_current_checkout_count.should be_truthy
   end
 end

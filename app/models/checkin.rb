@@ -1,6 +1,6 @@
 class Checkin < ActiveRecord::Base
   default_scope { order('checkins.id DESC') }
-  scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
+  scope :on, ->(date) { where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day) }
   has_one :checkout
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
@@ -16,9 +16,7 @@ class Checkin < ActiveRecord::Base
   paginates_per 10
 
   def available_for_checkin?
-    unless basket
-      return nil
-    end
+    return nil unless basket
 
     if item.blank?
       errors[:base] << I18n.t('checkin.item_not_found')
@@ -62,14 +60,10 @@ class Checkin < ActiveRecord::Base
       end
 
       # メールとメッセージの送信
-      #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
-      #Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, subject: message_template.title, body: message_template.body, recipient: item.manifestation.next_reservation.user)
+      # ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
+      # Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, subject: message_template.title, body: message_template.body, recipient: item.manifestation.next_reservation.user)
     end
-    if message.present?
-      message
-    else
-      nil
-    end
+    message if message.present?
   end
 
   def set_item

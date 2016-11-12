@@ -17,11 +17,11 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/1
   # GET /user_reserve_stats/1.json
   def show
-    if params[:format] == 'txt'
-      per_page = 65534
-    else
-      per_page = ReserveStatHasUser.default_per_page
-    end
+    per_page = if params[:format] == 'txt'
+                 65_534
+               else
+                 ReserveStatHasUser.default_per_page
+               end
     @stats = @user_reserve_stat.reserve_stat_has_users.order('reserves_count DESC, user_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
@@ -58,7 +58,7 @@ class UserReserveStatsController < ApplicationController
         format.html { redirect_to @user_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.user_reserve_stat')) }
         format.json { render json: @user_reserve_stat, status: :created, location: @user_reserve_stat }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @user_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -75,7 +75,7 @@ class UserReserveStatsController < ApplicationController
         format.html { redirect_to @user_reserve_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.user_reserve_stat')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @user_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -93,6 +93,7 @@ class UserReserveStatsController < ApplicationController
   end
 
   private
+
   def set_user_reserve_stat
     @user_reserve_stat = UserReserveStat.find(params[:id])
     authorize @user_reserve_stat

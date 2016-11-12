@@ -9,7 +9,7 @@ module EnjuCirculation
         'Available On Shelf',
         'On Loan',
         'Waiting To Be Reshelved'
-      ]
+      ].freeze
       FOR_CHECKOUT_USE_RESTRICTION = [
         'Available For Supply Without Return',
         'Limited Circulation, Long Loan Period',
@@ -21,26 +21,28 @@ module EnjuCirculation
         'Term Loan',
         'User Signature Required',
         'Limited Circulation, Normal Loan Period'
-      ]
+      ].freeze
 
       def enju_circulation_item_model
         include InstanceMethods
-        has_many :reserves, :foreign_key => :manifestation_id
+        has_many :reserves, foreign_key: :manifestation_id
 
-        scope :for_checkout, -> { includes(:circulation_status, :use_restriction).where(
+        scope :for_checkout, -> {
+          includes(:circulation_status, :use_restriction).where(
             'circulation_statuses.name' => FOR_CHECKOUT_CIRCULATION_STATUS,
             'use_restrictions.name' => FOR_CHECKOUT_USE_RESTRICTION
-          ).where('item_identifier IS NOT NULL') }
+          ).where('item_identifier IS NOT NULL')
+        }
         scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
         has_many :checkouts
         has_many :reserves
         has_many :checked_items
-        has_many :baskets, :through => :checked_items
-        belongs_to :circulation_status, :validate => true
+        has_many :baskets, through: :checked_items
+        belongs_to :circulation_status, validate: true
         belongs_to :checkout_type
-        has_many :lending_policies, :dependent => :destroy
-        has_one :item_has_use_restriction, :dependent => :destroy
-        has_one :use_restriction, :through => :item_has_use_restriction
+        has_many :lending_policies, dependent: :destroy
+        has_one :item_has_use_restriction, dependent: :destroy
+        has_one :use_restriction, through: :item_has_use_restriction
         validates_associated :circulation_status, :checkout_type
         validates_presence_of :circulation_status, :checkout_type
         searchable do
@@ -56,12 +58,12 @@ module EnjuCirculation
 
     module InstanceMethods
       def set_circulation_status
-        self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
+        self.circulation_status = CirculationStatus.where(name: 'In Process').first if circulation_status.nil?
       end
 
       def checkout_status(user)
         return nil unless user
-         user.profile.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
+        user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: checkout_type.id).first
       end
 
       def reserved?
@@ -70,7 +72,7 @@ module EnjuCirculation
       end
 
       def rent?
-        return true if self.checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
+        return true if checkouts.not_returned.select(:item_id).detect { |checkout| checkout.item_id == id }
         false
       end
 
@@ -115,8 +117,8 @@ module EnjuCirculation
       end
 
       def retained?
-        if manifestation.next_reservation.try(:current_state) == 'retained' and  manifestation.next_reservation.item == self
-          return true
+        if (manifestation.next_reservation.try(:current_state) == 'retained') && (manifestation.next_reservation.item == self)
+          true
         else
           false
         end
@@ -153,7 +155,7 @@ module EnjuCirculation
       end
 
       def next_reservation
-        Reserve.waiting.where(:item_id => id).first
+        Reserve.waiting.where(item_id: id).first
       end
 
       def latest_checkout

@@ -37,7 +37,7 @@ class ManifestationPolicy < ApplicationPolicy
 
   def destroy?
     if user.try(:has_role?, 'Librarian')
-      if  record.items.empty? and !record.series_master? and !record.is_reserved?
+      if  record.items.empty? && !record.series_master? && !record.is_reserved?
         if record.series_master?
           if record.children.empty?
             true

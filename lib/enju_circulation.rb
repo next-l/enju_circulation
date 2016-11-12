@@ -1,5 +1,5 @@
-require "enju_circulation/engine"
-require "enju_circulation/helper"
+require 'enju_circulation/engine'
+require 'enju_circulation/helper'
 
 module EnjuCirculation
 end

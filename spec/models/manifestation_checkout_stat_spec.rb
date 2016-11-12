@@ -1,17 +1,16 @@
-# -*- encoding: utf-8 -*-
-require 'spec_helper'
+require 'rails_helper'
 
 describe ManifestationCheckoutStat do
   fixtures :manifestation_checkout_stats
 
-  it "calculates manifestation count" do
+  it 'calculates manifestation count' do
     old_message_count = Message.count
     manifestation_checkout_stats(:one).transition_to!(:started).should be_truthy
     Message.count.should eq old_message_count + 1
     Message.order(:id).last.subject.should eq '集計が完了しました'
   end
 
-  it "should calculate in background" do
+  it 'should calculate in background' do
     ManifestationCheckoutStatJob.perform_later(manifestation_checkout_stats(:one)).should be_truthy
   end
 end

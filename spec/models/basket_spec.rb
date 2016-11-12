@@ -1,14 +1,13 @@
-# -*- encoding: utf-8 -*-
-require 'spec_helper'
+require 'rails_helper'
 
 describe Basket do
   fixtures :all
 
-  it "should not create basket when user is not active" do
-    Basket.create(:user => users(:user4)).id.should be_nil
+  it 'should not create basket when user is not active' do
+    Basket.create(user: users(:user4)).id.should be_nil
   end
 
-  it "should save shelf and library" do
+  it 'should save shelf and library' do
     items(:item_00011).checkouts.count.should eq 0
     basket_1 = Basket.new
     basket_1.user = users(:admin)
@@ -21,7 +20,7 @@ describe Basket do
     items(:item_00011).checkouts.order('id DESC').first.library.name.should eq users(:librarian1).profile.library.name
   end
 
-  it "should not check out items that are already checked out" do
+  it 'should not check out items that are already checked out' do
     items(:item_00011).checkouts.count.should eq 0
     basket_1 = Basket.new
     basket_1.user = users(:admin)
@@ -36,11 +35,11 @@ describe Basket do
     checked_item_2.item = items(:item_00011)
     checked_item_2.save
     basket_1.basket_checkout(users(:librarian1))
-    lambda{basket_2.basket_checkout(users(:librarian1))}.should raise_exception ActiveRecord::RecordInvalid
+    -> { basket_2.basket_checkout(users(:librarian1)) }.should raise_exception ActiveRecord::RecordInvalid
     items(:item_00011).checkouts.order('id DESC').first.user.should eq users(:admin)
   end
 
-  it "should change reservation status" do
+  it 'should change reservation status' do
     basket = Basket.new
     basket.user = users(:librarian2)
     basket.save
@@ -64,4 +63,3 @@ end
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-

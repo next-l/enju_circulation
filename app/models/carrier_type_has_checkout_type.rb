@@ -1,6 +1,6 @@
 class CarrierTypeHasCheckoutType < ActiveRecord::Base
-  scope :available_for_carrier_type, lambda {|carrier_type| includes(:carrier_type).where('carrier_types.name = ?', carrier_type.name)}
-  scope :available_for_user_group, lambda {|user_group| includes(checkout_type: :user_groups).where('user_groups.name = ?', user_group.name)}
+  scope :available_for_carrier_type, ->(carrier_type) { includes(:carrier_type).where('carrier_types.name = ?', carrier_type.name) }
+  scope :available_for_user_group, ->(user_group) { includes(checkout_type: :user_groups).where('user_groups.name = ?', user_group.name) }
 
   belongs_to :carrier_type, validate: true
   belongs_to :checkout_type, validate: true

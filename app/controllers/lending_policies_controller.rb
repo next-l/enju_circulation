@@ -1,8 +1,8 @@
 class LendingPoliciesController < ApplicationController
   before_action :set_lending_policy, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_filter :get_user_group, :get_item
-  before_filter :prepare_options, only: [:new, :edit]
+  before_action :get_user_group, :get_item
+  before_action :prepare_options, only: [:new, :edit]
 
   # GET /lending_policies
   # GET /lending_policies.json
@@ -46,7 +46,7 @@ class LendingPoliciesController < ApplicationController
         format.json { render json: @lending_policy, status: :created, location: @lending_policy }
       else
         prepare_options
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @lending_policy.errors, status: :unprocessable_entity }
       end
     end
@@ -61,7 +61,7 @@ class LendingPoliciesController < ApplicationController
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @lending_policy.errors, status: :unprocessable_entity }
       end
     end
@@ -79,6 +79,7 @@ class LendingPoliciesController < ApplicationController
   end
 
   private
+
   def set_lending_policy
     @lending_policy = LendingPolicy.find(params[:id])
     authorize @lending_policy

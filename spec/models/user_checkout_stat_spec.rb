@@ -1,17 +1,16 @@
-# -*- encoding: utf-8 -*-
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserCheckoutStat do
   fixtures :user_checkout_stats
 
-  it "calculates user count" do
+  it 'calculates user count' do
     old_message_count = Message.count
     user_checkout_stats(:one).transition_to!(:started).should be_truthy
     Message.count.should eq old_message_count + 1
     Message.order(:id).last.subject.should eq '集計が完了しました'
   end
 
-  it "should calculate in background" do
+  it 'should calculate in background' do
     UserCheckoutStatJob.perform_later(user_checkout_stats(:one)).should be_truthy
   end
 end

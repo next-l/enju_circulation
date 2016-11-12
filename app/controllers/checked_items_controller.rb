@@ -6,11 +6,11 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items
   # GET /checked_items.json
   def index
-    if @basket
-      @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
-    else
-      @checked_items = CheckedItem.order('created_at DESC').page(params[:page])
-    end
+    @checked_items = if @basket
+                       @basket.checked_items.order('created_at DESC').page(params[:page])
+                     else
+                       CheckedItem.order('created_at DESC').page(params[:page])
+                     end
     @checked_item = CheckedItem.new
 
     respond_to do |format|
@@ -71,9 +71,9 @@ class CheckedItemsController < ApplicationController
         format.js { redirect_to(checked_items_url(basket_id: @basket.id, format: :js)) }
       else
         @checked_items = @basket.checked_items.order('created_at DESC').page(1)
-        format.html { render action: "index" }
+        format.html { render action: 'index' }
         format.json { render json: @checked_item.errors, status: :unprocessable_entity }
-        format.js { render action: "index" }
+        format.js { render action: 'index' }
       end
     end
   end
@@ -93,7 +93,7 @@ class CheckedItemsController < ApplicationController
         format.html { redirect_to checked_item_url(@checked_item), notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @checked_item.errors, status: :unprocessable_entity }
       end
     end
@@ -111,6 +111,7 @@ class CheckedItemsController < ApplicationController
   end
 
   private
+
   def set_checked_item
     @checked_item = CheckedItem.find(params[:id])
     authorize @checked_item

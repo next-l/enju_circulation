@@ -6,11 +6,11 @@ class ItemHasUseRestrictionsController < ApplicationController
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
   def index
-    if @item
-      @item_has_use_restrictions = @item.item_has_use_restrictions.order('item_has_use_restrictions.id DESC').page(params[:page])
-    else
-      @item_has_use_restrictions = ItemHasUseRestriction.order('id DESC').page(params[:page])
-    end
+    @item_has_use_restrictions = if @item
+                                   @item.item_has_use_restrictions.order('item_has_use_restrictions.id DESC').page(params[:page])
+                                 else
+                                   ItemHasUseRestriction.order('id DESC').page(params[:page])
+                                 end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -55,7 +55,7 @@ class ItemHasUseRestrictionsController < ApplicationController
         format.json { render json: @item_has_use_restriction, status: :created, location: @item_has_use_restriction }
       else
         @use_restrictions = UseRestriction.order(:position)
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -71,7 +71,7 @@ class ItemHasUseRestrictionsController < ApplicationController
         format.json { head :no_content }
       else
         @use_restrictions = UseRestriction.order(:position)
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -89,6 +89,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   end
 
   private
+
   def set_item_has_use_restriction
     @item_has_use_restriction = ItemHasUseRestriction.find(params[:id])
     authorize @item_has_use_restriction

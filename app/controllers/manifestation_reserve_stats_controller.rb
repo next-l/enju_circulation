@@ -1,7 +1,7 @@
 class ManifestationReserveStatsController < ApplicationController
   before_action :set_manifestation_reserve_stat, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  after_filter :convert_charset, only: :show
+  after_action :convert_charset, only: :show
 
   # GET /manifestation_reserve_stats
   # GET /manifestation_reserve_stats.json
@@ -17,11 +17,11 @@ class ManifestationReserveStatsController < ApplicationController
   # GET /manifestation_reserve_stats/1
   # GET /manifestation_reserve_stats/1.json
   def show
-    if params[:format] == 'txt'
-      per_page = 65534
-    else
-      per_page = ReserveStatHasManifestation.default_per_page
-    end
+    per_page = if params[:format] == 'txt'
+                 65_534
+               else
+                 ReserveStatHasManifestation.default_per_page
+               end
     @stats = @manifestation_reserve_stat.reserve_stat_has_manifestations.order('reserves_count DESC, manifestation_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
@@ -58,7 +58,7 @@ class ManifestationReserveStatsController < ApplicationController
         format.html { redirect_to @manifestation_reserve_stat, notice: t('statistic.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { render json: @manifestation_reserve_stat, status: :created, location: @manifestation_reserve_stat }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -75,7 +75,7 @@ class ManifestationReserveStatsController < ApplicationController
         format.html { redirect_to @manifestation_reserve_stat, notice: t('controller.successfully_created', model: t('activerecord.models.manifestation_reserve_stat')) }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @manifestation_reserve_stat.errors, status: :unprocessable_entity }
       end
     end
@@ -93,6 +93,7 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   private
+
   def set_manifestation_reserve_stat
     @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
     authorize @manifestation_reserve_stat
