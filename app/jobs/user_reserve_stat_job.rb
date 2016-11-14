@@ -1,5 +1,5 @@
 class UserReserveStatJob < ActiveJob::Base
-  queue_as :default
+  queue_as :enju_leaf
 
   def perform(user_reserve_stat)
     user_reserve_stat.transition_to!(:started)

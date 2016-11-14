@@ -6,11 +6,11 @@ class CheckoutTypesController < ApplicationController
   # GET /checkout_types
   # GET /checkout_types.json
   def index
-    @checkout_types = if @user_group
-                        @user_group.checkout_types.order('checkout_types.position')
-                      else
-                        CheckoutType.order(:position)
-                      end
+    if @user_group
+      @checkout_types = @user_group.checkout_types.order('checkout_types.position')
+    else
+      @checkout_types = CheckoutType.order(:position)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -51,11 +51,11 @@ class CheckoutTypesController < ApplicationController
   # POST /checkout_types
   # POST /checkout_types.json
   def create
-    @checkout_type = if @user_group
-                       @user_group.checkout_types.new(checkout_type_params)
-                     else
-                       CheckoutType.new(checkout_type_params)
-                     end
+    if @user_group
+      @checkout_type = @user_group.checkout_types.new(checkout_type_params)
+    else
+      @checkout_type = CheckoutType.new(checkout_type_params)
+    end
 
     respond_to do |format|
       if @checkout_type.save
@@ -104,7 +104,6 @@ class CheckoutTypesController < ApplicationController
   def set_checkout_type
     @checkout_type = CheckoutType.find(params[:id])
     authorize @checkout_type
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy

@@ -106,11 +106,11 @@ class Checkout < ActiveRecord::Base
   def get_new_due_date
     return nil unless user
     if item
-      new_due_date = if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
-                       Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day
-                     else
-                       due_date
-                     end
+      if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
+        new_due_date = Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day
+      else
+        new_due_date = due_date
+      end
     end
   end
 

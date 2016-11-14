@@ -100,20 +100,19 @@ module EnjuCirculation
     def retain(librarian)
       self.class.transaction do
         reservation = manifestation.next_reservation
-        unless reservation.nil?
+        if reservation
           reservation.item = self
-          reservation.transition_to!(:retained)
+          reservation.transition_to!(:retained) unless reservation.retained?
           reservation.send_message(librarian)
         end
       end
     end
 
     def retained?
-      if (manifestation.next_reservation.try(:current_state) == 'retained') && (manifestation.next_reservation.item == self)
-        true
-      else
-        false
+      manifestation.reserves.retained.each do |reserve|
+        return true if reserve.item == self
       end
+      false
     end
 
     def lending_rule(user)

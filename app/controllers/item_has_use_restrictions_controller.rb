@@ -6,11 +6,11 @@ class ItemHasUseRestrictionsController < ApplicationController
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
   def index
-    @item_has_use_restrictions = if @item
-                                   @item.item_has_use_restrictions.order('item_has_use_restrictions.id DESC').page(params[:page])
-                                 else
-                                   ItemHasUseRestriction.order('id DESC').page(params[:page])
-                                 end
+    if @item
+      @item_has_use_restrictions = @item.item_has_use_restrictions.order('item_has_use_restrictions.id DESC').page(params[:page])
+    else
+      @item_has_use_restrictions = ItemHasUseRestriction.order('id DESC').page(params[:page])
+    end
 
     respond_to do |format|
       format.html # index.html.erb

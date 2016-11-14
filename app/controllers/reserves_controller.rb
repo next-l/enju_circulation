@@ -3,6 +3,7 @@ class ReservesController < ApplicationController
   before_action :check_policy, only: [:index, :new, :create]
   before_action :prepare_options, only: [:new, :edit]
   before_action :get_user, only: [:index, :new]
+  before_action :store_page
   after_action :convert_charset, only: :index
   helper_method :get_manifestation
   helper_method :get_item
@@ -33,12 +34,12 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if params[:format].to_s.casecmp('txt').zero?
+    if %w(txt rss).include?(params[:format].to_s.downcase)
+      per_page = 500
       page = 1
-      per_page = 65_534
     else
-      page ||= params[:page] || 1
-      per_page ||= Reserve.default_per_page
+      per_page = Reserve.default_per_page
+      page = params[:page] || 1
     end
 
     if (params[:mode] == 'hold') && current_user.has_role?('Librarian')
@@ -207,11 +208,11 @@ class ReservesController < ApplicationController
 
     respond_to do |format|
       if @reserve.save
-        flash[:notice] = if @reserve.current_state == 'canceled'
-                           t('reserve.reservation_was_canceled')
-                         else
-                           t('controller.successfully_updated', model: t('activerecord.models.reserve'))
-                         end
+        if @reserve.current_state == 'canceled'
+          flash[:notice] = t('reserve.reservation_was_canceled')
+        else
+          flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.reserve'))
+        end
         format.html { redirect_to @reserve }
         format.json { head :no_content }
       else

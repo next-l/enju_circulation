@@ -88,7 +88,6 @@ class UseRestrictionsController < ApplicationController
   def set_use_restriction
     @use_restriction = UseRestriction.find(params[:id])
     authorize @use_restriction
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy

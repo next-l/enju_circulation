@@ -12,7 +12,9 @@ class CirculationStatusPolicy < ApplicationPolicy
   end
 
   def update?
-    true if user.try(:has_role?, 'Administrator')
+    if user.try(:has_role?, 'Administrator')
+      true
+    end
   end
 
   def destroy?

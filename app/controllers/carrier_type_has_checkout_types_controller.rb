@@ -7,7 +7,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # GET /carrier_type_has_checkout_types
   # GET /carrier_type_has_checkout_types.json
   def index
-    @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.all
+    @carrier_type_has_checkout_types = CarrierTypeHasCheckoutType.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

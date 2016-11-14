@@ -70,11 +70,11 @@ class CheckinsController < ApplicationController
     respond_to do |format|
       if @checkin.save
         message = @checkin.item_checkin(current_user)
-        flash[:message] << if @checkin.checkout
-                             t('checkin.successfully_checked_in')
-                           else
-                             t('checkin.not_checked_out')
-                           end
+        if @checkin.checkout
+          flash[:message] << t('checkin.successfully_checked_in')
+        else
+          flash[:message] << t('checkin.not_checked_out')
+        end
         flash[:message] << message if message
         format.html { redirect_to checkins_url(basket_id: @checkin.basket_id) }
         format.json { render json: @checkin, status: :created, location: @checkin }
@@ -122,7 +122,6 @@ class CheckinsController < ApplicationController
   def set_checkin
     @checkin = Checkin.find(params[:id])
     authorize @checkin
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy

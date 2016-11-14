@@ -5,7 +5,7 @@ class DemandsController < ApplicationController
   # GET /demands
   # GET /demands.json
   def index
-    @demands = Demand.order(created_at: :desc).page(params[:page])
+    @demands = Demand.order('id DESC').page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -84,7 +84,6 @@ class DemandsController < ApplicationController
   def set_demand
     @demand = Demand.find(params[:id])
     authorize @demand
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy
@@ -92,6 +91,6 @@ class DemandsController < ApplicationController
   end
 
   def demand_params
-    params.require(:demand).permit(:user_id, :item_id)
+    params.fetch(:demand, {}).permit
   end
 end
