@@ -6,7 +6,7 @@ class ReservePolicy < ApplicationPolicy
   def show?
     if user.try(:has_role?, 'Librarian')
       true
-    elsif user && (user == record.user)
+    elsif user and user == record.user
       true
     end
   end
@@ -22,7 +22,7 @@ class ReservePolicy < ApplicationPolicy
   def update?
     if user.try(:has_role?, 'Librarian')
       true
-    elsif user && (user == record.user)
+    elsif user and user == record.user
       true
     end
   end
@@ -30,7 +30,7 @@ class ReservePolicy < ApplicationPolicy
   def destroy?
     if user.try(:has_role?, 'Librarian')
       true
-    elsif user && (user == record.user)
+    elsif user and user == record.user
       true
     end
   end

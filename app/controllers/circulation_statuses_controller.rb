@@ -88,7 +88,6 @@ class CirculationStatusesController < ApplicationController
   def set_circulation_status
     @circulation_status = CirculationStatus.find(params[:id])
     authorize @circulation_status
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy

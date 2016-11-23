@@ -6,11 +6,11 @@ class CheckedItemsController < ApplicationController
   # GET /checked_items
   # GET /checked_items.json
   def index
-    @checked_items = if @basket
-                       @basket.checked_items.order('created_at DESC').page(params[:page])
-                     else
-                       CheckedItem.order('created_at DESC').page(params[:page])
-                     end
+    if @basket
+      @checked_items = @basket.checked_items.order('created_at DESC').page(params[:page])
+    else
+      @checked_items = CheckedItem.order('created_at DESC').page(params[:page])
+    end
     @checked_item = CheckedItem.new
 
     respond_to do |format|
@@ -115,7 +115,6 @@ class CheckedItemsController < ApplicationController
   def set_checked_item
     @checked_item = CheckedItem.find(params[:id])
     authorize @checked_item
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy

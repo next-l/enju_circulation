@@ -6,6 +6,8 @@ rvm:
 before_script:
   - psql -c 'create database enju_circulation_dummy_test;' -U postgres
   - bundle exec rake db:migrate
+after_script:
+  - bundle exec codeclimate-test-reporter
 services:
   - redis-server
 env:
@@ -16,5 +18,3 @@ notifications:
 sudo: false
 addons:
   postgresql: "9.4"
-  code_climate:
-    repo_token: 5fd85c89a28a18f513a575ab6d1bf546c48b1f4b51f3efd18681129e13e595b2

@@ -85,13 +85,13 @@ class CheckedItem < ActiveRecord::Base
       lending_rule = item.lending_rule(basket.user)
       return nil if lending_rule.nil?
 
-      self.due_date = if lending_rule.fixed_due_date.blank?
-                        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-                        lending_rule.loan_period.days.since(Time.zone.now).end_of_day
-                      else
-                        # self.due_date = item_checkout_type.fixed_due_date
-                        lending_rule.fixed_due_date.tomorrow.end_of_day
-                      end
+      if lending_rule.fixed_due_date.blank?
+        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
+        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
+      else
+        # self.due_date = item_checkout_type.fixed_due_date
+        self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
+      end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)
         self.due_date = if item_checkout_type.set_due_date_before_closing_day

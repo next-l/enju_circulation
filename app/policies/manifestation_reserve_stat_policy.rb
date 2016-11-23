@@ -16,6 +16,6 @@ class ManifestationReserveStatPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.try(:has_role?, 'Administrator')
+    user.try(:has_role?, 'Librarian')
   end
 end

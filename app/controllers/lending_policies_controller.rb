@@ -7,7 +7,11 @@ class LendingPoliciesController < ApplicationController
   # GET /lending_policies
   # GET /lending_policies.json
   def index
-    @lending_policies = LendingPolicy.page(params[:page])
+    if @item
+      @lending_policies = @item.lending_policies.page(params[:page])
+    else
+      @lending_policies = LendingPolicy.page(params[:page])
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -83,7 +87,6 @@ class LendingPoliciesController < ApplicationController
   def set_lending_policy
     @lending_policy = LendingPolicy.find(params[:id])
     authorize @lending_policy
-    access_denied unless LibraryGroup.site_config.network_access_allowed?(request.ip)
   end
 
   def check_policy
