@@ -5,8 +5,9 @@ require 'tasks/reserve'
 require 'tasks/use_restriction'
 
 namespace :enju_circulation do
-  desc "create initial records for enju_circulation"
-  task :setup => :environment do
+  desc 'create initial records for enju_circulation'
+  task setup: :environment do
+    ActiveRecord::FixtureSet.create_fixtures('db/fixtures/enju_circulation', 'checkout_types.yml')
     Dir.glob(Rails.root.to_s + '/db/fixtures/enju_circulation/*.yml').each do |file|
       ActiveRecord::FixtureSet.create_fixtures('db/fixtures/enju_circulation', File.basename(file, '.*'))
     end
