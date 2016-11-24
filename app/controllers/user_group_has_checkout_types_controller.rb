@@ -1,7 +1,7 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
   before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  helper_method :get_user_group, :get_checkout_type
+  helper_method :set_user_group, :set_checkout_type
   before_action :prepare_options, only: [:new, :edit]
 
   # GET /user_group_has_checkout_types
@@ -28,8 +28,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # GET /user_group_has_checkout_types/new.json
   def new
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(
-      checkout_type: get_checkout_type,
-      user_group: get_user_group
+      checkout_type: set_checkout_type,
+      user_group: set_user_group
     )
 
     respond_to do |format|

@@ -1,14 +1,11 @@
 class CreateDemands < ActiveRecord::Migration
   def change
     create_table :demands do |t|
-      t.integer :user_id
-      t.integer :item_id
-      t.integer :message_id
+      t.references :user, index: true
+      t.references :item, index: true
+      t.references :message, index: true
 
       t.timestamps null: false
     end
-    add_index :demands, :user_id
-    add_index :demands, :item_id
-    add_index :demands, :message_id
   end
 end

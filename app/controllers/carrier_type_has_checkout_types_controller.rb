@@ -1,7 +1,7 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
   before_action :set_carrier_type_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_checkout_type
+  before_action :set_checkout_type
   before_action :prepare_options, only: [:new, :edit]
 
   # GET /carrier_type_has_checkout_types

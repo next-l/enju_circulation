@@ -1,7 +1,7 @@
 class LendingPoliciesController < ApplicationController
   before_action :set_lending_policy, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_user_group, :get_item
+  before_action :set_user_group, :get_item
   before_action :prepare_options, only: [:new, :edit]
 
   # GET /lending_policies

@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  include EnjuLeaf::Controller
   include EnjuBiblio::Controller
   include EnjuLibrary::Controller
   include EnjuCirculation::Controller

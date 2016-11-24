@@ -2,6 +2,8 @@ class Demand < ActiveRecord::Base
   belongs_to :user
   belongs_to :item
   belongs_to :message
+  validates :user_id, presence: true
+  validates :item_id, presence: true
 end
 
 # == Schema Information
