@@ -123,7 +123,7 @@ describe DemandsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = { item_id: 3, user_id: 2 }
+      @attrs = { item_identifier: '00003' }
       @invalid_attrs = { item_id: 'invalid' }
     end
 

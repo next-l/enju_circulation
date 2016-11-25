@@ -5,7 +5,7 @@ class DemandsController < ApplicationController
   # GET /demands
   # GET /demands.json
   def index
-    @demands = Demand.order('id DESC').page(params[:page])
+    @demands = Demand.order(created_at: :desc).page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,6 +42,8 @@ class DemandsController < ApplicationController
   # POST /demands.json
   def create
     @demand = Demand.new(demand_params)
+    @demand.item = Item.find_by(item_identifier: @demand.item_identifier)
+    @demand.user = current_user
 
     respond_to do |format|
       if @demand.save
@@ -91,6 +93,6 @@ class DemandsController < ApplicationController
   end
 
   def demand_params
-    params.fetch(:demand, {}).permit
+    params.fetch(:demand, {}).permit(:item_identifier)
   end
 end

@@ -4,6 +4,8 @@ class Demand < ActiveRecord::Base
   belongs_to :message
   validates :user_id, presence: true
   validates :item_id, presence: true
+
+  attr_accessor :item_identifier
 end
 
 # == Schema Information

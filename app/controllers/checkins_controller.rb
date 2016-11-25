@@ -1,7 +1,7 @@
 class CheckinsController < ApplicationController
   before_action :set_checkin, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_basket, only: [:index, :create]
+  before_action :set_basket, only: [:index, :create]
 
   # GET /checkins
   # GET /checkins.json

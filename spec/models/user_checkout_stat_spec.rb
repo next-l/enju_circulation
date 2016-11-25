@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserCheckoutStat do
-  fixtures :user_checkout_stats
+  fixtures :user_checkout_stats, :messages
 
   it 'calculates user count' do
     old_message_count = Message.count

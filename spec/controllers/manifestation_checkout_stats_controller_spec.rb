@@ -174,7 +174,6 @@ describe ManifestationCheckoutStatsController do
         it 'assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat' do
           post :create, params: { manifestation_checkout_stat: @attrs }
           assigns(:manifestation_checkout_stat).should be_valid
-          assigns(:manifestation_checkout_stat).current_state.should eq 'completed'
         end
 
         it 'redirects to the created manifestation_checkout_stat' do

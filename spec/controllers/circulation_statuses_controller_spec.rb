@@ -307,7 +307,7 @@ describe CirculationStatusesController do
         end
 
         it 'moves its position when specified' do
-          put :update, params: { id: @circulation_status.id, circulation_status: @attrs }, move: 'lower'
+          put :update, params: { id: @circulation_status.id, circulation_status: @attrs, move: 'lower' }
           response.should redirect_to(circulation_statuses_url)
         end
       end

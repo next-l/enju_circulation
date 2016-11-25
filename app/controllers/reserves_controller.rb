@@ -5,8 +5,8 @@ class ReservesController < ApplicationController
   before_action :set_user, only: [:index, :new]
   before_action :store_page
   after_action :convert_charset, only: :index
-  helper_method :get_manifestation
-  helper_method :get_item
+  helper_method :set_manifestation
+  helper_method :set_item
 
   # GET /reserves
   # GET /reserves.json

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserReserveStat do
-  fixtures :user_reserve_stats
+  fixtures :user_reserve_stats, :messages
 
   it 'calculates user count' do
     old_message_count = Message.count
