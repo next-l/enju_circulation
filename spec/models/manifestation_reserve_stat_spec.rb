@@ -10,10 +10,6 @@ describe ManifestationReserveStat do
     Message.order(:id).last.subject.should eq '集計が完了しました'
     manifestation_reserve_stats(:one).current_state.should eq 'completed'
   end
-
-  it 'should calculate in background' do
-    ManifestationReserveStatJob.perform_later(manifestation_reserve_stats(:one)).should be_truthy
-  end
 end
 
 # == Schema Information

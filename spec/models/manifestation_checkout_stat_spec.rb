@@ -10,10 +10,6 @@ describe ManifestationCheckoutStat do
     Message.order(:id).last.subject.should eq '集計が完了しました'
     manifestation_checkout_stats(:one).current_state.should eq 'completed'
   end
-
-  it 'should calculate in background' do
-    ManifestationCheckoutStatJob.perform_later(manifestation_checkout_stats(:one)).should be_truthy
-  end
 end
 
 # == Schema Information
