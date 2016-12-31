@@ -33,7 +33,7 @@ class UserReserveStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
-    #send_message
+    send_message
   end
 
   private
