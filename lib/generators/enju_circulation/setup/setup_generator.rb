@@ -16,7 +16,7 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     inject_into_class 'app/models/user.rb', User do
       "  include EnjuCirculation::EnjuUser\n"
     end
-    append_to_file 'config/initializers/enju_leaf.rb', <<EOS
+    append_to_file 'app/models/user.rb', <<EOS
 Accept.include(EnjuCirculation::EnjuAccept)
 Basket.include(EnjuCirculation::EnjuBasket)
 CarrierType.include(EnjuCirculation::EnjuCarrierType)
