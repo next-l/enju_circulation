@@ -1,7 +1,7 @@
 class ItemHasUseRestrictionsController < ApplicationController
   before_action :set_item_has_use_restriction, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_item
+  before_action :set_parent_item
 
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
