@@ -81,9 +81,9 @@ end
 #
 #  id           :integer          not null, primary key
 #  item_id      :integer          not null
-#  librarian_id :integer
-#  basket_id    :integer
-#  created_at   :datetime
-#  updated_at   :datetime
+#  librarian_id :integer          not null
+#  basket_id    :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  lock_version :integer          default(0), not null
 #
