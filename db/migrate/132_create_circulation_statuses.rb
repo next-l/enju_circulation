@@ -1,16 +1,12 @@
-class CreateCirculationStatuses < ActiveRecord::Migration
-  def self.up
+class CreateCirculationStatuses < ActiveRecord::Migration[5.0]
+  def change
     create_table :circulation_statuses do |t|
       t.string :name, null: false
-      t.text :display_name
+      t.jsonb :display_name_translations
       t.text :note
       t.integer :position
 
       t.timestamps
     end
-  end
-
-  def self.down
-    drop_table :circulation_statuses
   end
 end

@@ -1,6 +1,6 @@
-class CreateManifestations < ActiveRecord::Migration
+class CreateManifestations < ActiveRecord::Migration[5.0]
   def change
-    create_table :manifestations do |t|
+    create_table :manifestations, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.text :original_title, null: false
       t.text :title_alternative
       t.text :title_transcription
@@ -32,10 +32,10 @@ class CreateManifestations < ActiveRecord::Migration
       t.integer :frequency_id, default: 1, null: false
       t.boolean :subscription_master, default: false, null: false
     end
-    # add_index :manifestations, :carrier_type_id
-    # add_index :manifestations, :required_role_id
+    #add_index :manifestations, :carrier_type_id
+    #add_index :manifestations, :required_role_id
     add_index :manifestations, :access_address
-    # add_index :manifestations, :frequency_id
+    #add_index :manifestations, :frequency_id
     add_index :manifestations, :manifestation_identifier
     add_index :manifestations, :updated_at
     add_index :manifestations, :date_of_publication

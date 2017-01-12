@@ -38,7 +38,7 @@ end
 # Table name: checkins
 #
 #  id           :integer          not null, primary key
-#  item_id      :integer          not null
+#  item_id      :integer
 #  librarian_id :integer
 #  basket_id    :integer
 #  created_at   :datetime
