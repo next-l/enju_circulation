@@ -3,7 +3,7 @@ class CreateLibraries < ActiveRecord::Migration[5.0]
     create_table :libraries, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.string :name, null: false, index: {unique: true}
       t.jsonb :display_name_translations
-      t.jsonb :short_display_name
+      t.jsonb :short_display_name_translations
       t.string :zip_code
       t.text :street
       t.text :locality

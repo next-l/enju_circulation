@@ -704,9 +704,9 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   end
 
   create_table "libraries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string   "name",                                    null: false
+    t.string   "name",                                          null: false
     t.jsonb    "display_name_translations"
-    t.jsonb    "short_display_name"
+    t.jsonb    "short_display_name_translations"
     t.string   "zip_code"
     t.text     "street"
     t.text     "locality"
@@ -715,14 +715,14 @@ ActiveRecord::Schema.define(version: 20161115184756) do
     t.string   "telephone_number_2"
     t.string   "fax_number"
     t.text     "note"
-    t.integer  "call_number_rows",          default: 1,   null: false
-    t.string   "call_number_delimiter",     default: "|", null: false
-    t.integer  "library_group_id",          default: 1,   null: false
-    t.integer  "users_count",               default: 0,   null: false
+    t.integer  "call_number_rows",                default: 1,   null: false
+    t.string   "call_number_delimiter",           default: "|", null: false
+    t.integer  "library_group_id",                default: 1,   null: false
+    t.integer  "users_count",                     default: 0,   null: false
     t.integer  "position"
     t.integer  "country_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.datetime "deleted_at"
     t.text     "opening_hour"
     t.string   "isil"
