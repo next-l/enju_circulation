@@ -300,15 +300,15 @@ ActiveRecord::Schema.define(version: 20161115184756) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "item_id",                            null: false
+    t.uuid     "item_id",                            null: false
     t.integer  "checkin_id"
     t.integer  "librarian_id"
     t.integer  "basket_id"
     t.datetime "due_date"
     t.integer  "checkout_renewal_count", default: 0, null: false
     t.integer  "lock_version",           default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "shelf_id"
     t.integer  "library_id"
     t.index ["basket_id"], name: "index_checkouts_on_basket_id", using: :btree
@@ -1338,12 +1338,12 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   end
 
   create_table "use_restrictions", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
+    t.string   "name",                      null: false
+    t.jsonb    "display_name_translations"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "user_checkout_stat_transitions", force: :cascade do |t|
@@ -1552,6 +1552,9 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   add_foreign_key "accepts", "items"
   add_foreign_key "checked_items", "baskets"
   add_foreign_key "checked_items", "items"
+  add_foreign_key "checkouts", "checkins"
+  add_foreign_key "checkouts", "items"
+  add_foreign_key "checkouts", "users"
   add_foreign_key "isbn_records", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
