@@ -5,14 +5,14 @@ class CreateManifestations < ActiveRecord::Migration[5.0]
       t.text :title_alternative
       t.text :title_transcription
       t.string :classification_number
-      t.string :manifestation_identifier
+      t.string :manifestation_identifier, index: {unique: true}
       t.datetime :date_of_publication
       t.datetime :copyright_date
       t.timestamps
       t.datetime :deleted_at
       t.string :access_address
       t.integer :language_id, default: 1, null: false
-      t.integer :carrier_type_id, default: 1, null: false
+      t.references :carrier_type, null: false
       t.integer :start_page
       t.integer :end_page
       t.integer :height
@@ -36,7 +36,6 @@ class CreateManifestations < ActiveRecord::Migration[5.0]
     #add_index :manifestations, :required_role_id
     add_index :manifestations, :access_address
     #add_index :manifestations, :frequency_id
-    add_index :manifestations, :manifestation_identifier
     add_index :manifestations, :updated_at
     add_index :manifestations, :date_of_publication
   end

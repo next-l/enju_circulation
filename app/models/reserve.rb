@@ -2,14 +2,14 @@ class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
-  scope :waiting, -> { not_in_state(:completed, :expired, :retained).where('canceled_at IS NULL AND (expired_at > ? OR expired_at IS NULL)', Time.zone.now).order('reserves.id DESC') }
-  scope :retained, -> { in_state(:retained).where('retained_at IS NOT NULL') }
-  scope :completed, -> { in_state(:completed).where('checked_out_at IS NOT NULL') }
-  scope :canceled, -> { in_state(:canceled).where('canceled_at IS NOT NULL') }
-  scope :postponed, -> { in_state(:postponed).where('postponed_at IS NOT NULL') }
-  scope :will_expire_retained, ->(datetime) { in_state(:retained).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
-  scope :will_expire_pending, ->(datetime) { in_state(:pending).where('checked_out_at IS NULL AND canceled_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
-  scope :created, ->(start_date, end_date) { where('created_at >= ? AND created_at < ?', start_date, end_date) }
+  scope :waiting, -> { not_in_state(:completed, :expired, :retained).order('reserves.id DESC') }
+  #scope :retained, -> { in_state(:retained).where('retained_at IS NOT NULL') }
+  #scope :completed, -> { in_state(:completed).where('checked_out_at IS NOT NULL') }
+  #scope :canceled, -> { in_state(:canceled) }
+  #scope :postponed, -> { in_state(:postponed).where('postponed_at IS NOT NULL') }
+  #scope :will_expire_retained, ->(datetime) { in_state(:retained).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
+  #scope :will_expire_pending, ->(datetime) { in_state(:pending).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
+  #scope :created, ->(start_date, end_date) { where('created_at >= ? AND created_at < ?', start_date, end_date) }
   scope :not_sent_expiration_notice_to_patron, -> { in_state(:expired).where(expiration_notice_to_patron: false) }
   scope :not_sent_expiration_notice_to_library, -> { in_state(:expired).where(expiration_notice_to_library: false) }
   scope :sent_expiration_notice_to_patron, -> { in_state(:expired).where(expiration_notice_to_patron: true) }
@@ -30,7 +30,7 @@ class Reserve < ActiveRecord::Base
     reserve.completed?
   }
   # validates_uniqueness_of :manifestation_id, scope: :user_id
-  validates_date :expired_at, allow_blank: true
+  #validates_date :expired_at, allow_blank: true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, on: :create
   validates :item_id, presence: true, if: proc { |reserve|
@@ -54,7 +54,7 @@ class Reserve < ActiveRecord::Base
   validate :retained_by_other_user?
   before_validation :set_manifestation, on: :create
   before_validation :set_item
-  validate :check_expired_at
+  #validate :check_expired_at
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
   after_save do
@@ -98,7 +98,7 @@ class Reserve < ActiveRecord::Base
       hold.include?(reserve)
     end
     string :state do
-      current_state
+      state_machine.current_state
     end
     string :title_transcription do
       manifestation.try(:title_transcription)
@@ -146,7 +146,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def check_expired_at
-    if canceled_at.blank? && expired_at?
+    if state_machine.current_state != 'canceled'
       unless completed?
         if expired_at.beginning_of_day < Time.zone.now
           errors[:base] << I18n.t('reserve.invalid_date')
@@ -164,7 +164,7 @@ class Reserve < ActiveRecord::Base
   def send_message(sender = nil)
     sender = User.find(1) unless sender # TODO: システムからのメッセージの発信者
     Reserve.transaction do
-      case current_state
+      case state_machine.current_state
       when 'requested'
         message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
         request = MessageRequest.new
@@ -301,11 +301,11 @@ class Reserve < ActiveRecord::Base
   end
 
   def completed?
-    %w(canceled expired completed).include?(current_state)
+    %w(canceled expired completed).include?(state_machine.current_state)
   end
 
   def retained?
-    return true if current_state == 'retained'
+    return true if state_machine.current_state == 'retained'
     false
   end
 
