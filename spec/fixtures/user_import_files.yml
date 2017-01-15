@@ -5,6 +5,10 @@ one:
   user_id: 1
   note: MyText
   executed_at: 2014-01-10 21:22:16
+  user_import_file_name: MyString
+  user_import_content_type: text/csv
+  user_import_file_size: 1
+  user_import_updated_at: 2014-01-10 21:22:16
   user_import_fingerprint: MyString
   edit_mode: MyString
   error_message: MyText
@@ -14,6 +18,10 @@ two:
   user_id: 1
   note: MyText
   executed_at: 2014-01-10 21:22:16
+  user_import_file_name: MyString
+  user_import_content_type: text/csv
+  user_import_file_size: 1
+  user_import_updated_at: 2014-01-10 21:22:16
   user_import_fingerprint: MyString
   edit_mode: MyString
   error_message: MyText

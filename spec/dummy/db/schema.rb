@@ -39,26 +39,16 @@ ActiveRecord::Schema.define(version: 20170114174536) do
   end
 
   create_table "agent_import_files", force: :cascade do |t|
-    t.integer  "parent_id"
-    t.string   "content_type"
-    t.integer  "size"
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "agent_import_filename"
-    t.string   "agent_import_content_type"
-    t.integer  "agent_import_size"
-    t.datetime "agent_import_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "agent_import_fingerprint"
     t.text     "error_message"
     t.string   "edit_mode"
     t.string   "user_encoding"
-    t.string   "agent_import_id"
     t.jsonb    "attachment_data"
-    t.index ["agent_import_id"], name: "index_agent_import_files_on_agent_import_id", using: :btree
-    t.index ["parent_id"], name: "index_agent_import_files_on_parent_id", using: :btree
     t.index ["user_id"], name: "index_agent_import_files_on_user_id", using: :btree
   end
 
@@ -125,12 +115,13 @@ ActiveRecord::Schema.define(version: 20170114174536) do
   end
 
   create_table "agent_types", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
+    t.string   "name",                      null: false
+    t.jsonb    "display_name_translations"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["name"], name: "index_agent_types_on_name", unique: true, using: :btree
   end
 
   create_table "agents", force: :cascade do |t|
@@ -374,8 +365,8 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "creates", force: :cascade do |t|
@@ -445,11 +436,6 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.datetime "executed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "event_export_id"
-    t.string   "event_export_filename"
-    t.integer  "event_export_size"
-    t.string   "event_export_content_type"
-    t.index ["event_export_id"], name: "index_event_export_files_on_event_export_id", using: :btree
   end
 
   create_table "event_import_file_transitions", force: :cascade do |t|
@@ -472,7 +458,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.datetime "executed_at"
     t.string   "event_import_filename"
     t.string   "event_import_content_type"
-    t.integer  "event_import_size"
+    t.integer  "event_import_file_size"
     t.datetime "event_import_updated_at"
     t.string   "edit_mode"
     t.datetime "created_at"
@@ -482,8 +468,6 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.string   "user_encoding"
     t.integer  "default_library_id"
     t.integer  "default_event_category_id"
-    t.string   "event_import_id"
-    t.index ["event_import_id"], name: "index_event_import_files_on_event_import_id", using: :btree
     t.index ["parent_id"], name: "index_event_import_files_on_parent_id", using: :btree
     t.index ["user_id"], name: "index_event_import_files_on_user_id", using: :btree
   end
@@ -760,12 +744,13 @@ ActiveRecord::Schema.define(version: 20170114174536) do
   end
 
   create_table "licenses", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.string   "display_name"
+    t.string   "name",                      null: false
+    t.jsonb    "display_name_translations"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["name"], name: "index_licenses_on_name", unique: true, using: :btree
   end
 
   create_table "manifestation_checkout_stat_transitions", force: :cascade do |t|
@@ -869,7 +854,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.integer  "required_score",                  default: 0,     null: false
     t.integer  "frequency_id",                    default: 1,     null: false
     t.boolean  "subscription_master",             default: false, null: false
-    t.string   "attachment_filename"
+    t.string   "attachment_file_name"
     t.string   "attachment_content_type"
     t.integer  "attachment_size"
     t.datetime "attachment_updated_at"
@@ -1019,7 +1004,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "picture_filename"
+    t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_size"
     t.datetime "picture_updated_at"
@@ -1036,8 +1021,8 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "produces", force: :cascade do |t|
@@ -1078,8 +1063,8 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "realizes", force: :cascade do |t|
@@ -1182,11 +1167,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
     t.datetime "executed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "resource_export_id"
-    t.integer  "resource_export_size"
-    t.string   "resource_export_filename"
     t.jsonb    "attachment_data"
-    t.index ["resource_export_id"], name: "index_resource_export_files_on_resource_export_id", using: :btree
   end
 
   create_table "resource_import_file_transitions", force: :cascade do |t|
@@ -1202,27 +1183,17 @@ ActiveRecord::Schema.define(version: 20170114174536) do
   end
 
   create_table "resource_import_files", force: :cascade do |t|
-    t.integer  "parent_id"
-    t.string   "content_type"
-    t.integer  "size"
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "resource_import_filename"
-    t.string   "resource_import_content_type"
-    t.integer  "resource_import_size"
-    t.datetime "resource_import_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "edit_mode"
     t.string   "resource_import_fingerprint"
     t.text     "error_message"
     t.string   "user_encoding"
     t.integer  "default_shelf_id"
-    t.string   "resource_import_id"
     t.jsonb    "attachment_data"
-    t.index ["parent_id"], name: "index_resource_import_files_on_parent_id", using: :btree
-    t.index ["resource_import_id"], name: "index_resource_import_files_on_resource_import_id", using: :btree
     t.index ["user_id"], name: "index_resource_import_files_on_user_id", using: :btree
   end
 
@@ -1556,6 +1527,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
 
   add_foreign_key "accepts", "baskets", on_delete: :nullify
   add_foreign_key "accepts", "items"
+  add_foreign_key "agent_import_files", "users"
   add_foreign_key "baskets", "users"
   add_foreign_key "checked_items", "baskets", on_delete: :nullify
   add_foreign_key "checked_items", "items"
@@ -1587,6 +1559,7 @@ ActiveRecord::Schema.define(version: 20170114174536) do
   add_foreign_key "reserves", "items"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
+  add_foreign_key "resource_import_files", "users"
   add_foreign_key "shelves", "libraries"
   add_foreign_key "subscribes", "subscriptions"
   add_foreign_key "subscriptions", "users"
