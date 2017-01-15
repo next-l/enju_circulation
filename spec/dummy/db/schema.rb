@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115184756) do
+ActiveRecord::Schema.define(version: 20170114174536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,7 +257,7 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   end
 
   create_table "checkins", force: :cascade do |t|
-    t.integer  "item_id",                  null: false
+    t.uuid     "item_id",                  null: false
     t.integer  "librarian_id",             null: false
     t.integer  "basket_id",                null: false
     t.datetime "created_at",               null: false
@@ -734,19 +734,19 @@ ActiveRecord::Schema.define(version: 20161115184756) do
 
   create_table "library_groups", force: :cascade do |t|
     t.string   "name",                                                             null: false
-    t.text     "display_name"
+    t.jsonb    "display_name_translations"
     t.string   "short_name",                                                       null: false
     t.cidr     "my_networks"
-    t.text     "login_banner"
+    t.jsonb    "login_banner_translations"
     t.text     "note"
     t.integer  "country_id"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
     t.cidr     "admin_networks"
     t.string   "url",                           default: "http://localhost:3000/"
     t.jsonb    "settings"
-    t.jsonb    "footer_banner"
+    t.jsonb    "footer_banner_translations"
     t.text     "html_snippet"
     t.string   "book_jacket_source"
     t.integer  "max_number_of_results",         default: 500
@@ -754,7 +754,8 @@ ActiveRecord::Schema.define(version: 20161115184756) do
     t.string   "screenshot_generator"
     t.integer  "pub_year_facet_range_interval", default: 10
     t.integer  "user_id"
-    t.index ["short_name"], name: "index_library_groups_on_short_name", using: :btree
+    t.index ["name"], name: "index_library_groups_on_name", unique: true, using: :btree
+    t.index ["short_name"], name: "index_library_groups_on_short_name", unique: true, using: :btree
     t.index ["user_id"], name: "index_library_groups_on_user_id", using: :btree
   end
 
@@ -1051,7 +1052,6 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   end
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer  "user_id"
     t.uuid     "user_group_id"
     t.uuid     "library_id"
     t.string   "locale"
@@ -1070,7 +1070,6 @@ ActiveRecord::Schema.define(version: 20161115184756) do
     t.index ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true, using: :btree
     t.index ["library_id"], name: "index_profiles_on_library_id", using: :btree
     t.index ["user_group_id"], name: "index_profiles_on_user_group_id", using: :btree
-    t.index ["user_id"], name: "index_profiles_on_user_id", using: :btree
     t.index ["user_number"], name: "index_profiles_on_user_number", unique: true, using: :btree
   end
 
@@ -1095,21 +1094,23 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   end
 
   create_table "request_status_types", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
+    t.string   "name",                      null: false
+    t.jsonb    "display_name_translations"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["name"], name: "index_request_status_types_on_name", unique: true, using: :btree
   end
 
   create_table "request_types", force: :cascade do |t|
-    t.string   "name",         null: false
-    t.text     "display_name"
+    t.string   "name",                      null: false
+    t.jsonb    "display_name_translations"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["name"], name: "index_request_types_on_name", unique: true, using: :btree
   end
 
   create_table "reserve_stat_has_manifestations", force: :cascade do |t|
@@ -1525,7 +1526,9 @@ ActiveRecord::Schema.define(version: 20161115184756) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.datetime "confirmed_at"
+    t.uuid     "profile_id"
     t.index ["email"], name: "index_users_on_email", using: :btree
+    t.index ["profile_id"], name: "index_users_on_profile_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
@@ -1581,7 +1584,6 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   add_foreign_key "produces", "manifestations"
   add_foreign_key "profiles", "libraries"
   add_foreign_key "profiles", "user_groups"
-  add_foreign_key "profiles", "users"
   add_foreign_key "reserves", "items"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
@@ -1592,6 +1594,7 @@ ActiveRecord::Schema.define(version: 20161115184756) do
   add_foreign_key "user_group_has_checkout_types", "user_groups"
   add_foreign_key "user_has_roles", "roles"
   add_foreign_key "user_has_roles", "users"
+  add_foreign_key "users", "profiles"
   add_foreign_key "withdraws", "baskets", on_delete: :nullify
   add_foreign_key "withdraws", "items"
 end

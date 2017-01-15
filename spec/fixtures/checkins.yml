@@ -16,7 +16,7 @@ checkin_00002:
   basket_id: 10
   lock_version: 0
 checkin_00003: 
-  item_id: 8
+  item_id: 7236fc07-8294-46f6-98c4-b8f32a7ba0d6
   updated_at: 2007-12-20 21:24:18.729192 +09:00
   id: 3
   librarian_id: 1
@@ -45,7 +45,7 @@ checkin_00005:
 # Table name: checkins
 #
 #  id           :integer          not null, primary key
-#  item_id      :integer          not null
+#  item_id      :uuid             not null
 #  librarian_id :integer          not null
 #  basket_id    :integer          not null
 #  created_at   :datetime         not null
