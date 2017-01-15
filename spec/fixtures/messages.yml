@@ -36,21 +36,23 @@ librarian2_to_user2:
   lft: 7
   rgt: 8
 
+
 # == Schema Information
 #
 # Table name: messages
 #
-#  id                 :integer          not null, primary key
+#  id                 :integer         not null, primary key
 #  read_at            :datetime
 #  receiver_id        :integer
 #  sender_id          :integer
-#  subject            :string           not null
+#  subject            :string(255)     not null
 #  body               :text
-#  message_request_id :integer
-#  parent_id          :integer
 #  created_at         :datetime
 #  updated_at         :datetime
+#  message_request_id :integer
+#  state              :string(255)
+#  parent_id          :integer
 #  lft                :integer
 #  rgt                :integer
-#  depth              :integer
 #
+
