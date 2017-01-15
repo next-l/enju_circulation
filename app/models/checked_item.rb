@@ -1,7 +1,7 @@
 class CheckedItem < ActiveRecord::Base
-  belongs_to :item # , validate: true
-  belongs_to :basket # , validate: true
-  belongs_to :librarian, class_name: 'User' # , validate: true
+  belongs_to :item
+  belongs_to :basket
+  belongs_to :librarian, class_name: 'User'
 
   validates_associated :item, :basket, on: :update
   validates_presence_of :item, :basket, :due_date, on: :update

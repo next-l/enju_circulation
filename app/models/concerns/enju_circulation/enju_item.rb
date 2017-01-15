@@ -32,7 +32,7 @@ module EnjuCirculation
       has_many :reserves
       has_many :checked_items
       has_many :baskets, through: :checked_items
-      belongs_to :circulation_status, validate: true
+      belongs_to :circulation_status
       belongs_to :checkout_type
       has_many :lending_policies, dependent: :destroy
       has_one :item_has_use_restriction, dependent: :destroy

@@ -2,8 +2,8 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   scope :available_for_item, ->(item) { where(checkout_type_id: item.checkout_type.id) }
   scope :available_for_carrier_type, ->(carrier_type) { includes(checkout_type: :carrier_types).where('carrier_types.id' => carrier_type.id) }
 
-  belongs_to :user_group, validate: true
-  belongs_to :checkout_type, validate: true
+  belongs_to :user_group
+  belongs_to :checkout_type
 
   validates_presence_of :user_group, :checkout_type
   validates_associated :user_group, :checkout_type
