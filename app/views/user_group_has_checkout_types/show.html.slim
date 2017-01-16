@@ -8,12 +8,12 @@
       strong
         = t('activerecord.models.user_group')
         | :
-      = link_to @user_group_has_checkout_type.user_group.display_name.localize, @user_group_has_checkout_type.user_group
+      = link_to @user_group_has_checkout_type.user_group.display_name, @user_group_has_checkout_type.user_group
     p
       strong
         = t('activerecord.models.checkout_type')
         | :
-      = link_to @user_group_has_checkout_type.checkout_type.display_name.localize, @user_group_has_checkout_type.checkout_type
+      = link_to @user_group_has_checkout_type.checkout_type.display_name, @user_group_has_checkout_type.checkout_type
     p
       strong
         = t('activerecord.attributes.user_group_has_checkout_type.note')

@@ -19,7 +19,7 @@ table.table.table-striped.index
         = link_to checkin.item.item_identifier, checkin.item
         br
         |  (
-        = link_to checkin.item.shelf.library.display_name.localize, checkin.item.shelf.library
+        = link_to checkin.item.shelf.library.display_name, checkin.item.shelf.library
         | ) 
         - if defined?(EnjuInterLibraryLoan)
           br

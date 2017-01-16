@@ -26,7 +26,7 @@
           = f.text_field :manifestation_id, class: 'form-control'
       .form-group
         = f.label :pickup_location_id
-        = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
+        = f.select :pickup_location_id, @libraries.map{|l| [l.display_name, l.id]}
       - if current_user.has_role?('Librarian')
         .form-group
           = f.label t('activerecord.attributes.profile.user_number')

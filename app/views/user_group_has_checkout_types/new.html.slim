@@ -11,11 +11,11 @@
       .form-group
         = f.label t('activerecord.models.user_group')
         br
-        = f.select(:user_group_id, @user_groups.collect{|u| [u.display_name.localize, u.id]}, {include_blank: true}, {class: 'form-control'})
+        = f.select(:user_group_id, @user_groups.collect{|u| [u.display_name, u.id]}, {include_blank: true}, {class: 'form-control'})
       .form-group
         = f.label t('activerecord.models.checkout_type')
         br
-        = f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name.localize, c.id]}, {include_blank: true}, {class: 'form-control'})
+        = f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name, c.id]}, {include_blank: true}, {class: 'form-control'})
       .form-group
         = f.label :checkout_limit
         br

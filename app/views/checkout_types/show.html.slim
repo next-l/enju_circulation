@@ -25,14 +25,14 @@
       strong
         = t('activerecord.attributes.checkout_type.display_name')
         | :
-      = @checkout_type.display_name.localize
+      = @checkout_type.display_name
     p
       strong
         = t('activerecord.models.user_group')
     ul.list-group
       - @checkout_type.user_group_has_checkout_types.each do |available_user_group|
         li.list-group-item
-          = link_to available_user_group.user_group.display_name.localize, available_user_group.user_group
+          = link_to available_user_group.user_group.display_name, available_user_group.user_group
     p
       strong
         = t('activerecord.attributes.checkout_type.note')

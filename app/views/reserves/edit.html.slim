@@ -25,7 +25,7 @@
         = f.text_field :item_identifier, class: 'form-control'
     .form-group
       = f.label :pickup_location_id
-      = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
+      = f.select :pickup_location_id, @libraries.map{|l| [l.display_name, l.id]}
     p
       strong
         = t('activerecord.attributes.reserve.state')

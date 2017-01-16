@@ -3,11 +3,11 @@
   .form-group
     = f.label t('activerecord.models.carrier_type')
     br
-    = f.select(:carrier_type_id, @carrier_types.collect{|m| [m.display_name.localize, m.id]}, include_blank: true)
+    = f.select(:carrier_type_id, @carrier_types.collect{|m| [m.display_name, m.id]}, include_blank: true)
   .form-group
     = f.label t('activerecord.models.checkout_type')
     br
-    = f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name.localize, c.id]}, include_blank: true)
+    = f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name, c.id]}, include_blank: true)
   .form-group
     = f.label :note
     br

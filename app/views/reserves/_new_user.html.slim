@@ -36,6 +36,6 @@
         = f.hidden_field :user_number, value: @user.profile.user_number
       .form-group
         = f.label :pickup_location_id
-        = f.select :pickup_location_id, @libraries.map{|l| [l.display_name.localize, l.id]}
+        = f.select :pickup_location_id, @libraries.map{|l| [l.display_name, l.id]}
       .form-group
         = f.submit class: 'btn btn-default'

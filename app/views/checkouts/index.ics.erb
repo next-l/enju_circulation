@@ -7,7 +7,7 @@ RiCal.Calendar do
       description checkout.item.manifestation.original_title
       dtstart checkout.due_date.to_date
       dtend checkout.due_date.to_date
-      location checkout.item.shelf.library.display_name.localize
+      location checkout.item.shelf.library.display_name
     end
   end
 end.to_s

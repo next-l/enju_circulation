@@ -27,9 +27,9 @@ table.table.table-striped.index
       - if checkout.shelf
         = t('activerecord.models.shelf')
         | : 
-        = link_to checkout.shelf.display_name.localize, checkout.shelf
+        = link_to checkout.shelf.display_name, checkout.shelf
         |  (
-        = link_to checkout.shelf.library.display_name.localize, checkout.shelf.library
+        = link_to checkout.shelf.library.display_name, checkout.shelf.library
         | ) 
     td
       = l(checkout.due_date, format: :only_date)

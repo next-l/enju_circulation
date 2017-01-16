@@ -6,16 +6,16 @@ table.table.table-striped.index
       = t('activerecord.models.shelf')
     - CarrierType.order(:position).each do |carrier_type|
       th
-        = carrier_type.display_name.localize
+        = carrier_type.display_name
     th
       = t('page.total')
   - Library.order(:position).each do |library|
     - library.shelves.order(:position).each do |shelf|
       tr
         td
-          = library.display_name.localize
+          = library.display_name
         td
-          = shelf.display_name.localize
+          = shelf.display_name
         - CarrierType.order(:position).each do |carrier_type|
           td
             = @carrier_type_results[[shelf.id, carrier_type.id]]
