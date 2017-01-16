@@ -28,4 +28,3 @@ carrier_type_has_checkout_type_00003:
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-

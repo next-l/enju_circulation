@@ -18,7 +18,6 @@ module EnjuCirculation
           checkout.item = checked_item.item
           checkout.basket = self
           checkout.library = librarian.profile.library
-          checkout.shelf = checked_item.item.shelf
           checkout.due_date = checked_item.due_date
           checked_item.item.checkout!(user)
           checkout.save!

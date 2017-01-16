@@ -129,16 +129,15 @@ reserve_00015:
 #
 #  id                           :integer          not null, primary key
 #  user_id                      :integer          not null
-#  manifestation_id             :integer          not null
-#  item_id                      :integer
+#  manifestation_id             :uuid             not null
+#  item_id                      :uuid
 #  request_status_type_id       :integer          not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  deleted_at                   :datetime
-#  expiration_notice_to_agent  :boolean          default(FALSE)
+#  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
+#  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #
-

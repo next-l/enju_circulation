@@ -24,12 +24,12 @@ table.table.table-striped.index
         |  (
         = link_to checkout.item.item_identifier, checkout.item
         | ) 
-      - if checkout.shelf
+      - if checkout.item.shelf
         = t('activerecord.models.shelf')
         | : 
-        = link_to checkout.shelf.display_name, checkout.shelf
+        = link_to checkout.item.shelf.display_name, checkout.item.shelf
         |  (
-        = link_to checkout.shelf.library.display_name, checkout.shelf.library
+        = link_to checkout.item.shelf.library.display_name, checkout.item.shelf.library
         | ) 
     td
       = l(checkout.due_date, format: :only_date)

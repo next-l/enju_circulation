@@ -12,7 +12,6 @@ class Checkout < ActiveRecord::Base
   belongs_to :checkin
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
-  belongs_to :shelf
   belongs_to :library
 
   validates_associated :user, :item, :librarian, :checkin # , :basket

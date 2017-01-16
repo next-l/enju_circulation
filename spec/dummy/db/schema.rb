@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116005550) do
+ActiveRecord::Schema.define(version: 20170114174536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 20170116005550) do
     t.integer  "checkout_type_id", null: false
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["carrier_type_id"], name: "index_carrier_type_has_checkout_types_on_carrier_type_id", using: :btree
     t.index ["checkout_type_id"], name: "index_carrier_type_has_checkout_types_on_checkout_type_id", using: :btree
   end
@@ -703,7 +703,7 @@ ActiveRecord::Schema.define(version: 20170116005550) do
   end
 
   create_table "libraries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string   "name",                                            null: false
+    t.string   "name",                                          null: false
     t.jsonb    "display_name_translations"
     t.jsonb    "short_display_name_translations"
     t.string   "zip_code"
@@ -714,20 +714,19 @@ ActiveRecord::Schema.define(version: 20170116005550) do
     t.string   "telephone_number_2"
     t.string   "fax_number"
     t.text     "note"
-    t.integer  "call_number_rows",                default: 1,     null: false
-    t.string   "call_number_delimiter",           default: "|",   null: false
-    t.integer  "library_group_id",                default: 1,     null: false
-    t.integer  "users_count",                     default: 0,     null: false
+    t.integer  "call_number_rows",                default: 1,   null: false
+    t.string   "call_number_delimiter",           default: "|", null: false
+    t.integer  "library_group_id",                default: 1,   null: false
+    t.integer  "users_count",                     default: 0,   null: false
     t.integer  "position"
     t.integer  "country_id"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.datetime "deleted_at"
     t.text     "opening_hour"
     t.string   "isil"
     t.float    "latitude"
     t.float    "longitude"
-    t.boolean  "in_use",                          default: false, null: false
     t.index ["library_group_id"], name: "index_libraries_on_library_group_id", using: :btree
     t.index ["name"], name: "index_libraries_on_name", unique: true, using: :btree
   end
@@ -1557,6 +1556,8 @@ ActiveRecord::Schema.define(version: 20170116005550) do
   add_foreign_key "accepts", "items"
   add_foreign_key "agent_import_files", "users"
   add_foreign_key "baskets", "users"
+  add_foreign_key "carrier_type_has_checkout_types", "carrier_types"
+  add_foreign_key "carrier_type_has_checkout_types", "checkout_types"
   add_foreign_key "checked_items", "baskets", on_delete: :nullify
   add_foreign_key "checked_items", "items"
   add_foreign_key "checkouts", "checkins"
