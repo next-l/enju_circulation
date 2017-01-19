@@ -8,7 +8,7 @@ class ReserveStateMachine
   state :expired
   state :completed
 
-  transition from: :pending, to: [:requested, :retained]
+  transition from: :pending, to: [:requested, :retained, :expired]
   transition from: :postponed, to: [:requested, :retained, :canceled, :expired]
   transition from: :retained, to: [:postponed, :canceled, :expired, :completed]
   transition from: :requested, to: [:retained, :canceled, :expired, :completed]

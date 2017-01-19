@@ -293,7 +293,7 @@ describe CheckedItemsController do
       end
 
       it 'should create checked_item when ignore_restriction is checked' do
-        post :create, params: { checked_item: { item_identifier: '00011', ignore_restriction: '1' }, basket_id: 2 }
+        post :create, params: { checked_item: { item_identifier: '00011', ignore_restriction: '1' }, basket_id: baskets(:basket_00002).id }
         assigns(:checked_item).due_date.should_not be_nil
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end

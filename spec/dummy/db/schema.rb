@@ -246,7 +246,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   end
 
   create_table "checkins", force: :cascade do |t|
-    t.integer  "checkout_id",              null: false
+    t.uuid     "checkout_id",              null: false
     t.integer  "librarian_id",             null: false
     t.uuid     "basket_id",                null: false
     t.datetime "created_at",               null: false
@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.index ["name"], name: "index_checkout_types_on_name", unique: true, using: :btree
   end
 
-  create_table "checkouts", force: :cascade do |t|
+  create_table "checkouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer  "user_id"
     t.uuid     "item_id",                            null: false
     t.integer  "librarian_id"
@@ -676,7 +676,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.datetime "acquired_at"
     t.integer  "bookstore_id"
     t.integer  "budget_type_id"
-    t.integer  "circulation_status_id",   default: 5,     null: false
+    t.integer  "circulation_status_id",   default: 1,     null: false
     t.integer  "checkout_type_id",        default: 1,     null: false
     t.string   "binding_item_identifier"
     t.string   "binding_call_number"
@@ -1184,7 +1184,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.datetime "updated_at",                                   null: false
     t.boolean  "expiration_notice_to_patron",  default: false
     t.boolean  "expiration_notice_to_library", default: false
-    t.integer  "pickup_location_id"
+    t.uuid     "pickup_location_id",                           null: false
     t.datetime "postponed_at"
     t.integer  "lock_version",                 default: 0,     null: false
     t.index ["item_id"], name: "index_reserves_on_item_id", using: :btree
@@ -1615,6 +1615,8 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "issn_records", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
+  add_foreign_key "items", "checkout_types"
+  add_foreign_key "items", "circulation_statuses"
   add_foreign_key "items", "manifestations"
   add_foreign_key "lending_policies", "items"
   add_foreign_key "lending_policies", "user_groups"
@@ -1627,6 +1629,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "profiles", "libraries"
   add_foreign_key "profiles", "user_groups"
   add_foreign_key "reserves", "items"
+  add_foreign_key "reserves", "libraries", column: "pickup_location_id"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
   add_foreign_key "resource_import_files", "users"

@@ -9,6 +9,7 @@ admin:
   required_role_id: 4
   user_number: "00001"
   locale: "ja"
+  checkout_icalendar_token: 577830b08ecf9c4c4333d599a57a6f44a7fe76c0
 librarian1: 
   updated_at: 2008-05-31 12:41:16.337474 +09:00
   user_group_id: bcb18f9e-1272-41a3-8011-0fc757553d78
@@ -69,6 +70,7 @@ user4:
   required_role_id: 3
   user_number: "00007"
   locale: "ja"
+  checkout_icalendar_token: e3e0277cbba03183c3a12d2b740f3eabebd7df0d
 
 # == Schema Information
 #

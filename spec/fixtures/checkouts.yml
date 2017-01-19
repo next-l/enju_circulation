@@ -4,7 +4,7 @@ checkout_00001:
   updated_at: 2007-09-08 01:20:22.000026 +09:00
   lock_version: 0
   user_id: 1
-  id: 1
+  id: 5c70d8a6-7aba-4232-a809-dab3fa4194fd
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -16,7 +16,7 @@ checkout_00002:
   updated_at: 2007-09-08 01:34:25.103403 +09:00
   lock_version: 0
   user_id: 1
-  id: 2
+  id: 8e4ce9cd-b543-4d75-8bb3-b0bb1b2c9670
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -28,7 +28,7 @@ checkout_00003:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 3
-  id: 3
+  id: c9589c67-f6fe-4955-8dad-b726bef0033c
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -40,7 +40,7 @@ checkout_00004:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 1
-  id: 4
+  id: 2c8bceed-c6b3-4f2e-8043-e92dd0494507
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -52,7 +52,7 @@ checkout_00005:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 2
-  id: 5
+  id: b07f79b0-e074-46bf-a35e-974cc2db9efb
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -64,7 +64,7 @@ checkout_00006:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 2
-  id: 6
+  id: e7d7d7c0-71e8-4485-bc4d-be90f68d1775
   librarian_id: 2
   checkout_renewal_count: 0
   due_date: 2010-09-15 00:00:00 +09:00
@@ -76,7 +76,7 @@ checkout_00007:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 1
-  id: 7
+  id: 972c3f34-83f3-4289-b28b-c530961844e1
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -88,7 +88,7 @@ checkout_00008:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 2
-  id: 8
+  id: 09068395-4b5f-4910-9cb5-e011dee6dac8
   librarian_id: 1
   checkout_renewal_count: 0
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -100,7 +100,7 @@ checkout_00009:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 3
-  id: 9
+  id: cb949079-d5ad-4a3d-a3b0-25f047024989
   librarian_id: 1
   checkout_renewal_count: 1
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -112,7 +112,7 @@ checkout_00010:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 3
-  id: 10
+  id: c5210ddc-bd59-4b5d-bd32-ffce5e5e4a78
   librarian_id: 1
   checkout_renewal_count: 1
   due_date: <%= 2.day.from_now.beginning_of_day.to_s(:db) %>
@@ -124,7 +124,7 @@ checkout_00011:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 1
-  id: 11
+  id: 33981443-0d59-4f56-bfc1-204914bc4d1a
   librarian_id: 1
   checkout_renewal_count: 1
   due_date: <%= 180.days.ago.beginning_of_day.to_s(:db) %>
@@ -136,7 +136,7 @@ checkout_00012:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 3
-  id: 12
+  id: d0227e8b-0314-48af-99d0-eb60c6dc5270
   librarian_id: 1
   checkout_renewal_count: 1
   due_date: <%= 180.days.ago.beginning_of_day.to_s(:db) %>
@@ -148,7 +148,7 @@ checkout_00013:
   updated_at: 2007-09-09 21:15:11.648996 +09:00
   lock_version: 0
   user_id: 3
-  id: 13
+  id: a15ef1ca-61fe-48c8-b148-ac80b5cd87bc
   librarian_id: 1
   checkout_renewal_count: 1
   due_date: <%= 180.days.ago.beginning_of_day.to_s(:db) %>
@@ -160,7 +160,7 @@ checkout_00013:
 #
 # Table name: checkouts
 #
-#  id                     :integer          not null, primary key
+#  id                     :uuid             not null, primary key
 #  user_id                :integer
 #  item_id                :uuid             not null
 #  librarian_id           :integer

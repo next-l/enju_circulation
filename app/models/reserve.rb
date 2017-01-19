@@ -23,7 +23,9 @@ class Reserve < ActiveRecord::Base
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true # , on: :create
-  validates_presence_of :user, :request_status_type
+  validates :pickup_location, presence: true
+  validates :user, presence: true
+  validates :request_status_type, presence: true
   validates :manifestation, presence: true, unless: proc { |reserve|
     reserve.completed?
   }
@@ -380,7 +382,7 @@ end
 #  updated_at                   :datetime         not null
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
-#  pickup_location_id           :integer
+#  pickup_location_id           :uuid             not null
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #

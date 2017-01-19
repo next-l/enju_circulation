@@ -160,7 +160,7 @@ end
 #
 # Table name: checkouts
 #
-#  id                     :integer          not null, primary key
+#  id                     :uuid             not null, primary key
 #  user_id                :integer
 #  item_id                :uuid             not null
 #  librarian_id           :integer

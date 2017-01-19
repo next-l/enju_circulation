@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'checkouts/show' do
-  fixtures :checkouts, :users, :user_has_roles, :roles
+  fixtures :checkouts, :users, :user_has_roles, :roles, :items
 
   before(:each) do
     @checkout = assign(:checkout, stub_model(Checkout,
                                              user_id: 2,
-                                             item_id: 1))
-    view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
+                                             item_id: items(:item_00001).id))
+    view.stub(:current_user).and_return(User.find_by(username: 'enjuadmin'))
   end
 
   it 'renders attributes in <p>' do

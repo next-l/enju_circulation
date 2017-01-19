@@ -339,8 +339,15 @@ describe ReservesController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id }
-      @invalid_attrs = { user_number: users(:user1).profile.user_number, manifestation_id: 'invalid' }
+      @attrs = {
+        user_number: users(:user1).profile.user_number,
+        manifestation_id: manifestations(:manifestation_00005).id,
+        pickup_location_id: libraries(:library_00002).id
+      }
+      @invalid_attrs = {
+        user_number: users(:user1).profile.user_number,
+        manifestation_id: 'invalid'
+      }
     end
 
     describe 'When logged in as Administrator' do

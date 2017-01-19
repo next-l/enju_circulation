@@ -74,7 +74,7 @@ end
 # Table name: checkins
 #
 #  id           :integer          not null, primary key
-#  checkout_id  :integer          not null
+#  checkout_id  :uuid             not null
 #  librarian_id :integer          not null
 #  basket_id    :uuid             not null
 #  created_at   :datetime         not null
