@@ -17,13 +17,14 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   enable_extension "pgcrypto"
 
   create_table "accepts", force: :cascade do |t|
-    t.integer  "basket_id"
+    t.uuid     "basket_id",    null: false
     t.uuid     "item_id"
-    t.integer  "librarian_id"
+    t.integer  "librarian_id", null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["basket_id"], name: "index_accepts_on_basket_id", using: :btree
     t.index ["item_id"], name: "index_accepts_on_item_id", using: :btree
+    t.index ["librarian_id"], name: "index_accepts_on_librarian_id", using: :btree
   end
 
   create_table "agent_import_file_transitions", force: :cascade do |t|
@@ -176,7 +177,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.index ["profile_id"], name: "index_agents_on_profile_id", using: :btree
   end
 
-  create_table "baskets", force: :cascade do |t|
+  create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer  "user_id"
     t.text     "note"
     t.integer  "lock_version", default: 0, null: false
@@ -235,7 +236,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
 
   create_table "checked_items", force: :cascade do |t|
     t.uuid     "item_id",      null: false
-    t.integer  "basket_id",    null: false
+    t.uuid     "basket_id",    null: false
     t.datetime "due_date",     null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
@@ -247,7 +248,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   create_table "checkins", force: :cascade do |t|
     t.integer  "checkout_id",              null: false
     t.integer  "librarian_id",             null: false
-    t.integer  "basket_id",                null: false
+    t.uuid     "basket_id",                null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "lock_version", default: 0, null: false
@@ -290,7 +291,6 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.integer  "user_id"
     t.uuid     "item_id",                            null: false
     t.integer  "librarian_id"
-    t.integer  "basket_id"
     t.datetime "due_date"
     t.integer  "checkout_renewal_count", default: 0, null: false
     t.integer  "lock_version",           default: 0, null: false
@@ -298,8 +298,6 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.datetime "updated_at",                         null: false
     t.uuid     "shelf_id",                           null: false
     t.uuid     "library_id",                         null: false
-    t.index ["basket_id"], name: "index_checkouts_on_basket_id", using: :btree
-    t.index ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true, using: :btree
     t.index ["item_id"], name: "index_checkouts_on_item_id", using: :btree
     t.index ["librarian_id"], name: "index_checkouts_on_librarian_id", using: :btree
     t.index ["library_id"], name: "index_checkouts_on_library_id", using: :btree
@@ -1571,23 +1569,26 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   end
 
   create_table "withdraws", force: :cascade do |t|
-    t.integer  "basket_id"
+    t.uuid     "basket_id"
     t.uuid     "item_id"
-    t.integer  "librarian_id"
+    t.integer  "librarian_id", null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["basket_id"], name: "index_withdraws_on_basket_id", using: :btree
     t.index ["item_id"], name: "index_withdraws_on_item_id", using: :btree
+    t.index ["librarian_id"], name: "index_withdraws_on_librarian_id", using: :btree
   end
 
   add_foreign_key "accepts", "baskets", on_delete: :nullify
   add_foreign_key "accepts", "items"
+  add_foreign_key "accepts", "users", column: "librarian_id"
   add_foreign_key "agent_import_files", "users"
   add_foreign_key "baskets", "users"
   add_foreign_key "carrier_type_has_checkout_types", "carrier_types"
   add_foreign_key "carrier_type_has_checkout_types", "checkout_types"
   add_foreign_key "checked_items", "baskets", on_delete: :nullify
   add_foreign_key "checked_items", "items"
+  add_foreign_key "checkins", "baskets"
   add_foreign_key "checkins", "checkouts"
   add_foreign_key "checkins", "users", column: "librarian_id"
   add_foreign_key "checkouts", "items"
@@ -1641,4 +1642,5 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "users", "profiles"
   add_foreign_key "withdraws", "baskets", on_delete: :nullify
   add_foreign_key "withdraws", "items"
+  add_foreign_key "withdraws", "users", column: "librarian_id"
 end

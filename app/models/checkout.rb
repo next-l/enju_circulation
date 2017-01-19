@@ -11,15 +11,14 @@ class Checkout < ActiveRecord::Base
   belongs_to :user
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
-  belongs_to :basket
   belongs_to :shelf
   belongs_to :library
 
   validates_associated :user, :item, :librarian, :checkin # , :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   # validates_presence_of :user, :item, :basket
-  validates_presence_of :item_id, :basket_id, :due_date
-  validates_uniqueness_of :item_id, scope: [:basket_id, :user_id]
+  validates_presence_of :item_id, :due_date
+  validates_uniqueness_of :item_id, scope: :user_id
   validate :is_not_checked?, on: :create
   validate :renewable?, on: :update
   validates_date :due_date
@@ -165,7 +164,6 @@ end
 #  user_id                :integer
 #  item_id                :uuid             not null
 #  librarian_id           :integer
-#  basket_id              :integer
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null

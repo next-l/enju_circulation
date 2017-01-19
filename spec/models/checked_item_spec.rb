@@ -24,7 +24,7 @@ end
 #
 #  id           :integer          not null, primary key
 #  item_id      :uuid             not null
-#  basket_id    :integer          not null
+#  basket_id    :uuid             not null
 #  due_date     :datetime         not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null

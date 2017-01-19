@@ -76,7 +76,7 @@ end
 #  id           :integer          not null, primary key
 #  checkout_id  :integer          not null
 #  librarian_id :integer          not null
-#  basket_id    :integer          not null
+#  basket_id    :uuid             not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  lock_version :integer          default(0), not null

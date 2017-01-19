@@ -65,7 +65,6 @@ end
 #  user_id                :integer
 #  item_id                :uuid             not null
 #  librarian_id           :integer
-#  basket_id              :integer
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null
