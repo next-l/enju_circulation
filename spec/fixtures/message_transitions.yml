@@ -11,10 +11,10 @@ message_transition_00001:
 #
 #  id          :integer          not null, primary key
 #  to_state    :string
-#  metadata    :text             default({})
+#  metadata    :jsonb
 #  sort_key    :integer
-#  reservemessage_id  :integer
-#  created_at  :datetime
-#  updated_at  :datetime
+#  message_id  :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #  most_recent :boolean
 #

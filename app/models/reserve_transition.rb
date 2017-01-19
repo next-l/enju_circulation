@@ -13,7 +13,7 @@ end
 #  to_state    :string           not null
 #  metadata    :jsonb
 #  sort_key    :integer          not null
-#  reserve_id  :integer          not null
+#  reserve_id  :uuid             not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  most_recent :boolean

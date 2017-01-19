@@ -73,7 +73,7 @@ describe CheckoutsController do
       end
 
       it 'should get index with item_id' do
-        get :index, params: { item_id: 1 }
+        get :index, params: { item_id: items(:item_00001).id }
         response.should be_success
         assigns(:checkouts).should eq items(:item_00001).checkouts.order('checkouts.id DESC').page(1)
       end
@@ -135,7 +135,7 @@ describe CheckoutsController do
 
       it 'assigns his own checkouts as @checkouts' do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
-        user = Profile.where(checkout_icalendar_token: token).first.user
+        user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token }
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
         response.should be_success
@@ -143,7 +143,7 @@ describe CheckoutsController do
 
       it 'should get ics template' do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
-        user = Profile.where(checkout_icalendar_token: token).first.user
+        user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token, format: :ics }
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
         response.should be_success

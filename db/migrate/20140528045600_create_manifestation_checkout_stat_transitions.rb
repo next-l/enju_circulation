@@ -2,7 +2,7 @@ class CreateManifestationCheckoutStatTransitions < ActiveRecord::Migration
   def change
     create_table :manifestation_checkout_stat_transitions do |t|
       t.string :to_state, null: false
-      t.jsonb :metadata, default: "{}"
+      t.jsonb :metadata, default: {}
       t.integer :sort_key, null: false
       t.integer :manifestation_checkout_stat_id, null: false
       t.timestamps null: false

@@ -3,5 +3,6 @@ FactoryGirl.define do
     f.sequence(:item_identifier) { |n| "item_#{n}" }
     f.circulation_status_id { CirculationStatus.find(1).id } if defined?(EnjuCircuation)
     f.manifestation_id { FactoryGirl.create(:manifestation).id }
+    f.shelf { FactoryGirl.create(:shelf) }
   end
 end

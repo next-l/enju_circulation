@@ -7,13 +7,13 @@ describe Checkout do
   it 'should respond to renewable?' do
     checkouts(:checkout_00001).save
     checkouts(:checkout_00001).errors[:base].should eq []
-    checkouts(:checkout_00002).save
-    checkouts(:checkout_00002).errors[:base].should eq [I18n.t('checkout.this_item_is_reserved')]
+    checkouts(:checkout_00005).save
+    checkouts(:checkout_00005).errors[:base].should eq [I18n.t('checkout.this_item_is_reserved')]
   end
 
   it 'should respond to reserved?' do
     checkouts(:checkout_00001).reserved?.should be_falsy
-    checkouts(:checkout_00002).reserved?.should be_truthy
+    checkouts(:checkout_00005).reserved?.should be_truthy
   end
 
   it 'should respond to overdue?' do
@@ -64,7 +64,6 @@ end
 #  id                     :integer          not null, primary key
 #  user_id                :integer
 #  item_id                :uuid             not null
-#  checkin_id             :integer
 #  librarian_id           :integer
 #  basket_id              :integer
 #  due_date               :datetime
@@ -72,6 +71,6 @@ end
 #  lock_version           :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  shelf_id               :integer
-#  library_id             :integer
+#  shelf_id               :uuid             not null
+#  library_id             :uuid             not null
 #

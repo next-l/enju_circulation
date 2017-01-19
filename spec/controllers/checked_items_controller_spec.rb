@@ -61,7 +61,7 @@ describe CheckedItemsController do
       end
 
       it 'should not get index with basket_id and item_id' do
-        get :index, params: { basket_id: 1, item_id: 1 }
+        get :index, params: { basket_id: 1, item_id: items(:item_00001) }
         assigns(:checked_items).should be_nil
         response.should redirect_to(new_user_session_url)
       end

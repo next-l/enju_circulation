@@ -2,14 +2,11 @@ class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
-  scope :waiting, -> { not_in_state(:completed, :expired, :retained).order('reserves.id DESC') }
-  #scope :retained, -> { in_state(:retained).where('retained_at IS NOT NULL') }
-  #scope :completed, -> { in_state(:completed).where('checked_out_at IS NOT NULL') }
-  #scope :canceled, -> { in_state(:canceled) }
-  #scope :postponed, -> { in_state(:postponed).where('postponed_at IS NOT NULL') }
+  scope :waiting, -> { not_in_state(:canceled, :completed, :expired, :retained) }
+  scope :canceled, -> { in_state(:canceled) }
   #scope :will_expire_retained, ->(datetime) { in_state(:retained).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
   #scope :will_expire_pending, ->(datetime) { in_state(:pending).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
-  #scope :created, ->(start_date, end_date) { where('created_at >= ? AND created_at < ?', start_date, end_date) }
+  scope :created, ->(start_date, end_date) { where('created_at >= ? AND created_at < ?', start_date, end_date) }
   scope :not_sent_expiration_notice_to_patron, -> { in_state(:expired).where(expiration_notice_to_patron: false) }
   scope :not_sent_expiration_notice_to_library, -> { in_state(:expired).where(expiration_notice_to_library: false) }
   scope :sent_expiration_notice_to_patron, -> { in_state(:expired).where(expiration_notice_to_patron: true) }
@@ -22,6 +19,7 @@ class Reserve < ActiveRecord::Base
   belongs_to :item, touch: true
   belongs_to :request_status_type
   belongs_to :pickup_location, class_name: 'Library'
+  has_one :retain
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true # , on: :create
@@ -113,7 +111,7 @@ class Reserve < ActiveRecord::Base
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(item_identifier: identifier).first
+      item = Item.find_by(item_identifier: identifier)
       self.item = item
     end
   end
@@ -121,13 +119,13 @@ class Reserve < ActiveRecord::Base
   def set_user
     number = user_number.to_s.strip
     if number.present?
-      self.user = Profile.where(user_number: number).first.try(:user)
+      self.user = Profile.find_by(user_number: number).try(:user)
     end
   end
 
   def valid_item?
     if item_identifier.present?
-      item = Item.where(item_identifier: item_identifier).first
+      item = Item.find_by(item_identifier: item_identifier)
       errors[:base] << I18n.t('reserve.invalid_item') unless item
     end
   end
@@ -135,7 +133,7 @@ class Reserve < ActiveRecord::Base
   def retained_by_other_user?
     return nil if force_retaining == '1'
     if item && !retained?
-      if Reserve.retained.where(item_id: item.item_identifier).count > 0
+      if Reserve.in_state(:retained).where(item_id: item.item_identifier).count > 0
         errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
       end
     end
@@ -311,20 +309,6 @@ class Reserve < ActiveRecord::Base
 
   private
 
-  def do_request
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil)
-    save!
-  end
-
-  def retain
-    # TODO: 「取り置き中」の状態を正しく表す
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now)
-    Reserve.transaction do
-      item.next_reservation.try(:transition_to!, :postponed)
-      save!
-    end
-  end
-
   def expire
     Reserve.transaction do
       assign_attributes(request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now)
@@ -387,7 +371,7 @@ end
 #
 # Table name: reserves
 #
-#  id                           :integer          not null, primary key
+#  id                           :uuid             not null, primary key
 #  user_id                      :integer          not null
 #  manifestation_id             :uuid             not null
 #  item_id                      :uuid
@@ -397,7 +381,6 @@ end
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  pickup_location_id           :integer
-#  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #

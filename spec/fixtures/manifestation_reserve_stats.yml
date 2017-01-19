@@ -5,12 +5,14 @@ one:
   start_date: 2008-12-17 04:07:24
   end_date: 2008-12-18 04:07:24
   note: MyText
+  user_id: 2
 
 two:
   id: 2
   start_date: 2008-12-17 04:07:24
   end_date: 2008-12-18 04:07:24
   note: MyText
+  user_id: 2
 
 # == Schema Information
 #

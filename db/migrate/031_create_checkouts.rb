@@ -3,7 +3,6 @@ class CreateCheckouts < ActiveRecord::Migration[5.0]
     create_table :checkouts do |t|
       t.references :user, foreign_key: true
       t.references :item, null: false, foreign_key: true, type: :uuid
-      t.references :checkin, foreign_key: true
       t.references :librarian, foreign_key: {to_table: :users}
       t.references :basket, index: true
       t.datetime :due_date

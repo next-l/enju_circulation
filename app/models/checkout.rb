@@ -1,17 +1,18 @@
 class Checkout < ActiveRecord::Base
-  scope :not_returned, -> { where(checkin_id: nil) }
-  scope :returned, -> { where('checkin_id IS NOT NULL') }
-  scope :overdue, ->(date) { where('checkin_id IS NULL AND due_date < ?', date) }
-  scope :due_date_on, ->(date) { where(checkin_id: nil, due_date: date.beginning_of_day..date.end_of_day) }
+  scope :not_returned, -> { where.not(id: Checkout.joins(:checkin).select(:id)) }
+  scope :returned, -> { where(id: Checkout.joins(:checkin).select(:id)) }
+  scope :overdue, ->(date) { not_returned.where('due_date < ?', date) }
+  scope :due_date_on, ->(date) { not_returned.where(due_date: date.beginning_of_day..date.end_of_day) }
   scope :completed, ->(start_date, end_date) { where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date) }
   scope :on, ->(date) { where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day) }
 
-  belongs_to :user
   delegate :username, :user_number, to: :user, prefix: true
+  has_one :checkin
+  belongs_to :user
   belongs_to :item, touch: true
-  belongs_to :checkin
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
+  belongs_to :shelf
   belongs_to :library
 
   validates_associated :user, :item, :librarian, :checkin # , :basket
@@ -163,7 +164,6 @@ end
 #  id                     :integer          not null, primary key
 #  user_id                :integer
 #  item_id                :uuid             not null
-#  checkin_id             :integer
 #  librarian_id           :integer
 #  basket_id              :integer
 #  due_date               :datetime
@@ -171,6 +171,6 @@ end
 #  lock_version           :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  shelf_id               :integer
-#  library_id             :integer
+#  shelf_id               :uuid             not null
+#  library_id             :uuid             not null
 #

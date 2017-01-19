@@ -24,7 +24,7 @@ describe Reserve do
 
   it 'should cancel reservation' do
     reserves(:reserve_00001).transition_to!(:canceled)
-    reserves(:reserve_00001).canceled_at.should be_truthy
+    reserves(:reserve_00001).state_machine.in_state?(:canceled).should be_truthy
     reserves(:reserve_00001).request_status_type.name.should eq 'Cannot Fulfill Request'
   end
 
@@ -33,11 +33,11 @@ describe Reserve do
   end
 
   it 'should send accepted message' do
-    old_admin_count = User.where(username: 'enjuadmin').first.received_messages.count
+    old_admin_count = User.find_by(username: 'enjuadmin').received_messages.count
     old_user_count = reserves(:reserve_00002).user.received_messages.count
     reserves(:reserve_00002).send_message.should be_truthy
     # 予約者と図書館の両方に送られる
-    User.where(username: 'enjuadmin').first.received_messages.count.should eq old_admin_count + 1
+    User.find_by(username: 'enjuadmin').received_messages.count.should eq old_admin_count + 1
     reserves(:reserve_00002).user.received_messages.count.should eq old_user_count + 1
   end
 
@@ -67,7 +67,7 @@ describe Reserve do
     reserve.transition_to!(:requested)
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
     item.checkout!(reserve.user)
-    expect(Reserve.completed).to include reserve
+    expect(Reserve.in_state(:completed)).to include reserve
   end
 
   it 'should expire all reservations' do
@@ -87,8 +87,8 @@ describe Reserve do
     expect(reservation).not_to be_retained
     reservation.transition_to!(:retained)
     old_reservation.reload
-    old_reservation.item.should be_nil
-    reservation.retained_at.should be_truthy
+    old_reservation.retain.should be_truthy
+    reservation.state_machine.in_state?(:retained).should be_truthy
     #    old_reservation.retained_at.should be_nil
     #    old_reservation.postponed_at.should be_truthy
     old_reservation.current_state.should eq 'postponed'
@@ -113,8 +113,9 @@ describe Reserve do
   it 'should be treated as Waiting' do
     reserve = FactoryGirl.create(:reserve)
     expect(Reserve.waiting).to include reserve
-    reserve = FactoryGirl.create(:reserve, expired_at: nil)
-    expect(Reserve.waiting).to include reserve
+    reserve_expired = FactoryGirl.create(:reserve)
+    reserve.transition_to!(:expired)
+    expect(Reserve.waiting).to include reserve_expired
   end
 
   it 'should not retain against reserves with already retained' do
@@ -136,7 +137,7 @@ end
 #
 # Table name: reserves
 #
-#  id                           :integer          not null, primary key
+#  id                           :uuid             not null, primary key
 #  user_id                      :integer          not null
 #  manifestation_id             :uuid             not null
 #  item_id                      :uuid
@@ -146,7 +147,6 @@ end
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  pickup_location_id           :integer
-#  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #

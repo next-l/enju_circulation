@@ -149,7 +149,7 @@ describe ReservesController do
       end
 
       it "should show other user's reservation" do
-        get :show, params: { id: 3 }
+        get :show, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
     end
@@ -164,7 +164,7 @@ describe ReservesController do
       end
 
       it "should show other user's reservation" do
-        get :show, params: { id: 3 }
+        get :show, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
     end
@@ -179,12 +179,12 @@ describe ReservesController do
       end
 
       it 'should show my reservation' do
-        get :show, params: { id: 3 }
+        get :show, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
 
       it "should not show other user's reservation" do
-        get :show, params: { id: 5 }
+        get :show, params: { id: reserves(:reserve_00005).id }
         response.should be_forbidden
       end
     end
@@ -216,7 +216,7 @@ describe ReservesController do
       end
 
       it "should get other user's reservation" do
-        get :new, params: { user_id: users(:user1).username, manifestation_id: 3 }
+        get :new, params: { user_id: users(:user1).username, manifestation_id: reserves(:reserve_00003).id }
         assigns(:reserve).user.should eq users(:user1)
         response.should be_success
       end
@@ -231,12 +231,12 @@ describe ReservesController do
       end
 
       it 'should get new template without user_id' do
-        get :new, params: { manifestation_id: 3 }
+        get :new, params: { manifestation_id: reserves(:reserve_00003).id }
         response.should be_success
       end
 
       it "should get other user's reservation" do
-        get :new, params: { user_id: users(:user1).username, manifestation_id: 3 }
+        get :new, params: { user_id: users(:user1).username, manifestation_id: reserves(:reserve_00003).id }
         assigns(:reserve).user.should eq users(:user1)
         response.should be_success
       end
@@ -252,18 +252,18 @@ describe ReservesController do
       end
 
       it 'should get my new reservation' do
-        get :new, params: { manifestation_id: 3 }
+        get :new, params: { manifestation_id: reserves(:reserve_00003).id }
         response.should be_success
       end
 
       it "should not get other user's new reservation" do
-        get :new, params: { user_id: users(:user2).username, manifestation_id: 5 }
+        get :new, params: { user_id: users(:user2).username, manifestation_id: manifestations(:manifestation_00005).id }
         response.should be_forbidden
       end
 
       it 'should not get new reservation when user_number is not set' do
         sign_in users(:user2)
-        get :new, params: { user_id: users(:user2).username, manifestation_id: 3 }
+        get :new, params: { user_id: users(:user2).username, manifestation_id: reserves(:reserve_00003).id }
         response.should be_forbidden
       end
     end
@@ -288,7 +288,7 @@ describe ReservesController do
       end
 
       it "should edit other user's reservation" do
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
     end
@@ -303,7 +303,7 @@ describe ReservesController do
       end
 
       it 'should edit reserve without user_id' do
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
     end
@@ -318,12 +318,12 @@ describe ReservesController do
       end
 
       it 'should edit my reservation' do
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: reserves(:reserve_00003).id }
         response.should be_success
       end
 
       it "should not edit other user's reservation" do
-        get :edit, params: { id: 5 }
+        get :edit, params: { id: reserves(:reserve_00005).id }
         response.should be_forbidden
       end
     end
@@ -339,7 +339,7 @@ describe ReservesController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = { user_number: users(:user1).profile.user_number, manifestation_id: 5 }
+      @attrs = { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id }
       @invalid_attrs = { user_number: users(:user1).profile.user_number, manifestation_id: 'invalid' }
     end
 
@@ -355,7 +355,7 @@ describe ReservesController do
         it 'redirects to the created reserve' do
           post :create, params: { reserve: @attrs }
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         end
       end
 
@@ -367,21 +367,21 @@ describe ReservesController do
 
         it 'redirects to the list' do
           post :create, params: { reserve: @invalid_attrs }
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
           response.should be_success
         end
       end
 
       it 'should not create reservation with past date' do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: 5, expired_at: '1901-01-01' } }
+        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id, expired_at: '1901-01-01' } }
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: 5 } }
-        assigns(:reserve).expired_at.should be_nil
+        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
@@ -391,7 +391,7 @@ describe ReservesController do
       end
 
       it 'should not create reserve with missing user_number' do
-        post :create, params: { reserve: { user_number: 'missing', manifestation_id: 5 } }
+        post :create, params: { reserve: { user_number: 'missing', manifestation_id: manifestations(:manifestation_00005).id } }
         response.should render_template('new')
         response.should be_success
       end
@@ -409,7 +409,7 @@ describe ReservesController do
         it 'redirects to the created reserve' do
           post :create, params: { reserve: @attrs }
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         end
 
         it 'should send accepted messages' do
@@ -427,21 +427,21 @@ describe ReservesController do
 
         it "re-renders the 'new' template" do
           post :create, params: { reserve: @invalid_attrs }
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
           response.should be_success
         end
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: 5 } }
+        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
         assigns(:reserve).should be_valid
-        assigns(:reserve).expired_at.should be_nil
+        assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it 'should not create reserve over reserve_limit' do
-        post :create, params: { reserve: { user_number: users(:admin).profile.user_number, manifestation_id: 5 } }
+        post :create, params: { reserve: { user_number: users(:admin).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
         assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end
@@ -458,7 +458,7 @@ describe ReservesController do
         it 'redirects to the created reserve' do
           post :create, params: { reserve: @attrs }
           response.should redirect_to(assigns(:reserve))
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         end
       end
 
@@ -470,7 +470,7 @@ describe ReservesController do
 
         it "re-renders the 'new' template" do
           post :create, params: { reserve: @invalid_attrs }
-          assigns(:reserve).expired_at.should be_nil
+          assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
           response.should be_success
         end
@@ -478,7 +478,7 @@ describe ReservesController do
 
       it "should not create other user's reservation" do
         post :create, params: { reserve: { user_number: users(:user2).profile.user_number, manifestation_id: 6 } }
-        assigns(:reserve).expired_at.should be_nil
+        assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should be_forbidden
       end
     end
@@ -545,25 +545,25 @@ describe ReservesController do
       end
 
       it 'should not update reserve without manifestation_id' do
-        put :update, params: { id: 1, reserve: { user_number: users(:admin).profile.user_number, manifestation_id: nil } }
+        put :update, params: { id: reserves(:reserve_00001), reserve: { user_number: users(:admin).profile.user_number, manifestation_id: nil } }
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should update other user's reservation without user_id" do
-        put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number } }
+        put :update, params: { id: reserves(:reserve_00003).id, reserve: { user_number: users(:user1).profile.user_number } }
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it 'should not update retained reservations if item_identifier is invalid' do
-        put :update, params: { id: 14, reserve: { item_identifier: 'invalid' } }
+        put :update, params: { id: reserves(:reserve_00014), reserve: { item_identifier: 'invalid' } }
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it 'should not update retained reservations if force_retaining is disabled' do
-        put :update, params: { id: 15, reserve: { item_identifier: '00021' } }
+        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00021' } }
         assigns(:reserve).should_not be_valid
         response.should be_success
         assigns(:reserve).current_state.should eq 'requested'
@@ -571,7 +571,7 @@ describe ReservesController do
       end
 
       it 'should update retained reservations if force_retaining is enabled' do
-        put :update, params: { id: 15, reserve: { item_identifier: '00021', force_retaining: '1' } }
+        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00021', force_retaining: '1' } }
         assigns(:reserve).should be_valid
         assigns(:reserve).current_state.should eq 'retained'
         response.should redirect_to reserve_url(assigns(:reserve))
@@ -608,7 +608,7 @@ describe ReservesController do
 
       it "should cancel other user's reservation" do
         old_message_requests_count = MessageRequest.count
-        put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number }, mode: 'cancel' }
+        put :update, params: { id: reserves(:reserve_00003).id, reserve: { user_number: users(:user1).profile.user_number }, mode: 'cancel' }
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
@@ -616,13 +616,13 @@ describe ReservesController do
       end
 
       it 'should update reserve without user_id' do
-        put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number } }
+        put :update, params: { id: reserves(:reserve_00003).id, reserve: { user_number: users(:user1).profile.user_number } }
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should update other user's reservation" do
-        put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number } }
+        put :update, params: { id: reserves(:reserve_00003).id, reserve: { user_number: users(:user1).profile.user_number } }
         assigns(:reserve).should be_valid
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -652,7 +652,7 @@ describe ReservesController do
 
       it 'should cancel my reservation' do
         old_message_requests_count = MessageRequest.count
-        put :update, params: { id: 3, mode: 'cancel' }
+        put :update, params: { id: reserves(:reserve_00003).id, mode: 'cancel' }
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
         MessageRequest.count.should eq old_message_requests_count + 2
@@ -660,18 +660,18 @@ describe ReservesController do
       end
 
       it 'should update my reservation' do
-        put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number } }
+        put :update, params: { id: reserves(:reserve_00003).id, reserve: { user_number: users(:user1).profile.user_number } }
         flash[:notice].should eq I18n.t('controller.successfully_updated', model: I18n.t('activerecord.models.reserve'))
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it "should not update other user's reservation" do
-        put :update, params: { id: 5, reserve: { user_number: users(:user2).profile.user_number } }
+        put :update, params: { id: reserves(:reserve_00005).id, reserve: { user_number: users(:user2).profile.user_number } }
         response.should be_forbidden
       end
 
       it "should not cancel other user's reservation" do
-        put :update, params: { id: 5, reserve: { user_number: users(:user1).profile.user_number }, mode: 'cancel' }
+        put :update, params: { id: reserves(:reserve_00005).id, reserve: { user_number: users(:user1).profile.user_number }, mode: 'cancel' }
         response.should be_forbidden
       end
     end
@@ -715,7 +715,7 @@ describe ReservesController do
       end
 
       it "should destroy other user's reservation" do
-        delete :destroy, params: { id: 3 }
+        delete :destroy, params: { id: reserves(:reserve_00003).id }
         response.should redirect_to reserves_url
       end
     end
@@ -733,7 +733,7 @@ describe ReservesController do
       end
 
       it "should destroy other user's reservation" do
-        delete :destroy, params: { id: 3 }
+        delete :destroy, params: { id: reserves(:reserve_00003).id }
         response.should redirect_to reserves_url
       end
     end
@@ -751,12 +751,12 @@ describe ReservesController do
       end
 
       it 'should destroy my reservation' do
-        delete :destroy, params: { id: 3 }
+        delete :destroy, params: { id: reserves(:reserve_00003).id }
         response.should redirect_to reserves_url
       end
 
       it "should not destroy other user's reservation" do
-        delete :destroy, params: { id: 5 }
+        delete :destroy, params: { id: reserves(:reserve_00005).id }
         response.should be_forbidden
       end
     end

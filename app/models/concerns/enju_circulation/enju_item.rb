@@ -30,6 +30,7 @@ module EnjuCirculation
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
       has_many :checkouts
       has_many :reserves
+      has_many :retains
       has_many :checked_items
       has_many :baskets, through: :checked_items
       belongs_to :circulation_status
@@ -86,7 +87,6 @@ module EnjuCirculation
     def checkout!(user)
       self.circulation_status = CirculationStatus.where(name: 'On Loan').first
       if reserved_by_user?(user)
-        manifestation.next_reservation.update_attributes(checked_out_at: Time.zone.now)
         manifestation.next_reservation.transition_to!(:completed)
       end
       manifestation.reload
@@ -110,7 +110,7 @@ module EnjuCirculation
     end
 
     def retained?
-      manifestation.reserves.retained.each do |reserve|
+      manifestation.reserves.in_state(:retained).each do |reserve|
         return true if reserve.item == self
       end
       false

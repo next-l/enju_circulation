@@ -1,19 +1,20 @@
-class CreateMessages < ActiveRecord::Migration
-  def self.up
-    create_table :messages, force: true do |t|
+class CreateMessages < ActiveRecord::Migration[5.0]
+  def change
+    create_table :messages, force: true, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.datetime :read_at
-      t.references :sender, index: true
-      t.references :receiver, index: true
+      t.integer  :receiver_id
+      t.integer :sender_id
       t.string   :subject, null: false
       t.text     :body
-      t.references :message_request, index: true
-      t.references :parent, index: true
+      t.integer :message_request_id
+      t.uuid :parent_id
 
       t.timestamps
     end
-  end
 
-  def self.down
-    drop_table :messages
+    add_index :messages, :sender_id
+    add_index :messages, :receiver_id
+    add_index :messages, :message_request_id
+    add_index :messages, :parent_id
   end
 end

@@ -107,7 +107,7 @@ class CheckedItem < ActiveRecord::Base
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(item_identifier: identifier).first
+      item = Item.find_by(item_identifier: identifier)
       self.item = item
     end
   end
