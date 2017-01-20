@@ -259,10 +259,10 @@ ActiveRecord::Schema.define(version: 20170119061648) do
 
   create_table "checkout_stat_has_manifestations", force: :cascade do |t|
     t.integer  "manifestation_checkout_stat_id", null: false
-    t.integer  "manifestation_id",               null: false
+    t.uuid     "manifestation_id",               null: false
     t.integer  "checkouts_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["manifestation_checkout_stat_id"], name: "index_checkout_stat_has_manifestations_on_checkout_stat_id", using: :btree
     t.index ["manifestation_id"], name: "index_checkout_stat_has_manifestations_on_manifestation_id", using: :btree
   end
@@ -666,7 +666,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.string   "item_identifier"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.uuid     "shelf_id",                                null: false
+    t.integer  "shelf_id"
     t.boolean  "include_supplements",     default: false, null: false
     t.text     "note"
     t.string   "url"
@@ -1145,10 +1145,10 @@ ActiveRecord::Schema.define(version: 20170119061648) do
 
   create_table "reserve_stat_has_manifestations", force: :cascade do |t|
     t.integer  "manifestation_reserve_stat_id", null: false
-    t.integer  "manifestation_id",              null: false
+    t.uuid     "manifestation_id",              null: false
     t.integer  "reserves_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.index ["manifestation_id"], name: "index_reserve_stat_has_manifestations_on_manifestation_id", using: :btree
     t.index ["manifestation_reserve_stat_id"], name: "index_reserve_stat_has_manifestations_on_m_reserve_stat_id", using: :btree
   end
@@ -1591,6 +1591,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "checkins", "baskets"
   add_foreign_key "checkins", "checkouts"
   add_foreign_key "checkins", "users", column: "librarian_id"
+  add_foreign_key "checkout_stat_has_manifestations", "manifestations"
   add_foreign_key "checkouts", "items"
   add_foreign_key "checkouts", "libraries"
   add_foreign_key "checkouts", "shelves"
@@ -1628,6 +1629,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "produces", "manifestations"
   add_foreign_key "profiles", "libraries"
   add_foreign_key "profiles", "user_groups"
+  add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserves", "items"
   add_foreign_key "reserves", "libraries", column: "pickup_location_id"
   add_foreign_key "reserves", "manifestations"
