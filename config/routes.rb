@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :item_has_use_restrictions
   resources :lending_policies
   resources :circulation_statuses
-  resources :baskets
+  resources :baskets, except: [:edit, :update]
   resources :checkouts, only: :index do
     put :remove_all, on: :collection
   end
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :carrier_type_has_checkout_types
   resources :user_group_has_checkout_types
   resources :checkout_types
-  resources :checkins
+  resources :checkins, except: [:edit, :update]
   resources :checked_items
   resources :checkouts
   resources :reserves

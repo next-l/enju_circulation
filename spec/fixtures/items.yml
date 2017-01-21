@@ -255,7 +255,7 @@ item_00023:
 item_00024: 
   updated_at: 2007-08-24 23:46:20.484813 +09:00
   item_identifier: '00024'
-  circulation_status_id: 15
+  circulation_status_id: 8
   checkout_type_id: 3
   shelf_id: 7dcedc02-df58-4f89-8f5f-9a823430dd8a
   call_number: 

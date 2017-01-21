@@ -5,7 +5,7 @@ class CreateWithdraws < ActiveRecord::Migration[5.0]
       t.references :item, foreign_key: true, type: :uuid
       t.references :librarian, foreign_key: {to_table: :users}, null: false
 
-      t.timestamps null: false
+      t.timestamps
     end
   end
 end

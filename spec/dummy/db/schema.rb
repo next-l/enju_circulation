@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119061648) do
+ActiveRecord::Schema.define(version: 20170121173222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
 
   create_table "accepts", force: :cascade do |t|
-    t.uuid     "basket_id",    null: false
+    t.uuid     "basket_id"
     t.uuid     "item_id"
     t.integer  "librarian_id", null: false
     t.datetime "created_at",   null: false
@@ -397,9 +397,9 @@ ActiveRecord::Schema.define(version: 20170119061648) do
 
   create_table "donates", force: :cascade do |t|
     t.integer  "agent_id",   null: false
-    t.integer  "item_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.uuid     "item_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["agent_id"], name: "index_donates_on_agent_id", using: :btree
     t.index ["item_id"], name: "index_donates_on_item_id", using: :btree
   end
@@ -666,7 +666,6 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.string   "item_identifier"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "shelf_id"
     t.boolean  "include_supplements",     default: false, null: false
     t.text     "note"
     t.string   "url"
@@ -682,6 +681,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.string   "binding_call_number"
     t.datetime "binded_at"
     t.uuid     "manifestation_id"
+    t.uuid     "shelf_id",                                null: false
     t.index ["binding_item_identifier"], name: "index_items_on_binding_item_identifier", using: :btree
     t.index ["bookstore_id"], name: "index_items_on_bookstore_id", using: :btree
     t.index ["checkout_type_id"], name: "index_items_on_checkout_type_id", using: :btree
@@ -1143,6 +1143,14 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.index ["name"], name: "index_request_types_on_name", unique: true, using: :btree
   end
 
+  create_table "reserve_and_expiring_dates", force: :cascade do |t|
+    t.uuid     "reserve_id", null: false
+    t.date     "expire_on",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reserve_id"], name: "index_reserve_and_expiring_dates_on_reserve_id", using: :btree
+  end
+
   create_table "reserve_stat_has_manifestations", force: :cascade do |t|
     t.integer  "manifestation_reserve_stat_id", null: false
     t.uuid     "manifestation_id",              null: false
@@ -1410,16 +1418,17 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   end
 
   create_table "user_export_files", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",                  null: false
     t.datetime "executed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "user_export_id"
     t.string   "user_export_filename"
     t.integer  "user_export_size"
     t.string   "user_export_content_type"
     t.jsonb    "attachment_data"
     t.index ["user_export_id"], name: "index_user_export_files_on_user_export_id", using: :btree
+    t.index ["user_id"], name: "index_user_export_files_on_user_id", using: :btree
   end
 
   create_table "user_group_has_checkout_types", force: :cascade do |t|
@@ -1477,33 +1486,30 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   end
 
   create_table "user_import_files", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",               null: false
     t.text     "note"
-    t.datetime "executed_at"
-    t.string   "user_import_file_name"
-    t.string   "user_import_content_type"
-    t.string   "user_import_file_size"
-    t.datetime "user_import_updated_at"
-    t.string   "user_import_fingerprint"
     t.string   "edit_mode"
     t.text     "error_message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "user_encoding"
     t.integer  "default_library_id"
     t.integer  "default_user_group_id"
     t.string   "user_import_id"
     t.integer  "user_import_size"
     t.jsonb    "attachment_data"
+    t.index ["user_id"], name: "index_user_import_files_on_user_id", using: :btree
     t.index ["user_import_id"], name: "index_user_import_files_on_user_import_id", using: :btree
   end
 
   create_table "user_import_results", force: :cascade do |t|
-    t.integer  "user_import_file_id"
-    t.integer  "user_id"
+    t.integer  "user_import_file_id", null: false
+    t.integer  "user_id",             null: false
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["user_id"], name: "index_user_import_results_on_user_id", using: :btree
+    t.index ["user_import_file_id"], name: "index_user_import_results_on_user_import_file_id", using: :btree
   end
 
   create_table "user_reserve_stat_transitions", force: :cascade do |t|
@@ -1599,6 +1605,8 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "checkouts", "users", column: "librarian_id"
   add_foreign_key "creates", "agents"
   add_foreign_key "doi_records", "manifestations"
+  add_foreign_key "donates", "agents"
+  add_foreign_key "donates", "items"
   add_foreign_key "events", "event_categories"
   add_foreign_key "events", "libraries"
   add_foreign_key "exemplifies", "items"
@@ -1619,6 +1627,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "items", "checkout_types"
   add_foreign_key "items", "circulation_statuses"
   add_foreign_key "items", "manifestations"
+  add_foreign_key "items", "shelves"
   add_foreign_key "lending_policies", "items"
   add_foreign_key "lending_policies", "user_groups"
   add_foreign_key "library_groups", "users"
@@ -1629,6 +1638,7 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "produces", "manifestations"
   add_foreign_key "profiles", "libraries"
   add_foreign_key "profiles", "user_groups"
+  add_foreign_key "reserve_and_expiring_dates", "reserves"
   add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserves", "items"
   add_foreign_key "reserves", "libraries", column: "pickup_location_id"
@@ -1640,10 +1650,14 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "shelves", "libraries"
   add_foreign_key "subscribes", "subscriptions"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "user_export_files", "users"
   add_foreign_key "user_group_has_checkout_types", "checkout_types"
   add_foreign_key "user_group_has_checkout_types", "user_groups"
   add_foreign_key "user_has_roles", "roles"
   add_foreign_key "user_has_roles", "users"
+  add_foreign_key "user_import_files", "users"
+  add_foreign_key "user_import_results", "user_import_files"
+  add_foreign_key "user_import_results", "users"
   add_foreign_key "users", "profiles"
   add_foreign_key "withdraws", "baskets", on_delete: :nullify
   add_foreign_key "withdraws", "items"

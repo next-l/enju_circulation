@@ -31,7 +31,7 @@ class CheckedItem < ActiveRecord::Base
 
     unless item.available_for_checkout?
       if item.circulation_status.name == 'Missing'
-        item.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
+        item.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
         item.save
         set_due_date
       else

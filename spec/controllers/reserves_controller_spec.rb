@@ -381,13 +381,22 @@ describe ReservesController do
       end
 
       it 'should not create reservation with past date' do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id, expired_at: '1901-01-01' } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id,
+          expired_at: '1901-01-01'
+        } }
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -441,14 +450,22 @@ describe ReservesController do
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).should be_valid
         assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it 'should not create reserve over reserve_limit' do
-        post :create, params: { reserve: { user_number: users(:admin).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:admin).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end

@@ -53,18 +53,18 @@ describe Reserve do
 
   it 'should have reservations that will be expired' do
     reserve = FactoryGirl.create(:reserve)
-    reserve.transition_to!(:requested)
+    reserve.state_machine.transition_to!(:requested)
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
     item.retain(reserve.user)
     reserve.reload
-    reserve.expired_at = Date.yesterday
+    #reserve.expired_at = Date.yesterday
     reserve.save!(validate: false)
-    expect(Reserve.will_expire_retained(Time.zone.now)).to include reserve
+    expect(Reserve.will_expire_on(Time.zone.now).in_state(:retained)).to include reserve
   end
 
   it 'should have completed reservation' do
     reserve = FactoryGirl.create(:reserve)
-    reserve.transition_to!(:requested)
+    reserve.state_machine.transition_to!(:requested)
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
     item.checkout!(reserve.user)
     expect(Reserve.in_state(:completed)).to include reserve
@@ -101,13 +101,6 @@ describe Reserve do
     reservation.item_identifier = 'invalid'
     reservation.save
     assert reservation.valid?.should eq false
-  end
-
-  it 'should be valid if the reservation is completed and its item is destroyed' do
-    reservation = reserves(:reserve_00010)
-    reservation.item.destroy
-    reservation.reload
-    assert reservation.should be_valid
   end
 
   it 'should be treated as Waiting' do

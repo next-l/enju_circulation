@@ -24,13 +24,7 @@ class CheckoutPolicy < ApplicationPolicy
   end
 
   def destroy?
-    if record.checkin
-      if user.try(:has_role?, 'Librarian')
-        true
-      elsif user and user == record.user
-        true
-      end
-    end
+    false
   end
 
   def remove_all?

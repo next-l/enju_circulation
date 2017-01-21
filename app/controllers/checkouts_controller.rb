@@ -9,11 +9,11 @@ class CheckoutsController < ApplicationController
   # GET /checkouts.json
   def index
     if params[:icalendar_token].present?
-      icalendar_user = Profile.where(checkout_icalendar_token: params[:icalendar_token]).first.try(:user)
-      if icalendar_user.blank?
-        raise ActiveRecord::RecordNotFound
+      icalendar_user = Profile.find_by(checkout_icalendar_token: params[:icalendar_token]).try(:user)
+      if icalendar_user
+        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC').page(1)
       else
-        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
+        raise ActiveRecord::RecordNotFound
       end
     else
       unless current_user

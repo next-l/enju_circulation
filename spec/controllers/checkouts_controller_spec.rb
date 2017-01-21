@@ -388,8 +388,9 @@ describe CheckoutsController do
       end
 
       it 'should not remove other checkout history' do
+        checkout_count = users(:admin).checkouts.count
         put :remove_all, params: { user_id: users(:admin).username }
-        assigns(:user).checkouts.returned.count.should eq 0
+        assigns(:user).checkouts.count.should eq checkout_count
         response.should be_forbidden
       end
     end
@@ -435,7 +436,7 @@ describe CheckoutsController do
 
       it 'redirects to the checkouts list' do
         delete :destroy, params: { id: @returned_checkout.id }
-        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
+        response.should be_forbidden
       end
     end
 
@@ -451,9 +452,9 @@ describe CheckoutsController do
         response.should be_forbidden
       end
 
-      it 'redirects to the checkouts list' do
+      it 'should not destroy returned checkout' do
         delete :destroy, params: { id: @returned_checkout.id }
-        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
+        response.should be_forbidden
       end
     end
 
@@ -469,9 +470,9 @@ describe CheckoutsController do
         response.should be_forbidden
       end
 
-      it 'should destroy my checkout' do
+      it 'should not destroy my checkout' do
         delete :destroy, params: { id: checkouts(:checkout_00013).id }
-        response.should redirect_to checkouts_url(user_id: users(:user1).username)
+        response.should be_forbidden
       end
     end
 
