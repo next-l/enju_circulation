@@ -2,22 +2,13 @@
 
 event_import_file_00001:
   id: 1
-  event_import_filename: MyString
-  event_import_size: 1
   user_id: 1
-  event_import_content_type: text/csv
 event_import_file_00002:
   id: 2
-  event_import_filename: MyString
-  event_import_size: 1
   user_id: 1
-  event_import_content_type: text/csv
 event_import_file_00003:
   id: 3
-  event_import_filename: MyString
-  event_import_size: 1
   user_id: 1
-  event_import_content_type: text/csv
 
 # == Schema Information
 #

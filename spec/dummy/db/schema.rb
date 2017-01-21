@@ -460,7 +460,7 @@ ActiveRecord::Schema.define(version: 20170121173222) do
     t.datetime "executed_at"
     t.string   "event_import_filename"
     t.string   "event_import_content_type"
-    t.integer  "event_import_size"
+    t.integer  "event_import_file_size"
     t.datetime "event_import_updated_at"
     t.string   "edit_mode"
     t.datetime "created_at"
@@ -470,9 +470,7 @@ ActiveRecord::Schema.define(version: 20170121173222) do
     t.string   "user_encoding"
     t.integer  "default_library_id"
     t.integer  "default_event_category_id"
-    t.string   "event_import_id"
     t.jsonb    "attachment_data"
-    t.index ["event_import_id"], name: "index_event_import_files_on_event_import_id", using: :btree
     t.index ["parent_id"], name: "index_event_import_files_on_parent_id", using: :btree
     t.index ["user_id"], name: "index_event_import_files_on_user_id", using: :btree
   end
