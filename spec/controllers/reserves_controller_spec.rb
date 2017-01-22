@@ -13,13 +13,13 @@ describe ReservesController do
 
       it 'assigns all reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it "should get other user's reservation" do
         get :index, params: { user_id: users(:user1).username }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
 
@@ -28,45 +28,45 @@ describe ReservesController do
 
       it 'assigns all reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should get index feed without user_id' do
         get :index, params: { format: 'rss' }
         response.should be_success
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index txt without user_id' do
         get :index, format: 'txt'
         response.should be_success
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index feed with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'rss' }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should get index txt with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'txt' }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation))
       end
 
       it "should get other user's index" do
         get :index, params: { user_id: users(:user1).username }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it "should get other user's index feed" do
         get :index, params: { user_id: users(:user1).username, format: :rss }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
 
@@ -75,7 +75,7 @@ describe ReservesController do
 
       it 'assigns my reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should be redirected to my index' do

@@ -11,7 +11,7 @@ class CheckoutsController < ApplicationController
     if params[:icalendar_token].present?
       icalendar_user = Profile.find_by(checkout_icalendar_token: params[:icalendar_token]).try(:user)
       if icalendar_user
-        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC').page(1)
+        @checkouts = icalendar_user.checkouts.not_returned.order(created_at: :desc).page(1)
       else
         raise ActiveRecord::RecordNotFound
       end
