@@ -13,7 +13,6 @@ describe ItemsHelper, type: :helper do
       facet = double(:facet, value: "Available On Shelf", count: 10)
       helper.stub(:params).and_return(ActionController::Parameters.new(acquired_from: '2012-01-01', controller: "items"))
       rendered = helper.circulation_status_facet(facet)
-      puts rendered
       expect(rendered).to have_link "Available on Shelf (10)", href: "/items?acquired_from=2012-01-01&circulation_status=Available+On+Shelf"
     end
   end

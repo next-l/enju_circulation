@@ -25,8 +25,9 @@ end
 #  id           :integer          not null, primary key
 #  item_id      :integer          not null
 #  basket_id    :integer          not null
+#  librarian_id :integer
 #  due_date     :datetime         not null
 #  created_at   :datetime
 #  updated_at   :datetime
-#  librarian_id :integer
+#  user_id      :integer
 #
