@@ -49,7 +49,7 @@
       strong
         = t('activerecord.attributes.item.item_identifier')
         | :
-      = link_to @reserve.item.item_identifier, @reserve.item if @reserve.item
+      = link_to @reserve.retain.item.item_identifier, @reserve.retain.item if @reserve.retain
     p
       strong
         = t('activerecord.attributes.reserve.created_at')
@@ -59,7 +59,7 @@
       strong
         = t('activerecord.attributes.reserve.retained_at')
         | :
-      = l(@reserve.retained_at) if @reserve.retained_at
+      = l(@reserve.retain.created_at) if @reserve.retain
     p
       strong
         = t('activerecord.attributes.reserve.canceled_at')

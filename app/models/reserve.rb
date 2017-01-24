@@ -142,7 +142,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def set_request_status
-    self.request_status_type = RequestStatusType.where(name: 'In Process').first
+    self.request_status_type = RequestStatusType.find_by(name: 'In Process')
   end
 
   def check_expired_at
@@ -310,47 +310,6 @@ class Reserve < ActiveRecord::Base
   end
 
   private
-
-  def expire
-    Reserve.transaction do
-      assign_attributes(request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now)
-      reserve = next_reservation
-      if reserve
-        reserve.item = item
-        self.item = nil
-        save!
-        reserve.transition_to!(:retained)
-      end
-    end
-    logger.info "#{Time.zone.now} reserve_id #{id} expired!"
-  end
-
-  def cancel
-    Reserve.transaction do
-      assign_attributes(request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now)
-      save!
-      reserve = next_reservation
-      if reserve
-        reserve.item = item
-        self.item = nil
-        save!
-        reserve.transition_to!(:retained)
-      end
-    end
-  end
-
-  def checkout
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now)
-    save!
-  end
-
-  def postpone
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'In Process').first,
-                      item_id: nil,
-                      retained_at: nil,
-                      postponed_at: Time.zone.now)
-    save!
-  end
 
   def manifestation_must_include_item
     if item_id.present? && !completed?

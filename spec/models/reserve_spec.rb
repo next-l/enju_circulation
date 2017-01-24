@@ -55,7 +55,7 @@ describe Reserve do
     reserve = FactoryGirl.create(:reserve)
     reserve.transition_to!(:requested)
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
-    item.retain(reserve.user)
+    item.retain!(reserve.user)
     reserve.reload
     reserve.expired_at = Date.yesterday
     reserve.save!(validate: false)
@@ -123,11 +123,11 @@ describe Reserve do
     reserve.transition_to!(:requested)
     manifestation = reserve.manifestation
     item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
-    expect { item.retain(reserve.user) }.not_to raise_error
+    expect { item.retain!(reserve.user) }.not_to raise_error
     expect(reserve.retained?).to be true
     expect(item.retained?).to be true
     item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
-    expect { item.retain(reserve.user) }.not_to raise_error
+    expect { item.retain!(reserve.user) }.not_to raise_error
     expect(reserve.retained?).to be true
     expect(item.retained?).to be false
   end

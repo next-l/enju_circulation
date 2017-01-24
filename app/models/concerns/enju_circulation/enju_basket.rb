@@ -16,11 +16,15 @@ module EnjuCirculation
           checkout = user.checkouts.new
           checkout.librarian = librarian
           checkout.item = checked_item.item
-          checkout.shelf = checked_item.item.shelf
+          #checkout.shelf = checked_item.item.shelf
           checkout.library = librarian.profile.library
           checkout.due_date = checked_item.due_date
           checked_item.item.checkout!(user)
           checkout.save!
+          retain = checked_item.item.retains.order(created_at: :desc).first
+          if retain
+            RetainAndCheckout.create!(retain: retain, checkout: checkout)
+          end
         end
         CheckedItem.where(basket_id: id).destroy_all
       end

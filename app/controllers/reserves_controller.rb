@@ -230,7 +230,7 @@ class ReservesController < ApplicationController
 
     if @reserve.manifestation.is_reserved?
       if @reserve.item
-        retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
+        retain = @reserve.item.retain!(User.find_by(name: 'system')) # TODO: システムからの送信ユーザの設定
         flash[:message] = t('reserve.this_item_is_not_reserved') if retain.nil?
       end
     end

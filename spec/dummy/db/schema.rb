@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119061648) do
+ActiveRecord::Schema.define(version: 20170119170609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1254,6 +1254,15 @@ ActiveRecord::Schema.define(version: 20170119061648) do
     t.index ["resource_import_file_id"], name: "index_resource_import_results_on_resource_import_file_id", using: :btree
   end
 
+  create_table "retain_and_checkouts", force: :cascade do |t|
+    t.integer  "retain_id",   null: false
+    t.uuid     "checkout_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["checkout_id"], name: "index_retain_and_checkouts_on_checkout_id", using: :btree
+    t.index ["retain_id"], name: "index_retain_and_checkouts_on_retain_id", using: :btree
+  end
+
   create_table "retains", force: :cascade do |t|
     t.uuid     "reserve_id", null: false
     t.uuid     "item_id",    null: false
@@ -1635,6 +1644,8 @@ ActiveRecord::Schema.define(version: 20170119061648) do
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
   add_foreign_key "resource_import_files", "users"
+  add_foreign_key "retain_and_checkouts", "checkouts", on_delete: :cascade
+  add_foreign_key "retain_and_checkouts", "retains", on_delete: :cascade
   add_foreign_key "retains", "items", on_delete: :cascade
   add_foreign_key "retains", "reserves", on_delete: :cascade
   add_foreign_key "shelves", "libraries"

@@ -50,7 +50,7 @@ class Checkin < ActiveRecord::Base
       if checkout.item.reserved?
         # TODO: もっと目立たせるために別画面を表示するべき？
         message << I18n.t('item.this_item_is_reserved')
-        checkout.item.retain(current_user)
+        checkout.item.retain!(current_user)
       end
 
       if checkout.item.include_supplements?
