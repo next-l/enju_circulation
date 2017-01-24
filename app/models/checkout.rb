@@ -62,9 +62,9 @@ class Checkout < ActiveRecord::Base
     if !operator && overdue?
       messages << I18n.t('checkout.you_have_overdue_item')
     end
-    if !operator && reserved?
-      messages << I18n.t('checkout.this_item_is_reserved')
-    end
+    #if !operator && reserved?
+    #  messages << I18n.t('checkout.this_item_is_reserved')
+    #end
     if !operator && over_checkout_renewal_limit?
       messages << I18n.t('checkout.excessed_renewal_limit')
     end

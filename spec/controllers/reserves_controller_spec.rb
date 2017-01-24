@@ -13,13 +13,13 @@ describe ReservesController do
 
       it 'assigns all reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it "should get other user's reservation" do
         get :index, params: { user_id: users(:user1).username }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
 
@@ -28,45 +28,45 @@ describe ReservesController do
 
       it 'assigns all reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should get index feed without user_id' do
         get :index, params: { format: 'rss' }
         response.should be_success
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index txt without user_id' do
         get :index, format: 'txt'
         response.should be_success
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
-        assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index feed with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'rss' }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should get index txt with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'txt' }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation))
       end
 
       it "should get other user's index" do
         get :index, params: { user_id: users(:user1).username }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it "should get other user's index feed" do
         get :index, params: { user_id: users(:user1).username, format: :rss }
         response.should be_success
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
 
@@ -75,7 +75,7 @@ describe ReservesController do
 
       it 'assigns my reserves as @reserves' do
         get :index
-        assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
+        assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should be redirected to my index' do
@@ -381,13 +381,22 @@ describe ReservesController do
       end
 
       it 'should not create reservation with past date' do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id, expired_at: '1901-01-01' } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id,
+          expired_at: '1901-01-01'
+        } }
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
@@ -441,14 +450,22 @@ describe ReservesController do
       end
 
       it "should create other user's reserve" do
-        post :create, params: { reserve: { user_number: users(:user1).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:user1).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).should be_valid
         assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
       it 'should not create reserve over reserve_limit' do
-        post :create, params: { reserve: { user_number: users(:admin).profile.user_number, manifestation_id: manifestations(:manifestation_00005).id } }
+        post :create, params: { reserve: {
+          user_number: users(:admin).profile.user_number,
+          manifestation_id: manifestations(:manifestation_00005).id,
+          pickup_location_id: libraries(:library_00002).id
+        } }
         assigns(:reserve).errors[:base].include?(I18n.t('reserve.excessed_reservation_limit')).should be_truthy
       end
     end

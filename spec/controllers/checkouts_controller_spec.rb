@@ -24,7 +24,7 @@ describe CheckoutsController do
       it "should get other user's index" do
         get :index, params: { user_id: users(:admin).username }
         response.should be_success
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order(created_at: :desc).page(1)
       end
     end
 
@@ -50,7 +50,7 @@ describe CheckoutsController do
 
       it 'should get overdue index' do
         get :index, params: { days_overdue: 1 }
-        assigns(:checkouts).should eq Checkout.overdue(1.day.ago.beginning_of_day).order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq Checkout.overdue(1.day.ago.beginning_of_day).order(created_at: :desc).page(1)
         response.should be_success
       end
 
@@ -69,13 +69,13 @@ describe CheckoutsController do
       it "should get other user's index" do
         get :index, params: { user_id: users(:admin).username }
         response.should be_success
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order(created_at: :desc).page(1)
       end
 
       it 'should get index with item_id' do
         get :index, params: { item_id: items(:item_00001).id }
         response.should be_success
-        assigns(:checkouts).should eq items(:item_00001).checkouts.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq items(:item_00001).checkouts.order(created_at: :desc).page(1)
       end
     end
 
@@ -137,7 +137,7 @@ describe CheckoutsController do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
         user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token }
-        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
+        assigns(:checkouts).should eq user.checkouts.not_returned.order(created_at: :desc)
         response.should be_success
       end
 
@@ -145,7 +145,7 @@ describe CheckoutsController do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
         user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token, format: :ics }
-        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
+        assigns(:checkouts).should eq user.checkouts.not_returned.order(created_at: :desc)
         response.should be_success
       end
     end
@@ -388,8 +388,9 @@ describe CheckoutsController do
       end
 
       it 'should not remove other checkout history' do
+        checkout_count = users(:admin).checkouts.count
         put :remove_all, params: { user_id: users(:admin).username }
-        assigns(:user).checkouts.returned.count.should eq 0
+        assigns(:user).checkouts.count.should eq checkout_count
         response.should be_forbidden
       end
     end
@@ -435,7 +436,7 @@ describe CheckoutsController do
 
       it 'redirects to the checkouts list' do
         delete :destroy, params: { id: @returned_checkout.id }
-        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
+        response.should be_forbidden
       end
     end
 
@@ -451,9 +452,9 @@ describe CheckoutsController do
         response.should be_forbidden
       end
 
-      it 'redirects to the checkouts list' do
+      it 'should not destroy returned checkout' do
         delete :destroy, params: { id: @returned_checkout.id }
-        response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
+        response.should be_forbidden
       end
     end
 
@@ -469,9 +470,9 @@ describe CheckoutsController do
         response.should be_forbidden
       end
 
-      it 'should destroy my checkout' do
+      it 'should not destroy my checkout' do
         delete :destroy, params: { id: checkouts(:checkout_00013).id }
-        response.should redirect_to checkouts_url(user_id: users(:user1).username)
+        response.should be_forbidden
       end
     end
 

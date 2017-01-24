@@ -5,6 +5,7 @@ module EnjuCirculation
     included do
       FOR_CHECKOUT_CIRCULATION_STATUS = [
         'Available On Shelf',
+        'Missing',
         'On Loan',
         'Waiting To Be Reshelved'
       ].freeze

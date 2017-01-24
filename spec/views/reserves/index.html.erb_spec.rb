@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'reserves/index' do
   fixtures :users, :roles, :user_has_roles, :reserves
@@ -19,10 +19,10 @@ describe 'reserves/index' do
   end
 
   it 'renders a list of reserves when a reserve does not have expired_at' do
-    reserve = FactoryGirl.create(:reserve, expired_at: nil)
+    FactoryGirl.create(:reserve)
     assign(:reserves, Reserve.page(2))
     allow(view).to receive(:policy).and_return double(create?: true, update?: true, destroy?: true)
     render
-    rendered.should match /<td/
+    rendered.should match(/<td/)
   end
 end

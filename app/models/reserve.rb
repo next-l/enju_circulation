@@ -1,11 +1,9 @@
 class Reserve < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
-  scope :hold, -> { where('item_id IS NOT NULL') }
-  scope :not_hold, -> { where(item_id: nil) }
+  scope :hold, -> { where(id: Reserve.joins(:retain).select(:id)) }
   scope :waiting, -> { not_in_state(:canceled, :completed, :expired, :retained) }
   scope :canceled, -> { in_state(:canceled) }
-  #scope :will_expire_retained, ->(datetime) { in_state(:retained).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
-  #scope :will_expire_pending, ->(datetime) { in_state(:pending).where('checked_out_at IS NULL AND expired_at <= ?', datetime).order('expired_at') }
+  scope :will_expire_on, ->(date) { where(id: Reserve.joins(:reserve_and_expiring_date).where('reserve_and_expiring_dates.expire_on <= ?', date)) }
   scope :created, ->(start_date, end_date) { where('created_at >= ? AND created_at < ?', start_date, end_date) }
   scope :not_sent_expiration_notice_to_patron, -> { in_state(:expired).where(expiration_notice_to_patron: false) }
   scope :not_sent_expiration_notice_to_library, -> { in_state(:expired).where(expiration_notice_to_library: false) }
@@ -19,6 +17,7 @@ class Reserve < ActiveRecord::Base
   belongs_to :item, touch: true
   belongs_to :request_status_type
   belongs_to :pickup_location, class_name: 'Library'
+  has_one :reserve_and_expiring_date
   has_one :retain
 
   validates_associated :user, :librarian, :request_status_type
@@ -255,8 +254,8 @@ class Reserve < ActiveRecord::Base
 
   def self.expire
     Reserve.transaction do
-      will_expire_retained(Time.zone.now.beginning_of_day).readonly(false).map { |r| r.transition_to!(:expired) }
-      will_expire_pending(Time.zone.now.beginning_of_day).readonly(false).map { |r| r.transition_to!(:expired) }
+      will_expire_on(Time.zone.now.beginning_of_day).in_state(:retained).readonly(false).map { |r| r.transition_to!(:expired) }
+      will_expire_on(Time.zone.now.beginning_of_day).in_state(:pending).readonly(false).map { |r| r.transition_to!(:expired) }
 
       # キューに登録した時点では本文は作られないので
       # 予約の連絡をすませたかどうかを識別できるようにしなければならない
