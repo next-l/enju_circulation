@@ -3,7 +3,7 @@ module ItemsHelper
     string = ''
     circulation_status = CirculationStatus.where(name: facet.value).select([:name, :display_name]).first
     if circulation_status
-      string << form_icon(circulation_status)
+      #string << form_icon(circulation_status)
       current = true if params[:circulation_status] == circulation_status.name
       if current
         content_tag :strong do
