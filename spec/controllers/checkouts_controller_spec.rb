@@ -270,6 +270,12 @@ describe CheckoutsController do
           response.should redirect_to(assigns(:checkout))
           assigns(:checkout).changed?.should be_falsy
         end
+
+        it 'should not accept invalid date' do
+          put :update, id: @checkout.id, checkout: @invalid_attrs.merge(due_date: '2017-03-151')
+          assigns(:checkout).changed?.should be_truthy
+          response.should be_success
+        end
       end
 
       it 'should remove its own checkout history' do

@@ -123,7 +123,6 @@ class CheckoutsController < ApplicationController
   # PUT /checkouts/1.json
   def update
     @checkout.assign_attributes(checkout_params)
-    @checkout.due_date = @checkout.due_date.end_of_day
     @checkout.checkout_renewal_count += 1
 
     respond_to do |format|

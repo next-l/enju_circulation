@@ -23,6 +23,7 @@ class Checkout < ActiveRecord::Base
   validate :is_not_checked?, on: :create
   validate :renewable?, on: :update
   validates_date :due_date
+  before_update :set_new_due_date
 
   searchable do
     string :username do
@@ -88,6 +89,7 @@ class Checkout < ActiveRecord::Base
   end
 
   def overdue?
+    return false unless due_date
     if Time.zone.now > due_date.tomorrow.beginning_of_day
       return true
     else
@@ -101,6 +103,10 @@ class Checkout < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def set_new_due_date
+    self.due_date = due_date.try(:end_of_day)
   end
 
   def get_new_due_date
