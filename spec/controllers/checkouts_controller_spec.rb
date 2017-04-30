@@ -26,6 +26,15 @@ describe CheckoutsController do
         response.should be_success
         assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
       end
+
+      describe "with render_views" do
+        render_views
+        it "should accept params: user_id, days_overdue, and reserved" do
+          username = users(:admin).username
+          get :index, user_id: username
+          expect(response.body).to have_link "No (3)", href: "/checkouts?reserved=false&user_id=#{username}"
+        end
+      end
     end
 
     describe 'When logged in as Librarian' do
