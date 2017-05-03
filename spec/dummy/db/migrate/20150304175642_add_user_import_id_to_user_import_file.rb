@@ -1,4 +1,4 @@
-class AddUserImportIdToUserImportFile < ActiveRecord::Migration
+class AddUserImportIdToUserImportFile < ActiveRecord::Migration[5.0]
   def change
     add_column :user_import_files, :user_import_id, :string
     add_column :user_import_files, :user_import_size, :integer

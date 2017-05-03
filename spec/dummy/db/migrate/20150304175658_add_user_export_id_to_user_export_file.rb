@@ -1,4 +1,4 @@
-class AddUserExportIdToUserExportFile < ActiveRecord::Migration
+class AddUserExportIdToUserExportFile < ActiveRecord::Migration[5.0]
   def change
     add_column :user_export_files, :user_export_id, :string
     add_column :user_export_files, :user_export_filename, :string
