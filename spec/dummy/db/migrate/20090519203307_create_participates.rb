@@ -1,4 +1,4 @@
-class CreateParticipates < ActiveRecord::Migration
+class CreateParticipates < ActiveRecord::Migration[5.0]
   def self.up
     create_table :participates do |t|
       t.references :agent, null: false, index: true

@@ -1,4 +1,4 @@
-class AddPlaceIdToEvent < ActiveRecord::Migration
+class AddPlaceIdToEvent < ActiveRecord::Migration[5.0]
   def change
     add_column :events, :place_id, :integer
     add_index :events, :place_id
