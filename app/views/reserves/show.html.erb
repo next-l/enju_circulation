@@ -23,7 +23,7 @@
 
 <p>
   <strong><%= t('activerecord.attributes.reserve.pickup_location_id') -%>:</strong>
-  <%= link_to @reserve.pickup_location.display_name.localize, @reserve.pickup_location if @reserve.pickup_location -%>
+  <%= link_to @reserve.pickup_location.display_name, @reserve.pickup_location if @reserve.pickup_location -%>
 </p>
 
 <p>
