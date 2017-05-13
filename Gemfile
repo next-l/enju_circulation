@@ -20,7 +20,6 @@ gem 'codeclimate-test-reporter', group: :test, require: false
 gem 'rspec_junit_formatter', group: :test, require: false
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 4.2'
-gem 'sinatra', '~> 2.0.0.rc2'
 gem 'rails-controller-testing'
 gem 'json_translate'
 

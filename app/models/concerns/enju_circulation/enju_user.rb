@@ -17,7 +17,9 @@ module EnjuCirculation
 
     def check_item_before_destroy
       # TODO: 貸出記録を残す場合
-      raise 'This user has items still checked out.' unless checkouts.empty?
+      if checkouts.size > 0
+        raise 'This user has items still checked out.'
+      end
     end
 
     def checked_item_count
@@ -30,12 +32,12 @@ module EnjuCirculation
     end
 
     def reached_reservation_limit?(manifestation)
-      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(user_group_id: profile.user_group.id).pluck(:reservation_limit).max.to_i <= reserves.waiting.size
+      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(:user_group_id => profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
       false
     end
 
     def has_overdue?(day = 1)
-      true if checkouts.not_returned.where(Checkout.arel_table[:due_date].lt(day.days.ago)).count >= 1
+      true if checkouts.where(checkin_id: nil).where(Checkout.arel_table[:due_date].lt day.days.ago).count >= 1
     end
   end
 end
