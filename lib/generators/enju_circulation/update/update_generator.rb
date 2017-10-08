@@ -4,9 +4,5 @@ class EnjuCirculation::UpdateGenerator < Rails::Generators::Base
 
   def copy_migration_files
     generate('statesman:add_constraints_to_most_recent', 'Reserve', 'ReserveTransition')
-    generate('statesman:add_constraints_to_most_recent', 'ManifestationCheckoutStat', 'ManifestationCheckoutStatTransition')
-    generate('statesman:add_constraints_to_most_recent', 'ManifestationReserveStat', 'ManifestationReserveStatTransition')
-    generate('statesman:add_constraints_to_most_recent', 'UserCheckoutStat', 'UserCheckoutStatTransition')
-    generate('statesman:add_constraints_to_most_recent', 'UserReserveStat', 'UserReserveStatTransition')
   end
 end
