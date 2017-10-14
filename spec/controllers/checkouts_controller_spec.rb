@@ -398,11 +398,11 @@ describe CheckoutsController do
     describe 'When not logged in' do
       describe 'with valid params' do
         it 'updates the requested checkout' do
-          put :update, params: { id: @checkout.id, checkout: @attrs }, user_id: @checkout.user.username
+          put :update, params: { id: @checkout.id, checkout: @attrs, user_id: @checkout.user.username }
         end
 
         it 'should be forbidden' do
-          put :update, params: { id: @checkout.id, checkout: @attrs }, user_id: @checkout.user.username
+          put :update, params: { id: @checkout.id, checkout: @attrs, user_id: @checkout.user.username }
           response.should redirect_to(new_user_session_url)
         end
       end
