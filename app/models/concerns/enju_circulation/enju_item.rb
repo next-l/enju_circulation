@@ -152,7 +152,7 @@ module EnjuCirculation
     end
 
     def latest_checkout
-      checkouts.order(id: :desc).first
+      checkouts.not_returned.order(created_at: :desc).first
     end
   end
 end
