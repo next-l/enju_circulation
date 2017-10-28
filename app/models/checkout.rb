@@ -8,7 +8,7 @@ class Checkout < ActiveRecord::Base
 
   delegate :username, :user_number, to: :user, prefix: true
   has_one :checkin
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :shelf

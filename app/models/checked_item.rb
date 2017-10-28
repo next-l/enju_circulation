@@ -9,6 +9,8 @@ class CheckedItem < ActiveRecord::Base
   validate :available_for_checkout?, on: :create
   validates :due_date_string, format: { with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/ }, allow_blank: true
   validate :check_due_date
+  validate :check_reserved
+  validate :check_checkout_count
 
   before_validation :set_item
   before_validation :set_due_date, on: :create
@@ -52,22 +54,28 @@ class CheckedItem < ActiveRecord::Base
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
     end
 
+    if errors[:base].empty?
+      true
+    else
+      false
+    end
+  end
+
+  def check_reserved
+    return unless item
     if item.reserved?
       unless item.manifestation.next_reservation.user == basket.user
         errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
       end
     end
+  end
 
+  def check_checkout_count
+    return unless item_checkout_type
     checkout_count = basket.user.checked_item_count
     checkout_type = item_checkout_type.checkout_type
     if checkout_count[:"#{checkout_type.name}"] >= item_checkout_type.checkout_limit
       errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
-    end
-
-    if errors[:base].empty?
-      true
-    else
-      false
     end
   end
 
@@ -82,15 +90,10 @@ class CheckedItem < ActiveRecord::Base
     if due_date_string.present?
       self.due_date = Time.zone.parse(due_date_string).try(:end_of_day)
     else
-      lending_rule = item.lending_rule(basket.user)
-      return nil if lending_rule.nil?
-
-      if lending_rule.fixed_due_date.blank?
-        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
+      if item_checkout_type.fixed_due_date.blank?
+        self.due_date = item_checkout_type.checkout_period.days.since(Time.zone.now).end_of_day
       else
-        # self.due_date = item_checkout_type.fixed_due_date
-        self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
+        self.due_date = item_checkout_type.fixed_due_date.tomorrow.end_of_day
       end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)

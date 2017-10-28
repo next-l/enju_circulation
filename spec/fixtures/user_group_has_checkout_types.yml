@@ -24,7 +24,7 @@ user_group_has_checkout_type_00002:
 user_group_has_checkout_type_00003: 
   checkout_type_id: 1
   updated_at: 2007-12-23 03:13:23.416856 +09:00
-  checkout_limit: 3
+  checkout_limit: 2
   reservation_limit: 2
   user_group_id: 40e0516e-30a5-4363-b5cf-f35aada5d050
   checkout_period: 21

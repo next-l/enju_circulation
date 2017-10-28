@@ -385,9 +385,9 @@ describe ReservesController do
           user_number: users(:user1).profile.user_number,
           manifestation_id: manifestations(:manifestation_00005).id,
           pickup_location_id: libraries(:library_00002).id,
-          expired_at: '1901-01-01'
+          expire_on: '1901-01-01'
         } }
-        assigns(:reserve).should_not be_valid
+        assigns(:reserve).valid?.should_not be_truthy
         response.should be_success
       end
 
@@ -587,7 +587,7 @@ describe ReservesController do
       end
 
       it 'should not update retained reservations if force_retaining is disabled' do
-        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00021' } }
+        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00015' } }
         assigns(:reserve).should_not be_valid
         response.should be_success
         assigns(:reserve).current_state.should eq 'requested'
@@ -595,7 +595,7 @@ describe ReservesController do
       end
 
       it 'should update retained reservations if force_retaining is enabled' do
-        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00021', force_retaining: '1' } }
+        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00015', force_retaining: '1' } }
         assigns(:reserve).should be_valid
         assigns(:reserve).current_state.should eq 'retained'
         response.should redirect_to reserve_url(assigns(:reserve))

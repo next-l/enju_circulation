@@ -165,6 +165,7 @@ describe ManifestationCheckoutStatsController do
     before(:each) do
       @attrs = FactoryGirl.attributes_for(:manifestation_checkout_stat)
       @invalid_attrs = { start_date: '' }
+      ActiveJob::Base.queue_adapter = :test
     end
 
     describe 'When logged in as Administrator' do

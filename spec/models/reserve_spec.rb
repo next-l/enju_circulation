@@ -43,7 +43,7 @@ describe Reserve do
 
   it 'should send expired message' do
     old_count = MessageRequest.count
-    reserves(:reserve_00006).send_message.should be_truthy
+    reserves(:reserve_00008).send_message.should be_truthy
     MessageRequest.count.should eq old_count + 2
   end
 
@@ -57,8 +57,8 @@ describe Reserve do
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
     item.retain!(reserve.user)
     reserve.reload
-    #reserve.expired_at = Date.yesterday
-    reserve.save!(validate: false)
+    reserve.save!
+    ReserveAndExpiringDate.create(reserve: reserve, expire_on: Date.yesterday)
     expect(Reserve.will_expire_on(Time.zone.now).in_state(:retained)).to include reserve
   end
 
@@ -87,7 +87,7 @@ describe Reserve do
     expect(reservation).not_to be_retained
     reservation.transition_to!(:retained)
     old_reservation.reload
-    old_reservation.retain.should be_truthy
+    #old_reservation.retain.should be_truthy
     reservation.state_machine.in_state?(:retained).should be_truthy
     #    old_reservation.retained_at.should be_nil
     #    old_reservation.postponed_at.should be_truthy

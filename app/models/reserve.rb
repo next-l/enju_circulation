@@ -30,7 +30,8 @@ class Reserve < ActiveRecord::Base
   }
   # validates_uniqueness_of :manifestation_id, scope: :user_id
   #validates_date :expired_at, allow_blank: true
-  validate :manifestation_must_include_item
+  #validate :manifestation_must_include_item
+  validate :check_expiring_date
   validate :available_for_reservation?, on: :create
   validates :item_id, presence: true, if: proc { |reserve|
     if item_id_changed?
@@ -49,13 +50,13 @@ class Reserve < ActiveRecord::Base
       true if reserve.retained?
     end
   }
-  validate :valid_item?
+  #validate :valid_item?
   validate :retained_by_other_user?
   before_validation :set_manifestation, on: :create
   before_validation :set_item
-  #validate :check_expired_at
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
+  before_save :set_expiring_date
   after_save do
     if item
       item.checkouts.map(&:index)
@@ -63,7 +64,7 @@ class Reserve < ActiveRecord::Base
     end
   end
 
-  attr_accessor :user_number, :item_identifier, :force_retaining
+  attr_accessor :user_number, :item_identifier, :force_retaining, :expire_on
 
   paginates_per 10
 
@@ -142,16 +143,6 @@ class Reserve < ActiveRecord::Base
 
   def set_request_status
     self.request_status_type = RequestStatusType.find_by(name: 'In Process')
-  end
-
-  def check_expired_at
-    if state_machine.current_state != 'canceled'
-      unless completed?
-        if expired_at.beginning_of_day < Time.zone.now
-          errors[:base] << I18n.t('reserve.invalid_date')
-        end
-      end
-    end
   end
 
   def next_reservation
@@ -306,6 +297,20 @@ class Reserve < ActiveRecord::Base
   def retained?
     return true if state_machine.current_state == 'retained'
     false
+  end
+
+  def set_expiring_date
+    return unless expire_on.present?
+    self.reserve_and_expiring_date = ReserveAndExpiringDate.new(reserve: self, expire_on: expire_on)
+  end
+
+  def check_expiring_date
+    if expire_on.present?
+      if Date.parse(expire_on) < Date.today
+        raise
+        errors.add(:expire_on)
+      end
+    end
   end
 
   private

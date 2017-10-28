@@ -230,8 +230,8 @@ describe CheckedItemsController do
 
       describe 'When the item is reserved' do
         it 'assigns a newly created checked_item as @checked_item' do
-          old_count = items(:item_00021).manifestation.reserves.waiting.count
-          post :create, params: { checked_item: { item_identifier: '00021' }, basket_id: baskets(:basket_00001).id }
+          old_count = items(:item_00003).manifestation.reserves.waiting.count
+          post :create, params: { checked_item: { item_identifier: '00003' }, basket_id: baskets(:basket_00001).id }
           assigns(:checked_item).should be_valid
           assigns(:checked_item).item.manifestation.reserves.waiting.count.should eq old_count
           assigns(:checked_item).librarian.should eq users(:admin)
@@ -340,7 +340,7 @@ describe CheckedItemsController do
       end
 
       it 'should update checked_item' do
-        put :update, params: { id: 4, checked_item: {}, basket_id: baskets(:basket_00008).id }
+        put :update, params: { id: 3, checked_item: {}, basket_id: baskets(:basket_00009).id }
         assigns(:checked_item).should be_valid
         response.should redirect_to checked_item_url(assigns(:checked_item))
       end
