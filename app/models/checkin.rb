@@ -34,17 +34,15 @@ class Checkin < ActiveRecord::Base
     message = ''
     Checkin.transaction do
       checkout.item.checkin!
-      Checkout.not_returned.where(item_id: checkout.item_id).each do |checkout|
-        # TODO: ILL時の処理
-        self.checkout = checkout
-        checkout.operator = current_user
-        unless checkout.user.profile.try(:save_checkout_history)
-          checkout.user = nil
-        end
-        checkout.save(validate: false)
-        unless checkout.item.shelf.library == current_user.profile.library
-          message << I18n.t('checkin.other_library_item')
-        end
+      # TODO: ILL時の処理
+      self.checkout = checkout
+      checkout.operator = current_user
+      unless checkout.user.profile.try(:save_checkout_history)
+        checkout.user = nil
+      end
+      checkout.save(validate: false)
+      unless checkout.item.shelf.library == current_user.profile.library
+        message << I18n.t('checkin.other_library_item')
       end
 
       if checkout.item.reserved?

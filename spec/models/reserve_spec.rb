@@ -140,6 +140,5 @@ end
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  pickup_location_id           :uuid             not null
-#  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null
 #

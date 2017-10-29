@@ -1176,7 +1176,6 @@ ActiveRecord::Schema.define(version: 20170121173222) do
     t.boolean "expiration_notice_to_patron", default: false
     t.boolean "expiration_notice_to_library", default: false
     t.uuid "pickup_location_id", null: false
-    t.datetime "postponed_at"
     t.integer "lock_version", default: 0, null: false
     t.index ["item_id"], name: "index_reserves_on_item_id"
     t.index ["manifestation_id"], name: "index_reserves_on_manifestation_id"

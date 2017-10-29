@@ -260,7 +260,7 @@ class ReservesController < ApplicationController
         :manifestation_id, :item_identifier, :user_number,
         :request_status_type, :canceled_at, :checked_out_at,
         :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-        :retained_at, :postponed_at, :force_retaining
+        :retained_at, :postponed_at, :force_retaining, :expire_on
       )
     elsif current_user.try(:has_role?, 'User')
       params.fetch(:reserve, {}).permit(
