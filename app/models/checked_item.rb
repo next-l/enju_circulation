@@ -31,15 +31,15 @@ class CheckedItem < ActiveRecord::Base
       end
     end
 
+    if item.circulation_status.name == 'Missing'
+      item.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
+      item.save
+      set_due_date
+    end
+
     unless item.available_for_checkout?
-      if item.circulation_status.name == 'Missing'
-        item.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
-        item.save
-        set_due_date
-      else
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
-        return false
-      end
+      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
+      return false
     end
 
     if item_checkout_type.blank?

@@ -82,15 +82,6 @@ module EnjuCirculation
       end
     end
 
-    def checkout!(user)
-      self.circulation_status = CirculationStatus.find_by(name: 'On Loan')
-      if reserved_by_user?(user)
-        manifestation.next_reservation.transition_to!(:completed)
-      end
-      manifestation.reload
-      save!
-    end
-
     def checkin!
       self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
       save(validate: false)
@@ -100,17 +91,14 @@ module EnjuCirculation
       self.class.transaction do
         reservation = manifestation.next_reservation
         if reservation
-          reservation.item = self
-          reservation.transition_to!(:retained) unless reservation.retained?
-          reservation.send_message(librarian)
+          retain = Retain.create!(reserve: reservation, item: self)
+          retain.send_message(librarian)
         end
       end
     end
 
     def retained?
-      manifestation.reserves.in_state(:retained).each do |reserve|
-        return true if reserve.item == self
-      end
+      return true unless RetainAndCheckout.where(retain: retains).count == retains.count
       false
     end
 

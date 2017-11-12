@@ -9,7 +9,7 @@ describe CheckedItem do
 
   it 'should change circulation_status when a missing item is found' do
     basket = Basket.new
-    basket.user = users(:admin)
+    basket.user = users(:librarian2)
     checked_item = CheckedItem.new
     checked_item.item = items(:item_00024)
     checked_item.basket = basket

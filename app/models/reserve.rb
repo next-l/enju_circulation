@@ -33,30 +33,13 @@ class Reserve < ActiveRecord::Base
   #validate :manifestation_must_include_item
   validate :check_expiring_date
   validate :available_for_reservation?, on: :create
-  validates :item_id, presence: true, if: proc { |reserve|
-    if item_id_changed?
-      if reserve.completed? || reserve.retained?
-        if item_id_change[0]
-          if item_id_change[1]
-            true
-          else
-            false
-          end
-        else
-          false
-        end
-      end
-    else
-      true if reserve.retained?
-    end
-  }
-  #validate :valid_item?
-  validate :retained_by_other_user?
+  validate :valid_item?
   before_validation :set_manifestation, on: :create
-  before_validation :set_item
+  #before_validation :set_item
   before_validation :set_user, on: :update
   before_validation :set_request_status, on: :create
   before_save :set_expiring_date
+  after_save :create_retain
   after_save do
     if item
       item.checkouts.map(&:index)
@@ -89,7 +72,7 @@ class Reserve < ActiveRecord::Base
     end
     time :created_at
     text :item_identifier do
-      manifestation.items.pluck(:item_identifier) if manifestation
+      retain.item.item_identifier if retain
     end
     text :title do
       manifestation.try(:titles)
@@ -110,11 +93,10 @@ class Reserve < ActiveRecord::Base
     self.manifestation = item.manifestation if item
   end
 
-  def set_item
-    identifier = item_identifier.to_s.strip
-    if identifier.present?
-      item = Item.find_by(item_identifier: identifier)
-      self.item = item
+  def create_retain
+    if item_identifier.present?
+      item = Item.find_by(item_identifier: item_identifier)
+      Retain.where(reserve: self, item: item).first_or_create! if item
     end
   end
 
@@ -129,15 +111,6 @@ class Reserve < ActiveRecord::Base
     if item_identifier.present?
       item = Item.find_by(item_identifier: item_identifier)
       errors[:base] << I18n.t('reserve.invalid_item') unless item
-    end
-  end
-
-  def retained_by_other_user?
-    return nil if force_retaining == '1'
-    if item && !retained?
-      if Reserve.in_state(:retained).where(item_id: item.item_identifier).count > 0
-        errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
-      end
     end
   end
 
@@ -189,17 +162,6 @@ class Reserve < ActiveRecord::Base
         request = MessageRequest.new
         request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_to_library)
         request.save_message_body(manifestations: Array[manifestation], user: sender)
-        request.transition_to!(:sent)
-      when 'retained'
-        message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_for_patron)
-        request.save_message_body(manifestations: Array[item.manifestation], user: user)
-        request.transition_to!(:sent)
-        message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_for_library)
-        request.save_message_body(manifestations: Array[item.manifestation], user: user)
         request.transition_to!(:sent)
       when 'postponed'
         message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.profile.locale)
@@ -292,11 +254,6 @@ class Reserve < ActiveRecord::Base
 
   def completed?
     %w(canceled expired completed).include?(state_machine.current_state)
-  end
-
-  def retained?
-    return true if state_machine.current_state == 'retained'
-    false
   end
 
   def set_expiring_date

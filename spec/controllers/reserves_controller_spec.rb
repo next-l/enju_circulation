@@ -585,22 +585,6 @@ describe ReservesController do
         assigns(:reserve).should_not be_valid
         response.should be_success
       end
-
-      it 'should not update retained reservations if force_retaining is disabled' do
-        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00015' } }
-        assigns(:reserve).should_not be_valid
-        response.should be_success
-        assigns(:reserve).current_state.should eq 'requested'
-        reserves(:reserve_00014).current_state.should eq 'retained'
-      end
-
-      it 'should update retained reservations if force_retaining is enabled' do
-        put :update, params: { id: reserves(:reserve_00015), reserve: { item_identifier: '00015', force_retaining: '1' } }
-        assigns(:reserve).should be_valid
-        assigns(:reserve).current_state.should eq 'retained'
-        response.should redirect_to reserve_url(assigns(:reserve))
-        reserves(:reserve_00014).current_state.should eq 'postponed'
-      end
     end
 
     describe 'When logged in as Librarian' do

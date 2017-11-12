@@ -47,13 +47,6 @@
     <%= i18n_state(@reserve.current_state) -%>
   </p>
 
-  <% unless @reserve.errors[:base].empty? %>
-    <div class="field">
-      <%= f.label :force_retaining %><br />
-      <%= f.check_box :force_retaining %>
-    </div>
-  <% end %>
-
   <div class="actions">
     <% if @reserve.retained? %>
       <%= f.submit confirm: "#{t('reserve.attempt_to_update_retained_reservation')} #{t('page.continue')}" %>

@@ -11,6 +11,8 @@ describe Checkin do
 
   it 'should save checkout history if save_checkout_history is true' do
     user = users(:user1)
+    user.profile.save_checkout_history = true
+    user.profile.save
     checkouts_count = user.checkouts.count
     checkin = Checkin.new
     checkin.item_identifier = user.checkouts.not_returned.first.item.item_identifier

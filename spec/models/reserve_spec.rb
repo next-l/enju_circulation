@@ -9,12 +9,10 @@ describe Reserve do
 
   it 'should notify a next reservation' do
     old_count = Message.count
-    reserve = reserves(:reserve_00014)
-    item = reserve.next_reservation.item
+    reserve = reserves(:reserve_00015)
     reserve.transition_to!(:expired)
     reserve.current_state.should eq 'expired'
-    item.should eq reserve.item
-    Message.count.should eq old_count + 4
+    Message.count.should eq old_count + 2
   end
 
   it 'should expire reservation' do
@@ -59,15 +57,17 @@ describe Reserve do
     reserve.reload
     reserve.save!
     ReserveAndExpiringDate.create(reserve: reserve, expire_on: Date.yesterday)
-    expect(Reserve.will_expire_on(Time.zone.now).in_state(:retained)).to include reserve
+    expect(Reserve.will_expire_on(Time.zone.now).first.retain).to be_truthy
   end
 
   it 'should have completed reservation' do
     reserve = FactoryGirl.create(:reserve)
     reserve.state_machine.transition_to!(:requested)
     item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
-    item.checkout!(reserve.user)
-    expect(Reserve.in_state(:completed)).to include reserve
+    basket = FactoryGirl.create(:basket, user: reserve.user)
+    basket.checked_items.create(item: item)
+    basket.basket_checkout(basket.user)
+    expect(RetainAndCheckout.order(created_at: :desc).first).to be_truthy
   end
 
   it 'should expire all reservations' do
@@ -76,24 +76,6 @@ describe Reserve do
 
   it 'should send accepted notification' do
     assert Reserve.expire.should be_truthy
-  end
-
-  it "should nullify the first reservation's item_id if the second reservation is retained" do
-    reservation = reserves(:reserve_00015)
-    old_reservation = reserves(:reserve_00014)
-    old_count = MessageRequest.count
-
-    reservation.item = old_reservation.item
-    expect(reservation).not_to be_retained
-    reservation.transition_to!(:retained)
-    old_reservation.reload
-    #old_reservation.retain.should be_truthy
-    reservation.state_machine.in_state?(:retained).should be_truthy
-    #    old_reservation.retained_at.should be_nil
-    #    old_reservation.postponed_at.should be_truthy
-    old_reservation.current_state.should eq 'postponed'
-    MessageRequest.count.should eq old_count + 4
-    reservation.item.retained?.should be_truthy
   end
 
   it 'should not be valid if item_identifier is invalid' do
@@ -117,12 +99,16 @@ describe Reserve do
     manifestation = reserve.manifestation
     item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
     expect { item.retain!(reserve.user) }.not_to raise_error
-    expect(reserve.retained?).to be true
+    reserve.reload
+    item.reload
+    expect(reserve.retain).to be_truthy
     expect(item.retained?).to be true
     item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
     expect { item.retain!(reserve.user) }.not_to raise_error
-    expect(reserve.retained?).to be true
-    expect(item.retained?).to be false
+    reserve.reload
+    item.reload
+    expect(reserve.retain).to be_truthy
+    expect(item.retained?).to be true
   end
 end
 

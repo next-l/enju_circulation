@@ -1,0 +1,14 @@
+retains_00001: 
+  reserve_id: 85bd226b-b4aa-45e7-939b-06d83b5fd0fd
+  item_id: d4255c14-f0bc-468d-95a0-94d01298343d
+
+# == Schema Information
+#
+# Table name: retains
+#
+#  id         :integer          not null, primary key
+#  reserve_id :uuid             not null
+#  item_id    :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
