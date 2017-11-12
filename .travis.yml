@@ -19,4 +19,4 @@ notifications:
 dist: precise
 sudo: false
 addons:
-  postgresql: "9.4"
+  postgresql: "9.5"
