@@ -6,7 +6,7 @@ class ReserveStateMachine
   state :expired
   state :completed
 
-  transition from: :pending, to: [:requested, :expired]
+  transition from: :pending, to: [:requested, :expired, :completed]
   transition from: :requested, to: [:canceled, :expired, :completed]
 
   after_transition(to: :requested) do |reserve|
