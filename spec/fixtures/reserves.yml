@@ -149,8 +149,8 @@ reserve_00015:
 #  request_status_type_id       :integer          not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  expiration_notice_to_patron  :boolean          default(FALSE)
-#  expiration_notice_to_library :boolean          default(FALSE)
+#  expiration_notice_to_patron  :boolean          default(FALSE), not null
+#  expiration_notice_to_library :boolean          default(FALSE), not null
 #  pickup_location_id           :uuid             not null
 #  lock_version                 :integer          default(0), not null
 #

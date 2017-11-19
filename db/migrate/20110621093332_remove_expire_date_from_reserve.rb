@@ -1,4 +1,4 @@
-class RemoveExpireDateFromReserve < ActiveRecord::Migration[5.0]
+class RemoveExpireDateFromReserve < ActiveRecord::Migration[5.1]
   def self.up
     remove_column :reserves, :expire_date
   end

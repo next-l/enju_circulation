@@ -1,4 +1,4 @@
-class CreateCheckoutStatHasManifestations < ActiveRecord::Migration[5.0]
+class CreateCheckoutStatHasManifestations < ActiveRecord::Migration[5.1]
   def change
     create_table :checkout_stat_has_manifestations do |t|
       t.integer :manifestation_checkout_stat_id, null: false

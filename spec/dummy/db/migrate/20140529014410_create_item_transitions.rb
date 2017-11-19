@@ -1,4 +1,4 @@
-class CreateItemTransitions < ActiveRecord::Migration[5.0]
+class CreateItemTransitions < ActiveRecord::Migration[5.1]
   def change
     create_table :item_transitions do |t|
       t.string :to_state, null: false
@@ -6,7 +6,7 @@ class CreateItemTransitions < ActiveRecord::Migration[5.0]
       t.integer :sort_key, null: false
       t.uuid :item_id, null: false
       t.boolean :most_recent, null: false
-      t.timestamps null: false
+      t.timetamp
     end
 
     add_index :item_transitions, :item_id
