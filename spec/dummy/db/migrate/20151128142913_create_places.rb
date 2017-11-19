@@ -1,4 +1,4 @@
-class CreatePlaces < ActiveRecord::Migration[5.0]
+class CreatePlaces < ActiveRecord::Migration[5.1]
   def change
     create_table :places do |t|
       t.string :term, index: true

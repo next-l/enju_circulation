@@ -1,4 +1,4 @@
-class AddEventExportIdToEventExportFile < ActiveRecord::Migration[5.0]
+class AddEventExportIdToEventExportFile < ActiveRecord::Migration[5.1]
   def change
     add_column :event_export_files, :event_export_id, :string
     add_column :event_export_files, :event_export_size, :integer

@@ -12,7 +12,7 @@ class CreateAgentNames < ActiveRecord::Migration[5.1]
       t.string :source
       t.string :name_type
 
-      t.timetamp
+      t.timestamps
     end
   end
 end

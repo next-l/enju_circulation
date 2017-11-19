@@ -6,7 +6,7 @@ class CreateItemTransitions < ActiveRecord::Migration[5.1]
       t.integer :sort_key, null: false
       t.uuid :item_id, null: false
       t.boolean :most_recent, null: false
-      t.timetamp
+      t.timestamps
     end
 
     add_index :item_transitions, :item_id

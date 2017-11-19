@@ -5,7 +5,7 @@ class CreateUserReserveStatTransitions < ActiveRecord::Migration[5.1]
       t.jsonb :metadata, default: {}
       t.integer :sort_key, null: false
       t.integer :user_reserve_stat_id, null: false
-      t.timetamp
+      t.timestamps
     end
 
     add_index :user_reserve_stat_transitions, :user_reserve_stat_id
