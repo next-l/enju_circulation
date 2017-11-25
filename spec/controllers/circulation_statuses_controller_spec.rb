@@ -6,12 +6,12 @@ describe CirculationStatusesController do
   disconnect_sunspot
 
   def valid_attributes
-    FactoryGirl.attributes_for(:circulation_status)
+    FactoryBot.attributes_for(:circulation_status)
   end
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:circulation_status)
+      FactoryBot.create(:circulation_status)
     end
 
     describe 'When logged in as Administrator' do
@@ -54,7 +54,7 @@ describe CirculationStatusesController do
       login_fixture_admin
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :show, params: { id: circulation_status.id }
         assigns(:circulation_status).should eq(circulation_status)
       end
@@ -64,7 +64,7 @@ describe CirculationStatusesController do
       login_fixture_librarian
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :show, params: { id: circulation_status.id }
         assigns(:circulation_status).should eq(circulation_status)
       end
@@ -74,7 +74,7 @@ describe CirculationStatusesController do
       login_fixture_user
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :show, params: { id: circulation_status.id }
         assigns(:circulation_status).should eq(circulation_status)
       end
@@ -82,7 +82,7 @@ describe CirculationStatusesController do
 
     describe 'When not logged in' do
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :show, params: { id: circulation_status.id }
         assigns(:circulation_status).should eq(circulation_status)
       end
@@ -134,7 +134,7 @@ describe CirculationStatusesController do
       login_fixture_admin
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :edit, params: { id: circulation_status.id }
         assigns(:circulation_status).should eq(circulation_status)
       end
@@ -144,7 +144,7 @@ describe CirculationStatusesController do
       login_fixture_librarian
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :edit, params: { id: circulation_status.id }
         response.should be_forbidden
       end
@@ -154,7 +154,7 @@ describe CirculationStatusesController do
       login_fixture_user
 
       it 'assigns the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :edit, params: { id: circulation_status.id }
         response.should be_forbidden
       end
@@ -162,7 +162,7 @@ describe CirculationStatusesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested circulation_status as @circulation_status' do
-        circulation_status = FactoryGirl.create(:circulation_status)
+        circulation_status = FactoryBot.create(:circulation_status)
         get :edit, params: { id: circulation_status.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -288,7 +288,7 @@ describe CirculationStatusesController do
 
   describe 'PUT update' do
     before(:each) do
-      @circulation_status = FactoryGirl.create(:circulation_status)
+      @circulation_status = FactoryBot.create(:circulation_status)
       @attrs = valid_attributes
       @invalid_attrs = { display_name: '' }
     end
@@ -389,7 +389,7 @@ describe CirculationStatusesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @circulation_status = FactoryGirl.create(:circulation_status)
+      @circulation_status = FactoryBot.create(:circulation_status)
     end
 
     describe 'When logged in as Administrator' do

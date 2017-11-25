@@ -46,7 +46,7 @@ describe DemandsController do
       login_fixture_admin
 
       it 'assigns the requested demand as @demand' do
-        demand = FactoryGirl.create(:demand)
+        demand = FactoryBot.create(:demand)
         get :show, params: { id: demand.id }
         assigns(:demand).should eq(demand)
       end
@@ -56,7 +56,7 @@ describe DemandsController do
       login_fixture_librarian
 
       it 'assigns the requested demand as @demand' do
-        demand = FactoryGirl.create(:demand)
+        demand = FactoryBot.create(:demand)
         get :show, params: { id: demand.id }
         assigns(:demand).should eq(demand)
       end
@@ -66,7 +66,7 @@ describe DemandsController do
       login_fixture_user
 
       it 'assigns the requested demand as @demand' do
-        demand = FactoryGirl.create(:demand)
+        demand = FactoryBot.create(:demand)
         get :show, params: { id: demand.id }
         assigns(:demand).should eq(demand)
         response.should be_forbidden
@@ -75,7 +75,7 @@ describe DemandsController do
 
     describe 'When not logged in' do
       it 'assigns the requested demand as @demand' do
-        demand = FactoryGirl.create(:demand)
+        demand = FactoryBot.create(:demand)
         get :show, params: { id: demand.id }
         assigns(:demand).should eq(demand)
         response.should redirect_to new_user_session_url
@@ -199,7 +199,7 @@ describe DemandsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @demand = FactoryGirl.create(:demand)
+      @demand = FactoryBot.create(:demand)
     end
 
     describe 'When logged in as Administrator' do

@@ -143,7 +143,7 @@ describe ReservesController do
       login_fixture_admin
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :show, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -158,7 +158,7 @@ describe ReservesController do
       login_fixture_librarian
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :show, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -173,7 +173,7 @@ describe ReservesController do
       login_fixture_user
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :show, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -191,7 +191,7 @@ describe ReservesController do
 
     describe 'When not logged in' do
       before(:each) do
-        @reserve = FactoryGirl.create(:reserve)
+        @reserve = FactoryBot.create(:reserve)
       end
 
       it 'assigns the requested reserve as @reserve' do
@@ -282,7 +282,7 @@ describe ReservesController do
       login_fixture_admin
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :edit, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -297,7 +297,7 @@ describe ReservesController do
       login_fixture_librarian
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :edit, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -312,7 +312,7 @@ describe ReservesController do
       login_fixture_user
 
       it 'assigns the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :edit, params: { id: reserve.id }
         assigns(:reserve).should eq(reserve)
       end
@@ -330,7 +330,7 @@ describe ReservesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested reserve as @reserve' do
-        reserve = FactoryGirl.create(:reserve)
+        reserve = FactoryBot.create(:reserve)
         get :edit, params: { id: reserve.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -537,8 +537,8 @@ describe ReservesController do
 
   describe 'PUT update' do
     before(:each) do
-      @reserve = FactoryGirl.create(:reserve)
-      @attrs = FactoryGirl.attributes_for(:reserve)
+      @reserve = FactoryBot.create(:reserve)
+      @attrs = FactoryBot.attributes_for(:reserve)
       @invalid_attrs = { manifestation_id: 'invalid' }
     end
 
@@ -707,7 +707,7 @@ describe ReservesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @reserve = FactoryGirl.create(:reserve)
+      @reserve = FactoryBot.create(:reserve)
     end
 
     describe 'When logged in as Administrator' do

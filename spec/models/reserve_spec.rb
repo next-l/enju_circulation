@@ -50,9 +50,9 @@ describe Reserve do
   end
 
   it 'should have reservations that will be expired' do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.state_machine.transition_to!(:requested)
-    item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: reserve.manifestation.id)
     item.retain!(reserve.user)
     reserve.reload
     reserve.save!
@@ -61,10 +61,10 @@ describe Reserve do
   end
 
   it 'should have completed reservation' do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.state_machine.transition_to!(:requested)
-    item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
-    basket = FactoryGirl.create(:basket, user: reserve.user)
+    item = FactoryBot.create(:item, manifestation_id: reserve.manifestation.id)
+    basket = FactoryBot.create(:basket, user: reserve.user)
     basket.checked_items.create(item: item)
     basket.basket_checkout(basket.user)
     expect(RetainAndCheckout.order(created_at: :desc).first).to be_truthy
@@ -86,24 +86,24 @@ describe Reserve do
   end
 
   it 'should be treated as Waiting' do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     expect(Reserve.waiting).to include reserve
-    reserve_expired = FactoryGirl.create(:reserve)
+    reserve_expired = FactoryBot.create(:reserve)
     reserve.transition_to!(:expired)
     expect(Reserve.waiting).to include reserve_expired
   end
 
   it 'should not retain against reserves with already retained' do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.transition_to!(:requested)
     manifestation = reserve.manifestation
-    item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: manifestation.id)
     expect { item.retain!(reserve.user) }.not_to raise_error
     reserve.reload
     item.reload
     expect(reserve.retain).to be_truthy
     expect(item.retained?).to be true
-    item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: manifestation.id)
     expect { item.retain!(reserve.user) }.not_to raise_error
     reserve.reload
     item.reload

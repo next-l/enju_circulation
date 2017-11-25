@@ -19,7 +19,7 @@ describe 'reserves/index' do
   end
 
   it 'renders a list of reserves when a reserve does not have expired_at' do
-    FactoryGirl.create(:reserve)
+    FactoryBot.create(:reserve)
     assign(:reserves, Reserve.page(2))
     allow(view).to receive(:policy).and_return double(create?: true, update?: true, destroy?: true)
     render

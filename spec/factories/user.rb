@@ -1,10 +1,10 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :admin, class: User do |f|
     f.sequence(:username){|n| "admin_#{n}"}
     f.sequence(:email){|n| "admin_#{n}@example.jp"}
     f.password 'adminpassword'
     f.password_confirmation 'adminpassword'
-    f.profile { FactoryGirl.create(:profile) }
+    f.profile { FactoryBot.create(:profile) }
     f.after(:create) do |user|
       user_has_role = UserHasRole.new
       user_has_role.assign_attributes({user_id: user.id, role_id: Role.find_by(name: 'Administrator').id})
@@ -18,7 +18,7 @@ FactoryGirl.define do
     f.sequence(:email){|n| "librarian_#{n}@example.jp"}
     f.password 'librarianpassword'
     f.password_confirmation 'librarianpassword'
-    f.profile { FactoryGirl.create(:profile) }
+    f.profile { FactoryBot.create(:profile) }
     f.after(:create) do |user|
       user_has_role = UserHasRole.new
       user_has_role.assign_attributes({user_id: user.id, role_id: Role.find_by(name: 'Librarian').id})
@@ -32,7 +32,7 @@ FactoryGirl.define do
     f.sequence(:email){|n| "user_#{n}@example.jp"}
     f.password 'userpassword'
     f.password_confirmation 'userpassword'
-    f.profile { FactoryGirl.create(:profile) }
+    f.profile { FactoryBot.create(:profile) }
     f.after(:create) do |user|
       user_has_role = UserHasRole.new
       user_has_role.assign_attributes({user_id: user.id, role_id: Role.find_by(name: 'User').id})

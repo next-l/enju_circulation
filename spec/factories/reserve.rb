@@ -1,11 +1,11 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :reserve do |f|
     before(:create) do |reserve|
-      user = User.new(FactoryGirl.attributes_for(:user))
+      user = User.new(FactoryBot.attributes_for(:user))
       reserve.user = user
     end
-    f.pickup_location { FactoryGirl.create(:library) }
-    f.manifestation_id { FactoryGirl.create(:manifestation).id }
-    #    f.user{FactoryGirl.create(:user)}
+    f.pickup_location { FactoryBot.create(:library) }
+    f.manifestation_id { FactoryBot.create(:manifestation).id }
+    #    f.user{FactoryBot.create(:user)}
   end
 end

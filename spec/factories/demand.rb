@@ -1,9 +1,9 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :demand do
-    user_id { FactoryGirl.create(:user).id }
-    item_id { FactoryGirl.create(:item).id }
-    message_id { FactoryGirl.create(:message).id }
+    user_id { FactoryBot.create(:user).id }
+    item_id { FactoryBot.create(:item).id }
+    message_id { FactoryBot.create(:message).id }
   end
 end

@@ -5,7 +5,7 @@ describe ManifestationCheckoutStatsController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:manifestation_checkout_stat)
+      FactoryBot.create(:manifestation_checkout_stat)
     end
 
     describe 'When logged in as Administrator' do
@@ -48,7 +48,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_admin
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :show, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -58,7 +58,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_librarian
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :show, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -68,7 +68,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_user
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :show, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -76,7 +76,7 @@ describe ManifestationCheckoutStatsController do
 
     describe 'When not logged in' do
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :show, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -126,7 +126,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_admin
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :edit, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -136,7 +136,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_librarian
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :edit, params: { id: manifestation_checkout_stat.id }
         assigns(:manifestation_checkout_stat).should eq(manifestation_checkout_stat)
       end
@@ -146,7 +146,7 @@ describe ManifestationCheckoutStatsController do
       login_fixture_user
 
       it 'assigns the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :edit, params: { id: manifestation_checkout_stat.id }
         response.should be_forbidden
       end
@@ -154,7 +154,7 @@ describe ManifestationCheckoutStatsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested manifestation_checkout_stat as @manifestation_checkout_stat' do
-        manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+        manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
         get :edit, params: { id: manifestation_checkout_stat.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -163,7 +163,7 @@ describe ManifestationCheckoutStatsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:manifestation_checkout_stat)
+      @attrs = FactoryBot.attributes_for(:manifestation_checkout_stat)
       @invalid_attrs = { start_date: '' }
       ActiveJob::Base.queue_adapter = :test
     end
@@ -282,8 +282,8 @@ describe ManifestationCheckoutStatsController do
 
   describe 'PUT update' do
     before(:each) do
-      @manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
-      @attrs = FactoryGirl.attributes_for(:manifestation_checkout_stat)
+      @manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
+      @attrs = FactoryBot.attributes_for(:manifestation_checkout_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -383,7 +383,7 @@ describe ManifestationCheckoutStatsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @manifestation_checkout_stat = FactoryGirl.create(:manifestation_checkout_stat)
+      @manifestation_checkout_stat = FactoryBot.create(:manifestation_checkout_stat)
     end
 
     describe 'When logged in as Administrator' do

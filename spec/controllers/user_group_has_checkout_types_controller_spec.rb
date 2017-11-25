@@ -46,7 +46,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :show, params: { id: user_group_has_checkout_type.id }
         assigns(:user_group_has_checkout_type).should eq(user_group_has_checkout_type)
       end
@@ -56,7 +56,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :show, params: { id: user_group_has_checkout_type.id }
         assigns(:user_group_has_checkout_type).should eq(user_group_has_checkout_type)
       end
@@ -66,7 +66,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :show, params: { id: user_group_has_checkout_type.id }
         assigns(:user_group_has_checkout_type).should eq(user_group_has_checkout_type)
       end
@@ -74,7 +74,7 @@ describe UserGroupHasCheckoutTypesController do
 
     describe 'When not logged in' do
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :show, params: { id: user_group_has_checkout_type.id }
         assigns(:user_group_has_checkout_type).should eq(user_group_has_checkout_type)
       end
@@ -126,7 +126,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :edit, params: { id: user_group_has_checkout_type.id }
         assigns(:user_group_has_checkout_type).should eq(user_group_has_checkout_type)
       end
@@ -136,7 +136,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :edit, params: { id: user_group_has_checkout_type.id }
         response.should be_forbidden
       end
@@ -146,7 +146,7 @@ describe UserGroupHasCheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :edit, params: { id: user_group_has_checkout_type.id }
         response.should be_forbidden
       end
@@ -154,7 +154,7 @@ describe UserGroupHasCheckoutTypesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
-        user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+        user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
         get :edit, params: { id: user_group_has_checkout_type.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -163,7 +163,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:user_group_has_checkout_type)
+      @attrs = FactoryBot.attributes_for(:user_group_has_checkout_type)
       @invalid_attrs = { user_group_id: '' }
     end
 
@@ -280,8 +280,8 @@ describe UserGroupHasCheckoutTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      @user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
-      @attrs = FactoryGirl.attributes_for(:user_group_has_checkout_type)
+      @user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
+      @attrs = FactoryBot.attributes_for(:user_group_has_checkout_type)
       @invalid_attrs = { user_group_id: '' }
     end
 
@@ -376,7 +376,7 @@ describe UserGroupHasCheckoutTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @user_group_has_checkout_type = FactoryGirl.create(:user_group_has_checkout_type)
+      @user_group_has_checkout_type = FactoryBot.create(:user_group_has_checkout_type)
     end
 
     describe 'When logged in as Administrator' do

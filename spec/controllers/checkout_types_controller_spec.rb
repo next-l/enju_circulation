@@ -5,7 +5,7 @@ describe CheckoutTypesController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:checkout_type)
+      FactoryBot.create(:checkout_type)
     end
 
     describe 'When logged in as Administrator' do
@@ -50,7 +50,7 @@ describe CheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :show, params: { id: checkout_type.id }
         assigns(:checkout_type).should eq(checkout_type)
       end
@@ -60,7 +60,7 @@ describe CheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :show, params: { id: checkout_type.id }
         assigns(:checkout_type).should eq(checkout_type)
       end
@@ -70,7 +70,7 @@ describe CheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :show, params: { id: checkout_type.id }
         assigns(:checkout_type).should eq(checkout_type)
       end
@@ -78,7 +78,7 @@ describe CheckoutTypesController do
 
     describe 'When not logged in' do
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :show, params: { id: checkout_type.id }
         assigns(:checkout_type).should eq(checkout_type)
       end
@@ -130,7 +130,7 @@ describe CheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :edit, params: { id: checkout_type.id }
         assigns(:checkout_type).should eq(checkout_type)
       end
@@ -140,7 +140,7 @@ describe CheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :edit, params: { id: checkout_type.id }
         response.should be_forbidden
       end
@@ -150,7 +150,7 @@ describe CheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :edit, params: { id: checkout_type.id }
         response.should be_forbidden
       end
@@ -158,7 +158,7 @@ describe CheckoutTypesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested checkout_type as @checkout_type' do
-        checkout_type = FactoryGirl.create(:checkout_type)
+        checkout_type = FactoryBot.create(:checkout_type)
         get :edit, params: { id: checkout_type.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -167,7 +167,7 @@ describe CheckoutTypesController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:checkout_type)
+      @attrs = FactoryBot.attributes_for(:checkout_type)
       @invalid_attrs = { name: '' }
     end
 
@@ -284,8 +284,8 @@ describe CheckoutTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      @checkout_type = FactoryGirl.create(:checkout_type)
-      @attrs = FactoryGirl.attributes_for(:checkout_type)
+      @checkout_type = FactoryBot.create(:checkout_type)
+      @attrs = FactoryBot.attributes_for(:checkout_type)
       @invalid_attrs = { name: '' }
     end
 
@@ -385,7 +385,7 @@ describe CheckoutTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @checkout_type = FactoryGirl.create(:checkout_type)
+      @checkout_type = FactoryBot.create(:checkout_type)
     end
 
     describe 'When logged in as Administrator' do

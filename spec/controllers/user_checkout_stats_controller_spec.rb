@@ -5,7 +5,7 @@ describe UserCheckoutStatsController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:user_checkout_stat)
+      FactoryBot.create(:user_checkout_stat)
     end
 
     describe 'When logged in as Administrator' do
@@ -50,7 +50,7 @@ describe UserCheckoutStatsController do
       login_fixture_admin
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :show, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
       end
@@ -60,7 +60,7 @@ describe UserCheckoutStatsController do
       login_fixture_librarian
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :show, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
       end
@@ -70,7 +70,7 @@ describe UserCheckoutStatsController do
       login_fixture_user
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :show, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
         response.should be_forbidden
@@ -79,7 +79,7 @@ describe UserCheckoutStatsController do
 
     describe 'When not logged in' do
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :show, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
         response.should redirect_to(new_user_session_url)
@@ -130,7 +130,7 @@ describe UserCheckoutStatsController do
       login_fixture_admin
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :edit, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
       end
@@ -140,7 +140,7 @@ describe UserCheckoutStatsController do
       login_fixture_librarian
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :edit, params: { id: user_checkout_stat.id }
         assigns(:user_checkout_stat).should eq(user_checkout_stat)
       end
@@ -150,7 +150,7 @@ describe UserCheckoutStatsController do
       login_fixture_user
 
       it 'assigns the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :edit, params: { id: user_checkout_stat.id }
         response.should be_forbidden
       end
@@ -158,7 +158,7 @@ describe UserCheckoutStatsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested user_checkout_stat as @user_checkout_stat' do
-        user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+        user_checkout_stat = FactoryBot.create(:user_checkout_stat)
         get :edit, params: { id: user_checkout_stat.id }
         response.should redirect_to(new_user_session_url)
       end
@@ -167,7 +167,7 @@ describe UserCheckoutStatsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:user_checkout_stat)
+      @attrs = FactoryBot.attributes_for(:user_checkout_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -284,8 +284,8 @@ describe UserCheckoutStatsController do
 
   describe 'PUT update' do
     before(:each) do
-      @user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
-      @attrs = FactoryGirl.attributes_for(:user_checkout_stat)
+      @user_checkout_stat = FactoryBot.create(:user_checkout_stat)
+      @attrs = FactoryBot.attributes_for(:user_checkout_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -385,7 +385,7 @@ describe UserCheckoutStatsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @user_checkout_stat = FactoryGirl.create(:user_checkout_stat)
+      @user_checkout_stat = FactoryBot.create(:user_checkout_stat)
     end
 
     describe 'When logged in as Administrator' do
