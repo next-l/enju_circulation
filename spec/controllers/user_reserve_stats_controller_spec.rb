@@ -5,7 +5,7 @@ describe UserReserveStatsController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:user_reserve_stat)
+      FactoryBot.create(:user_reserve_stat)
     end
 
     describe 'When logged in as Administrator' do
@@ -50,7 +50,7 @@ describe UserReserveStatsController do
       login_fixture_admin
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :show, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
       end
@@ -60,7 +60,7 @@ describe UserReserveStatsController do
       login_fixture_librarian
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :show, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
       end
@@ -70,7 +70,7 @@ describe UserReserveStatsController do
       login_fixture_user
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :show, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
         response.should be_forbidden
@@ -79,7 +79,7 @@ describe UserReserveStatsController do
 
     describe 'When not logged in' do
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :show, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
         response.should redirect_to(new_user_session_url)
@@ -130,7 +130,7 @@ describe UserReserveStatsController do
       login_fixture_admin
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :edit, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
       end
@@ -140,7 +140,7 @@ describe UserReserveStatsController do
       login_fixture_librarian
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :edit, id: user_reserve_stat.id
         assigns(:user_reserve_stat).should eq(user_reserve_stat)
       end
@@ -150,7 +150,7 @@ describe UserReserveStatsController do
       login_fixture_user
 
       it 'assigns the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :edit, id: user_reserve_stat.id
         response.should be_forbidden
       end
@@ -158,7 +158,7 @@ describe UserReserveStatsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested user_reserve_stat as @user_reserve_stat' do
-        user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+        user_reserve_stat = FactoryBot.create(:user_reserve_stat)
         get :edit, id: user_reserve_stat.id
         response.should redirect_to(new_user_session_url)
       end
@@ -167,7 +167,7 @@ describe UserReserveStatsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:user_reserve_stat)
+      @attrs = FactoryBot.attributes_for(:user_reserve_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -284,8 +284,8 @@ describe UserReserveStatsController do
 
   describe 'PUT update' do
     before(:each) do
-      @user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
-      @attrs = FactoryGirl.attributes_for(:user_reserve_stat)
+      @user_reserve_stat = FactoryBot.create(:user_reserve_stat)
+      @attrs = FactoryBot.attributes_for(:user_reserve_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -385,7 +385,7 @@ describe UserReserveStatsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @user_reserve_stat = FactoryGirl.create(:user_reserve_stat)
+      @user_reserve_stat = FactoryBot.create(:user_reserve_stat)
     end
 
     describe 'When logged in as Administrator' do

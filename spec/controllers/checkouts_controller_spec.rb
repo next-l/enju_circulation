@@ -9,7 +9,7 @@ describe CheckoutsController do
     end
 
     before(:each) do
-      FactoryGirl.create(:profile)
+      FactoryBot.create(:profile)
     end
 
     describe 'When logged in as Administrator' do

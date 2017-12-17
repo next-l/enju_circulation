@@ -52,9 +52,9 @@ describe Reserve do
   end
 
   it "should have reservations that will be expired" do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.transition_to!(:requested)
-    item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: reserve.manifestation.id)
     item.retain(reserve.user)
     reserve.reload
     reserve.expired_at = Date.yesterday
@@ -63,9 +63,9 @@ describe Reserve do
   end
 
   it "should have completed reservation" do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.transition_to!(:requested)
-    item = FactoryGirl.create(:item, manifestation_id: reserve.manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: reserve.manifestation.id)
     item.checkout!(reserve.user)
     expect(Reserve.completed).to include reserve
   end
@@ -111,21 +111,21 @@ describe Reserve do
   end
 
   it "should be treated as Waiting" do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     expect(Reserve.waiting).to include reserve
-    reserve = FactoryGirl.create(:reserve, expired_at: nil)
+    reserve = FactoryBot.create(:reserve, expired_at: nil)
     expect(Reserve.waiting).to include reserve
   end
 
   it "should not retain against reserves with already retained" do
-    reserve = FactoryGirl.create(:reserve)
+    reserve = FactoryBot.create(:reserve)
     reserve.transition_to!(:requested)
     manifestation = reserve.manifestation
-    item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: manifestation.id)
     expect{item.retain(reserve.user)}.not_to raise_error
     expect(reserve.retained?).to be true
     expect(item.retained?).to be true
-    item = FactoryGirl.create(:item, manifestation_id: manifestation.id)
+    item = FactoryBot.create(:item, manifestation_id: manifestation.id)
     expect{item.retain(reserve.user)}.not_to raise_error
     expect(reserve.retained?).to be true
     expect(item.retained?).to be false

@@ -5,7 +5,7 @@ describe ManifestationReserveStatsController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:manifestation_reserve_stat)
+      FactoryBot.create(:manifestation_reserve_stat)
     end
 
     describe 'When logged in as Administrator' do
@@ -48,7 +48,7 @@ describe ManifestationReserveStatsController do
       login_fixture_admin
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :show, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -58,7 +58,7 @@ describe ManifestationReserveStatsController do
       login_fixture_librarian
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :show, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -68,7 +68,7 @@ describe ManifestationReserveStatsController do
       login_fixture_user
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :show, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -76,7 +76,7 @@ describe ManifestationReserveStatsController do
 
     describe 'When not logged in' do
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :show, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -126,7 +126,7 @@ describe ManifestationReserveStatsController do
       login_fixture_admin
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :edit, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -136,7 +136,7 @@ describe ManifestationReserveStatsController do
       login_fixture_librarian
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :edit, id: manifestation_reserve_stat.id
         assigns(:manifestation_reserve_stat).should eq(manifestation_reserve_stat)
       end
@@ -146,7 +146,7 @@ describe ManifestationReserveStatsController do
       login_fixture_user
 
       it 'assigns the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :edit, id: manifestation_reserve_stat.id
         response.should be_forbidden
       end
@@ -154,7 +154,7 @@ describe ManifestationReserveStatsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested manifestation_reserve_stat as @manifestation_reserve_stat' do
-        manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+        manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
         get :edit, id: manifestation_reserve_stat.id
         response.should redirect_to(new_user_session_url)
       end
@@ -163,7 +163,7 @@ describe ManifestationReserveStatsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:manifestation_reserve_stat)
+      @attrs = FactoryBot.attributes_for(:manifestation_reserve_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -280,8 +280,8 @@ describe ManifestationReserveStatsController do
 
   describe 'PUT update' do
     before(:each) do
-      @manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
-      @attrs = FactoryGirl.attributes_for(:manifestation_reserve_stat)
+      @manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
+      @attrs = FactoryBot.attributes_for(:manifestation_reserve_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -381,7 +381,7 @@ describe ManifestationReserveStatsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @manifestation_reserve_stat = FactoryGirl.create(:manifestation_reserve_stat)
+      @manifestation_reserve_stat = FactoryBot.create(:manifestation_reserve_stat)
     end
 
     describe 'When logged in as Administrator' do

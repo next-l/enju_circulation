@@ -5,7 +5,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:carrier_type_has_checkout_type)
+      FactoryBot.create(:carrier_type_has_checkout_type)
     end
 
     describe 'When logged in as Administrator' do
@@ -50,7 +50,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :show, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -60,7 +60,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :show, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -70,7 +70,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :show, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -78,7 +78,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
     describe 'When not logged in' do
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :show, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -130,7 +130,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_admin
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :edit, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -140,7 +140,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_librarian
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :edit, id: carrier_type_has_checkout_type.id
         assigns(:carrier_type_has_checkout_type).should eq(carrier_type_has_checkout_type)
       end
@@ -150,7 +150,7 @@ describe CarrierTypeHasCheckoutTypesController do
       login_fixture_user
 
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :edit, id: carrier_type_has_checkout_type.id
         response.should be_forbidden
       end
@@ -158,7 +158,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
-        carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+        carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
         get :edit, id: carrier_type_has_checkout_type.id
         response.should redirect_to(new_user_session_url)
       end
@@ -167,7 +167,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:carrier_type_has_checkout_type)
+      @attrs = FactoryBot.attributes_for(:carrier_type_has_checkout_type)
       @invalid_attrs = { carrier_type_id: '' }
     end
 
@@ -284,8 +284,8 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe 'PUT update' do
     before(:each) do
-      @carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
-      @attrs = FactoryGirl.attributes_for(:carrier_type_has_checkout_type)
+      @carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
+      @attrs = FactoryBot.attributes_for(:carrier_type_has_checkout_type)
       @invalid_attrs = { carrier_type_id: '' }
     end
 
@@ -385,7 +385,7 @@ describe CarrierTypeHasCheckoutTypesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @carrier_type_has_checkout_type = FactoryGirl.create(:carrier_type_has_checkout_type)
+      @carrier_type_has_checkout_type = FactoryBot.create(:carrier_type_has_checkout_type)
     end
 
     describe 'When logged in as Administrator' do

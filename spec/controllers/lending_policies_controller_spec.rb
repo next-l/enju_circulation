@@ -6,12 +6,12 @@ describe LendingPoliciesController do
   disconnect_sunspot
 
   def valid_attributes
-    FactoryGirl.attributes_for(:lending_policy)
+    FactoryBot.attributes_for(:lending_policy)
   end
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:lending_policy)
+      FactoryBot.create(:lending_policy)
     end
 
     describe 'When logged in as Administrator' do
@@ -51,7 +51,7 @@ describe LendingPoliciesController do
 
   describe 'GET show' do
     before(:each) do
-      @lending_policy = FactoryGirl.create(:lending_policy)
+      @lending_policy = FactoryBot.create(:lending_policy)
     end
 
     describe 'When logged in as Administrator' do
@@ -138,7 +138,7 @@ describe LendingPoliciesController do
       login_fixture_admin
 
       it 'assigns the requested lending_policy as @lending_policy' do
-        lending_policy = FactoryGirl.create(:lending_policy)
+        lending_policy = FactoryBot.create(:lending_policy)
         get :edit, id: lending_policy.id
         assigns(:lending_policy).should eq(lending_policy)
       end
@@ -148,7 +148,7 @@ describe LendingPoliciesController do
       login_fixture_librarian
 
       it 'assigns the requested lending_policy as @lending_policy' do
-        lending_policy = FactoryGirl.create(:lending_policy)
+        lending_policy = FactoryBot.create(:lending_policy)
         get :edit, id: lending_policy.id
         response.should be_forbidden
       end
@@ -158,7 +158,7 @@ describe LendingPoliciesController do
       login_fixture_user
 
       it 'assigns the requested lending_policy as @lending_policy' do
-        lending_policy = FactoryGirl.create(:lending_policy)
+        lending_policy = FactoryBot.create(:lending_policy)
         get :edit, id: lending_policy.id
         response.should be_forbidden
       end
@@ -166,7 +166,7 @@ describe LendingPoliciesController do
 
     describe 'When not logged in' do
       it 'should not assign the requested lending_policy as @lending_policy' do
-        lending_policy = FactoryGirl.create(:lending_policy)
+        lending_policy = FactoryBot.create(:lending_policy)
         get :edit, id: lending_policy.id
         response.should redirect_to(new_user_session_url)
       end
@@ -292,7 +292,7 @@ describe LendingPoliciesController do
 
   describe 'PUT update' do
     before(:each) do
-      @lending_policy = FactoryGirl.create(:lending_policy)
+      @lending_policy = FactoryBot.create(:lending_policy)
       @attrs = valid_attributes
       @invalid_attrs = { item_id: '' }
     end
@@ -388,7 +388,7 @@ describe LendingPoliciesController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @lending_policy = FactoryGirl.create(:lending_policy)
+      @lending_policy = FactoryBot.create(:lending_policy)
     end
 
     describe 'When logged in as Administrator' do

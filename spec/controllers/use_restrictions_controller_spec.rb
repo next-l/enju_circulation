@@ -6,12 +6,12 @@ describe UseRestrictionsController do
   disconnect_sunspot
 
   def valid_attributes
-    FactoryGirl.attributes_for(:use_restriction)
+    FactoryBot.attributes_for(:use_restriction)
   end
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:use_restriction)
+      FactoryBot.create(:use_restriction)
     end
 
     describe 'When logged in as Administrator' do
@@ -56,7 +56,7 @@ describe UseRestrictionsController do
       login_fixture_admin
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :show, id: use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
@@ -66,7 +66,7 @@ describe UseRestrictionsController do
       login_fixture_librarian
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :show, id: use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
@@ -76,7 +76,7 @@ describe UseRestrictionsController do
       login_fixture_user
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :show, id: use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
@@ -84,7 +84,7 @@ describe UseRestrictionsController do
 
     describe 'When not logged in' do
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :show, id: use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
@@ -136,7 +136,7 @@ describe UseRestrictionsController do
       login_fixture_admin
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :edit, id: use_restriction.id
         assigns(:use_restriction).should eq(use_restriction)
       end
@@ -146,7 +146,7 @@ describe UseRestrictionsController do
       login_fixture_librarian
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :edit, id: use_restriction.id
         response.should be_forbidden
       end
@@ -156,7 +156,7 @@ describe UseRestrictionsController do
       login_fixture_user
 
       it 'assigns the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :edit, id: use_restriction.id
         response.should be_forbidden
       end
@@ -164,7 +164,7 @@ describe UseRestrictionsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested use_restriction as @use_restriction' do
-        use_restriction = FactoryGirl.create(:use_restriction)
+        use_restriction = FactoryBot.create(:use_restriction)
         get :edit, id: use_restriction.id
         response.should redirect_to(new_user_session_url)
       end
@@ -290,7 +290,7 @@ describe UseRestrictionsController do
 
   describe 'PUT update' do
     before(:each) do
-      @use_restriction = FactoryGirl.create(:use_restriction)
+      @use_restriction = FactoryBot.create(:use_restriction)
       @attrs = valid_attributes
       @invalid_attrs = { display_name: '' }
     end
@@ -391,7 +391,7 @@ describe UseRestrictionsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @use_restriction = FactoryGirl.create(:use_restriction)
+      @use_restriction = FactoryBot.create(:use_restriction)
     end
 
     describe 'When logged in as Administrator' do
