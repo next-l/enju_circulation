@@ -43,7 +43,7 @@ namespace :enju_circulation do
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationCheckoutStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationReserveStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('UserCheckoutStat')
-    Rake::Task['statesman:backfill_most_recent'].invoke('UserCheckoutStat')
+    Rake::Task['statesman:backfill_most_recent'].invoke('UserReserveStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('Reserve')
     puts 'enju_circulation: The upgrade completed successfully.'
   end
