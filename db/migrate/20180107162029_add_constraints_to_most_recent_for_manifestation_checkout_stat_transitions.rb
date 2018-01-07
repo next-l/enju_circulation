@@ -7,7 +7,7 @@ class AddConstraintsToMostRecentForManifestationCheckoutStatTransitions < Active
   end
 
   def down
-    remove_index :manifestation_checkout_stat_transitions, name: "index_manifestation_checkout_stat_transitions_parent_most_recent"
+    remove_index :manifestation_checkout_stat_transitions, name: "index_manifestation_checkout_stat_transitions_parent_most_rece"
     change_column_null :manifestation_checkout_stat_transitions, :most_recent, true
   end
 end
