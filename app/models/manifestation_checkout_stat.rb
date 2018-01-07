@@ -10,7 +10,7 @@ class ManifestationCheckoutStat < ActiveRecord::Base
   paginates_per 10
   attr_accessor :mode
 
-  has_many :manifestation_checkout_stat_transitions
+  has_many :manifestation_checkout_stat_transitions, autosave: false
 
   def state_machine
     ManifestationCheckoutStatStateMachine.new(self, transition_class: ManifestationCheckoutStatTransition)

@@ -10,7 +10,7 @@ class UserReserveStat < ActiveRecord::Base
   paginates_per 10
   attr_accessor :mode
 
-  has_many :user_reserve_stat_transitions
+  has_many :user_reserve_stat_transitions, autosave: false
 
   def state_machine
     UserReserveStatStateMachine.new(self, transition_class: UserReserveStatTransition)

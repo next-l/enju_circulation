@@ -74,7 +74,7 @@ class Reserve < ActiveRecord::Base
     ReserveStateMachine.new(self, transition_class: ReserveTransition)
   end
 
-  has_many :reserve_transitions
+  has_many :reserve_transitions, autosave: false
 
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
     to: :state_machine

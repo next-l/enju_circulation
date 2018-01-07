@@ -10,7 +10,7 @@ class ManifestationReserveStat < ActiveRecord::Base
   paginates_per 10
   attr_accessor :mode
 
-  has_many :manifestation_reserve_stat_transitions
+  has_many :manifestation_reserve_stat_transitions, autosave: false
 
   def state_machine
     ManifestationReserveStatStateMachine.new(self, transition_class: ManifestationReserveStatTransition)
