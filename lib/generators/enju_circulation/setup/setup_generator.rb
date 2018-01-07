@@ -32,6 +32,5 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'reserve', 'reserves'
 end
 EOS
-    generate("enju_circulation:update")
   end
 end

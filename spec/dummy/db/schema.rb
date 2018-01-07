@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160820004638) do
+ActiveRecord::Schema.define(version: 20180107161035) do
 
   create_table "accepts", force: :cascade do |t|
     t.integer  "basket_id"
@@ -1088,9 +1088,10 @@ ActiveRecord::Schema.define(version: 20160820004638) do
     t.integer  "reserve_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "most_recent"
+    t.boolean  "most_recent",                null: false
   end
 
+  add_index "reserve_transitions", ["reserve_id", "most_recent"], name: "index_reserve_transitions_parent_most_recent", unique: true
   add_index "reserve_transitions", ["reserve_id"], name: "index_reserve_transitions_on_reserve_id"
   add_index "reserve_transitions", ["sort_key", "reserve_id"], name: "index_reserve_transitions_on_sort_key_and_reserve_id", unique: true
 
