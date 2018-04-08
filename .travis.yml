@@ -16,3 +16,5 @@ notifications:
   slack:
     secure: XWkCvx8ImySMHDMgLzqOnEvBSmhUWqXK9TlLBEBG4NDeyXR1SgewcqrBWA7w+wK7fbS2QOJWASV2rkq3eMHMNOgVEjqxmgOMUcDdI7k+GEYuLWsShuIrjtYf9Yezpg4amdbNOYJiu04W3+67FoyCJCYLhDNdheFsYQ5atl+qmfg=
 sudo: false
+addons:
+  postgresql: "9.6"
