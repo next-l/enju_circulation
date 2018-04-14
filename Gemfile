@@ -17,7 +17,6 @@ gem 'enju_biblio', github: 'next-l/enju_biblio'
 gem 'enju_event', github: 'next-l/enju_event'
 gem 'enju_message', github: 'next-l/enju_message'
 gem 'enju_manifestation_viewer', github: 'next-l/enju_manifestation_viewer'
-gem 'codeclimate-test-reporter', group: :test, require: false
 gem 'rspec_junit_formatter', group: :test, require: false
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 4.2'
