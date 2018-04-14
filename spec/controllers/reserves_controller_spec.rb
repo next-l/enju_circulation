@@ -18,7 +18,7 @@ describe ReservesController do
 
       it "should get other user's reservation" do
         get :index, params: { user_id: users(:user1).username }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
@@ -33,39 +33,39 @@ describe ReservesController do
 
       it 'should get index feed without user_id' do
         get :index, params: { format: 'rss' }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
         assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index txt without user_id' do
         get :index, format: 'txt'
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
         assigns(:reserves).should eq(Reserve.order(created_at: :desc).includes(:manifestation))
       end
 
       it 'should get index feed with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'rss' }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it 'should get index txt with user_id' do
         get :index, params: { user_id: users(:user1).username, format: 'txt' }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation))
       end
 
       it "should get other user's index" do
         get :index, params: { user_id: users(:user1).username }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
 
       it "should get other user's index feed" do
         get :index, params: { user_id: users(:user1).username, format: :rss }
-        response.should be_success
+        response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order(created_at: :desc).includes(:manifestation).page(1))
       end
     end
@@ -80,18 +80,18 @@ describe ReservesController do
 
       it 'should be redirected to my index' do
         get :index
-        response.should be_success
+        response.should be_successful
       end
 
       it 'should get my index feed' do
         get :index, format: :rss
-        response.should be_success
+        response.should be_successful
         response.should render_template('index')
       end
 
       it 'should get my index txt' do
         get :index, format: :txt
-        response.should be_success
+        response.should be_successful
         response.should render_template('index')
       end
 
@@ -150,7 +150,7 @@ describe ReservesController do
 
       it "should show other user's reservation" do
         get :show, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -165,7 +165,7 @@ describe ReservesController do
 
       it "should show other user's reservation" do
         get :show, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -180,7 +180,7 @@ describe ReservesController do
 
       it 'should show my reservation' do
         get :show, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
 
       it "should not show other user's reservation" do
@@ -218,7 +218,7 @@ describe ReservesController do
       it "should get other user's reservation" do
         get :new, params: { user_id: users(:user1).username, manifestation_id: reserves(:reserve_00003).id }
         assigns(:reserve).user.should eq users(:user1)
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -232,13 +232,13 @@ describe ReservesController do
 
       it 'should get new template without user_id' do
         get :new, params: { manifestation_id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
 
       it "should get other user's reservation" do
         get :new, params: { user_id: users(:user1).username, manifestation_id: reserves(:reserve_00003).id }
         assigns(:reserve).user.should eq users(:user1)
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -248,12 +248,12 @@ describe ReservesController do
       it 'should not assign the requested reserve as @reserve' do
         get :new
         assigns(:reserve).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
 
       it 'should get my new reservation' do
         get :new, params: { manifestation_id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
 
       it "should not get other user's new reservation" do
@@ -289,7 +289,7 @@ describe ReservesController do
 
       it "should edit other user's reservation" do
         get :edit, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -304,7 +304,7 @@ describe ReservesController do
 
       it 'should edit reserve without user_id' do
         get :edit, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -319,7 +319,7 @@ describe ReservesController do
 
       it 'should edit my reservation' do
         get :edit, params: { id: reserves(:reserve_00003).id }
-        response.should be_success
+        response.should be_successful
       end
 
       it "should not edit other user's reservation" do
@@ -376,7 +376,7 @@ describe ReservesController do
           post :create, params: { reserve: @invalid_attrs }
           assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
-          response.should be_success
+          response.should be_successful
         end
       end
 
@@ -388,7 +388,7 @@ describe ReservesController do
           expire_on: '1901-01-01'
         } }
         assigns(:reserve).valid?.should_not be_truthy
-        response.should be_success
+        response.should be_successful
       end
 
       it "should create other user's reserve" do
@@ -403,13 +403,13 @@ describe ReservesController do
 
       it 'should not create reserve without manifestation_id' do
         post :create, params: { reserve: { user_number: users(:admin).profile.user_number } }
-        response.should be_success
+        response.should be_successful
       end
 
       it 'should not create reserve with missing user_number' do
         post :create, params: { reserve: { user_number: 'missing', manifestation_id: manifestations(:manifestation_00005).id } }
         response.should render_template('new')
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -445,7 +445,7 @@ describe ReservesController do
           post :create, params: { reserve: @invalid_attrs }
           assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
-          response.should be_success
+          response.should be_successful
         end
       end
 
@@ -496,7 +496,7 @@ describe ReservesController do
           post :create, params: { reserve: @invalid_attrs }
           assigns(:reserve).state_machine.in_state?(:expired).should be_falsy
           response.should render_template('new')
-          response.should be_success
+          response.should be_successful
         end
       end
 
@@ -571,7 +571,7 @@ describe ReservesController do
       it 'should not update reserve without manifestation_id' do
         put :update, params: { id: reserves(:reserve_00001), reserve: { user_number: users(:admin).profile.user_number, manifestation_id: nil } }
         assigns(:reserve).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
 
       it "should update other user's reservation without user_id" do
@@ -583,7 +583,7 @@ describe ReservesController do
       it 'should not update retained reservations if item_identifier is invalid' do
         put :update, params: { id: reserves(:reserve_00014), reserve: { item_identifier: 'invalid' } }
         assigns(:reserve).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
     end
 

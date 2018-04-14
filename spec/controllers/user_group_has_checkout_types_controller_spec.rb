@@ -88,7 +88,7 @@ describe UserGroupHasCheckoutTypesController do
       it 'assigns the requested user_group_has_checkout_type as @user_group_has_checkout_type' do
         get :new
         assigns(:user_group_has_checkout_type).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -190,7 +190,7 @@ describe UserGroupHasCheckoutTypesController do
 
         it 'should be successful' do
           post :create, params: { user_group_has_checkout_type: @invalid_attrs }
-          response.should be_success
+          response.should be_successful
         end
       end
     end

@@ -16,7 +16,7 @@ describe DemandsController do
       it 'assigns all demands as @demands' do
         get :index
         assigns(:demands).should eq Demand.order(created_at: :desc).page(1)
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -26,7 +26,7 @@ describe DemandsController do
       it 'assigns all demands as @demands' do
         get :index
         assigns(:demands).should eq Demand.order(created_at: :desc).page(1)
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -146,7 +146,7 @@ describe DemandsController do
         it 'assigns the requested demand as @demand' do
           post :create, params: { demand: @invalid_attrs }
           assigns(:demand).should_not be_valid
-          response.should be_success
+          response.should be_successful
         end
       end
     end
