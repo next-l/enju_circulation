@@ -54,4 +54,17 @@ namespace :enju_circulation do
       update_checkout
     end
   end
+
+  namespace :export do
+    desc 'Export checkouts'
+    task :checkout => :environment do
+      puts ['checked_out_at', 'checked_in_at', 'item_identifier', 'call_number', 'shelf', 'carrier_type', 'title', 'username', 'full_name'].join("\t")
+      Checkout.where(checkin_id: nil).find_each do |c|
+        if c.item
+          shelf = c.shelf || c.item.shelf
+          puts [ c.created_at, c.checkin.try(:created_at), c.item.item_identifier, c.item.call_number, shelf.try(:name), c.item.manifestation.carrier_type.name, c.item.manifestation.original_title, c.user.try(:username), c.user.try(:profile).try(:full_name) ].join("\t")
+	end
+      end
+    end
+  end
 end
