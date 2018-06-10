@@ -35,7 +35,7 @@ class Reserve < ActiveRecord::Base
   validate :available_for_reservation?, on: :create
   validates :item_id, presence: true, if: Proc.new{|reserve|
     if item_id_changed?
-      if reserve.completed? or reserve.retained?
+      if reserve.completed? || reserve.retained?
         unless item_id_change[0]
           false
         else
@@ -97,7 +97,7 @@ class Reserve < ActiveRecord::Base
       manifestation.try(:titles)
     end
     boolean :hold do |reserve|
-      self.hold.include?(reserve)
+      hold.include?(reserve)
     end
     string :state do
       current_state
@@ -136,7 +136,7 @@ class Reserve < ActiveRecord::Base
 
   def retained_by_other_user?
     return nil if force_retaining == '1'
-    if item and !retained?
+    if item && !retained?
       if Reserve.retained.where(item_id: item.item_identifier).count > 0
         errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
       end
@@ -148,7 +148,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def check_expired_at
-    if canceled_at.blank? and expired_at?
+    if canceled_at.blank? && expired_at?
       if !completed?
         if expired_at.beginning_of_day < Time.zone.now
           errors[:base] << I18n.t('reserve.invalid_date')
@@ -196,7 +196,7 @@ class Reserve < ActiveRecord::Base
         request.save_message_body(manifestations: Array[manifestation], user: user)
         request.transition_to!(:sent)
         reload
-        self.update_attribute(:expiration_notice_to_patron, true)
+        update_attribute(:expiration_notice_to_patron, true)
         message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
         request = MessageRequest.new
         request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
@@ -238,7 +238,7 @@ class Reserve < ActiveRecord::Base
       request = MessageRequest.new
       request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
       request.save_message_body(manifestations: options[:manifestations])
-      self.not_sent_expiration_notice_to_library.readonly(false).each do |reserve|
+      not_sent_expiration_notice_to_library.readonly(false).each do |reserve|
         reserve.expiration_notice_to_library = true
         reserve.save(validate: false)
       end
@@ -257,8 +257,8 @@ class Reserve < ActiveRecord::Base
 
   def self.expire
     Reserve.transaction do
-      self.will_expire_retained(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
-      self.will_expire_pending(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
+      will_expire_retained(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
+      will_expire_pending(Time.zone.now.beginning_of_day).readonly(false).map{|r| r.transition_to!(:expired)}
 
       # キューに登録した時点では本文は作られないので
       # 予約の連絡をすませたかどうかを識別できるようにしなければならない
@@ -277,7 +277,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def checked_out_now?
-    if user and manifestation
+    if user && manifestation
       true if !(user.checkouts.not_returned.pluck(:item_id) & manifestation.items.pluck('items.id')).empty?
     end
   end
@@ -314,13 +314,13 @@ class Reserve < ActiveRecord::Base
   private
 
   def do_request
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
+    assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
+    assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
     Reserve.transaction do
       item.next_reservation.try(:transition_to!, :postponed)
       save!
@@ -329,7 +329,7 @@ class Reserve < ActiveRecord::Base
 
   def expire
     Reserve.transaction do
-      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now})
+      assign_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now})
       reserve = next_reservation
       if reserve
         reserve.item = item
@@ -338,12 +338,12 @@ class Reserve < ActiveRecord::Base
         reserve.transition_to!(:retained)
       end
     end
-    logger.info "#{Time.zone.now} reserve_id #{self.id} expired!"
+    logger.info "#{Time.zone.now} reserve_id #{id} expired!"
   end
 
   def cancel
     Reserve.transaction do
-      self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now})
+      assign_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now})
       save!
       reserve = next_reservation
       if reserve
@@ -356,12 +356,12 @@ class Reserve < ActiveRecord::Base
   end
 
   def checkout
-    self.assign_attributes({request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now})
+    assign_attributes({request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now})
     save!
   end
 
   def postpone
-    self.assign_attributes({
+    assign_attributes({
       request_status_type: RequestStatusType.where(name: 'In Process').first,
       item_id: nil,
       retained_at: nil,
@@ -371,7 +371,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def manifestation_must_include_item
-    if item_id.present? and !completed?
+    if item_id.present? && !completed?
       errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
     end
   end

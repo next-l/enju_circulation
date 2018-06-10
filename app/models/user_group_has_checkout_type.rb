@@ -18,7 +18,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   acts_as_list scope: :user_group_id
 
   def create_lending_policy
-    self.checkout_type.items.find_each do |item|
+    checkout_type.items.find_each do |item|
       policy = LendingPolicy.where(item_id: item.id, user_group_id: user_group_id).select(:id).first
       unless policy
         sql = ['INSERT INTO lending_policies (item_id, user_group_id, loan_period, renewal, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)', item.id, user_group_id, checkout_period, checkout_renewal_limit, Time.zone.now, Time.zone.now]
@@ -30,8 +30,8 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   end
 
   def update_lending_policy
-    self.checkout_type.items.each do |item|
-      sql = ['UPDATE lending_policies SET loan_period = ?, renewal = ?, updated_at = ? WHERE user_group_id = ? AND item_id = ?', self.checkout_period, self.checkout_renewal_limit, Time.zone.now, self.user_group_id, item.id]
+    checkout_type.items.each do |item|
+      sql = ['UPDATE lending_policies SET loan_period = ?, renewal = ?, updated_at = ? WHERE user_group_id = ? AND item_id = ?', checkout_period, checkout_renewal_limit, Time.zone.now, user_group_id, item.id]
       ActiveRecord::Base.connection.execute(
         self.class.send(:sanitize_sql_array, sql)
       )
@@ -58,7 +58,7 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
           result.current_checkout_count, result.user_group_id, result.checkout_type_id
       ]
       ActiveRecord::Base.connection.execute(
-        self.send(:sanitize_sql_array, update_sql)
+        send(:sanitize_sql_array, update_sql)
       )
     end
   end

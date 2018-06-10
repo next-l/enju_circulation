@@ -42,7 +42,7 @@ class ReservesController < ApplicationController
       page = params[:page] || 1
     end
 
-    if params[:mode] == 'hold' and current_user.has_role?('Librarian')
+    if (params[:mode] == 'hold') && current_user.has_role?('Librarian')
       search.build do
         with(:hold).equal_to true
       end
@@ -201,7 +201,7 @@ class ReservesController < ApplicationController
         @reserve.transition_to!(:canceled)
       else
         if @reserve.retained?
-          if @reserve.item_identifier.present? and @reserve.force_retaining == '1'
+          if @reserve.item_identifier.present? && (@reserve.force_retaining == '1')
             @reserve.transition_to!(:retained)
           end
         else

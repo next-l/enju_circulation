@@ -50,12 +50,12 @@ module EnjuCirculation
     end
 
     def set_circulation_status
-      self.circulation_status = CirculationStatus.where(name: 'In Process').first if self.circulation_status.nil?
+      self.circulation_status = CirculationStatus.where(name: 'In Process').first if circulation_status.nil?
     end
 
     def checkout_status(user)
       return nil unless user
-       user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: self.checkout_type.id).first
+       user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: checkout_type.id).first
     end
 
     def reserved?
@@ -64,7 +64,7 @@ module EnjuCirculation
     end
 
     def rent?
-      return true if self.checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == self.id}
+      return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == id}
       false
     end
 

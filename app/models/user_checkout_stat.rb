@@ -24,7 +24,7 @@ class UserCheckoutStat < ActiveRecord::Base
     User.find_each do |user|
       daily_count = user.checkouts.completed(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
       if daily_count > 0
-        self.users << user
+        users << user
         sql = ['UPDATE checkout_stat_has_users SET checkouts_count = ? WHERE user_checkout_stat_id = ? AND user_id = ?', daily_count, id, user.id]
         UserCheckoutStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)

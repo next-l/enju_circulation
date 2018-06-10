@@ -59,13 +59,13 @@ class Checkout < ActiveRecord::Base
   def renewable?
     return nil if checkin
     messages = []
-    if !operator and overdue?
+    if !operator && overdue?
       messages << I18n.t('checkout.you_have_overdue_item')
     end
-    if !operator and reserved?
+    if !operator && reserved?
       messages << I18n.t('checkout.this_item_is_reserved')
     end
-    if !operator and over_checkout_renewal_limit?
+    if !operator && over_checkout_renewal_limit?
       messages << I18n.t('checkout.excessed_renewal_limit')
     end
     if messages.empty?
@@ -121,10 +121,10 @@ class Checkout < ActiveRecord::Base
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
-    self.where(
-      self.arel_table[:created_at].gteq start_date
+    where(
+      arel_table[:created_at].gteq start_date
     ).where(
-      self.arel_table[:created_at].lt end_date
+      arel_table[:created_at].lt end_date
     )
     .where(
       item_id: manifestation.items.pluck('items.id')
