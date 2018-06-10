@@ -86,6 +86,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   end
 
   private
+
   def set_user_group_has_checkout_type
     @user_group_has_checkout_type = UserGroupHasCheckoutType.find(params[:id])
     authorize @user_group_has_checkout_type

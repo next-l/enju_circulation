@@ -104,6 +104,7 @@ class CheckoutTypesController < ApplicationController
   end
 
   private
+
   def set_checkout_type
     @checkout_type = CheckoutType.find(params[:id])
     authorize @checkout_type

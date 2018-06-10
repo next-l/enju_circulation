@@ -5,9 +5,9 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   belongs_to :user_group, validate: true
   belongs_to :checkout_type, validate: true
 
-  validates_presence_of :user_group, :checkout_type
+  validates :user_group, :checkout_type, presence: true
   validates_associated :user_group, :checkout_type
-  validates_uniqueness_of :checkout_type_id, scope: :user_group_id
+  validates :checkout_type_id, uniqueness: { scope: :user_group_id }
   validates :checkout_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :checkout_period, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :checkout_renewal_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}

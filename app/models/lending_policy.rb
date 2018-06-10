@@ -3,8 +3,8 @@ class LendingPolicy < ActiveRecord::Base
   belongs_to :item
   belongs_to :user_group
 
-  validates_presence_of :item, :user_group
-  validates_uniqueness_of :user_group_id, scope: :item_id
+  validates :item, :user_group, presence: true
+  validates :user_group_id, uniqueness: { scope: :item_id }
   validates_date :fixed_due_date, allow_blank: true
 
   paginates_per 10

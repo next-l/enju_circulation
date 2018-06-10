@@ -22,7 +22,7 @@ namespace :enju_circulation do
   task stat: :environment do
     UserCheckoutStat.calculate_stat
     UserReserveStat.calculate_stat
-    #ManifestationCheckoutStat.calculate_stat
+    # ManifestationCheckoutStat.calculate_stat
     ManifestationReserveStat.calculate_stat
   end
 

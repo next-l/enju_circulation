@@ -22,7 +22,7 @@ class CheckinsController < ApplicationController
   # GET /checkins/1
   # GET /checkins/1.json
   def show
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -52,7 +52,7 @@ class CheckinsController < ApplicationController
 
   # GET /checkins/1/edit
   def edit
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
   end
 
   # POST /checkins
@@ -108,7 +108,7 @@ class CheckinsController < ApplicationController
   # DELETE /checkins/1
   # DELETE /checkins/1.json
   def destroy
-    #@checkin = Checkin.find(params[:id])
+    # @checkin = Checkin.find(params[:id])
     @checkin.destroy
 
     respond_to do |format|
@@ -118,6 +118,7 @@ class CheckinsController < ApplicationController
   end
 
   private
+
   def set_checkin
     @checkin = Checkin.find(params[:id])
     authorize @checkin

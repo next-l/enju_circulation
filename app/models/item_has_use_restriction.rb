@@ -4,8 +4,8 @@ class ItemHasUseRestriction < ActiveRecord::Base
   accepts_nested_attributes_for :use_restriction
 
   validates_associated :item, :use_restriction
-  validates_presence_of :use_restriction
-  validates_presence_of :item, on: :update
+  validates :use_restriction, presence: true
+  validates :item, presence: { on: :update }
 
   paginates_per 10
 end

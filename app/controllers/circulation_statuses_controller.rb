@@ -84,6 +84,7 @@ class CirculationStatusesController < ApplicationController
   end
 
   private
+
   def set_circulation_status
     @circulation_status = CirculationStatus.find(params[:id])
     authorize @circulation_status

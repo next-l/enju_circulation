@@ -1,11 +1,11 @@
 class CheckedItem < ActiveRecord::Base
-  belongs_to :item #, validate: true
-  belongs_to :basket #, validate: true
-  belongs_to :librarian, class_name: 'User' #, validate: true
+  belongs_to :item # , validate: true
+  belongs_to :basket # , validate: true
+  belongs_to :librarian, class_name: 'User' # , validate: true
 
   validates_associated :item, :basket, on: :update
-  validates_presence_of :item, :basket, :due_date, on: :update
-  validates_uniqueness_of :item_id, scope: :basket_id
+  validates :item, :basket, :due_date, presence: { on: :update }
+  validates :item_id, uniqueness: { scope: :basket_id }
   validate :available_for_checkout?, on: :create
   validates :due_date_string, format: {with: /\A\[{0,1}\d+([\/-]\d{0,2}){0,2}\]{0,1}\z/}, allow_blank: true
   validate :check_due_date
@@ -14,7 +14,7 @@ class CheckedItem < ActiveRecord::Base
   before_validation :set_due_date, on: :create
   strip_attributes only: :item_identifier
 
-  #attr_protected :user_id
+  # attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
@@ -86,10 +86,10 @@ class CheckedItem < ActiveRecord::Base
       return nil if lending_rule.nil?
 
       if lending_rule.fixed_due_date.blank?
-        #self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
+        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
         self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
       else
-        #self.due_date = item_checkout_type.fixed_due_date
+        # self.due_date = item_checkout_type.fixed_due_date
         self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
       end
       # 返却期限日が閉館日の場合
@@ -113,6 +113,7 @@ class CheckedItem < ActiveRecord::Base
   end
 
   private
+
   def check_due_date
     return nil unless due_date
     if due_date <= Time.zone.now

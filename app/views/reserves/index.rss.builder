@@ -20,17 +20,17 @@ xml.rss('version' => "2.0",
       xml.tag! "atom:link", rel: 'self', href: reserves_url(format: :rss)
       xml.tag! "atom:link", rel: 'alternate', href: reserves_url
     end
-    #xml.tag! "atom:link", rel: 'search', type: 'application/opensearchdescription+xml', href: "http://#{request.host_with_port}/page/opensearch"
+    # xml.tag! "atom:link", rel: 'search', type: 'application/opensearchdescription+xml', href: "http://#{request.host_with_port}/page/opensearch"
     unless params[:query].blank?
       xml.tag! "opensearch:totalResults", @count[:query_result]
       xml.tag! "opensearch:startIndex", @reserves.offset + 1
       xml.tag! "opensearch:itemsPerPage", @reserves.per_page
-      #xml.tag! "opensearch:Query", role: 'request', searchTerms: params[:query], startPage: (params[:page] || 1)
+      # xml.tag! "opensearch:Query", role: 'request', searchTerms: params[:query], startPage: (params[:page] || 1)
     end
     @reserves.each do |reserve|
       xml.item do
         xml.title reserve.manifestation.original_title
-        #xml.description(reserve.title)
+        # xml.description(reserve.title)
         # rfc822
         xml.pubDate reserve.created_at.utc.rfc822
         xml.link reserve_url(reserve)

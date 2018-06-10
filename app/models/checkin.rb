@@ -6,8 +6,8 @@ class Checkin < ActiveRecord::Base
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
 
-  validates_uniqueness_of :item_id, scope: :basket_id
-  validates_presence_of :item_id, :basket_id
+  validates :item_id, uniqueness: { scope: :basket_id }
+  validates :item_id, :basket_id, presence: true
   validate :available_for_checkin?, on: :create
   before_validation :set_item
 
@@ -62,8 +62,8 @@ class Checkin < ActiveRecord::Base
       end
 
       # メールとメッセージの送信
-      #ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
-      #Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, subject: message_template.title, body: message_template.body, recipient: item.manifestation.next_reservation.user)
+      # ReservationNotifier.deliver_reserved(item.manifestation.reserves.first.user, item.manifestation)
+      # Message.create(sender: current_user, receiver: item.manifestation.next_reservation.user, subject: message_template.title, body: message_template.body, recipient: item.manifestation.next_reservation.user)
     end
     if message.present?
       message

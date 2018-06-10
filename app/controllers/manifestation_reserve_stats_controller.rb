@@ -94,6 +94,7 @@ class ManifestationReserveStatsController < ApplicationController
   end
 
   private
+
   def set_manifestation_reserve_stat
     @manifestation_reserve_stat = ManifestationReserveStat.find(params[:id])
     authorize @manifestation_reserve_stat

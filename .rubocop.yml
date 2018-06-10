@@ -8,6 +8,8 @@ Layout/SpaceInsideBlockBraces:
   Enabled: false
 Layout/SpaceBeforeBlockBraces:
   Enabled: false
+Layout/ExtraSpacing:
+  Enabled: false
 Style/WordArray:
   Enabled: false
 Style/Documentation:
@@ -16,9 +18,13 @@ Style/StringLiterals:
   Enabled: false
 Style/AsciiComments:
   Enabled: false
+Style/SymbolArray:
+  Enabled: false
 Metrics/MethodLength:
   Enabled: false
 Metrics/LineLength:
   Enabled: false
 Metrics/BlockLength:
+  Enabled: false
+Metrics/AbcSize:
   Enabled: false

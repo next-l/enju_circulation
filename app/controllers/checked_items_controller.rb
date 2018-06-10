@@ -111,6 +111,7 @@ class CheckedItemsController < ApplicationController
   end
 
   private
+
   def set_checked_item
     @checked_item = CheckedItem.find(params[:id])
     authorize @checked_item

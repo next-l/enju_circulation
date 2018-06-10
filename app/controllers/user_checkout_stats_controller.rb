@@ -93,6 +93,7 @@ class UserCheckoutStatsController < ApplicationController
   end
 
   private
+
   def set_user_checkout_stat
     @user_checkout_stat = UserCheckoutStat.find(params[:id])
     authorize @user_checkout_stat

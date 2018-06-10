@@ -167,6 +167,7 @@ class CheckoutsController < ApplicationController
   end
 
   private
+
   def set_checkout
     @checkout = Checkout.find(params[:id])
     authorize @checkout

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe CheckoutType do
-  #pending "add some examples to (or delete) #{__FILE__}"
+  # pending "add some examples to (or delete) #{__FILE__}"
 
 end
 

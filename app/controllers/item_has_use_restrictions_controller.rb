@@ -89,6 +89,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   end
 
   private
+
   def set_item_has_use_restriction
     @item_has_use_restriction = ItemHasUseRestriction.find(params[:id])
     authorize @item_has_use_restriction

@@ -83,6 +83,7 @@ class LendingPoliciesController < ApplicationController
   end
 
   private
+
   def set_lending_policy
     @lending_policy = LendingPolicy.find(params[:id])
     authorize @lending_policy

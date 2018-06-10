@@ -37,6 +37,7 @@ class UserCheckoutStat < ActiveRecord::Base
   end
 
   private
+
   def self.transition_class
     UserCheckoutStatTransition
   end

@@ -93,6 +93,7 @@ class UserReserveStatsController < ApplicationController
   end
 
   private
+
   def set_user_reserve_stat
     @user_reserve_stat = UserReserveStat.find(params[:id])
     authorize @user_reserve_stat

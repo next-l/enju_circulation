@@ -5,9 +5,9 @@ class CarrierTypeHasCheckoutType < ActiveRecord::Base
   belongs_to :carrier_type, validate: true
   belongs_to :checkout_type, validate: true
 
-  validates_presence_of :carrier_type, :checkout_type
+  validates :carrier_type, :checkout_type, presence: true
   validates_associated :carrier_type, :checkout_type
-  validates_uniqueness_of :checkout_type_id, scope: :carrier_type_id
+  validates :checkout_type_id, uniqueness: { scope: :carrier_type_id }
 
   acts_as_list scope: :carrier_type_id
 end

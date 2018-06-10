@@ -121,6 +121,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   end
 
   private
+
   def set_manifestation_checkout_stat
     @manifestation_checkout_stat = ManifestationCheckoutStat.find(params[:id])
     authorize @manifestation_checkout_stat

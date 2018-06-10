@@ -87,6 +87,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   end
 
   private
+
   def set_carrier_type_has_checkout_type
     @carrier_type_has_checkout_type = CarrierTypeHasCheckoutType.find(params[:id])
     authorize @carrier_type_has_checkout_type

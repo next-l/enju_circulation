@@ -139,7 +139,7 @@ class ReservesController < ApplicationController
       authorize @manifestation, :show?
       @reserve.manifestation = @manifestation
       if @reserve.user
-        #@reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
+        # @reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
         if @manifestation.is_reserved_by?(@reserve.user)
           flash[:notice] = t('reserve.this_manifestation_is_already_reserved')
           redirect_to @manifestation
@@ -231,7 +231,7 @@ class ReservesController < ApplicationController
   # DELETE /reserves/1.json
   def destroy
     @reserve.destroy
-    #flash[:notice] = t('reserve.reservation_was_canceled')
+    # flash[:notice] = t('reserve.reservation_was_canceled')
 
     if @reserve.manifestation.is_reserved?
       if @reserve.item
@@ -249,6 +249,7 @@ class ReservesController < ApplicationController
   end
 
   private
+
   def set_reserve
     @reserve = Reserve.find(params[:id])
     authorize @reserve

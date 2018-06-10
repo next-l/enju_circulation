@@ -84,6 +84,7 @@ class UseRestrictionsController < ApplicationController
   end
 
   private
+
   def set_use_restriction
     @use_restriction = UseRestriction.find(params[:id])
     authorize @use_restriction

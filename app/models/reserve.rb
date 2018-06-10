@@ -24,12 +24,12 @@ class Reserve < ActiveRecord::Base
   belongs_to :pickup_location, class_name: 'Library'
 
   validates_associated :user, :librarian, :request_status_type
-  validates :manifestation, associated: true #, on: :create
-  validates_presence_of :user, :request_status_type
+  validates :manifestation, associated: true # , on: :create
+  validates :user, :request_status_type, presence: true
   validates :manifestation, presence: true, unless: Proc.new{|reserve|
     reserve.completed?
   }
-  #validates_uniqueness_of :manifestation_id, scope: :user_id
+  # validates_uniqueness_of :manifestation_id, scope: :user_id
   validates_date :expired_at, allow_blank: true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, on: :create
@@ -242,7 +242,7 @@ class Reserve < ActiveRecord::Base
         reserve.expiration_notice_to_library = true
         reserve.save(validate: false)
       end
-    #when 'canceled'
+    # when 'canceled'
     #  message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', sender.locale)
     #  request = MessageRequest.new
     #  request.assign_attributes({sender: sender, receiver: sender, message_template: message_template_to_library})
@@ -272,7 +272,7 @@ class Reserve < ActiveRecord::Base
         Reserve.send_message_to_library('expired', manifestations: Reserve.not_sent_expiration_notice_to_library.collect(&:manifestation))
       end
     end
-  #rescue
+  # rescue
   #  logger.info "#{Time.zone.now} expiring reservations failed!"
   end
 
@@ -312,6 +312,7 @@ class Reserve < ActiveRecord::Base
   end
 
   private
+
   def do_request
     self.assign_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
     save!

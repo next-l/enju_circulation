@@ -80,6 +80,7 @@ class DemandsController < ApplicationController
   end
 
   private
+
   def set_demand
     @demand = Demand.find(params[:id])
     authorize @demand

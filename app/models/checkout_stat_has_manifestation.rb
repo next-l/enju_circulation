@@ -1,11 +1,11 @@
 class CheckoutStatHasManifestation < ActiveRecord::Base
-  #attr_accessible :manifestation_checkout_stat_id, :manifestation_id,
+  # attr_accessible :manifestation_checkout_stat_id, :manifestation_id,
   #  as: :admin
   belongs_to :manifestation_checkout_stat
   belongs_to :manifestation
 
-  validates_uniqueness_of :manifestation_id, scope: :manifestation_checkout_stat_id
-  validates_presence_of :manifestation_checkout_stat_id, :manifestation_id
+  validates :manifestation_id, uniqueness: { scope: :manifestation_checkout_stat_id }
+  validates :manifestation_checkout_stat_id, :manifestation_id, presence: true
 
   paginates_per 10
 end

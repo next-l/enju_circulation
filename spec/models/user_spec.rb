@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe User do
-  #pending "add some examples to (or delete) #{__FILE__}"
+  # pending "add some examples to (or delete) #{__FILE__}"
   fixtures :all
 
   it "should get checked_item_count" do
