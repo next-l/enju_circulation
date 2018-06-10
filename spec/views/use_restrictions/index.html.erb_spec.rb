@@ -8,16 +8,16 @@ describe "use_restrictions/index" do
 
     assign(:use_restrictions, Kaminari::paginate_array([
       stub_model(UseRestriction,
-        name: "Not For Loan",
-        display_name: "Not For Loan",
-        note: "MyText",
-        position: 1
+                 name: "Not For Loan",
+                 display_name: "Not For Loan",
+                 note: "MyText",
+                 position: 1
       ),
       stub_model(UseRestriction,
-        name: "On Loan",
-        display_name: "On Loan",
-        note: "MyText",
-        position: 2
+                 name: "On Loan",
+                 display_name: "On Loan",
+                 note: "MyText",
+                 position: 2
       )
     ]).page(1))
   end

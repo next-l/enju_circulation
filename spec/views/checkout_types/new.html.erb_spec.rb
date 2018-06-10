@@ -3,10 +3,10 @@ require 'rails_helper'
 describe "checkout_types/new" do
   before(:each) do
     assign(:checkout_type, stub_model(CheckoutType,
-      name: "MyString",
-      display_name: "MyText",
-      note: "MyText",
-      position: 1
+                                      name: "MyString",
+                                      display_name: "MyText",
+                                      note: "MyText",
+                                      position: 1
     ).as_new_record)
   end
 

@@ -36,14 +36,14 @@ class Reserve < ActiveRecord::Base
   validates :item_id, presence: true, if: Proc.new{|reserve|
     if item_id_changed?
       if reserve.completed? || reserve.retained?
-        unless item_id_change[0]
-          false
-        else
-          unless item_id_change[1]
-            false
-          else
+        if item_id_change[0]
+          if item_id_change[1]
             true
+          else
+            false
           end
+        else
+          false
         end
       end
     else
@@ -77,7 +77,7 @@ class Reserve < ActiveRecord::Base
   has_many :reserve_transitions, autosave: false
 
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
-    to: :state_machine
+           to: :state_machine
 
   searchable do
     text :username do

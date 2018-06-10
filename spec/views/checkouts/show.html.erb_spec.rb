@@ -5,8 +5,8 @@ describe "checkouts/show" do
 
   before(:each) do
     @checkout = assign(:checkout, stub_model(Checkout,
-      user_id: 2,
-      item_id: 1
+                                             user_id: 2,
+                                             item_id: 1
     ))
     assign(:library_group, LibraryGroup.site_config)
     I18n.locale = :en

@@ -1,11 +1,7 @@
 module EnjuCirculation
   module ManifestationsHelper
     def link_to_reservation(manifestation, reserve)
-      unless current_user
-        unless manifestation.items.for_checkout.empty?
-          link_to t('manifestation.reserve_this'), new_reserve_path(manifestation_id: manifestation.id)
-        end
-      else
+      if current_user
         if current_user.has_role?('Librarian')
           link_to t('manifestation.reserve_this'), new_reserve_path(manifestation_id: manifestation.id)
         else
@@ -18,6 +14,10 @@ module EnjuCirculation
               link_to t('manifestation.reserve_this'), new_reserve_path(manifestation_id: manifestation.id)
             end
           end
+        end
+      else
+        unless manifestation.items.for_checkout.empty?
+          link_to t('manifestation.reserve_this'), new_reserve_path(manifestation_id: manifestation.id)
         end
       end
     end

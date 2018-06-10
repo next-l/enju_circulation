@@ -17,7 +17,7 @@ class UserCheckoutStat < ActiveRecord::Base
   end
 
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
-    to: :state_machine
+           to: :state_machine
 
   def calculate_count!
     self.started_at = Time.zone.now
