@@ -21,7 +21,7 @@ class Reserve < ActiveRecord::Base
   belongs_to :librarian, class_name: 'User'
   belongs_to :item, touch: true
   belongs_to :request_status_type
-  belongs_to :pickup_location, :class_name => 'Library'
+  belongs_to :pickup_location, class_name: 'Library'
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true #, on: :create

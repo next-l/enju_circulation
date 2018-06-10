@@ -3,7 +3,7 @@ module EnjuCirculation
     extend ActiveSupport::Concern
 
     included do
-      has_many :reserves, :foreign_key => :manifestation_id
+      has_many :reserves, foreign_key: :manifestation_id
 
       searchable do
         boolean :reservable do
@@ -34,7 +34,7 @@ module EnjuCirculation
 
     def is_reserved_by?(user)
       return nil unless user
-      reserve = Reserve.waiting.where(:user_id => user.id, :manifestation_id => id).first
+      reserve = Reserve.waiting.where(user_id: user.id, manifestation_id: id).first
       if reserve
         reserve
       else
@@ -51,7 +51,7 @@ module EnjuCirculation
     end
 
     def checkouts(start_date, end_date)
-      Checkout.completed(start_date, end_date).where(:item_id => self.items.collect(&:id))
+      Checkout.completed(start_date, end_date).where(item_id: self.items.collect(&:id))
     end
 
     def checkout_period(user)

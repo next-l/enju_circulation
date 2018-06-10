@@ -31,12 +31,12 @@ module EnjuCirculation
       has_many :checkouts
       has_many :reserves
       has_many :checked_items
-      has_many :baskets, :through => :checked_items
-      belongs_to :circulation_status, :validate => true
+      has_many :baskets, through: :checked_items
+      belongs_to :circulation_status, validate: true
       belongs_to :checkout_type
-      has_many :lending_policies, :dependent => :destroy
-      has_one :item_has_use_restriction, :dependent => :destroy
-      has_one :use_restriction, :through => :item_has_use_restriction
+      has_many :lending_policies, dependent: :destroy
+      has_one :item_has_use_restriction, dependent: :destroy
+      has_one :use_restriction, through: :item_has_use_restriction
       validates_associated :circulation_status, :checkout_type
       validates_presence_of :circulation_status, :checkout_type
       searchable do
@@ -50,12 +50,12 @@ module EnjuCirculation
     end
 
     def set_circulation_status
-      self.circulation_status = CirculationStatus.where(:name => 'In Process').first if self.circulation_status.nil?
+      self.circulation_status = CirculationStatus.where(name: 'In Process').first if self.circulation_status.nil?
     end
 
     def checkout_status(user)
       return nil unless user
-       user.profile.user_group.user_group_has_checkout_types.where(:checkout_type_id => self.checkout_type.id).first
+       user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: self.checkout_type.id).first
     end
 
     def reserved?
@@ -148,7 +148,7 @@ module EnjuCirculation
     end
 
     def next_reservation
-      Reserve.waiting.where(:item_id => id).first
+      Reserve.waiting.where(item_id: id).first
     end
 
     def latest_checkout

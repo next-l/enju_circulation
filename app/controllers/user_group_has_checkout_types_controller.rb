@@ -28,8 +28,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # GET /user_group_has_checkout_types/new.json
   def new
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(
-      :checkout_type => get_checkout_type,
-      :user_group => get_user_group
+      checkout_type: get_checkout_type,
+      user_group: get_user_group
     )
 
     respond_to do |format|

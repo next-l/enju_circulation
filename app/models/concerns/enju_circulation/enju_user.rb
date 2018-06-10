@@ -3,14 +3,14 @@ module EnjuCirculation
     extend ActiveSupport::Concern
 
     included do
-      has_many :checkouts, :dependent => :nullify
-      has_many :reserves, :dependent => :destroy
-      has_many :reserved_manifestations, :through => :reserves, :source => :manifestation
+      has_many :checkouts, dependent: :nullify
+      has_many :reserves, dependent: :destroy
+      has_many :reserved_manifestations, through: :reserves, source: :manifestation
       has_many :checkout_stat_has_users
-      has_many :user_checkout_stats, :through => :checkout_stat_has_users
+      has_many :user_checkout_stats, through: :checkout_stat_has_users
       has_many :reserve_stat_has_users
-      has_many :user_reserve_stats, :through => :reserve_stat_has_users
-      has_many :baskets, :dependent => :destroy
+      has_many :user_reserve_stats, through: :reserve_stat_has_users
+      has_many :baskets, dependent: :destroy
 
       before_destroy :check_item_before_destroy
     end
@@ -39,7 +39,7 @@ module EnjuCirculation
     end
 
     def reached_reservation_limit?(manifestation)
-      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(:user_group_id => profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
+      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(user_group_id: profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
       false
     end
 
