@@ -8,16 +8,16 @@ describe "checkout_types/index" do
 
     assign(:checkout_types, Kaminari::paginate_array([
       stub_model(CheckoutType,
-        :name => "book",
-        :display_name => "Book",
-        :note => "MyText",
-        :position => 1
+        name: "book",
+        display_name: "Book",
+        note: "MyText",
+        position: 1
       ),
       stub_model(CheckoutType,
-        :name => "cd",
-        :display_name => "CD",
-        :note => "MyText",
-        :position => 2
+        name: "cd",
+        display_name: "CD",
+        note: "MyText",
+        position: 2
       )
     ]).page(1))
   end

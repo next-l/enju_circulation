@@ -58,7 +58,7 @@ class DemandsController < ApplicationController
   # PUT /demands/1.json
   def update
     respond_to do |format|
-      if @demand.update_attributes(demand_params)
+      if @demand.update(demand_params)
         format.html { redirect_to @demand, notice: t('controller.successfully_updated', model: t('activerecord.models.demand')) }
         format.json { head :no_content }
       else

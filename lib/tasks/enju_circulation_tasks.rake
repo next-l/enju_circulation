@@ -19,7 +19,7 @@ namespace :enju_circulation do
   end
 
   desc 'Calculate stats'
-  task :stat => :environment do
+  task stat: :environment do
     UserCheckoutStat.calculate_stat
     UserReserveStat.calculate_stat
     #ManifestationCheckoutStat.calculate_stat
@@ -27,19 +27,19 @@ namespace :enju_circulation do
   end
 
   desc 'Expire circulations and reservations'
-  task :expire => :environment do
+  task expire: :environment do
     Reserve.expire
     Basket.expire
   end
 
   desc 'Sending due date notifications'
-  task :send_notification => :environment do
+  task send_notification: :environment do
     Checkout.send_due_date_notification
     Checkout.send_overdue_notification
   end
 
   desc "upgrade enju_circulation"
-  task :upgrade => :environment do
+  task upgrade: :environment do
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationCheckoutStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationReserveStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('UserCheckoutStat')
@@ -49,7 +49,7 @@ namespace :enju_circulation do
   end
 
   desc "migrate old checkout records"
-  task :migrate_old_checkout => :environment do
+  task migrate_old_checkout: :environment do
     Checkout.transaction do
       update_checkout
     end
@@ -57,7 +57,7 @@ namespace :enju_circulation do
 
   namespace :export do
     desc 'Export checkouts'
-    task :checkout => :environment do
+    task checkout: :environment do
       puts ['checked_out_at', 'checked_in_at', 'item_identifier', 'call_number', 'shelf', 'carrier_type', 'title', 'username', 'full_name'].join("\t")
       Checkout.where(checkin_id: nil).find_each do |c|
         if c.item

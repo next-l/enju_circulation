@@ -62,7 +62,7 @@ class CirculationStatusesController < ApplicationController
     end
 
     respond_to do |format|
-      if @circulation_status.update_attributes(circulation_status_params)
+      if @circulation_status.update(circulation_status_params)
         format.html { redirect_to @circulation_status, notice: t('controller.successfully_updated', model: t('activerecord.models.circulation_status')) }
         format.json { head :no_content }
       else

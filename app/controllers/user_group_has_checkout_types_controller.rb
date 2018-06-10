@@ -63,7 +63,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # PUT /user_group_has_checkout_types/1.json
   def update
     respond_to do |format|
-      if @user_group_has_checkout_type.update_attributes(user_group_has_checkout_type_params)
+      if @user_group_has_checkout_type.update(user_group_has_checkout_type_params)
         format.html { redirect_to @user_group_has_checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.user_group_has_checkout_type')) }
         format.json { head :no_content }
       else

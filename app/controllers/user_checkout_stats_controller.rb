@@ -68,7 +68,7 @@ class UserCheckoutStatsController < ApplicationController
   # PUT /user_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @user_checkout_stat.update_attributes(user_checkout_stat_params)
+      if @user_checkout_stat.update(user_checkout_stat_params)
         if @user_checkout_stat.mode == 'import'
           UserCheckoutStatJob.perform_later(@user_checkout_stat)
         end

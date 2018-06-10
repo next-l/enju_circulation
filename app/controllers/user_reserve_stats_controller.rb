@@ -68,7 +68,7 @@ class UserReserveStatsController < ApplicationController
   # PUT /user_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @user_reserve_stat.update_attributes(user_reserve_stat_params)
+      if @user_reserve_stat.update(user_reserve_stat_params)
         if @user_reserve_stat.mode == 'import'
           UserReserveStatJob.perform_later(@user_reserve_stat)
         end

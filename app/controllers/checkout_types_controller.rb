@@ -79,7 +79,7 @@ class CheckoutTypesController < ApplicationController
     end
 
     respond_to do |format|
-      if @checkout_type.update_attributes(checkout_type_params)
+      if @checkout_type.update(checkout_type_params)
         format.html { redirect_to @checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout_type')) }
         format.json { head :no_content }
       else

@@ -28,7 +28,7 @@ describe Checkout do
   it "should get new due_date" do
     old_due_date = checkouts(:checkout_00001).due_date
     new_due_date = checkouts(:checkout_00001).get_new_due_date
-    new_due_date.should eq Time.zone.now.advance(:days => UserGroupHasCheckoutType.find(3).checkout_period).beginning_of_day
+    new_due_date.should eq Time.zone.now.advance(days: UserGroupHasCheckoutType.find(3).checkout_period).beginning_of_day
   end
 
   it "should respond to not_returned" do

@@ -3,10 +3,10 @@ require 'rails_helper'
 describe "checkout_types/show" do
   before(:each) do
     @checkout_type = assign(:checkout_type, stub_model(CheckoutType,
-      :name => "Name",
-      :display_name => "MyText",
-      :note => "MyText",
-      :position => 1
+      name: "Name",
+      display_name: "MyText",
+      note: "MyText",
+      position: 1
     ))
   end
 

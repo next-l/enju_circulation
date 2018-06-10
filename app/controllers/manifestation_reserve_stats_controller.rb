@@ -69,7 +69,7 @@ class ManifestationReserveStatsController < ApplicationController
   # PUT /manifestation_reserve_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_reserve_stat.update_attributes(manifestation_reserve_stat_params)
+      if @manifestation_reserve_stat.update(manifestation_reserve_stat_params)
         if @manifestation_reserve_stat.mode == 'import'
           ManifestationReserveStatJob.perform_later(@manifestation_reserve_stat)
         end

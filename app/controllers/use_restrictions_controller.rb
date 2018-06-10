@@ -62,7 +62,7 @@ class UseRestrictionsController < ApplicationController
     end
 
     respond_to do |format|
-      if @use_restriction.update_attributes(use_restriction_params)
+      if @use_restriction.update(use_restriction_params)
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.use_restriction')) }
         format.json { head :no_content }
       else

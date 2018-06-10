@@ -89,7 +89,7 @@ class CheckedItemsController < ApplicationController
     end
 
     respond_to do |format|
-      if @checked_item.update_attributes(checked_item_params)
+      if @checked_item.update(checked_item_params)
         format.html { redirect_to checked_item_url(@checked_item), notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else

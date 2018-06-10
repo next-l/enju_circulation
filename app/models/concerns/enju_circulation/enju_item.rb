@@ -86,7 +86,7 @@ module EnjuCirculation
     def checkout!(user)
       self.circulation_status = CirculationStatus.where(name: 'On Loan').first
       if reserved_by_user?(user)
-        manifestation.next_reservation.update_attributes(checked_out_at: Time.zone.now)
+        manifestation.next_reservation.update(checked_out_at: Time.zone.now)
         manifestation.next_reservation.transition_to!(:completed)
       end
       save!

@@ -63,7 +63,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # PUT /carrier_type_has_checkout_types/1.json
   def update
     respond_to do |format|
-      if @carrier_type_has_checkout_type.update_attributes(carrier_type_has_checkout_type_params)
+      if @carrier_type_has_checkout_type.update(carrier_type_has_checkout_type_params)
         flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.carrier_type_has_checkout_type'))
         format.html { redirect_to @carrier_type_has_checkout_type }
         format.json { head :no_content }

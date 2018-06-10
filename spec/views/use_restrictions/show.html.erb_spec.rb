@@ -3,10 +3,10 @@ require 'rails_helper'
 describe "use_restrictions/show" do
   before(:each) do
     @use_restriction = assign(:use_restriction, stub_model(UseRestriction,
-      :name => "Name",
-      :display_name => "MyText",
-      :note => "MyText",
-      :position => 1
+      name: "Name",
+      display_name: "MyText",
+      note: "MyText",
+      position: 1
     ))
   end
 

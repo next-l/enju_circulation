@@ -96,7 +96,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # PUT /manifestation_checkout_stats/1.json
   def update
     respond_to do |format|
-      if @manifestation_checkout_stat.update_attributes(manifestation_checkout_stat_params)
+      if @manifestation_checkout_stat.update(manifestation_checkout_stat_params)
         if @manifestation_checkout_stat.mode == 'import'
           ManifestationCheckoutStatJob.perform_later(@manifestation_checkout_stat)
         end

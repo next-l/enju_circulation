@@ -14,12 +14,12 @@ class ReserveStateMachine
   transition from: :requested, to: [:retained, :canceled, :expired, :completed]
 
   after_transition(to: :requested) do |reserve|
-    reserve.update_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
+    reserve.update({request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil})
   end
 
   after_transition(to: :retained) do |reserve|
     # TODO: 「取り置き中」の状態を正しく表す
-    reserve.update_attributes({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
+    reserve.update({request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now})
     Reserve.transaction do
       if reserve.item
         other_reserves = reserve.item.reserves.waiting
@@ -37,7 +37,7 @@ class ReserveStateMachine
 
   after_transition(to: :canceled) do |reserve|
     Reserve.transaction do
-      reserve.update_attributes({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now})
+      reserve.update({request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now})
       next_reserve = reserve.next_reservation
       if next_reserve
         next_reserve.item = reserve.item
@@ -50,7 +50,7 @@ class ReserveStateMachine
 
   after_transition(to: :expired) do |reserve|
     Reserve.transaction do
-      reserve.update_attributes({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now})
+      reserve.update({request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now})
       next_reserve = reserve.next_reservation
       if next_reserve
         next_reserve.item = reserve.item
@@ -63,11 +63,11 @@ class ReserveStateMachine
   end
 
   after_transition(to: :postponed) do |reserve|
-    reserve.update_attributes(item_id: nil, retained_at: nil, postponed_at: Time.zone.now, force_retaining: "1")
+    reserve.update(item_id: nil, retained_at: nil, postponed_at: Time.zone.now, force_retaining: "1")
   end
 
   after_transition(to: :completed) do |reserve|
-    reserve.update_attributes(
+    reserve.update(
       request_status_type: RequestStatusType.where(name: 'Available For Pickup').first,
       checked_out_at: Time.zone.now
     )
