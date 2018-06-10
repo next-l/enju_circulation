@@ -10,6 +10,8 @@ Layout/SpaceBeforeBlockBraces:
   Enabled: false
 Layout/ExtraSpacing:
   Enabled: false
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
 Style/WordArray:
   Enabled: false
 Style/Documentation:
