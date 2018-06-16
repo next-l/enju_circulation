@@ -23,7 +23,7 @@ module EnjuCirculation
           checked_item.item.checkout!(user)
           checkout.save!
         end
-        CheckedItem.destroy_all(basket_id: id)
+        CheckedItem.where(basket_id: id).destroy_all
       end
     end
   end
