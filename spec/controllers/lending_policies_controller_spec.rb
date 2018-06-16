@@ -58,7 +58,7 @@ describe LendingPoliciesController do
       login_fixture_admin
 
       it 'assigns the requested lending_policy as @lending_policy' do
-        get :show, id: @lending_policy.id
+        get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
         response.should be_success
       end
@@ -68,7 +68,7 @@ describe LendingPoliciesController do
       login_fixture_librarian
 
       it 'assigns the requested lending_policy as @lending_policy' do
-        get :show, id: @lending_policy.id
+        get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
         response.should be_success
       end
@@ -78,7 +78,7 @@ describe LendingPoliciesController do
       login_fixture_user
 
       it 'should be forbidden' do
-        get :show, id: @lending_policy.id
+        get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
         response.should be_forbidden
       end
@@ -86,7 +86,7 @@ describe LendingPoliciesController do
 
     describe 'When not logged in' do
       it 'should be redirected to new_user_session_url' do
-        get :show, id: @lending_policy.id
+        get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
         response.should redirect_to new_user_session_url
       end
@@ -139,7 +139,7 @@ describe LendingPoliciesController do
 
       it 'assigns the requested lending_policy as @lending_policy' do
         lending_policy = FactoryBot.create(:lending_policy)
-        get :edit, id: lending_policy.id
+        get :edit, params: { id: lending_policy.id }
         assigns(:lending_policy).should eq(lending_policy)
       end
     end
@@ -149,7 +149,7 @@ describe LendingPoliciesController do
 
       it 'assigns the requested lending_policy as @lending_policy' do
         lending_policy = FactoryBot.create(:lending_policy)
-        get :edit, id: lending_policy.id
+        get :edit, params: { id: lending_policy.id }
         response.should be_forbidden
       end
     end
@@ -159,7 +159,7 @@ describe LendingPoliciesController do
 
       it 'assigns the requested lending_policy as @lending_policy' do
         lending_policy = FactoryBot.create(:lending_policy)
-        get :edit, id: lending_policy.id
+        get :edit, params: { id: lending_policy.id }
         response.should be_forbidden
       end
     end
@@ -167,7 +167,7 @@ describe LendingPoliciesController do
     describe 'When not logged in' do
       it 'should not assign the requested lending_policy as @lending_policy' do
         lending_policy = FactoryBot.create(:lending_policy)
-        get :edit, id: lending_policy.id
+        get :edit, params: { id: lending_policy.id }
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -184,24 +184,24 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'assigns a newly created lending_policy as @lending_policy' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           response.should be_forbidden
         end
       end
 
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved lending_policy as @lending_policy' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           response.should be_forbidden
         end
       end
@@ -212,24 +212,24 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'assigns a newly created lending_policy as @lending_policy' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           response.should be_forbidden
         end
       end
 
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved lending_policy as @lending_policy' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           response.should be_forbidden
         end
       end
@@ -240,24 +240,24 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'assigns a newly created lending_policy as @lending_policy' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           response.should be_forbidden
         end
       end
 
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved lending_policy as @lending_policy' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           response.should be_forbidden
         end
       end
@@ -266,24 +266,24 @@ describe LendingPoliciesController do
     describe 'When not logged in' do
       describe 'with valid params' do
         it 'assigns a newly created lending_policy as @lending_policy' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @attrs
+          post :create, params: { lending_policy: @attrs }
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved lending_policy as @lending_policy' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           assigns(:lending_policy).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, lending_policy: @invalid_attrs
+          post :create, params: { lending_policy: @invalid_attrs }
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -302,18 +302,18 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'updates the requested lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
         end
 
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
           assigns(:lending_policy).should eq(@lending_policy)
         end
       end
 
       describe 'with invalid params' do
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @invalid_attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @invalid_attrs }
           response.should render_template('edit')
         end
       end
@@ -324,11 +324,11 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'updates the requested lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
         end
 
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
           assigns(:lending_policy).should eq(@lending_policy)
           response.should be_forbidden
         end
@@ -336,7 +336,7 @@ describe LendingPoliciesController do
 
       describe 'with invalid params' do
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @invalid_attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @invalid_attrs }
           response.should be_forbidden
         end
       end
@@ -347,11 +347,11 @@ describe LendingPoliciesController do
 
       describe 'with valid params' do
         it 'updates the requested lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
         end
 
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
           assigns(:lending_policy).should eq(@lending_policy)
           response.should be_forbidden
         end
@@ -359,7 +359,7 @@ describe LendingPoliciesController do
 
       describe 'with invalid params' do
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @invalid_attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @invalid_attrs }
           response.should be_forbidden
         end
       end
@@ -368,18 +368,18 @@ describe LendingPoliciesController do
     describe 'When not logged in' do
       describe 'with valid params' do
         it 'updates the requested lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
         end
 
         it 'should be forbidden' do
-          put :update, id: @lending_policy.id, lending_policy: @attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @attrs }
           response.should redirect_to(new_user_session_url)
         end
       end
 
       describe 'with invalid params' do
         it 'assigns the requested lending_policy as @lending_policy' do
-          put :update, id: @lending_policy.id, lending_policy: @invalid_attrs
+          put :update, params: { id: @lending_policy.id, lending_policy: @invalid_attrs }
           response.should redirect_to(new_user_session_url)
         end
       end
@@ -395,11 +395,11 @@ describe LendingPoliciesController do
       login_fixture_admin
 
       it 'destroys the requested lending_policy' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
       end
 
       it 'redirects to the lending_policies list' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
         response.should redirect_to(lending_policies_url)
       end
     end
@@ -408,11 +408,11 @@ describe LendingPoliciesController do
       login_fixture_librarian
 
       it 'destroys the requested lending_policy' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
       end
 
       it 'should be forbidden' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
         response.should be_forbidden
       end
     end
@@ -421,22 +421,22 @@ describe LendingPoliciesController do
       login_fixture_user
 
       it 'destroys the requested lending_policy' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
       end
 
       it 'should be forbidden' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
         response.should be_forbidden
       end
     end
 
     describe 'When not logged in' do
       it 'destroys the requested lending_policy' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
       end
 
       it 'should be forbidden' do
-        delete :destroy, id: @lending_policy.id
+        delete :destroy, params: { id: @lending_policy.id }
         response.should redirect_to(new_user_session_url)
       end
     end
