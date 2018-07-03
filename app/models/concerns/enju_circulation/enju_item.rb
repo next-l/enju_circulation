@@ -89,7 +89,7 @@ module EnjuCirculation
         manifestation.next_reservation.update(checked_out_at: Time.zone.now)
         manifestation.next_reservation.transition_to!(:completed)
       end
-      reload
+      manifestation.reload
       save!
     end
 
