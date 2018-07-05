@@ -50,12 +50,12 @@ module EnjuCirculation
     end
 
     def set_circulation_status
-      self.circulation_status = CirculationStatus.where(name: 'In Process').first if circulation_status.nil?
+      self.circulation_status = CirculationStatus.find_by(name: 'In Process') if circulation_status.nil?
     end
 
     def checkout_status(user)
       return nil unless user
-       user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: checkout_type.id).first
+       user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type.id)
     end
 
     def reserved?
@@ -84,7 +84,7 @@ module EnjuCirculation
     end
 
     def checkout!(user)
-      self.circulation_status = CirculationStatus.where(name: 'On Loan').first
+      self.circulation_status = CirculationStatus.find_by(name: 'On Loan')
       if reserved_by_user?(user)
         manifestation.next_reservation.update(checked_out_at: Time.zone.now)
         manifestation.next_reservation.transition_to!(:completed)
@@ -94,8 +94,8 @@ module EnjuCirculation
     end
 
     def checkin!
-      self.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
-      save(validate: false)
+      self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
+      save!
     end
 
     def retain(librarian)
@@ -119,7 +119,7 @@ module EnjuCirculation
     end
 
     def lending_rule(user)
-      policy = lending_policies.where(user_group_id: user.profile.user_group.id).first
+      policy = lending_policies.find_by(user_group_id: user.profile.user_group.id)
       if policy
         policy
       else
@@ -132,7 +132,7 @@ module EnjuCirculation
     end
 
     def create_lending_policy(user)
-      rule = user.profile.user_group.user_group_has_checkout_types.where(checkout_type_id: checkout_type_id).first
+      rule = user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type_id)
       return nil unless rule
       LendingPolicy.create!(
         item_id: id,
@@ -149,7 +149,7 @@ module EnjuCirculation
     end
 
     def next_reservation
-      Reserve.waiting.where(item_id: id).first
+      Reserve.waiting.find_by(item_id: id)
     end
 
     def latest_checkout
