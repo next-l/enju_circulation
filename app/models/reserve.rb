@@ -18,10 +18,10 @@ class Reserve < ActiveRecord::Base
   scope :not_sent_cancel_notice_to_library, -> {in_state(:canceled).where(expiration_notice_to_library: false)}
   belongs_to :user
   belongs_to :manifestation, touch: true
-  belongs_to :librarian, class_name: 'User'
-  belongs_to :item, touch: true
+  belongs_to :librarian, class_name: 'User', optional: true
+  belongs_to :item, touch: true, optional: true
   belongs_to :request_status_type
-  belongs_to :pickup_location, class_name: 'Library'
+  belongs_to :pickup_location, class_name: 'Library', optional: true
 
   validates_associated :user, :librarian, :request_status_type
   validates :manifestation, associated: true # , on: :create

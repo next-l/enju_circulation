@@ -15,6 +15,7 @@ describe Checkin do
     checkin = Checkin.new
     checkin.item = user.checkouts.not_returned.first.item
     checkin.basket = @basket
+    checkin.librarian = users(:librarian1)
     # checkin.item_identifier = checkin.item.item_identifier
     checkin.save!
     checkin.item_checkin(user)
@@ -27,6 +28,7 @@ describe Checkin do
     checkin = Checkin.new
     checkin.item = user.checkouts.not_returned.first.item
     checkin.basket = @basket
+    checkin.librarian = users(:librarian1)
     checkin.save!
     checkin.item_checkin(user)
     user.checkouts.count.should eq checkouts_count - 1
