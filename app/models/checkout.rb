@@ -6,14 +6,14 @@ class Checkout < ActiveRecord::Base
   scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
-  belongs_to :user
+  belongs_to :user, optional: true
   delegate :username, :user_number, to: :user, prefix: true
   belongs_to :item, touch: true
   belongs_to :checkin, optional: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
-  belongs_to :shelf
-  belongs_to :library
+  belongs_to :shelf, optional: true
+  belongs_to :library, optional: true
 
   validates_associated :user, :item, :librarian, :checkin # , :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する

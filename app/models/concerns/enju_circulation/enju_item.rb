@@ -84,13 +84,12 @@ module EnjuCirculation
     end
 
     def checkout!(user)
-      self.circulation_status = CirculationStatus.find_by(name: 'On Loan')
       if reserved_by_user?(user)
         manifestation.next_reservation.update(checked_out_at: Time.zone.now)
         manifestation.next_reservation.transition_to!(:completed)
+        manifestation.reload
       end
-      manifestation.reload
-      save!
+      update!(circulation_status: CirculationStatus.find_by(name: 'On Loan'))
     end
 
     def checkin!
