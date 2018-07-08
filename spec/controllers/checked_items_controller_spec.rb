@@ -268,7 +268,7 @@ describe CheckedItemsController do
       it 'should override due_date' do
         post :create, params: { checked_item: { item_identifier: '00011', due_date_string: 1.year.from_now.strftime('%Y-%m-%d') }, basket_id: 3 }
         assigns(:checked_item).should be_truthy
-        assigns(:checked_item).due_date.should eq 1.year.from_now.end_of_day
+        assigns(:checked_item).due_date.to_s.should eq 1.year.from_now.end_of_day.to_s
         response.should redirect_to checked_items_url(basket_id: assigns(:checked_item).basket_id)
       end
 
