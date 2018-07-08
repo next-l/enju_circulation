@@ -265,7 +265,7 @@ describe CheckoutsController do
           put :update, params: { id: @checkout.id, checkout: @attrs }
           assigns(:checkout).should eq(@checkout)
           response.should redirect_to(assigns(:checkout))
-          assigns(:checkout).due_date.should eq 1.day.from_now.end_of_day
+          assigns(:checkout).due_date.to_s.should eq 1.day.from_now.end_of_day.to_s
         end
       end
 
