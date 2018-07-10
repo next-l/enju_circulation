@@ -10,7 +10,6 @@ require 'spec_helper'
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'factory_bot'
-require 'sunspot-rails-tester'
 require 'rspec/active_model/mocks'
 require 'pundit/rspec'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
@@ -59,18 +58,6 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.extend ControllerMacros, type: :controller
-
-  $original_sunspot_session = Sunspot.session
-
-  config.before do
-    Sunspot.session = Sunspot::Rails::StubSessionProxy.new($original_sunspot_session)
-  end
-
-  config.before :each, solr: true do
-    Sunspot::Rails::Tester.start_original_sunspot_session
-    Sunspot.session = $original_sunspot_session
-    Sunspot.remove_all!
-  end
 end
 
 FactoryBot.definition_file_paths << "#{::Rails.root}/../../spec/factories"
