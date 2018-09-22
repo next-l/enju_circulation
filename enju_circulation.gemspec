@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "capybara", "~> 3.3"
   s.add_development_dependency "coveralls"
-  s.add_development_dependency "enju_leaf", "~> 1.3.0.beta.1"
+  s.add_development_dependency "enju_leaf", "~> 1.3.0.beta.2"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "pg"
