@@ -4,7 +4,7 @@ describe "use_restrictions/index" do
   fixtures :users, :roles, :user_has_roles
 
   before(:each) do
-    view.extend EnjuLeaf::EnjuLeafHelper
+    view.extend EnjuLeaf::ApplicationHelper
 
     assign(:use_restrictions, Kaminari::paginate_array([
       stub_model(UseRestriction,

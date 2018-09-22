@@ -4,7 +4,7 @@ describe "reserves/index" do
   fixtures :users, :roles, :user_has_roles, :reserves
 
   before(:each) do
-    view.extend EnjuLeaf::EnjuLeafHelper
+    view.extend EnjuLeaf::ApplicationHelper
 
     assign(:reserves, Reserve.page(1))
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
