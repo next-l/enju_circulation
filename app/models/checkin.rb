@@ -1,7 +1,7 @@
 class Checkin < ActiveRecord::Base
   default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
-  has_one :checkout
+  belongs_to :checkout
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
@@ -9,7 +9,7 @@ class Checkin < ActiveRecord::Base
   validates :item_id, uniqueness: { scope: :basket_id }
   validates :item_id, :basket_id, presence: true
   validate :available_for_checkin?, on: :create
-  before_validation :set_item
+  before_validation :set_checkout, on: :create
 
   attr_accessor :item_identifier
 
@@ -31,19 +31,21 @@ class Checkin < ActiveRecord::Base
   end
 
   def item_checkin(current_user)
+    #return unless item
     message = ''
     Checkin.transaction do
       item.checkin!
+      unless item.shelf.library == current_user.profile.library
+        message << I18n.t('checkin.other_library_item')
+      end
+
       Checkout.not_returned.where(item_id: item_id).each do |checkout|
         # TODO: ILL時の処理
-        checkout.checkin = self
+        update!(checkout: checkout)
         checkout.operator = current_user
         unless checkout.user.profile.try(:save_checkout_history)
           checkout.user = nil
-        end
-        checkout.save(validate: false)
-        unless checkout.item.shelf.library == current_user.profile.library
-          message << I18n.t('checkin.other_library_item')
+          checkout.save(validate: false)
         end
       end
 
@@ -72,11 +74,15 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def set_item
+  def set_checkout
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(item_identifier: identifier).first
-      self.item = item
+      item = Item.find_by(item_identifier: identifier)
+      if item
+        checkout = Checkout.not_returned.where(item_id: item.id).order(created_at: :desc).first
+        self.checkout = checkout
+        self.item = item
+      end
     end
   end
 end
@@ -92,4 +98,5 @@ end
 #  created_at   :datetime
 #  updated_at   :datetime
 #  lock_version :integer          default(0), not null
+#  checkout_id  :integer
 #

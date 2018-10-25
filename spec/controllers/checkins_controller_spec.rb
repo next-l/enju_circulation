@@ -179,7 +179,7 @@ describe CheckinsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = { item_identifier: '00003' }
+      @attrs = { item_identifier: '00004' }
       @invalid_attrs = { item_identifier: 'invalid' }
     end
 
@@ -308,7 +308,7 @@ describe CheckinsController do
 
   describe 'PUT update' do
     before(:each) do
-      @checkin = checkins(:checkin_00001)
+      @checkin = checkins(:checkin_00003)
       @attrs = { item_identifier: @checkin.item.item_identifier }
       @invalid_attrs = { item_identifier: 'invalid' }
     end
@@ -340,8 +340,8 @@ describe CheckinsController do
 
         it 'should not update checkin without item_identifier' do
           put :update, params: { id: @checkin.id, checkin: @attrs.merge(item_identifier: nil) }
-          assigns(:checkin).should be_valid
-          response.should redirect_to(@checkin)
+          assigns(:checkin).should_not be_valid
+          response.should be_success
         end
       end
     end

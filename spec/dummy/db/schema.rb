@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107162048) do
+ActiveRecord::Schema.define(version: 20181022070256) do
 
   create_table "accepts", force: :cascade do |t|
     t.integer "basket_id"
@@ -241,7 +241,9 @@ ActiveRecord::Schema.define(version: 20180107162048) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "lock_version", default: 0, null: false
+    t.integer "checkout_id"
     t.index ["basket_id"], name: "index_checkins_on_basket_id"
+    t.index ["checkout_id"], name: "index_checkins_on_checkout_id"
     t.index ["item_id"], name: "index_checkins_on_item_id"
     t.index ["librarian_id"], name: "index_checkins_on_librarian_id"
   end

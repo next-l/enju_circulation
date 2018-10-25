@@ -31,6 +31,7 @@ checkin_00004:
   created_at: 2008-01-23 00:39:27.785676 +09:00
   basket_id: 10
   lock_version: 0
+  checkout_id: 13
 checkin_00005: 
   item_id: 6
   updated_at: 2007-12-20 21:25:04.619479 +09:00
@@ -39,6 +40,7 @@ checkin_00005:
   created_at: 2007-12-20 21:25:04.619479 +09:00
   basket_id: 10
   lock_version: 0
+  checkout_id: 12
 
 # == Schema Information
 #
@@ -51,4 +53,5 @@ checkin_00005:
 #  created_at   :datetime
 #  updated_at   :datetime
 #  lock_version :integer          default(0), not null
+#  checkout_id  :integer
 #
