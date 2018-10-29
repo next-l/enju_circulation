@@ -92,7 +92,7 @@ describe CheckoutTypesController do
       it 'assigns the requested checkout_type as @checkout_type' do
         get :new
         assigns(:checkout_type).should_not be_valid
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -194,7 +194,7 @@ describe CheckoutTypesController do
 
         it 'should be successful' do
           post :create, params: { checkout_type: @invalid_attrs }
-          response.should be_successfulful
+          response.should be_successful
         end
       end
     end

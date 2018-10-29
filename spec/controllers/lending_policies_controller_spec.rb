@@ -60,7 +60,7 @@ describe LendingPoliciesController do
       it 'assigns the requested lending_policy as @lending_policy' do
         get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -70,7 +70,7 @@ describe LendingPoliciesController do
       it 'assigns the requested lending_policy as @lending_policy' do
         get :show, params: { id: @lending_policy.id }
         assigns(:lending_policy).should eq(@lending_policy)
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 

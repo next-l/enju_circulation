@@ -10,13 +10,13 @@ describe CheckedItemsController do
       it 'assigns all checked_items as @checked_items' do
         get :index
         assigns(:checked_items).should_not be_empty
-        response.should be_successfulful
+        response.should be_successful
       end
 
       it 'should get index without basket_id' do
         get :index, params: { item_id: 1 }
         assigns(:checked_items).should_not be_empty
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -26,14 +26,14 @@ describe CheckedItemsController do
       it 'should be forbidden' do
         get :index
         assigns(:checked_items).should_not be_empty
-        response.should be_successfulful
+        response.should be_successful
       end
 
       describe 'When basket is specified' do
         it 'assigns checked_items as @checked_items' do
           get :index, params: { basket_id: 1 }
           assigns(:checked_items).should_not be_empty
-          response.should be_successfulful
+          response.should be_successful
         end
       end
     end
@@ -75,7 +75,7 @@ describe CheckedItemsController do
       it 'assigns the requested checked_item as @checked_item' do
         get :show, params: { id: 1 }
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -85,7 +85,7 @@ describe CheckedItemsController do
       it 'assigns the requested checked_item as @checked_item' do
         get :show, params: { id: 1 }
         assigns(:checked_item).should eq(checked_items(:checked_item_00001))
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -131,7 +131,7 @@ describe CheckedItemsController do
       it 'assigns the requested checked_item as @checked_item' do
         get :new, params: { basket_id: 3 }
         assigns(:checked_item).should_not be_valid
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -172,7 +172,7 @@ describe CheckedItemsController do
         checked_item = checked_items(:checked_item_00001)
         get :edit, params: { id: checked_item.id }
         assigns(:checked_item).should eq(checked_item)
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -245,7 +245,7 @@ describe CheckedItemsController do
 
       it 'should not create checked_item without item_id' do
         post :create, params: { checked_item: { item_identifier: '00004' }, basket_id: 1 }
-        response.should be_successfulful
+        response.should be_successful
       end
     end
 
@@ -276,12 +276,12 @@ describe CheckedItemsController do
         post :create, params: { checked_item: { item_identifier: '00011', due_date_string: 'invalid' }, basket_id: 3 }
         assigns(:checked_item).should_not be_valid
         assigns(:checked_item).due_date.should be_nil
-        response.should be_successfulful
+        response.should be_successful
       end
 
       it 'should not create checked_item if excessed checkout_limit' do
         post :create, params: { checked_item: { item_identifier: '00011' }, basket_id: 1 }
-        response.should be_successfulful
+        response.should be_successful
         assigns(:checked_item).errors['base'].include?(I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')).should be_truthy
       end
 
