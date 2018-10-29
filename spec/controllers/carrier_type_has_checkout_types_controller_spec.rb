@@ -92,7 +92,7 @@ describe CarrierTypeHasCheckoutTypesController do
       it 'assigns the requested carrier_type_has_checkout_type as @carrier_type_has_checkout_type' do
         get :new
         assigns(:carrier_type_has_checkout_type).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
     end
 

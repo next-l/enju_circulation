@@ -98,7 +98,7 @@ describe ItemHasUseRestrictionsController do
       it 'assigns the requested item_has_use_restriction as @item_has_use_restriction' do
         get :new
         assigns(:item_has_use_restriction).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
     end
 

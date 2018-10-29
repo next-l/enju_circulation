@@ -16,14 +16,14 @@ describe CheckinsController do
       it 'assigns all checkins as @checkins' do
         get :index
         assigns(:checkins).should eq Checkin.page(1)
-        response.should be_success
+        response.should be_successful
       end
 
       describe 'When basket_id is specified' do
         it 'assigns all checkins as @checkins' do
           get :index, params: { basket_id: 10 }
           assigns(:checkins).should eq Basket.find(10).checkins.page(1)
-          response.should be_success
+          response.should be_successful
         end
       end
     end
@@ -34,14 +34,14 @@ describe CheckinsController do
       it 'assigns all checkins as @checkins' do
         get :index
         assigns(:checkins).should eq Checkin.page(1)
-        response.should be_success
+        response.should be_successful
       end
 
       describe 'When basket_id is specified' do
         it 'assigns all checkins as @checkins' do
           get :index, params: { basket_id: 9 }
           assigns(:checkins).should eq Basket.find(9).checkins.page(1)
-          response.should be_success
+          response.should be_successful
         end
       end
     end
@@ -228,7 +228,7 @@ describe CheckinsController do
       it 'should not create checkin without item_id' do
         post :create, params: { checkin: { item_identifier: nil }, basket_id: 9 }
         assigns(:checkin).should_not be_valid
-        response.should be_success
+        response.should be_successful
       end
     end
 
