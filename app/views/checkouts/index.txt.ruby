@@ -3,7 +3,7 @@ CSV.generate(col_sep: "\t", row_sep: "\r\n") do |csv|
   @checkouts.each do |checkout|
     csv << [
       checkout.user.try(:username),
-      checkout.user.try(:user_number),
+      checkout.user.try(:profile).try(:user_number),
       checkout.item.item_identifier,
       checkout.item.manifestation.original_title,
       checkout.created_at,
