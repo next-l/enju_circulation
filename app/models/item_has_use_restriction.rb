@@ -1,11 +1,11 @@
 class ItemHasUseRestriction < ActiveRecord::Base
-  belongs_to :item
-  belongs_to :use_restriction
+  belongs_to :item, validate: true
+  belongs_to :use_restriction, validate: true
   accepts_nested_attributes_for :use_restriction
 
   validates_associated :item, :use_restriction
-  validates_presence_of :use_restriction
-  validates_presence_of :item, on: :update
+  validates :use_restriction, presence: true
+  validates :item, presence: { on: :update }
 
   paginates_per 10
 end
@@ -15,8 +15,8 @@ end
 # Table name: item_has_use_restrictions
 #
 #  id                 :integer          not null, primary key
-#  item_id            :uuid             not null
+#  item_id            :integer          not null
 #  use_restriction_id :integer          not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #

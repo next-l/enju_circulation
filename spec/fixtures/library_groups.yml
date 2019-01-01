@@ -2,17 +2,19 @@
 one:
   id: 1
   name: unknown
-  display_name_translations: {"en": "unknown", "ja": "不明"}
+  display_name: unknown
   short_name: unknown
   note: 
-  my_networks: "0.0.0.0/0"
+  my_networks: "0.0.0.0/0\r\n\
+    ::/0"
   url: "http://localhost:3000/"
   position: 1
-  login_banner_translations: {"en": "*Next-L Enju*", "ja": "*Next-L Enju*"}
-  admin_networks: "0.0.0.0/0"
+  login_banner: {"en": "*Next-L Enju*"}
+  footer_banner: {"en": ""}
+  admin_networks: "0.0.0.0/0\r\n\
+    ::/0"
   user_id: 1
   pub_year_facet_range_interval: 10
-  max_number_of_results: 1000
 
 # == Schema Information
 #
@@ -20,18 +22,19 @@ one:
 #
 #  id                            :integer          not null, primary key
 #  name                          :string           not null
-#  display_name_translations     :jsonb
+#  display_name                  :text
 #  short_name                    :string           not null
-#  my_networks                   :cidr
-#  login_banner_translations     :jsonb
+#  my_networks                   :text
+#  old_login_banner              :text
 #  note                          :text
 #  country_id                    :integer
 #  position                      :integer
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
-#  admin_networks                :cidr
+#  created_at                    :datetime
+#  updated_at                    :datetime
+#  admin_networks                :text
+#  allow_bookmark_external_url   :boolean          default(FALSE), not null
 #  url                           :string           default("http://localhost:3000/")
-#  footer_banner_translations    :jsonb
+#  settings                      :text
 #  html_snippet                  :text
 #  book_jacket_source            :string
 #  max_number_of_results         :integer          default(500)
@@ -39,4 +42,10 @@ one:
 #  screenshot_generator          :string
 #  pub_year_facet_range_interval :integer          default(10)
 #  user_id                       :integer
+#  csv_charset_conversion        :boolean          default(FALSE), not null
+#  header_logo_file_name         :string
+#  header_logo_content_type      :string
+#  header_logo_file_size         :integer
+#  header_logo_updated_at        :datetime
+#  header_logo_meta              :text
 #

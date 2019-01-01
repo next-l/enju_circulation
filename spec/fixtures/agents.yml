@@ -272,11 +272,6 @@ agent_00202:
   required_role_id: 1
   created_at: 2010-03-15 17:00:00.579396 +09:00
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: agents

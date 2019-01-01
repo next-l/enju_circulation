@@ -1,29 +1,29 @@
 class Checkout < ActiveRecord::Base
-  scope :not_returned, -> { where.not(id: Checkout.joins(:checkin).select(:id)) }
-  scope :returned, -> { where(id: Checkout.joins(:checkin).select(:id)) }
-  scope :overdue, ->(date) { not_returned.where('due_date < ?', date) }
-  scope :due_date_on, ->(date) { not_returned.where(due_date: date.beginning_of_day..date.end_of_day) }
-  scope :completed, ->(start_date, end_date) { where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date) }
-  scope :on, ->(date) { where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day) }
+  scope :not_returned, -> { where.not(id: Checkin.pluck(:checkout_id)) }
+  scope :returned, -> { where(id: Checkin.pluck(:checkout_id)) }
+  scope :overdue, lambda {|date| not_returned.where('due_date < ?', date)}
+  scope :due_date_on, lambda {|date| not_returned.where(due_date: date.beginning_of_day .. date.end_of_day)}
+  scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
+  scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
-  delegate :username, :user_number, to: :user, prefix: true
-  has_one :checkin
   belongs_to :user, optional: true
+  delegate :username, :user_number, to: :user, prefix: true
   belongs_to :item, touch: true
+  has_one :checkin
   belongs_to :librarian, class_name: 'User'
-  belongs_to :shelf
-  belongs_to :library
-  has_one :retain_and_checkout
-  has_one :retain, through: :retain_and_checkout
+  belongs_to :basket
+  belongs_to :shelf, optional: true
+  belongs_to :library, optional: true
 
   validates_associated :user, :item, :librarian, :checkin # , :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   # validates_presence_of :user, :item, :basket
-  validates_presence_of :item_id, :due_date
-  validates_uniqueness_of :item_id, scope: :user_id
+  validates :item_id, :basket_id, :due_date, presence: true
+  validates :item_id, uniqueness: { scope: [:basket_id, :user_id] }
   validate :is_not_checked?, on: :create
   validate :renewable?, on: :update
   validates_date :due_date
+  before_update :set_new_due_date
 
   searchable do
     string :username do
@@ -89,19 +89,24 @@ class Checkout < ActiveRecord::Base
   end
 
   def overdue?
+    return false unless due_date
     if Time.zone.now > due_date.tomorrow.beginning_of_day
-      true
+      return true
     else
-      false
+      return false
     end
   end
 
   def is_today_due_date?
     if Time.zone.now.beginning_of_day == due_date.beginning_of_day
-      true
+      return true
     else
-      false
+      return false
     end
+  end
+
+  def set_new_due_date
+    self.due_date = due_date.try(:end_of_day)
   end
 
   def get_new_due_date
@@ -117,13 +122,13 @@ class Checkout < ActiveRecord::Base
 
   def self.manifestations_count(start_date, end_date, manifestation)
     where(
-      arel_table[:created_at].gteq(start_date)
+      arel_table[:created_at].gteq start_date
     ).where(
-      arel_table[:created_at].lt(end_date)
+      arel_table[:created_at].lt end_date
     )
-      .where(
-        item_id: manifestation.items.pluck('items.id')
-      ).count
+    .where(
+      item_id: manifestation.items.pluck('items.id')
+    ).count
   end
 
   def self.send_due_date_notification
@@ -162,15 +167,17 @@ end
 #
 # Table name: checkouts
 #
-#  id                     :uuid             not null, primary key
+#  id                     :integer          not null, primary key
 #  user_id                :integer
-#  item_id                :uuid             not null
+#  item_id                :integer          not null
+#  checkin_id             :integer
 #  librarian_id           :integer
+#  basket_id              :integer
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  shelf_id               :uuid             not null
-#  library_id             :uuid             not null
+#  created_at             :datetime
+#  updated_at             :datetime
+#  shelf_id               :integer
+#  library_id             :integer
 #

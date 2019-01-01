@@ -1,7 +1,7 @@
 class CarrierTypeHasCheckoutTypesController < ApplicationController
   before_action :set_carrier_type_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_checkout_type
+  before_action :get_checkout_type
   before_action :prepare_options, only: [:new, :edit]
 
   # GET /carrier_type_has_checkout_types
@@ -53,7 +53,7 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
         format.json { render json: @carrier_type_has_checkout_type, status: :created, location: @carrier_type_has_checkout_type }
       else
         prepare_options
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -63,13 +63,13 @@ class CarrierTypeHasCheckoutTypesController < ApplicationController
   # PUT /carrier_type_has_checkout_types/1.json
   def update
     respond_to do |format|
-      if @carrier_type_has_checkout_type.update_attributes(carrier_type_has_checkout_type_params)
+      if @carrier_type_has_checkout_type.update(carrier_type_has_checkout_type_params)
         flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.carrier_type_has_checkout_type'))
         format.html { redirect_to @carrier_type_has_checkout_type }
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @carrier_type_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end

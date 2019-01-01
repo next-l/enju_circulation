@@ -1,7 +1,7 @@
 class CheckoutTypesController < ApplicationController
   before_action :set_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_user_group
+  before_action :get_user_group
 
   # GET /checkout_types
   # GET /checkout_types.json
@@ -21,7 +21,9 @@ class CheckoutTypesController < ApplicationController
   # GET /checkout_types/1
   # GET /checkout_types/1.json
   def show
-    @checkout_type = @user_group.checkout_types.find(params[:id]) if @user_group
+    if @user_group
+      @checkout_type = @user_group.checkout_types.find(params[:id])
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -32,11 +34,11 @@ class CheckoutTypesController < ApplicationController
   # GET /checkout_types/new
   # GET /checkout_types/new.json
   def new
-    @checkout_type = if @user_group
-                       @user_group.checkout_types.new
-                     else
-                       CheckoutType.new
-                     end
+    if @user_group
+      @checkout_type = @user_group.checkout_types.new
+    else
+      @checkout_type = CheckoutType.new
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -62,7 +64,7 @@ class CheckoutTypesController < ApplicationController
         format.html { redirect_to @checkout_type, notice: t('controller.successfully_created', model: t('activerecord.models.checkout_type')) }
         format.json { render json: @checkout_type, status: :created, location: @checkout_type }
       else
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -77,11 +79,11 @@ class CheckoutTypesController < ApplicationController
     end
 
     respond_to do |format|
-      if @checkout_type.update_attributes(checkout_type_params)
+      if @checkout_type.update(checkout_type_params)
         format.html { redirect_to @checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout_type')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -90,7 +92,9 @@ class CheckoutTypesController < ApplicationController
   # DELETE /checkout_types/1
   # DELETE /checkout_types/1.json
   def destroy
-    @checkout_type = @user_group.checkout_types.find(params[:id]) if @user_group
+    if @user_group
+      @checkout_type = @user_group.checkout_types.find(params[:id])
+    end
     @checkout_type.destroy
 
     respond_to do |format|

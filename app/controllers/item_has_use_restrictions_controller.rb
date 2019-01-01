@@ -1,7 +1,7 @@
 class ItemHasUseRestrictionsController < ApplicationController
   before_action :set_item_has_use_restriction, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_parent_item
+  before_action :get_item
 
   # GET /item_has_use_restrictions
   # GET /item_has_use_restrictions.json
@@ -31,7 +31,7 @@ class ItemHasUseRestrictionsController < ApplicationController
   # GET /item_has_use_restrictions/new.json
   def new
     @item_has_use_restriction = ItemHasUseRestriction.new
-    @use_restrictions = UseRestriction.order(:position)
+    @use_restrictions = UseRestriction.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,7 +41,7 @@ class ItemHasUseRestrictionsController < ApplicationController
 
   # GET /item_has_use_restrictions/1/edit
   def edit
-    @use_restrictions = UseRestriction.order(:position)
+    @use_restrictions = UseRestriction.all
   end
 
   # POST /item_has_use_restrictions
@@ -54,8 +54,8 @@ class ItemHasUseRestrictionsController < ApplicationController
         format.html { redirect_to @item_has_use_restriction, notice: t('controller.successfully_created', model: t('activerecord.models.item_has_use_restriction')) }
         format.json { render json: @item_has_use_restriction, status: :created, location: @item_has_use_restriction }
       else
-        @use_restrictions = UseRestriction.order(:position)
-        format.html { render action: 'new' }
+        @use_restrictions = UseRestriction.all
+        format.html { render action: "new" }
         format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -70,8 +70,8 @@ class ItemHasUseRestrictionsController < ApplicationController
         format.html { redirect_to @item_has_use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.item_has_use_restriction')) }
         format.json { head :no_content }
       else
-        @use_restrictions = UseRestriction.order(:position)
-        format.html { render action: 'edit' }
+        @use_restrictions = UseRestriction.all
+        format.html { render action: "edit" }
         format.json { render json: @item_has_use_restriction.errors, status: :unprocessable_entity }
       end
     end

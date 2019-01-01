@@ -47,7 +47,7 @@ class UseRestrictionsController < ApplicationController
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_created', model: t('activerecord.models.use_restriction')) }
         format.json { render json: @use_restriction, status: :created, location: @use_restriction }
       else
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @use_restriction.errors, status: :unprocessable_entity }
       end
     end
@@ -62,11 +62,11 @@ class UseRestrictionsController < ApplicationController
     end
 
     respond_to do |format|
-      if @use_restriction.update_attributes(use_restriction_params)
+      if @use_restriction.update(use_restriction_params)
         format.html { redirect_to @use_restriction, notice: t('controller.successfully_updated', model: t('activerecord.models.use_restriction')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @use_restriction.errors, status: :unprocessable_entity }
       end
     end

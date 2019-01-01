@@ -2,11 +2,11 @@ class ReservesController < ApplicationController
   before_action :set_reserve, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
   before_action :prepare_options, only: [:new, :edit]
-  before_action :set_user, only: [:index, :new]
+  before_action :get_user, only: [:index, :new]
   before_action :store_page
   after_action :convert_charset, only: :index
-  helper_method :set_manifestation
-  helper_method :set_item
+  helper_method :get_manifestation
+  helper_method :get_item
 
   # GET /reserves
   # GET /reserves.json
@@ -34,7 +34,7 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if %w(txt rss).include?(params[:format].to_s.downcase)
+    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
       per_page = 500
       page = 1
     else
@@ -79,7 +79,9 @@ class ReservesController < ApplicationController
       reserved_until = nil
     end
 
-    state = params[:state].downcase if params[:state].present?
+    if params[:state].present?
+      state = params[:state].downcase
+    end
 
     search.build do
       fulltext query
@@ -137,6 +139,7 @@ class ReservesController < ApplicationController
       authorize @manifestation, :show?
       @reserve.manifestation = @manifestation
       if @reserve.user
+        # @reserve.expired_at = @manifestation.reservation_expired_period(@reserve.user).days.from_now.end_of_day
         if @manifestation.is_reserved_by?(@reserve.user)
           flash[:notice] = t('reserve.this_manifestation_is_already_reserved')
           redirect_to @manifestation
@@ -158,7 +161,9 @@ class ReservesController < ApplicationController
     @reserve.set_user
 
     if current_user.has_role?('Librarian')
-      @reserve.user = @user unless @reserve.user
+      unless @reserve.user
+        @reserve.user = @user
+      end
     else
       if @reserve.user != current_user
         if @user != current_user
@@ -175,7 +180,7 @@ class ReservesController < ApplicationController
         format.json { render json: @reserve, status: :created, location: reserve_url(@reserve) }
       else
         prepare_options
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
@@ -195,8 +200,12 @@ class ReservesController < ApplicationController
       if params[:mode] == 'cancel'
         @reserve.transition_to!(:canceled)
       else
-        if @reserve.item_identifier.present?
-          @reserve.create_retain
+        if @reserve.retained?
+          if @reserve.item_identifier.present? && (@reserve.force_retaining == '1')
+            @reserve.transition_to!(:retained)
+          end
+        else
+          @reserve.transition_to!(:retained) if @reserve.item_identifier.present?
         end
       end
     end
@@ -212,7 +221,7 @@ class ReservesController < ApplicationController
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @reserve.errors, status: :unprocessable_entity }
       end
     end
@@ -226,8 +235,10 @@ class ReservesController < ApplicationController
 
     if @reserve.manifestation.is_reserved?
       if @reserve.item
-        retain = @reserve.item.retain!(User.find_by(name: 'system')) # TODO: システムからの送信ユーザの設定
-        flash[:message] = t('reserve.this_item_is_not_reserved') if retain.nil?
+        retain = @reserve.item.retain(User.find(1)) # TODO: システムからの送信ユーザの設定
+        if retain.nil?
+          flash[:message] = t('reserve.this_item_is_not_reserved')
+        end
       end
     end
 
@@ -252,15 +263,15 @@ class ReservesController < ApplicationController
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
         :manifestation_id, :user_number,
-        :pickup_location_id,
+        :pickup_location_id, :expired_at,
         :manifestation_id, :item_identifier, :user_number,
         :request_status_type, :canceled_at, :checked_out_at,
         :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-        :retained_at, :postponed_at, :force_retaining, :expire_on
+        :retained_at, :postponed_at, :force_retaining
       )
     elsif current_user.try(:has_role?, 'User')
       params.fetch(:reserve, {}).permit(
-        :user_number, :manifestation_id, :pickup_location_id
+        :user_number, :manifestation_id, :expired_at, :pickup_location_id
       )
     end
   end
@@ -269,15 +280,15 @@ class ReservesController < ApplicationController
     if current_user.try(:has_role?, 'Librarian')
       params.fetch(:reserve, {}).permit(
         :manifestation_id, :user_number,
-        :pickup_location_id,
+        :pickup_location_id, :expired_at,
         :manifestation_id, :item_identifier, :user_number,
         :request_status_type, :canceled_at, :checked_out_at,
         :expiration_notice_to_patron, :expiration_notice_to_library, :item_id,
-        :retained_at, :postponed_at, :force_retaining, :expire_on
+        :retained_at, :postponed_at, :force_retaining
       )
     elsif current_user.try(:has_role?, 'User')
       params.fetch(:reserve, {}).permit(
-        :pickup_location_id
+        :expired_at, :pickup_location_id
       )
     end
   end

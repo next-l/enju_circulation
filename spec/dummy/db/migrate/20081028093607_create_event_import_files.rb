@@ -1,13 +1,13 @@
-class CreateEventImportFiles < ActiveRecord::Migration[5.1]
+class CreateEventImportFiles < ActiveRecord::Migration[4.2]
   def self.up
     create_table :event_import_files do |t|
       t.integer :parent_id
       t.string :content_type
       t.integer :size
-      t.references :user, index: true
+      t.integer :user_id
       t.text :note
       t.datetime :imported_at
-      t.string :event_import_filename
+      t.string :event_import_file_name
       t.string :event_import_content_type
       t.integer :event_import_file_size
       t.datetime :event_import_updated_at
@@ -16,6 +16,7 @@ class CreateEventImportFiles < ActiveRecord::Migration[5.1]
       t.timestamps
     end
     add_index :event_import_files, :parent_id
+    add_index :event_import_files, :user_id
   end
 
   def self.down

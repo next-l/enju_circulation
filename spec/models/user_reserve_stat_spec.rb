@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 describe UserReserveStat do
-  fixtures :all
+  fixtures :user_reserve_stats
 
-  it 'calculates user count' do
+  it "calculates user count" do
     old_message_count = Message.count
     user_reserve_stats(:one).transition_to!(:started).should be_truthy
     Message.count.should eq old_message_count + 1
-    Message.order(created_at: :desc).first.subject.should eq '集計が完了しました'
+    Message.order(:id).last.subject.should eq '集計が完了しました'
   end
 
-  #it 'should calculate in background' do
-  #  UserReserveStatJob.perform_later(user_reserve_stats(:one)).should be_truthy
-  #end
+  it "should calculate in background" do
+    UserReserveStatJob.perform_later(user_reserve_stats(:one)).should be_truthy
+  end
 end
 
 # == Schema Information
@@ -23,8 +23,8 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
 #  user_id      :integer

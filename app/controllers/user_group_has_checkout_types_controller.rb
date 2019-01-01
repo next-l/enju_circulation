@@ -1,7 +1,7 @@
 class UserGroupHasCheckoutTypesController < ApplicationController
   before_action :set_user_group_has_checkout_type, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  helper_method :set_user_group, :set_checkout_type
+  helper_method :get_user_group, :get_checkout_type
   before_action :prepare_options, only: [:new, :edit]
 
   # GET /user_group_has_checkout_types
@@ -28,8 +28,8 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # GET /user_group_has_checkout_types/new.json
   def new
     @user_group_has_checkout_type = UserGroupHasCheckoutType.new(
-      checkout_type: set_checkout_type,
-      user_group: set_user_group
+      checkout_type: get_checkout_type,
+      user_group: get_user_group
     )
 
     respond_to do |format|
@@ -53,7 +53,7 @@ class UserGroupHasCheckoutTypesController < ApplicationController
         format.json { render json: @user_group_has_checkout_type, status: :created, location: @user_group_has_checkout_type }
       else
         prepare_options
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end
@@ -63,12 +63,12 @@ class UserGroupHasCheckoutTypesController < ApplicationController
   # PUT /user_group_has_checkout_types/1.json
   def update
     respond_to do |format|
-      if @user_group_has_checkout_type.update_attributes(user_group_has_checkout_type_params)
+      if @user_group_has_checkout_type.update(user_group_has_checkout_type_params)
         format.html { redirect_to @user_group_has_checkout_type, notice: t('controller.successfully_updated', model: t('activerecord.models.user_group_has_checkout_type')) }
         format.json { head :no_content }
       else
         prepare_options
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @user_group_has_checkout_type.errors, status: :unprocessable_entity }
       end
     end

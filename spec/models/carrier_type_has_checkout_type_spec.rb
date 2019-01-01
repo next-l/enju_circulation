@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe CarrierTypeHasCheckoutType do
   # pending "add some examples to (or delete) #{__FILE__}"
+
 end
 
 # == Schema Information
@@ -13,6 +14,6 @@ end
 #  checkout_type_id :integer          not null
 #  note             :text
 #  position         :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #

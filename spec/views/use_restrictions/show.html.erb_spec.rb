@@ -1,15 +1,17 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe 'use_restrictions/show' do
+describe "use_restrictions/show" do
   before(:each) do
     @use_restriction = assign(:use_restriction, stub_model(UseRestriction,
-                                                           name: 'Name',
-                                                           display_name: 'MyText',
-                                                           note: 'MyText',
-                                                           position: 1))
+                                                           name: "Name",
+                                                           display_name: "MyText",
+                                                           note: "MyText",
+                                                           position: 1
+    ))
   end
 
-  it 'renders attributes in <p>' do
+  it "renders attributes in <p>" do
+    allow(view).to receive(:policy).and_return double(update?: true)
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match(/Name/)

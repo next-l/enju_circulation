@@ -7,7 +7,7 @@
           <%= t('activerecord.models.shelf') %>
         </th>
         <% CheckoutType.order(:position).each do |checkout_type| %>
-          <th><%= checkout_type.display_name %></th>
+          <th><%= checkout_type.display_name.localize %></th>
         <% end %>
         <th><%= t('page.total') %></th>
       </tr>
@@ -15,10 +15,10 @@
         <% library.shelves.order(:position).each do |shelf| %>
           <tr>
             <td>
-              <%= library.display_name %>
+              <%= library.display_name.localize %>
             </td>
             <td>
-              <%= shelf.display_name %>
+              <%= shelf.display_name.localize %>
             </td>
             <% CheckoutType.order(:position).each do |checkout_type| %>
               <td>

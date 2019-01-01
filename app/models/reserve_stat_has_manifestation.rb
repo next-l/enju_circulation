@@ -2,8 +2,8 @@ class ReserveStatHasManifestation < ActiveRecord::Base
   belongs_to :manifestation_reserve_stat
   belongs_to :manifestation
 
-  validates_uniqueness_of :manifestation_id, scope: :manifestation_reserve_stat_id
-  validates_presence_of :manifestation_reserve_stat_id, :manifestation_id
+  validates :manifestation_id, uniqueness: { scope: :manifestation_reserve_stat_id }
+  validates :manifestation_reserve_stat_id, :manifestation_id, presence: true
 
   paginates_per 10
 end
@@ -14,8 +14,8 @@ end
 #
 #  id                            :integer          not null, primary key
 #  manifestation_reserve_stat_id :integer          not null
-#  manifestation_id              :uuid             not null
+#  manifestation_id              :integer          not null
 #  reserves_count                :integer
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
+#  created_at                    :datetime
+#  updated_at                    :datetime
 #

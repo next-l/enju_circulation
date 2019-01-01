@@ -1,8 +1,8 @@
 class UserReserveStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
-  default_scope { order('user_reserve_stats.id DESC') }
-  scope :not_calculated, -> { in_state(:pending) }
+  default_scope {order('user_reserve_stats.id DESC')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_users
   has_many :users, through: :reserve_stat_has_users
   belongs_to :user
@@ -10,7 +10,7 @@ class UserReserveStat < ActiveRecord::Base
   paginates_per 10
   attr_accessor :mode
 
-  has_many :user_reserve_stat_transitions
+  has_many :user_reserve_stat_transitions, autosave: false
 
   def state_machine
     UserReserveStatStateMachine.new(self, transition_class: UserReserveStatTransition)
@@ -55,8 +55,8 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
 #  user_id      :integer

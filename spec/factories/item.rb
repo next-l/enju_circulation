@@ -1,8 +1,9 @@
 FactoryBot.define do
-  factory :item do |f|
-    f.sequence(:item_identifier) { |n| "item_#{n}" }
-    f.circulation_status_id { CirculationStatus.find(1).id } if defined?(EnjuCircuation)
-    f.manifestation_id { FactoryBot.create(:manifestation).id }
-    f.shelf { FactoryBot.create(:shelf) }
+  factory :item do
+    sequence(:item_identifier){|n| "item_#{n}"}
+    circulation_status_id{CirculationStatus.find(1).id} if defined?(EnjuCircuation)
+    manifestation_id{FactoryBot.create(:manifestation).id}
+    association :bookstore
+    association :budget_type
   end
 end

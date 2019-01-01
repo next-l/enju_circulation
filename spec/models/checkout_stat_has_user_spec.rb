@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe CheckoutStatHasUser do
   # pending "add some examples to (or delete) #{__FILE__}"
+
 end
 
 # == Schema Information
@@ -12,6 +13,6 @@ end
 #  user_checkout_stat_id :integer          not null
 #  user_id               :integer          not null
 #  checkouts_count       :integer          default(0), not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #

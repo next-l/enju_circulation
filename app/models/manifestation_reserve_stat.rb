@@ -1,8 +1,8 @@
 class ManifestationReserveStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
-  default_scope { order('manifestation_reserve_stats.id DESC') }
-  scope :not_calculated, -> { in_state(:pending) }
+  default_scope {order('manifestation_reserve_stats.id DESC')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_manifestations
   has_many :manifestations, through: :reserve_stat_has_manifestations
   belongs_to :user
@@ -10,7 +10,7 @@ class ManifestationReserveStat < ActiveRecord::Base
   paginates_per 10
   attr_accessor :mode
 
-  has_many :manifestation_reserve_stat_transitions
+  has_many :manifestation_reserve_stat_transitions, autosave: false
 
   def state_machine
     ManifestationReserveStatStateMachine.new(self, transition_class: ManifestationReserveStatTransition)
@@ -56,8 +56,8 @@ end
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
 #  user_id      :integer

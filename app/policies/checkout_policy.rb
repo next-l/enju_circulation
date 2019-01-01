@@ -6,7 +6,7 @@ class CheckoutPolicy < ApplicationPolicy
   def show?
     if user.try(:has_role?, 'Librarian')
       true
-    elsif user and user == record.user
+    elsif user && (user == record.user)
       true
     end
   end
@@ -18,13 +18,19 @@ class CheckoutPolicy < ApplicationPolicy
   def update?
     if user.try(:has_role?, 'Librarian')
       true
-    elsif user and user == record.user
+    elsif user && (user == record.user)
       true
     end
   end
 
   def destroy?
-    false
+    if record.checkin
+      if user.try(:has_role?, 'Librarian')
+        true
+      elsif user && (user == record.user)
+        true
+      end
+    end
   end
 
   def remove_all?

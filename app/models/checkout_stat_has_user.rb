@@ -4,8 +4,8 @@ class CheckoutStatHasUser < ActiveRecord::Base
   belongs_to :user_checkout_stat
   belongs_to :user
 
-  validates_uniqueness_of :user_id, scope: :user_checkout_stat_id
-  validates_presence_of :user_checkout_stat_id, :user_id
+  validates :user_id, uniqueness: { scope: :user_checkout_stat_id }
+  validates :user_checkout_stat_id, :user_id, presence: true
 
   paginates_per 10
 end
@@ -18,6 +18,6 @@ end
 #  user_checkout_stat_id :integer          not null
 #  user_id               :integer          not null
 #  checkouts_count       :integer          default(0), not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #

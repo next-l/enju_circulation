@@ -4,105 +4,113 @@ event_00001:
   event_category_id: 1
   end_at: 2008-01-14 02:54:00 +09:00
   name: 仕事始め
-  display_name_translations: {"ja": "仕事始め"}
+  display_name: 仕事始め
+  deleted_at: 
   start_at: 2008-01-13 02:54:00 +09:00
-  id: 71044385-fcdf-4893-a14c-c90996c21930
+  id: 1
   note: なんとかかんとか
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-01-01 16:20:54.372729 +09:00
 event_00002: 
   updated_at: 2008-01-13 02:54:21.134175 +09:00
   event_category_id: 2
   end_at: 2008-01-14 02:54:00 +09:00
   name: テスト
-  display_name_translations: {"ja": "テスト"}
+  display_name: テスト
+  deleted_at: 
   start_at: 2008-01-13 02:54:00 +09:00
-  id: 3f1a4643-30a3-427e-a2f0-b67a955074cb
+  id: 2
   note: テスト用のイベントです。
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-01-01 20:54:25.803201 +09:00
 event_00003: 
   updated_at: 2008-02-05 20:00:35.319131 +09:00
   event_category_id: 1
   end_at: 2008-02-05 00:00:00 +09:00
   name: ミーティング
-  display_name_translations: {"ja": "ミーティング"}
+  display_name: ミーティング
+  deleted_at: 
   start_at: 2008-01-13 00:00:00 +09:00
-  id: 54a4b5eb-2b57-42c2-9dfa-ef0b9ee14aa3
+  id: 3
   note: ""
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-01-13 02:51:10.642395 +09:00
 event_00004: 
   updated_at: 2008-02-05 15:43:42.617670 +09:00
   event_category_id: 4
   end_at: 2008-02-06 00:00:00 +09:00
   name: テスト
-  display_name_translations: {"ja": "テスト"}
+  display_name: テスト
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
-  id: aae23704-d377-4040-9deb-613bde0555dd
+  id: 4
   note: なんとかかんとか
-  library_id: 8fe7dd9b-7387-4f80-a656-109127a925eb
+  library_id: 3
   created_at: 2008-02-05 15:43:42.617670 +09:00
 event_00005: 
   updated_at: 2008-02-05 20:41:50.533164 +09:00
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
   name: test
-  display_name_translations: {"en": "test"}
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
-  id: 1c390a37-8c53-47da-a362-ee474ac14396
+  id: 5
   note: ""
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-02-05 20:41:50.533164 +09:00
 event_00006: 
   updated_at: 2008-02-05 23:52:06.315285 +09:00
   event_category_id: 2
   end_at: 2008-02-08 00:00:00 +09:00
   name: なんとかかんとか
-  display_name_translations: {"ja": "なんとかかんとか"}
+  display_name: なんとかかんとか
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
-  id: 81e8ce6c-382e-4581-8fe7-c9fa228c26a9
+  id: 6
   note: ""
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-02-05 20:50:26.651371 +09:00
 event_00007: 
   updated_at: 2008-02-05 21:00:53.926050 +09:00
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
-  name: test2
-  display_name_translations: {"en": "test"}
+  name: test
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
-  id: b3ed2f49-58aa-487b-b2d5-22b1dc52d3a9
+  id: 7
   note: test
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-02-05 21:00:53.926050 +09:00
 event_00008: 
   updated_at: 2008-02-05 21:00:53.926050 +09:00
   event_category_id: 1
   end_at: 2008-02-05 15:00:00 +09:00
-  name: test3
-  display_name_translations: {"en": "test"}
+  name: test
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 15:00:00 +09:00
-  id: 60930c0d-f6ee-469f-9a77-992d262c7428
+  id: 8
   note: test
-  library_id: 3be887c1-ab28-472e-9bb0-b10bd1ae2164
+  library_id: 2
   created_at: 2008-02-05 21:00:53.926050 +09:00
 
 # == Schema Information
 #
 # Table name: events
 #
-#  id                        :uuid             not null, primary key
-#  library_id                :uuid             not null
-#  event_category_id         :integer          not null
-#  name                      :string
-#  note                      :text
-#  start_at                  :datetime
-#  end_at                    :datetime
-#  all_day                   :boolean          default(FALSE), not null
-#  deleted_at                :datetime
-#  display_name_translations :jsonb
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  place_id                  :integer
+#  id                :integer         not null, primary key
+#  library_id        :integer         default(1), not null
+#  event_category_id :integer         default(1), not null
+#  name              :string(255)
+#  note              :text
+#  start_at          :datetime
+#  end_at            :datetime
+#  all_day           :boolean         default(FALSE), not null
+#  deleted_at        :datetime
+#  created_at        :datetime
+#  updated_at        :datetime
+#  display_name      :text
 #
+

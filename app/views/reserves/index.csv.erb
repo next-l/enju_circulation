@@ -1,4 +1,0 @@
-id,title,isbn,item_identifier,call_number,username,created_at,expired_at,state
-<%- @reserves.each do |reserve| -%>
-<%= reserve.id %>,"<%= reserve.manifestation.original_title.gsub(/"/, '""') -%>",<%= reserve.manifestation.isbn %>,<%= reserve.item.try(:item_identifier) -%>,<%= reserve.item.try(:call_number) -%>,<%= reserve.user.try(:username) %>,<%= reserve.created_at %>,<%= reserve.expired_at %>,<%= i18n_state(reserve.state) %><%= "\n" -%>
-<%- end -%>

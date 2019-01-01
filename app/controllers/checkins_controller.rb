@@ -1,16 +1,16 @@
 class CheckinsController < ApplicationController
   before_action :set_checkin, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_basket, only: [:index, :create]
+  before_action :get_basket, only: [:index, :create]
 
   # GET /checkins
   # GET /checkins.json
   def index
-    @checkins = if @basket
-                  @basket.checkins.page(params[:page])
-                else
-                  Checkin.page(params[:page])
-                end
+    if @basket
+      @checkins = @basket.checkins.page(params[:page])
+    else
+      @checkins = Checkin.page(params[:page])
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,7 +41,7 @@ class CheckinsController < ApplicationController
       @basket.save!
     end
     @checkin = Checkin.new
-    @checkins = Kaminari.paginate_array([]).page(1)
+    @checkins = Kaminari::paginate_array([]).page(1)
     flash[:checkin_basket_id] = @basket.id
 
     respond_to do |format|
@@ -81,9 +81,9 @@ class CheckinsController < ApplicationController
         format.js { redirect_to checkins_url(basket_id: @basket.id, format: :js) }
       else
         @checkins = @basket.checkins.page(1)
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @checkin.errors, status: :unprocessable_entity }
-        format.js { render action: 'index' }
+        format.js { render action: "index" }
       end
     end
   end
@@ -93,13 +93,14 @@ class CheckinsController < ApplicationController
   def update
     @checkin.assign_attributes(checkin_params)
     @checkin.librarian = current_user
+    @checkin.checkout = Checkout.not_returned.where(item: Item.find_by(item_identifier: @checkin.item_identifier)).order(created_at: :desc).first
 
     respond_to do |format|
       if @checkin.save
         format.html { redirect_to @checkin, notice: t('controller.successfully_updated', model: t('activerecord.models.checkin')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @checkin.errors, status: :unprocessable_entity }
       end
     end

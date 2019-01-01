@@ -10,26 +10,18 @@ module EnjuCirculation
     end
 
     def basket_checkout(librarian)
-      return nil if checked_items.empty?
+      return nil if checked_items.size == 0
       Item.transaction do
         checked_items.each do |checked_item|
           checkout = user.checkouts.new
           checkout.librarian = librarian
           checkout.item = checked_item.item
-          checkout.shelf = checked_item.item.shelf
+          checkout.basket = self
           checkout.library = librarian.profile.library
+          checkout.shelf = checked_item.item.shelf
           checkout.due_date = checked_item.due_date
-          checked_item.item.circulation_status = CirculationStatus.find_by(name: 'On Loan')
-          checked_item.item.save!
+          checked_item.item.checkout!(user)
           checkout.save!
-          if checked_item.item.manifestation.next_reservation
-            retain = checked_item.item.retains.order(created_at: :desc).first
-            unless retain
-              retain = Retain.create!(reserve: checked_item.item.manifestation.next_reservation, item: checked_item.item)
-            end
-            retain.reserve.transition_to!(:completed)
-            RetainAndCheckout.create!(retain: retain, checkout: checkout)
-          end
         end
         CheckedItem.where(basket_id: id).destroy_all
       end

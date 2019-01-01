@@ -1,7 +1,8 @@
-class CreateEventExportFiles < ActiveRecord::Migration[5.1]
+class CreateEventExportFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :event_export_files do |t|
-      t.references :user, index: true
+      t.integer :user_id
+      t.attachment :event_export
       t.datetime :executed_at
 
       t.timestamps

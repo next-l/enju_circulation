@@ -5,7 +5,7 @@ class DemandsController < ApplicationController
   # GET /demands
   # GET /demands.json
   def index
-    @demands = Demand.order(created_at: :desc).page(params[:page])
+    @demands = Demand.order('id DESC').page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,15 +42,13 @@ class DemandsController < ApplicationController
   # POST /demands.json
   def create
     @demand = Demand.new(demand_params)
-    @demand.item = Item.find_by(item_identifier: @demand.item_identifier)
-    @demand.user = current_user
 
     respond_to do |format|
       if @demand.save
         format.html { redirect_to @demand, notice: t('controller.successfully_created', model: t('activerecord.models.demand')) }
         format.json { render json: @demand, status: :created, location: @demand }
       else
-        format.html { render action: 'new' }
+        format.html { render action: "new" }
         format.json { render json: @demand.errors, status: :unprocessable_entity }
       end
     end
@@ -60,11 +58,11 @@ class DemandsController < ApplicationController
   # PUT /demands/1.json
   def update
     respond_to do |format|
-      if @demand.update_attributes(demand_params)
+      if @demand.update(demand_params)
         format.html { redirect_to @demand, notice: t('controller.successfully_updated', model: t('activerecord.models.demand')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @demand.errors, status: :unprocessable_entity }
       end
     end
@@ -93,6 +91,6 @@ class DemandsController < ApplicationController
   end
 
   def demand_params
-    params.fetch(:demand, {}).permit(:item_identifier)
+    params.fetch(:demand, {}).permit()
   end
 end

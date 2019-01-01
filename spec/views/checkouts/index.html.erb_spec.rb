@@ -1,7 +1,8 @@
-require 'spec_helper'
+# -*- encoding: utf-8 -*-
+require 'rails_helper'
 
-describe 'checkouts/index' do
-  fixtures :users, :roles, :user_has_roles
+describe "checkouts/index" do
+  fixtures :all
 
   before(:each) do
     assign(:checkouts, Checkout.page(1))
@@ -9,9 +10,10 @@ describe 'checkouts/index' do
     view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
   end
 
-  it 'renders a list of checkouts' do
+  it "renders a list of checkouts" do
+    allow(view).to receive(:policy).and_return double(update?: true, destroy?: true)
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    rendered.should match(/これからの生命科学研究者のためのバイオ特許入門講座/)
+    assert_select "tr:nth-child(2)>td:nth-child(2)", /00001/
   end
 end

@@ -23,16 +23,11 @@ module EnjuCirculation
     end
 
     def checked_item_count
-      checkout_count = {}
-      CheckoutType.all.each do |checkout_type|
-        # 資料種別ごとの貸出中の冊数を計算
-        checkout_count[:"#{checkout_type.name}"] = checkouts.not_returned.joins(:item).where(items: {checkout_type_id: checkout_type.id}).count
-      end
-      checkout_count
+      CheckoutType.select(:id, :name).map{|c| [c.name.to_sym, checkouts.not_returned.joins(:item).where('items.checkout_type_id': c.id).count]}.to_h
     end
 
     def reached_reservation_limit?(manifestation)
-      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(:user_group_id => profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
+      return true if profile.user_group.user_group_has_checkout_types.available_for_carrier_type(manifestation.carrier_type).where(user_group_id: profile.user_group.id).collect(&:reservation_limit).max.to_i <= reserves.waiting.size
       false
     end
 

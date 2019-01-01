@@ -1,7 +1,7 @@
 class CheckedItemsController < ApplicationController
   before_action :set_checked_item, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_basket, only: [:index, :new, :create, :update]
+  before_action :get_basket, only: [:index, :new, :create, :update]
 
   # GET /checked_items
   # GET /checked_items.json
@@ -71,9 +71,9 @@ class CheckedItemsController < ApplicationController
         format.js { redirect_to(checked_items_url(basket_id: @basket.id, format: :js)) }
       else
         @checked_items = @basket.checked_items.order('created_at DESC').page(1)
-        format.html { render action: 'index' }
+        format.html { render action: "index" }
         format.json { render json: @checked_item.errors, status: :unprocessable_entity }
-        format.js { render action: 'index' }
+        format.js { render action: "index" }
       end
     end
   end
@@ -89,11 +89,11 @@ class CheckedItemsController < ApplicationController
     end
 
     respond_to do |format|
-      if @checked_item.update_attributes(checked_item_params)
+      if @checked_item.update(checked_item_params)
         format.html { redirect_to checked_item_url(@checked_item), notice: t('controller.successfully_updated', model: t('activerecord.models.checked_item')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @checked_item.errors, status: :unprocessable_entity }
       end
     end

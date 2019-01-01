@@ -1,19 +1,19 @@
 class CheckoutsController < ApplicationController
   before_action :set_checkout, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create, :remove_all]
-  before_action :set_user, only: [:index, :remove_all]
-  before_action :set_parent_item, only: :index
+  before_action :get_user, only: [:index, :remove_all]
+  before_action :get_item, only: :index
   after_action :convert_charset, only: :index
 
   # GET /checkouts
   # GET /checkouts.json
   def index
     if params[:icalendar_token].present?
-      icalendar_user = Profile.find_by(checkout_icalendar_token: params[:icalendar_token]).try(:user)
-      if icalendar_user
-        @checkouts = icalendar_user.checkouts.not_returned.order(created_at: :desc).page(1)
-      else
+      icalendar_user = Profile.where(checkout_icalendar_token: params[:icalendar_token]).first.try(:user)
+      if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
+      else
+        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
       end
     else
       unless current_user
@@ -21,7 +21,7 @@ class CheckoutsController < ApplicationController
       end
     end
 
-    if %w(txt rss).include?(params[:format].to_s.downcase)
+    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
       per_page = 500
       page = 1
     else
@@ -123,7 +123,6 @@ class CheckoutsController < ApplicationController
   # PUT /checkouts/1.json
   def update
     @checkout.assign_attributes(checkout_params)
-    @checkout.due_date = @checkout.due_date.end_of_day
     @checkout.checkout_renewal_count += 1
 
     respond_to do |format|
@@ -131,7 +130,7 @@ class CheckoutsController < ApplicationController
         format.html { redirect_to @checkout, notice: t('controller.successfully_updated', model: t('activerecord.models.checkout')) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @checkout.errors, status: :unprocessable_entity }
       end
     end
@@ -181,4 +180,10 @@ class CheckoutsController < ApplicationController
   def checkout_params
     params.fetch(:checkout, {}).permit(:due_date)
   end
+
+  def filtered_params
+    params.permit([:user_id, :days_overdue, :reserved])
+  end
+
+  helper_method :filtered_params
 end

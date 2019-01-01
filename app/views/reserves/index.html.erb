@@ -49,9 +49,9 @@
       <%= t('activerecord.models.user') -%>: <%= link_to reserve.user.username, reserve.user.profile -%>
       <%= t('activerecord.attributes.reserve.created_at') %>: <%= l(reserve.created_at, format: :short) -%>
       <br />
-      <%= t('activerecord.attributes.reserve.expired_at') %>: <%= l(reserve.reserve_and_expiring_date.expire_on, format: :short) if reserve.reserve_and_expiring_date -%>
+      <%= t('activerecord.attributes.reserve.expired_at') %>: <%= l(reserve.expired_at, format: :short) if reserve.expired_at? -%>
       <br />
-      <%= t('activerecord.attributes.reserve.pickup_location_id') %>: <%= link_to reserve.pickup_location.display_name, reserve.pickup_location if reserve.pickup_location %>
+      <%= t('activerecord.attributes.reserve.pickup_location_id') %>: <%= link_to reserve.pickup_location.display_name.localize, reserve.pickup_location if reserve.pickup_location %>
     </td>
     <td>
       <%= i18n_state(reserve.current_state) -%>

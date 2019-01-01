@@ -38,31 +38,41 @@ namespace :enju_circulation do
     Checkout.send_overdue_notification
   end
 
-  desc 'upgrade enju_circulation'
+  desc "upgrade enju_circulation"
   task upgrade: :environment do
-    Reserve.transaction do
-      update_reserve
-      update_circulation_status
-      update_use_restriction
-    end
+    Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationCheckoutStat')
+    Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationReserveStat')
+    Rake::Task['statesman:backfill_most_recent'].invoke('UserCheckoutStat')
+    Rake::Task['statesman:backfill_most_recent'].invoke('UserReserveStat')
+    Rake::Task['statesman:backfill_most_recent'].invoke('Reserve')
     puts 'enju_circulation: The upgrade completed successfully.'
+    update_checkout
   end
 
-  desc 'migrate old checkout records'
+  desc "migrate old checkout records"
   task migrate_old_checkout: :environment do
-    Checkout.transaction do
-      update_checkout
-    end
+    update_checkout
   end
 
   namespace :export do
     desc 'Export checkouts'
-    task :checkout => :environment do
-      puts ['checked_out_at', 'checked_in_at', 'item_identifier', 'call_number', 'shelf', 'carrier_type', 'title', 'username', 'full_name'].join("\t")
+    task checkout: :environment do
+      puts ['checked_out_at', 'due_date', 'item_identifier', 'call_number', 'shelf', 'carrier_type', 'title', 'username', 'full_name', 'user_number'].join("\t")
       Checkout.where(checkin_id: nil).find_each do |c|
         if c.item
           shelf = c.shelf || c.item.shelf
-          puts [ c.created_at, c.checkin.try(:created_at), c.item.item_identifier, c.item.call_number, shelf.try(:name), c.item.manifestation.carrier_type.name, c.item.manifestation.original_title, c.user.try(:username), c.user.try(:profile).try(:full_name) ].join("\t")
+          puts [
+            c.created_at,
+            c.due_date,
+            c.item.item_identifier,
+            c.item.call_number,
+            shelf.try(:name),
+            c.item.manifestation.carrier_type.name,
+            c.item.manifestation.original_title,
+            c.user.try(:username),
+            c.user.try(:profile).try(:full_name),
+            c.user.try(:profile).try(:user_number),
+          ].join("\t")
 	end
       end
     end

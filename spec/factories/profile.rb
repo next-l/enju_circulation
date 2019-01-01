@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :profile, :class => Profile do |f|
-    f.user_group_id {UserGroup.first.id}
-    f.required_role_id {Role.where(name: 'User').first.id}
+  factory :profile, class: Profile do |f|
+    f.user_group {UserGroup.first}
+    f.required_role {Role.find_by_name('User')}
     f.sequence(:user_number){|n| "user_number_#{n}"}
-    f.library_id { Library.find_by(name: 'kamata').id }
-    f.locale "ja"
+    f.library {Library.find(2)}
+    f.locale { "ja" }
   end
 end

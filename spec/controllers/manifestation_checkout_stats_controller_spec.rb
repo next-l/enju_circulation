@@ -165,7 +165,6 @@ describe ManifestationCheckoutStatsController do
     before(:each) do
       @attrs = FactoryBot.attributes_for(:manifestation_checkout_stat)
       @invalid_attrs = { start_date: '' }
-      ActiveJob::Base.queue_adapter = :test
     end
 
     describe 'When logged in as Administrator' do
@@ -175,6 +174,7 @@ describe ManifestationCheckoutStatsController do
         it 'assigns a newly created manifestation_checkout_stat as @manifestation_checkout_stat' do
           post :create, params: { manifestation_checkout_stat: @attrs }
           assigns(:manifestation_checkout_stat).should be_valid
+          assigns(:manifestation_checkout_stat).current_state.should eq 'completed'
         end
 
         it 'redirects to the created manifestation_checkout_stat' do

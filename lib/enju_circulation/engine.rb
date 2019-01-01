@@ -1,5 +1,5 @@
-require 'enju_leaf'
-require 'enju_event'
+require "enju_biblio"
+require "enju_event"
 
 module EnjuCirculation
   class Engine < ::Rails::Engine

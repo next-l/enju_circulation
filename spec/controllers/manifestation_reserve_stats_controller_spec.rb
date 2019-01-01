@@ -165,7 +165,6 @@ describe ManifestationReserveStatsController do
     before(:each) do
       @attrs = FactoryBot.attributes_for(:manifestation_reserve_stat)
       @invalid_attrs = { start_date: '' }
-      ActiveJob::Base.queue_adapter = :test
     end
 
     describe 'When logged in as Administrator' do

@@ -5,10 +5,9 @@ module EnjuCirculation
     included do
       FOR_CHECKOUT_CIRCULATION_STATUS = [
         'Available On Shelf',
-        'Missing',
         'On Loan',
         'Waiting To Be Reshelved'
-      ].freeze
+      ]
       FOR_CHECKOUT_USE_RESTRICTION = [
         'Available For Supply Without Return',
         'Limited Circulation, Long Loan Period',
@@ -20,7 +19,7 @@ module EnjuCirculation
         'Term Loan',
         'User Signature Required',
         'Limited Circulation, Normal Loan Period'
-      ].freeze
+      ]
 
       scope :for_checkout, ->(identifier_conditions = 'item_identifier IS NOT NULL') {
         includes(:circulation_status, :use_restriction).where(
@@ -31,21 +30,23 @@ module EnjuCirculation
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
       has_many :checkouts
       has_many :reserves
-      has_many :retains
       has_many :checked_items
       has_many :baskets, through: :checked_items
-      belongs_to :circulation_status
+      belongs_to :circulation_status, validate: true
       belongs_to :checkout_type
+      has_many :lending_policies, dependent: :destroy
       has_one :item_has_use_restriction, dependent: :destroy
       has_one :use_restriction, through: :item_has_use_restriction
       validates_associated :circulation_status, :checkout_type
-      validates_presence_of :circulation_status, :checkout_type
+      validates :circulation_status, :checkout_type, presence: true
       searchable do
         string :circulation_status do
           circulation_status.name
         end
       end
       accepts_nested_attributes_for :item_has_use_restriction
+
+      before_update :delete_lending_policy
     end
 
     def set_circulation_status
@@ -54,7 +55,7 @@ module EnjuCirculation
 
     def checkout_status(user)
       return nil unless user
-      user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type.id)
+       user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type.id)
     end
 
     def reserved?
@@ -63,7 +64,7 @@ module EnjuCirculation
     end
 
     def rent?
-      return true if checkouts.not_returned.select(:item_id).detect { |checkout| checkout.item_id == id }
+      return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == id}
       false
     end
 
@@ -82,28 +83,68 @@ module EnjuCirculation
       end
     end
 
-    def checkin!
-      self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
-      save(validate: false)
+    def checkout!(user)
+      if reserved_by_user?(user)
+        manifestation.next_reservation.update(checked_out_at: Time.zone.now)
+        manifestation.next_reservation.transition_to!(:completed)
+        manifestation.reload
+      end
+      update!(circulation_status: CirculationStatus.find_by(name: 'On Loan'))
     end
 
-    def retain!(librarian)
+    def checkin!
+      self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
+      save!
+    end
+
+    def retain(librarian)
       self.class.transaction do
         reservation = manifestation.next_reservation
         if reservation
-          retain = Retain.create!(reserve: reservation, item: self)
-          retain.send_message(librarian)
+          reservation.item = self
+          reservation.transition_to!(:retained) unless reservation.retained?
+          reservation.send_message(librarian)
         end
       end
     end
 
     def retained?
-      return true unless RetainAndCheckout.where(retain: retains).count == retains.count
+      manifestation.reserves.retained.each do |reserve|
+        if reserve.item == self
+          return true
+        end
+      end
       false
+    end
+
+    def lending_rule(user)
+      policy = lending_policies.find_by(user_group_id: user.profile.user_group.id)
+      if policy
+        policy
+      else
+        create_lending_policy(user)
+      end
     end
 
     def not_for_loan?
       !manifestation.items.for_checkout.include?(self)
+    end
+
+    def create_lending_policy(user)
+      rule = user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type_id)
+      return nil unless rule
+      LendingPolicy.create!(
+        item_id: id,
+        user_group_id: rule.user_group_id,
+        fixed_due_date: rule.fixed_due_date,
+        loan_period: rule.checkout_period,
+        renewal: rule.checkout_renewal_limit
+      )
+    end
+
+    def delete_lending_policy
+      return nil unless changes[:checkout_type_id]
+      lending_policies.delete_all
     end
 
     def next_reservation

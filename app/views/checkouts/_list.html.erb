@@ -22,8 +22,8 @@
       <% end %>
       <% if checkout.shelf %>
         <%= t('activerecord.models.shelf') %>:
-        <%= link_to checkout.shelf.display_name, checkout.shelf %>
-        (<%= link_to checkout.shelf.library.display_name, checkout.shelf.library %>)
+        <%= link_to checkout.shelf.display_name.localize, checkout.shelf %>
+        (<%= link_to checkout.shelf.library.display_name.localize, checkout.shelf.library %>)
       <% end %>
     </td>
     <td>
