@@ -47,7 +47,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
-      - run: bundle exec rake app:sunspot:solr:start
+      - run: bundle exec rake app:sunspot:solr:start RAILS_ENV=test
 
       # run tests!
       - run:
