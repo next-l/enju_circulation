@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_26_064038) do
+ActiveRecord::Schema.define(version: 2019_01_02_034126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -215,12 +215,12 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "attachment_file_name"
     t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
+    t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
   end
 
@@ -328,7 +328,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -359,7 +359,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
   create_table "creates", id: :serial, force: :cascade do |t|
     t.integer "agent_id", null: false
     t.integer "work_id", null: false
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "create_type_id"
@@ -376,6 +376,18 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.index ["item_id"], name: "index_demands_on_item_id"
     t.index ["message_id"], name: "index_demands_on_message_id"
     t.index ["user_id"], name: "index_demands_on_user_id"
+  end
+
+  create_table "doi_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "display_body", null: false
+    t.string "source"
+    t.jsonb "response", default: {}, null: false
+    t.bigint "manifestation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_doi_records_on_body", unique: true
+    t.index ["manifestation_id"], name: "index_doi_records_on_manifestation_id"
   end
 
   create_table "donates", id: :serial, force: :cascade do |t|
@@ -411,7 +423,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.integer "user_id"
     t.string "event_export_file_name"
     t.string "event_export_content_type"
-    t.bigint "event_export_file_size"
+    t.integer "event_export_file_size"
     t.datetime "event_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
@@ -490,7 +502,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -499,7 +511,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -547,6 +559,46 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.index ["isbn"], name: "index_import_requests_on_isbn"
     t.index ["manifestation_id"], name: "index_import_requests_on_manifestation_id"
     t.index ["user_id"], name: "index_import_requests_on_user_id"
+  end
+
+  create_table "isbn_record_and_manifestations", force: :cascade do |t|
+    t.bigint "isbn_record_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["isbn_record_id"], name: "index_isbn_record_and_manifestations_on_isbn_record_id"
+    t.index ["manifestation_id"], name: "index_isbn_record_and_manifestations_on_manifestation_id"
+  end
+
+  create_table "isbn_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "isbn_type"
+    t.string "source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_isbn_records_on_body", unique: true
+  end
+
+  create_table "issn_record_and_manifestations", force: :cascade do |t|
+    t.bigint "issn_record_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issn_record_id"], name: "index_issn_record_and_manifestations_on_issn_record_id"
+    t.index ["manifestation_id"], name: "index_issn_record_and_manifestations_on_manifestation_id"
+  end
+
+  create_table "issn_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "issn_type"
+    t.string "source"
+    t.bigint "manifestation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_issn_records_on_body", unique: true
+    t.index ["manifestation_id"], name: "index_issn_records_on_manifestation_id"
   end
 
   create_table "item_has_use_restrictions", id: :serial, force: :cascade do |t|
@@ -671,7 +723,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.boolean "csv_charset_conversion", default: false, null: false
     t.string "header_logo_file_name"
     t.string "header_logo_content_type"
-    t.bigint "header_logo_file_size"
+    t.integer "header_logo_file_size"
     t.datetime "header_logo_updated_at"
     t.text "header_logo_meta"
     t.jsonb "login_banner", default: {}, null: false
@@ -684,7 +736,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.string "name", null: false
     t.string "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -901,7 +953,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
   create_table "owns", id: :serial, force: :cascade do |t|
     t.integer "agent_id", null: false
     t.integer "item_id", null: false
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["agent_id"], name: "index_owns_on_agent_id"
@@ -950,7 +1002,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
   create_table "produces", id: :serial, force: :cascade do |t|
     t.integer "agent_id", null: false
     t.integer "manifestation_id", null: false
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "produce_type_id"
@@ -992,7 +1044,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
   create_table "realizes", id: :serial, force: :cascade do |t|
     t.integer "agent_id", null: false
     t.integer "expression_id", null: false
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "realize_type_id"
@@ -1091,7 +1143,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.integer "user_id"
     t.string "resource_export_file_name"
     t.string "resource_export_content_type"
-    t.bigint "resource_export_file_size"
+    t.integer "resource_export_file_size"
     t.datetime "resource_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
@@ -1299,7 +1351,7 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
     t.integer "user_id"
     t.string "user_export_file_name"
     t.string "user_export_content_type"
-    t.bigint "user_export_file_size"
+    t.integer "user_export_file_size"
     t.datetime "user_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
@@ -1483,6 +1535,12 @@ ActiveRecord::Schema.define(version: 2018_10_26_064038) do
   add_foreign_key "demands", "items"
   add_foreign_key "demands", "messages"
   add_foreign_key "demands", "users"
+  add_foreign_key "doi_records", "manifestations"
+  add_foreign_key "isbn_record_and_manifestations", "isbn_records"
+  add_foreign_key "isbn_record_and_manifestations", "manifestations"
+  add_foreign_key "issn_record_and_manifestations", "issn_records"
+  add_foreign_key "issn_record_and_manifestations", "manifestations"
+  add_foreign_key "issn_records", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
   add_foreign_key "items", "manifestations"
