@@ -220,7 +220,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.datetime "updated_at"
     t.string "attachment_file_name"
     t.string "attachment_content_type"
-    t.integer "attachment_file_size"
+    t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
   end
 
@@ -423,7 +423,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "user_id"
     t.string "event_export_file_name"
     t.string "event_export_content_type"
-    t.integer "event_export_file_size"
+    t.bigint "event_export_file_size"
     t.datetime "event_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
@@ -723,7 +723,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.boolean "csv_charset_conversion", default: false, null: false
     t.string "header_logo_file_name"
     t.string "header_logo_content_type"
-    t.integer "header_logo_file_size"
+    t.bigint "header_logo_file_size"
     t.datetime "header_logo_updated_at"
     t.text "header_logo_meta"
     t.jsonb "login_banner", default: {}, null: false
@@ -1143,7 +1143,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "user_id"
     t.string "resource_export_file_name"
     t.string "resource_export_content_type"
-    t.integer "resource_export_file_size"
+    t.bigint "resource_export_file_size"
     t.datetime "resource_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
@@ -1351,7 +1351,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "user_id"
     t.string "user_export_file_name"
     t.string "user_export_content_type"
-    t.integer "user_export_file_size"
+    t.bigint "user_export_file_size"
     t.datetime "user_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
