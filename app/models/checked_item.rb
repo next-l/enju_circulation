@@ -126,12 +126,12 @@ end
 #
 # Table name: checked_items
 #
-#  id           :integer          not null, primary key
-#  item_id      :integer          not null
-#  basket_id    :integer          not null
-#  librarian_id :integer
+#  id           :bigint(8)        not null, primary key
+#  item_id      :bigint(8)        not null
+#  basket_id    :bigint(8)        not null
+#  librarian_id :bigint(8)
 #  due_date     :datetime         not null
-#  created_at   :datetime
-#  updated_at   :datetime
-#  user_id      :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :bigint(8)
 #

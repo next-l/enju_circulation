@@ -1,4 +1,4 @@
-class CreateLendingPolicies < ActiveRecord::Migration[4.2]
+class CreateLendingPolicies < ActiveRecord::Migration[5.2]
   def self.up
     create_table :lending_policies do |t|
       t.references :item, index: false, foreign_key: true, null: false

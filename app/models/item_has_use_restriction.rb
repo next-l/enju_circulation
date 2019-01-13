@@ -14,9 +14,9 @@ end
 #
 # Table name: item_has_use_restrictions
 #
-#  id                 :integer          not null, primary key
-#  item_id            :integer          not null
-#  use_restriction_id :integer          not null
-#  created_at         :datetime
-#  updated_at         :datetime
+#  id                 :bigint(8)        not null, primary key
+#  item_id            :bigint(8)        not null
+#  use_restriction_id :bigint(8)        not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
