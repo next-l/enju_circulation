@@ -18,7 +18,7 @@ jobs:
        - image: circleci/postgres:10
          environment:
            POSTGRES_USER: postgres
-           POSTGRES_DB: enju_leaf_dummy_test
+           POSTGRES_DB: enju_circulation_dummy_test
 
     working_directory: ~/repo
 
