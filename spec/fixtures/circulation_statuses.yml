@@ -1,24 +1,24 @@
 --- 
 circulation_status_00001: 
-  name: Available For Pickup  
+  name: Available For Pickup
   display_name: {"en": "Available For Pickup", "ja": "持ち出し可能"}
   id: 1
   note: ""
   position: 1
 circulation_status_00002: 
-  name: Available On Shelf  
+  name: Available On Shelf
   display_name: {"en": "Available on Shelf", "ja": "在架（利用可能）"}
   id: 2
   note: ""
   position: 2
 circulation_status_00003: 
-  name: Circulation Status Undefined  
+  name: Circulation Status Undefined
   display_name: {"en": "Circulation Status Undefined", "ja": "Circulation Status Undefined"}
   id: 3
   note: ""
   position: 3
 circulation_status_00004: 
-  name: Claimed Returned Or Never Borrowed  
+  name: Claimed Returned Or Never Borrowed
   display_name: {"en": "Claimed Returned Or Never Borrowed", "ja": "Claimed Returned Or Never Borrowed"}
   id: 4
   note: ""
@@ -54,7 +54,7 @@ circulation_status_00009:
   note: ""
   position: 9
 circulation_status_00010: 
-  name: On Loan  
+  name: On Loan
   display_name: {"en": "On Loan", "ja": "貸出中"}
   id: 10
   note: ""

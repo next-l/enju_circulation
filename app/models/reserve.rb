@@ -405,7 +405,7 @@ end
 #  expired_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
-#  pickup_location_id           :integer
+#  pickup_location_id           :bigint(8)
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

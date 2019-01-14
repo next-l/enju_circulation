@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["carrier_type_id"], name: "index_carrier_type_has_checkout_types_on_m_form_id"
+    t.index ["carrier_type_id"], name: "index_carrier_type_has_checkout_types_on_carrier_type_id"
     t.index ["checkout_type_id"], name: "index_carrier_type_has_checkout_types_on_checkout_type_id"
   end
 
@@ -625,8 +625,8 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.datetime "acquired_at"
     t.integer "bookstore_id"
     t.integer "budget_type_id"
-    t.integer "circulation_status_id", default: 5, null: false
-    t.integer "checkout_type_id", default: 1, null: false
+    t.bigint "circulation_status_id", default: 5, null: false
+    t.bigint "checkout_type_id", default: 1, null: false
     t.string "binding_item_identifier"
     t.string "binding_call_number"
     t.datetime "binded_at"
@@ -1112,7 +1112,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.datetime "expired_at"
     t.boolean "expiration_notice_to_patron", default: false
     t.boolean "expiration_notice_to_library", default: false
-    t.integer "pickup_location_id"
+    t.bigint "pickup_location_id"
     t.datetime "retained_at"
     t.datetime "postponed_at"
     t.integer "lock_version", default: 0, null: false
@@ -1540,6 +1540,8 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
   add_foreign_key "issn_records", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
+  add_foreign_key "items", "checkout_types"
+  add_foreign_key "items", "circulation_statuses"
   add_foreign_key "items", "manifestations"
   add_foreign_key "lending_policies", "items"
   add_foreign_key "lending_policies", "user_groups"
@@ -1550,6 +1552,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
   add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserve_stat_has_users", "user_reserve_stats"
   add_foreign_key "reserve_stat_has_users", "users"
+  add_foreign_key "reserves", "libraries", column: "pickup_location_id"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
   add_foreign_key "user_checkout_stats", "users"
