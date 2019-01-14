@@ -284,7 +284,6 @@ item_00025:
 #  item_identifier         :string(255)
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  deleted_at              :datetime
 #  shelf_id                :integer          default(1), not null
 #  include_supplements     :boolean          default(FALSE), not null
 #  note                    :text

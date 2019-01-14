@@ -41,6 +41,5 @@ shelf_00004:
 #  position     :integer
 #  created_at   :datetime
 #  updated_at   :datetime
-#  deleted_at   :datetime
 #
 

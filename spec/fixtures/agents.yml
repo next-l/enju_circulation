@@ -290,7 +290,6 @@ agent_00202:
 #  full_name_alternative               :text
 #  created_at                          :datetime
 #  updated_at                          :datetime
-#  deleted_at                          :datetime
 #  zip_code_1                          :string(255)
 #  zip_code_2                          :string(255)
 #  address_1                           :text

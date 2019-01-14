@@ -1113,7 +1113,6 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.datetime "updated_at", null: false
     t.datetime "canceled_at"
     t.datetime "expired_at"
-    t.datetime "deleted_at"
     t.boolean "expiration_notice_to_patron", default: false
     t.boolean "expiration_notice_to_library", default: false
     t.integer "pickup_location_id"

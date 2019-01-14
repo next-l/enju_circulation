@@ -146,7 +146,6 @@ end
 #  updated_at                   :datetime         not null
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
-#  deleted_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
 #  pickup_location_id           :integer
