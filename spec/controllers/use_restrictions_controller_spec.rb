@@ -290,9 +290,9 @@ describe UseRestrictionsController do
 
   describe 'PUT update' do
     before(:each) do
-      @use_restriction = FactoryBot.create(:use_restriction)
+      @use_restriction = use_restrictions(:use_restriction_00001)
       @attrs = valid_attributes
-      @invalid_attrs = { display_name: '' }
+      @invalid_attrs = { name: '' }
     end
 
     describe 'When logged in as Administrator' do

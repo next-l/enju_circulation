@@ -290,7 +290,7 @@ describe CirculationStatusesController do
     before(:each) do
       @circulation_status = FactoryBot.create(:circulation_status)
       @attrs = valid_attributes
-      @invalid_attrs = { display_name: '' }
+      @invalid_attrs = { name: '' }
     end
 
     describe 'When logged in as Administrator' do

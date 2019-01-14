@@ -1,5 +1,6 @@
 class CheckoutType < ActiveRecord::Base
   include MasterModel
+  include Mobility
   scope :available_for_carrier_type, lambda {|carrier_type| includes(:carrier_types).where('carrier_types.name = ?', carrier_type.name).order('carrier_types.position')}
   scope :available_for_user_group, lambda {|user_group| includes(:user_groups).where('user_groups.name = ?', user_group.name).order('user_group.position')}
 
@@ -11,6 +12,7 @@ class CheckoutType < ActiveRecord::Base
   # has_many :items, through: :item_has_checkout_types
   has_many :items
 
+  translates :display_name
   paginates_per 10
 end
 
@@ -20,7 +22,7 @@ end
 #
 #  id           :bigint(8)        not null, primary key
 #  name         :string           not null
-#  display_name :text
+#  display_name :jsonb            not null
 #  note         :text
 #  position     :integer
 #  created_at   :datetime         not null
