@@ -13,7 +13,7 @@
   </div>
   <div class="field">
     <%= f.label :user_group_id, t('activerecord.models.user_group') -%><br />
-    <%= f.select :user_group_id, @user_groups.collect{|u| [u.display_name.localize, u.id]} -%>
+    <%= f.select :user_group_id, @user_groups.collect{|u| [u.display_name, u.id]} -%>
   </div>
   <div class="field">
     <%= f.label :loan_period -%><br />
