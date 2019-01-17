@@ -7,7 +7,7 @@ circulation_status_00001:
   position: 1
 circulation_status_00002: 
   name: Available On Shelf
-  display_name: {"en": "Available on Shelf", "ja": "在架（利用可能）"}
+  display_name: {"en": "Available On Shelf", "ja": "在架（利用可能）"}
   id: 2
   note: ""
   position: 2
