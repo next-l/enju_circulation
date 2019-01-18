@@ -10,7 +10,7 @@ circulation_status_00001:
 circulation_status_00002: 
   name: Available On Shelf  
   display_name: |-
-    en: Available on Shelf
+    en: Available On Shelf
     ja: 在架（利用可能）
   id: 2
   note: ""
