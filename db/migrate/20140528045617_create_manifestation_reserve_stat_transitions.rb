@@ -1,6 +1,7 @@
 class CreateManifestationReserveStatTransitions < ActiveRecord::Migration[5.2]
   def change
     create_table :manifestation_reserve_stat_transitions do |t|
+      t.string :to_state
       t.jsonb :metadata, default: {}
       t.integer :sort_key
       t.references :manifestation_reserve_stat, index: false

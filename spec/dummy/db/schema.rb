@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_144223) do
+ActiveRecord::Schema.define(version: 2019_01_02_034126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -613,6 +613,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_144223) do
     t.string "item_identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "shelf_id"
     t.boolean "include_supplements", default: false, null: false
     t.text "note"
     t.string "url"
@@ -628,7 +629,6 @@ ActiveRecord::Schema.define(version: 2019_01_19_144223) do
     t.string "binding_call_number"
     t.datetime "binded_at"
     t.bigint "manifestation_id", null: false
-    t.bigint "shelf_id", null: false
     t.index ["binding_item_identifier"], name: "index_items_on_binding_item_identifier"
     t.index ["bookstore_id"], name: "index_items_on_bookstore_id"
     t.index ["checkout_type_id"], name: "index_items_on_checkout_type_id"
@@ -783,6 +783,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_144223) do
   end
 
   create_table "manifestation_reserve_stat_transitions", force: :cascade do |t|
+    t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.bigint "manifestation_reserve_stat_id"
@@ -1147,9 +1148,9 @@ ActiveRecord::Schema.define(version: 2019_01_19_144223) do
 
   create_table "resource_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.integer "resource_import_file_id"
+    t.bigint "resource_import_file_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -1551,7 +1552,6 @@ ActiveRecord::Schema.define(version: 2019_01_19_144223) do
   add_foreign_key "items", "checkout_types"
   add_foreign_key "items", "circulation_statuses"
   add_foreign_key "items", "manifestations"
-  add_foreign_key "items", "shelves"
   add_foreign_key "lending_policies", "items"
   add_foreign_key "lending_policies", "user_groups"
   add_foreign_key "libraries", "library_groups"

@@ -10,6 +10,7 @@ end
 # Table name: manifestation_reserve_stat_transitions
 #
 #  id                            :bigint(8)        not null, primary key
+#  to_state                      :string
 #  metadata                      :jsonb
 #  sort_key                      :integer
 #  manifestation_reserve_stat_id :bigint(8)
