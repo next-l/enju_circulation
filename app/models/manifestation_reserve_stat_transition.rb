@@ -1,5 +1,4 @@
 class ManifestationReserveStatTransition < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordTransition
 
   
   belongs_to :manifestation_reserve_stat, inverse_of: :manifestation_reserve_stat_transitions
@@ -11,10 +10,9 @@ end
 # Table name: manifestation_reserve_stat_transitions
 #
 #  id                            :bigint(8)        not null, primary key
-#  to_state                      :string
-#  metadata                      :text             default({})
+#  metadata                      :jsonb
 #  sort_key                      :integer
-#  manifestation_reserve_stat_id :integer
+#  manifestation_reserve_stat_id :bigint(8)
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #  most_recent                   :boolean          not null

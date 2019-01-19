@@ -95,9 +95,9 @@ reserve_transition_00015:
 #
 #  id          :bigint(8)        not null, primary key
 #  to_state    :string
-#  metadata    :text             default({})
+#  metadata    :jsonb
 #  sort_key    :integer
-#  reserve_id  :integer
+#  reserve_id  :bigint(8)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  most_recent :boolean          not null
