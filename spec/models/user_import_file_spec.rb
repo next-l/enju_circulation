@@ -55,8 +55,8 @@ describe UserImportFile do
       # user003.profile.share_bookmarks.should be_falsy
       User.where(username: 'user000').first.should be_nil
       UserImportResult.count.should eq old_import_results_count + 10
-      UserImportResult.order('id DESC')[0].error_message.should eq 'line 10: User number has already been taken'
-      UserImportResult.order('id DESC')[1].error_message.should eq 'line 9: User number is invalid'
+      UserImportResult.order('id DESC')[0].error_message.should eq "line 10: Profile must exist Profile can't be blank User number has already been taken"
+      UserImportResult.order('id DESC')[1].error_message.should eq "line 9: Profile must exist Profile can't be blank User number is invalid"
       UserImportResult.order('id DESC')[2].error_message.should eq 'line 8: Password is too short (minimum is 6 characters)'
 
       user005 = User.where(username: 'user005').first
@@ -77,7 +77,7 @@ describe UserImportFile do
       file.executed_at.should be_truthy
 
       file.reload
-      file.error_message.should eq "The following column(s) were ignored: save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: User number is invalid\nline 10: User number has already been taken"
+      file.error_message.should eq "The following column(s) were ignored: checkout_icalendar_token, save_checkout_history, save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: Profile must exist Profile can't be blank User number is invalid\nline 10: Profile must exist Profile can't be blank User number has already been taken"
       file.current_state.should eq 'failed'
     end
   end
