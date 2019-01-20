@@ -77,7 +77,7 @@ describe UserImportFile do
       file.executed_at.should be_truthy
 
       file.reload
-      file.error_message.should eq "The following column(s) were ignored: checkout_icalendar_token, save_checkout_history, save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: Profile must exist Profile can't be blank User number is invalid\nline 10: Profile must exist Profile can't be blank User number has already been taken"
+      file.error_message.should eq "The following column(s) were ignored: save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: Profile must exist Profile can't be blank User number is invalid\nline 10: Profile must exist Profile can't be blank User number has already been taken"
       file.current_state.should eq 'failed'
     end
   end
