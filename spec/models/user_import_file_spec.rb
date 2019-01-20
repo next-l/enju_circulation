@@ -94,7 +94,7 @@ describe UserImportFile do
     end
 
     it "should not remove users if there are checkouts" do
-      user001 = User.where(username: 'user001').first
+      user001 = User.find_by(username: 'user001')
       FactoryBot.create(:checkout, user: user001, item: FactoryBot.create(:item))
       old_count = User.count
       file = UserImportFile.create!(
