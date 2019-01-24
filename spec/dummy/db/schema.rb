@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_circulation_statuses_on_name", unique: true
   end
 
   create_table "colors", force: :cascade do |t|
@@ -1324,6 +1325,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_use_restrictions_on_name", unique: true
   end
 
   create_table "user_checkout_stat_transitions", force: :cascade do |t|
@@ -1591,6 +1593,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
   add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserve_stat_has_users", "user_reserve_stats"
   add_foreign_key "reserve_stat_has_users", "users"
+  add_foreign_key "reserves", "items"
   add_foreign_key "reserves", "libraries", column: "pickup_location_id"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
