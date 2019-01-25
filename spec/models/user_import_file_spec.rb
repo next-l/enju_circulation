@@ -5,19 +5,21 @@ describe UserImportFile do
 
   describe "when its mode is 'create'" do
     before(:each) do
-      @file = UserImportFile.new user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv")
-      @file.default_user_group = UserGroup.find(2)
-      @file.default_library = Library.find(3)
-      @file.user = users(:admin)
-      @file.save
+      @file = UserImportFile.create!(
+        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
+        default_user_group: user_groups(:user_group_00002),
+        default_library: libraries(:library_00003),
+        user: users(:admin)
+      )
     end
 
     it "should be imported" do
-      file = UserImportFile.new user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv")
-      file.default_user_group = UserGroup.find(2)
-      file.default_library = Library.find(3)
-      file.user = users(:admin)
-      file.save
+      file = UserImportFile.create!(
+        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
+        default_user_group: user_groups(:user_group_00002),
+        default_library: libraries(:library_00003),
+        user: users(:admin)
+      )
       old_users_count = User.count
       old_import_results_count = UserImportResult.count
       file.current_state.should eq 'pending'
@@ -71,7 +73,7 @@ describe UserImportFile do
       user006.profile.library.name.should eq 'hachioji'
       user006.profile.locale.should eq 'en'
       user006.profile.user_number.should be_nil
-      user006.profile.user_group.name.should eq UserGroup.find(2).name
+      user006.profile.user_group.name.should eq user_groups(:user_group_00002).name
 
       file.user_import_fingerprint.should be_truthy
       file.executed_at.should be_truthy
@@ -87,8 +89,8 @@ describe UserImportFile do
       file = UserImportFile.create!(
         user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
         user: users(:admin),
-        default_user_group: UserGroup.find(2),
-        default_library: Library.find(3)
+        default_user_group: user_groups(:user_group_00002),
+        default_library: libraries(:library_00003)
       )
       file.import_start
     end
@@ -99,9 +101,9 @@ describe UserImportFile do
       old_count = User.count
       file = UserImportFile.create!(
         user_import: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"),
-        user: users(:admin),
-        default_user_group: UserGroup.find(2),
-        default_library: Library.find(3)
+        default_user_group: user_groups(:user_group_00002),
+        default_library: libraries(:library_00003),
+        user: users(:admin)
       )
       file.remove
       User.where(username: 'user001').should_not be_blank

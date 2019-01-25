@@ -2,12 +2,12 @@
 
 one:
   manifestation_reserve_stat_id: 1
-  manifestation_id: 1
+  manifestation_id: 0f4ef509-cf56-41d9-bfa7-78b1e14fbc21
   reserves_count: 1
 
 two:
   manifestation_reserve_stat_id: 2
-  manifestation_id: 1
+  manifestation_id: 0f4ef509-cf56-41d9-bfa7-78b1e14fbc21
   reserves_count: 1
 
 # == Schema Information
@@ -16,7 +16,7 @@ two:
 #
 #  id                            :bigint(8)        not null, primary key
 #  manifestation_reserve_stat_id :bigint(8)        not null
-#  manifestation_id              :bigint(8)        not null
+#  manifestation_id              :uuid             not null
 #  reserves_count                :integer
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null

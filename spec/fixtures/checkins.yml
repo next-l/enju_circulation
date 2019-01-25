@@ -1,6 +1,6 @@
 --- 
 checkin_00001: 
-  item_id: 10
+  item_id: 336346a5-b10d-4c30-9143-2afa03329760
   updated_at: 2008-01-22 12:58:54.347742 +09:00
   id: 1
   librarian_id: 1
@@ -8,7 +8,7 @@ checkin_00001:
   basket_id: 9
   lock_version: 0
 checkin_00002: 
-  item_id: 9
+  item_id: 2efe1a4e-2bab-4f38-904c-eb00f3525fe0
   updated_at: 2007-12-14 00:28:41.854022 +09:00
   id: 2
   librarian_id: 2
@@ -16,7 +16,7 @@ checkin_00002:
   basket_id: 10
   lock_version: 0
 checkin_00003: 
-  item_id: 8
+  item_id: fe9ae206-e3b1-49d8-a1c3-694f53f429c4
   updated_at: 2007-12-20 21:24:18.729192 +09:00
   id: 3
   librarian_id: 1
@@ -24,7 +24,7 @@ checkin_00003:
   basket_id: 10
   lock_version: 0
 checkin_00004: 
-  item_id: 7
+  item_id: e512a9f9-cb6e-4074-b54f-e6582e1251b8
   updated_at: 2008-01-23 00:39:27.785676 +09:00
   id: 4
   librarian_id: 2
@@ -33,7 +33,7 @@ checkin_00004:
   lock_version: 0
   checkout_id: 13
 checkin_00005: 
-  item_id: 6
+  item_id: a95d6855-38bf-4181-af24-b12b8f87b7ee
   updated_at: 2007-12-20 21:25:04.619479 +09:00
   id: 5
   librarian_id: 1
@@ -47,7 +47,7 @@ checkin_00005:
 # Table name: checkins
 #
 #  id           :bigint(8)        not null, primary key
-#  item_id      :bigint(8)        not null
+#  item_id      :uuid             not null
 #  librarian_id :bigint(8)
 #  basket_id    :bigint(8)
 #  created_at   :datetime         not null

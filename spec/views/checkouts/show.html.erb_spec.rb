@@ -1,16 +1,16 @@
 require 'rails_helper'
 
 describe "checkouts/show" do
-  fixtures :checkouts, :users, :user_has_roles, :roles, :profiles
+  fixtures :checkouts, :users, :user_has_roles, :roles, :profiles, :items
 
   before(:each) do
     @checkout = assign(:checkout, stub_model(Checkout,
                                              user_id: 2,
-                                             item_id: 1
+                                             item_id: items(:item_00001).id
     ))
     assign(:library_group, LibraryGroup.site_config)
     I18n.locale = :en
-    view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
+    view.stub(:current_user).and_return(User.find_by(username: 'enjuadmin'))
   end
 
   it "renders attributes in <p>" do

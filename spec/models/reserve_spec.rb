@@ -138,8 +138,8 @@ end
 #
 #  id                           :bigint(8)        not null, primary key
 #  user_id                      :bigint(8)        not null
-#  manifestation_id             :bigint(8)        not null
-#  item_id                      :bigint(8)
+#  manifestation_id             :uuid             not null
+#  item_id                      :uuid
 #  request_status_type_id       :bigint(8)        not null
 #  checked_out_at               :datetime
 #  created_at                   :datetime         not null

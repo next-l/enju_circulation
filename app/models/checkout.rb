@@ -169,7 +169,7 @@ end
 #
 #  id                     :bigint(8)        not null, primary key
 #  user_id                :bigint(8)
-#  item_id                :bigint(8)        not null
+#  item_id                :uuid             not null
 #  checkin_id             :bigint(8)
 #  librarian_id           :bigint(8)
 #  basket_id              :bigint(8)

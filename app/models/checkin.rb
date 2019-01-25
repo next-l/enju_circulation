@@ -92,7 +92,7 @@ end
 # Table name: checkins
 #
 #  id           :bigint(8)        not null, primary key
-#  item_id      :bigint(8)        not null
+#  item_id      :uuid             not null
 #  librarian_id :bigint(8)
 #  basket_id    :bigint(8)
 #  created_at   :datetime         not null

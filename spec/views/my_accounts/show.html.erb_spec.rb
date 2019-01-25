@@ -4,12 +4,12 @@ describe "my_accounts/show" do
   fixtures :all
 
   before(:each) do
-    @profile = assign(:profile, profiles(:profile_admin))
+    @profile = assign(:profile, profiles(:admin))
   end
 
   describe "when logged in as Librarian" do
     before(:each) do
-      @profile = assign(:profile, profiles(:profile_librarian2))
+      @profile = assign(:profile, profiles(:librarian2))
       user = users(:librarian1)
       view.stub(:current_user).and_return(user)
     end
@@ -29,7 +29,7 @@ describe "my_accounts/show" do
 
   describe "when logged in as User" do
     before(:each) do
-      @profile = assign(:profile, profiles(:profile_user2))
+      @profile = assign(:profile, profiles(:user2))
       user = users(:librarian1)
       view.stub(:current_user).and_return(user)
     end

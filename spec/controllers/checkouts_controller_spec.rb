@@ -24,7 +24,7 @@ describe CheckoutsController do
       it "should get other user's index" do
         get :index, params: { user_id: users(:admin).username }
         response.should be_successful
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
       end
 
       describe "with render_views" do
@@ -59,7 +59,7 @@ describe CheckoutsController do
 
       it 'should get overdue index' do
         get :index, params: { days_overdue: 1 }
-        assigns(:checkouts).should eq Checkout.overdue(1.day.ago.beginning_of_day).order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq Checkout.overdue(1.day.ago.beginning_of_day).order('checkouts.created_at DESC').page(1)
         response.should be_successful
       end
 
@@ -78,13 +78,13 @@ describe CheckoutsController do
       it "should get other user's index" do
         get :index, params: { user_id: users(:admin).username }
         response.should be_successful
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
       end
 
       it 'should get index with item_id' do
-        get :index, params: { item_id: 1 }
+        get :index, params: { item_id: items(:item_00001).id }
         response.should be_successful
-        assigns(:checkouts).should eq items(:item_00001).checkouts.order('checkouts.id DESC').page(1)
+        assigns(:checkouts).should eq items(:item_00001).checkouts.order('checkouts.created_at DESC').page(1)
       end
     end
 
@@ -146,7 +146,7 @@ describe CheckoutsController do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
         user = Profile.where(checkout_icalendar_token: token).first.user
         get :index, params: { icalendar_token: token }
-        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
+        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.created_at DESC')
         response.should be_successful
       end
 
@@ -154,7 +154,7 @@ describe CheckoutsController do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
         user = Profile.where(checkout_icalendar_token: token).first.user
         get :index, params: { icalendar_token: token, format: :ics }
-        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.id DESC')
+        assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.created_at DESC')
         response.should be_successful
       end
     end

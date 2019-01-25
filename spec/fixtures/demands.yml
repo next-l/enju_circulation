@@ -2,12 +2,12 @@
 
 one:
   user_id: 1
-  item_id: 1
+  item_id: 2611ea22-e022-4cab-9549-9979eb8eced7
   message_id: 1
 
 two:
   user_id: 1
-  item_id: 1
+  item_id: 2611ea22-e022-4cab-9549-9979eb8eced7
   message_id: 1
 
 # == Schema Information
@@ -16,7 +16,7 @@ two:
 #
 #  id         :bigint(8)        not null, primary key
 #  user_id    :bigint(8)
-#  item_id    :bigint(8)
+#  item_id    :uuid
 #  message_id :bigint(8)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

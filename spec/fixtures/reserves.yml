@@ -1,143 +1,128 @@
 --- 
 reserve_00001: 
   updated_at: 2007-09-02 17:51:54.887849 +09:00
-  manifestation_id: 4
+  manifestation_id: 73d5778f-d328-46c2-940e-825d48e8b84a
   user_id: 1
   request_status_type_id: 4
   id: 1
   created_at: 2007-09-01 14:14:52.356803 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00002: 
   updated_at: 2007-09-01 14:20:05.530854 +09:00
-  manifestation_id: 5
+  manifestation_id: 7540de3a-ef3c-46b8-bdf4-ac919326097a
   user_id: 2
   request_status_type_id: 4
   id: 2
   created_at: 2007-09-01 14:20:05.530854 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00003: 
   updated_at: 2007-09-02 17:46:52.791614 +09:00
-  manifestation_id: 6
+  manifestation_id: 0518b3dc-dc94-4823-b657-13042c8ec8fe
   user_id: 3
   request_status_type_id: 4
   id: 3
   created_at: 2007-09-02 17:46:52.791614 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00004: 
   updated_at: 2007-09-02 18:37:25.576087 +09:00
-  manifestation_id: 7
+  manifestation_id: 068457b6-d3c4-4f55-b2dd-95a3d92a501c
   user_id: 1
   request_status_type_id: 4
   id: 4
   created_at: 2007-09-02 18:37:25.576087 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00005: 
   updated_at: 2007-09-02 19:16:55.714812 +09:00
-  manifestation_id: 8
+  manifestation_id: 9990ffe4-a403-4742-b619-1bbb363cc911
   user_id: 2
   request_status_type_id: 4
   id: 5
   created_at: 2007-09-02 19:16:55.714812 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00006: 
-  updated_at: 2007-09-02 19:20:06.530854 +09:00
-  manifestation_id: 4
+  updated_at: 2007-09-03 14:20:05.530854 +09:00
+  manifestation_id: 73d5778f-d328-46c2-940e-825d48e8b84a
   user_id: 2
   request_status_type_id: 4
   id: 6
-  created_at: 2007-09-02 19:20:06.530854 +09:00
+  created_at: 2007-09-03 14:20:05.530854 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00007: 
-  updated_at: 2007-09-02 19:20:07.530854 +09:00
-  manifestation_id: 2
+  updated_at: 2007-09-04 14:20:05.530854 +09:00
+  manifestation_id: b70ba31e-5220-446f-8648-b0324d1918c7
   user_id: 4
   request_status_type_id: 4
   id: 7
-  created_at: 2007-09-02 19:20:07.530854 +09:00
+  created_at: 2007-09-04 14:20:05.530854 +09:00
   expired_at: <%= 1.week.from_now.to_s(:db) %>
-  lock_version: 0
 reserve_00008: 
-  updated_at: 2007-09-02 19:46:53.791614 +09:00
-  manifestation_id: 6
+  updated_at: 2007-09-05 17:46:52.791614 +09:00
+  manifestation_id: 0518b3dc-dc94-4823-b657-13042c8ec8fe
   user_id: 3
   request_status_type_id: 3
   id: 8
-  created_at: 2007-09-02 19:46:53.791614 +09:00
+  created_at: 2007-09-05 17:46:52.791614 +09:00
   expired_at: <%= 1.week.ago.to_s(:db) %>
-  lock_version: 0
 reserve_00009: 
-  updated_at: 2007-09-02 19:46:54.791614 +09:00
-  manifestation_id: 7
+  updated_at: 2007-09-05 17:46:52.791614 +09:00
+  manifestation_id: 068457b6-d3c4-4f55-b2dd-95a3d92a501c
   user_id: 5
   request_status_type_id: 3
   id: 9
-  created_at: 2007-09-02 19:46:54.791614 +09:00
+  created_at: 2007-09-05 17:46:52.791614 +09:00
   expired_at: <%= 1.day.ago.to_s(:db) %>
-  lock_version: 0
 reserve_00010: 
-  updated_at: 2007-09-02 19:46:55.791614 +09:00
-  manifestation_id: 8
+  updated_at: 2007-09-06 17:46:52.791614 +09:00
+  manifestation_id: 9990ffe4-a403-4742-b619-1bbb363cc911
+  item_id: b5d35e06-81ee-4611-b791-45839e8c47b7
   user_id: 5
   request_status_type_id: 3
   id: 10
-  created_at: 2007-09-02 19:46:55.791614 +09:00
+  created_at: 2007-09-06 17:46:52.791614 +09:00
   expired_at: <%= 1.hour.ago.to_s(:db) %>
   checked_out_at: <%= 1.week.ago.to_s(:db) %>
-  item_id: 25
-  lock_version: 0
 reserve_00011: 
-  updated_at: 2007-09-03 14:20:05.530854 +09:00
-  manifestation_id: 7
+  updated_at: 2007-09-07 14:20:05.530854 +09:00
+  manifestation_id: 068457b6-d3c4-4f55-b2dd-95a3d92a501c
   user_id: 2
   request_status_type_id: 3
   id: 11
-  created_at: 2007-09-03 14:20:05.530854 +09:00
+  created_at: 2007-09-07 14:20:05.530854 +09:00
   expired_at: <%= 1.day.ago.to_s(:db) %>
-  lock_version: 0
 reserve_00012: 
-  updated_at: 2007-09-03 14:20:06.530854 +09:00
-  manifestation_id: 8
+  updated_at: 2007-09-08 14:20:05.530854 +09:00
+  manifestation_id: 9990ffe4-a403-4742-b619-1bbb363cc911
   user_id: 2
   request_status_type_id: 4
   id: 12
-  created_at: 2007-09-03 14:20:06.530854 +09:00
+  created_at: 2007-09-08 14:20:05.530854 +09:00
   expired_at: <%= 1.day.ago.to_s(:db) %>
-  lock_version: 0
 reserve_00013: 
-  updated_at: 2007-09-03 14:20:07.530854 +09:00
-  manifestation_id: 11
+  updated_at: 2007-09-09 14:20:05.530854 +09:00
+  manifestation_id: c16fbafe-24a2-4ded-96b9-867b24fe6557
   user_id: 4
   request_status_type_id: 3
   id: 13
-  created_at: 2007-09-03 14:20:07.530854 +09:00
+  created_at: 2007-09-09 14:20:05.530854 +09:00
   expired_at: <%= 1.day.ago.to_s(:db) %>
-  lock_version: 0
 reserve_00014: 
-  updated_at: 2007-09-03 14:20:08.530854 +09:00
-  manifestation_id: 11
+  updated_at: 2007-09-10 14:20:05.530854 +09:00
+  manifestation_id: c16fbafe-24a2-4ded-96b9-867b24fe6557
   user_id: 4
   request_status_type_id: 3
   id: 14
-  created_at: 2007-09-03 14:20:08.530854 +09:00
+  created_at: 2007-09-10 14:20:05.530854 +09:00
   retained_at: <%= 1.hour.from_now.to_s(:db) %>
   expired_at: <%= 1.day.from_now.to_s(:db) %>
-  item_id: 21
-  lock_version: 0
+  item_id: 926c4800-25b2-468a-9c28-97a35507ab99
 reserve_00015: 
-  updated_at: 2007-09-03 14:20:09.530854 +09:00
-  manifestation_id: 11
+  updated_at: 2007-09-11 14:20:05.530854 +09:00
+  manifestation_id: c16fbafe-24a2-4ded-96b9-867b24fe6557
   user_id: 4
   request_status_type_id: 3
   id: 15
-  created_at: 2007-09-03 14:20:09.530854 +09:00
+  created_at: 2007-09-11 14:20:05.530854 +09:00
   expired_at: <%= 1.day.from_now.to_s(:db) %>
-  lock_version: 0
 
 # == Schema Information
 #
@@ -145,8 +130,8 @@ reserve_00015:
 #
 #  id                           :bigint(8)        not null, primary key
 #  user_id                      :bigint(8)        not null
-#  manifestation_id             :bigint(8)        not null
-#  item_id                      :bigint(8)
+#  manifestation_id             :uuid             not null
+#  item_id                      :uuid
 #  request_status_type_id       :bigint(8)        not null
 #  checked_out_at               :datetime
 #  created_at                   :datetime         not null

@@ -137,7 +137,7 @@ class Reserve < ActiveRecord::Base
   def retained_by_other_user?
     return nil if force_retaining == '1'
     if item && !retained?
-      if Reserve.retained.where(item_id: item.item_identifier).count > 0
+      if Reserve.retained.where(item_id: item.id).count > 0
         errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
       end
     end
@@ -395,8 +395,8 @@ end
 #
 #  id                           :bigint(8)        not null, primary key
 #  user_id                      :bigint(8)        not null
-#  manifestation_id             :bigint(8)        not null
-#  item_id                      :bigint(8)
+#  manifestation_id             :uuid             not null
+#  item_id                      :uuid
 #  request_status_type_id       :bigint(8)        not null
 #  checked_out_at               :datetime
 #  created_at                   :datetime         not null

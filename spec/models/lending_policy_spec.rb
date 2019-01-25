@@ -10,8 +10,8 @@ end
 # Table name: lending_policies
 #
 #  id             :bigint(8)        not null, primary key
-#  item_id        :bigint(8)        not null
-#  user_group_id  :bigint(8)        not null
+#  item_id        :uuid             not null
+#  user_group_id  :uuid             not null
 #  loan_period    :integer          default(0), not null
 #  fixed_due_date :datetime
 #  renewal        :integer          default(0), not null
