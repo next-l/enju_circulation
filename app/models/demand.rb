@@ -11,7 +11,7 @@ end
 #  id         :bigint(8)        not null, primary key
 #  user_id    :bigint(8)
 #  item_id    :uuid
-#  message_id :bigint(8)
+#  message_id :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
