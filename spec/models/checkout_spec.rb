@@ -73,5 +73,5 @@ end
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  shelf_id               :uuid
-#  library_id             :bigint(8)
+#  library_id             :uuid
 #

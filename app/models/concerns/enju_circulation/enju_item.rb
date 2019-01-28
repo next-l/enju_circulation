@@ -154,5 +154,11 @@ module EnjuCirculation
     def latest_checkout
       checkouts.not_returned.order(created_at: :desc).first
     end
+
+    def removable?
+      return false if circulation_status.name == 'Removed'
+      return false if checkouts.exists?
+      true
+    end
   end
 end
