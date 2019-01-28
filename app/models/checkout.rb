@@ -178,6 +178,6 @@ end
 #  lock_version           :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  shelf_id               :bigint(8)
+#  shelf_id               :uuid
 #  library_id             :bigint(8)
 #

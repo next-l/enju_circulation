@@ -1,6 +1,6 @@
 class CreateShelves < ActiveRecord::Migration[5.2]
   def change
-    create_table :shelves do |t|
+    create_table :shelves, id: :uuid do |t|
       t.string :name, null: false
       t.jsonb :display_name, default: {}, null: false
       t.text :note
