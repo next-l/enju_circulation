@@ -1034,7 +1034,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
 
   create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_group_id", null: false
-    t.uuid "library_id", null: false
+    t.uuid "library_id"
     t.string "locale"
     t.string "user_number"
     t.text "full_name"
