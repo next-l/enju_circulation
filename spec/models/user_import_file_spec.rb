@@ -6,24 +6,19 @@ describe UserImportFile do
   describe "when its mode is 'create'" do
     before(:each) do
       @file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
         default_user_group: user_groups(:user_group_00002),
         default_library: libraries(:library_00003),
         user: users(:admin)
       )
+      @file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
     end
 
     it "should be imported" do
-      file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
-        default_user_group: user_groups(:user_group_00002),
-        default_library: libraries(:library_00003),
-        user: users(:admin)
-      )
+      @file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
       old_users_count = User.count
       old_import_results_count = UserImportResult.count
-      file.current_state.should eq 'pending'
-      file.import_start.should eq({user_imported: 5, user_found: 0, failed: 0, error: 3})
+      @file.current_state.should eq 'pending'
+      @file.import_start.should eq({user_imported: 5, user_found: 0, failed: 0, error: 3})
       User.order('id DESC')[1].username.should eq 'user005'
       User.order('id DESC')[2].username.should eq 'user003'
       User.count.should eq old_users_count + 5
@@ -75,23 +70,23 @@ describe UserImportFile do
       user006.profile.user_number.should be_nil
       user006.profile.user_group.name.should eq user_groups(:user_group_00002).name
 
-      file.user_import_fingerprint.should be_truthy
-      file.executed_at.should be_truthy
+      @file.user_import.checksum.should be_truthy
+      @file.executed_at.should be_truthy
 
-      file.reload
-      file.error_message.should eq "The following column(s) were ignored: save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: Profile must exist Profile can't be blank User number is invalid\nline 10: Profile must exist Profile can't be blank User number has already been taken"
-      file.current_state.should eq 'failed'
+      @file.reload
+      @file.error_message.should eq "The following column(s) were ignored: save_search_history, share_bookmarks, invalid\nline 8: Password is too short (minimum is 6 characters)\nline 9: Profile must exist Profile can't be blank User number is invalid\nline 10: Profile must exist Profile can't be blank User number has already been taken"
+      @file.current_state.should eq 'failed'
     end
   end
 
   describe "when its mode is 'destroy'" do
     before(:each) do
       file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
         user: users(:admin),
         default_user_group: user_groups(:user_group_00002),
         default_library: libraries(:library_00003)
       )
+      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
       file.import_start
     end
 
@@ -100,11 +95,11 @@ describe UserImportFile do
       FactoryBot.create(:checkout, user: user001, item: FactoryBot.create(:item))
       old_count = User.count
       file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"),
         default_user_group: user_groups(:user_group_00002),
         default_library: libraries(:library_00003),
         user: users(:admin)
       )
+      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
       file.remove
       User.where(username: 'user001').should_not be_blank
       User.count.should eq old_count - 2
