@@ -3,19 +3,19 @@
 checkout_type_00001:
   id: 1
   name: book  
-  display_name: {"en": "book", "ja": "本"}
+  display_name_translations: {"en": "book", "ja": "本"}
   note: 
   position: 1
 checkout_type_00002:
   id: 2
   name: serial  
-  display_name: {"en": "serial", "ja": "雑誌"}
+  display_name_translations: {"en": "serial", "ja": "雑誌"}
   note: 
   position: 2
 checkout_type_00003:
   id: 3
   name: cd  
-  display_name: {"en": "cd", "ja": "CD"}
+  display_name_translations: {"en": "cd", "ja": "CD"}
   note: 
   position: 3
 
@@ -23,11 +23,11 @@ checkout_type_00003:
 #
 # Table name: checkout_types
 #
-#  id           :bigint(8)        not null, primary key
-#  name         :string           not null
-#  display_name :jsonb            not null
-#  note         :text
-#  position     :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                        :bigint(8)        not null, primary key
+#  name                      :string           not null
+#  display_name_translations :jsonb            not null
+#  note                      :text
+#  position                  :integer
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
 #
