@@ -7,7 +7,7 @@ module EnjuCirculation
     end
 
     def withdraw!
-      item.update!(circulation_status: CirculationStatus.find_by(name: 'Removed'))
+      item.update_column(:circulation_status_id, CirculationStatus.find_by(name: 'Removed').id)
       item.use_restriction = UseRestriction.find_by(name: 'Not For Loan')
       item.index!
     end
