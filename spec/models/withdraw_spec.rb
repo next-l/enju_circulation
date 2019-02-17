@@ -14,6 +14,12 @@ RSpec.describe Withdraw, type: :model do
     withdraw.item = items(:item_00013)
     withdraw.valid?.should be_falsy
   end
+
+  it "should not withdraw reserved item" do
+    reserve = FactoryBot.create(:reserve)
+    withdraw = FactoryBot.build(:withdraw, item: reserve.manifestation.items.first)
+    withdraw.valid?.should be_falsy
+  end
 end
 
 # == Schema Information
