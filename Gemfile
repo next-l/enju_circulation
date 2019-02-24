@@ -23,3 +23,4 @@ gem 'enju_biblio', github: 'next-l/enju_biblio'
 gem 'enju_message', github: 'next-l/enju_message'
 gem 'enju_event', github: 'next-l/enju_event'
 gem 'rspec_junit_formatter', group: :test
+gem 'sass-rails'
