@@ -66,7 +66,7 @@ end
 #  item_id                :uuid             not null
 #  checkin_id             :bigint(8)
 #  librarian_id           :bigint(8)
-#  basket_id              :bigint(8)
+#  basket_id              :uuid
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null

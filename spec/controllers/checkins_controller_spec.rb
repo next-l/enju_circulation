@@ -21,8 +21,8 @@ describe CheckinsController do
 
       describe 'When basket_id is specified' do
         it 'assigns all checkins as @checkins' do
-          get :index, params: { basket_id: 10 }
-          assigns(:checkins).should eq Basket.find(10).checkins.page(1)
+          get :index, params: { basket_id: baskets(:basket_00010).id }
+          assigns(:checkins).should eq baskets(:basket_00010).checkins.page(1)
           response.should be_successful
         end
       end
@@ -39,8 +39,8 @@ describe CheckinsController do
 
       describe 'When basket_id is specified' do
         it 'assigns all checkins as @checkins' do
-          get :index, params: { basket_id: 9 }
-          assigns(:checkins).should eq Basket.find(9).checkins.page(1)
+          get :index, params: { basket_id: baskets(:basket_00009).id }
+          assigns(:checkins).should eq baskets(:basket_00009).checkins.page(1)
           response.should be_successful
         end
       end
@@ -199,13 +199,13 @@ describe CheckinsController do
 
         describe 'When basket_id is specified' do
           it 'redirects to the created checkin' do
-            post :create, params: { checkin: @attrs, basket_id: 9 }
+            post :create, params: { checkin: @attrs, basket_id: baskets(:basket_00009).id }
             response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           end
 
           it 'should checkin the overdue item' do
-            post :create, params: { checkin: { item_identifier: '00014' }, basket_id: 9 }
+            post :create, params: { checkin: { item_identifier: '00014' }, basket_id: baskets(:basket_00009).id }
             response.should redirect_to(checkins_url(basket_id: assigns(:checkin).basket_id))
             assigns(:checkin).checkout.should be_valid
             assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
@@ -226,7 +226,7 @@ describe CheckinsController do
       end
 
       it 'should not create checkin without item_id' do
-        post :create, params: { checkin: { item_identifier: nil }, basket_id: 9 }
+        post :create, params: { checkin: { item_identifier: nil }, basket_id: baskets(:basket_00009).id }
         assigns(:checkin).should_not be_valid
         response.should be_successful
       end
@@ -247,7 +247,7 @@ describe CheckinsController do
         end
 
         it 'should show notification when it is reserved' do
-          post :create, params: { checkin: { item_identifier: '00008' }, basket_id: 9 }
+          post :create, params: { checkin: { item_identifier: '00008' }, basket_id: baskets(:basket_00009).id }
           flash[:message].to_s.index(I18n.t('item.this_item_is_reserved')).should be_truthy
           assigns(:checkin).item.should be_retained
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
@@ -255,7 +255,7 @@ describe CheckinsController do
         end
 
         it 'should show notification when an item includes supplements' do
-          post :create, params: { checkin: { item_identifier: '00004' }, basket_id: 9 }
+          post :create, params: { checkin: { item_identifier: '00004' }, basket_id: baskets(:basket_00009).id }
           assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
           flash[:message].to_s.index(I18n.t('item.this_item_include_supplement')).should be_truthy
           response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))
@@ -264,7 +264,7 @@ describe CheckinsController do
 
       it "should show notice when other library's item is checked in" do
         sign_in users(:librarian2)
-        post :create, params: { checkin: { item_identifier: '00009' }, basket_id: 9 }
+        post :create, params: { checkin: { item_identifier: '00009' }, basket_id: baskets(:basket_00009).id }
         assigns(:checkin).should be_valid
         flash[:message].to_s.index(I18n.t('checkin.other_library_item')).should be_truthy
         response.should redirect_to(checkins_url(basket_id: assigns(:basket).id))

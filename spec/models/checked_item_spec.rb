@@ -24,7 +24,7 @@ end
 #
 #  id           :bigint(8)        not null, primary key
 #  item_id      :uuid             not null
-#  basket_id    :bigint(8)        not null
+#  basket_id    :uuid             not null
 #  librarian_id :bigint(8)
 #  due_date     :datetime         not null
 #  created_at   :datetime         not null

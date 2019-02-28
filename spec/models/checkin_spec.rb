@@ -42,7 +42,7 @@ end
 #  id           :bigint(8)        not null, primary key
 #  item_id      :uuid             not null
 #  librarian_id :bigint(8)
-#  basket_id    :bigint(8)
+#  basket_id    :uuid
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  lock_version :integer          default(0), not null
