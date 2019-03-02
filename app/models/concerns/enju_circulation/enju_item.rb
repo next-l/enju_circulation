@@ -31,7 +31,7 @@ module EnjuCirculation
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
       has_many :checkouts
       has_many :reserves, dependent: :nullify
-      has_many :checked_items
+      has_many :checked_items, dependent: :destroy
       has_many :baskets, through: :checked_items
       belongs_to :circulation_status, validate: true
       belongs_to :checkout_type
