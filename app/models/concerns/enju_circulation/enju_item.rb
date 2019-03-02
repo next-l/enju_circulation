@@ -159,7 +159,6 @@ module EnjuCirculation
     def removable?
       return false if circulation_status.name == 'Removed'
       return false if checkouts.exists?
-      return false if checkins.exists?
       true
     end
   end

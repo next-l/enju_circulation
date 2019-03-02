@@ -93,7 +93,6 @@ class CheckinsController < ApplicationController
   def update
     @checkin.assign_attributes(checkin_params)
     @checkin.librarian = current_user
-    @checkin.checkout = Checkout.not_returned.where(item: Item.find_by(item_identifier: @checkin.item_identifier)).order(created_at: :desc).first
 
     respond_to do |format|
       if @checkin.save

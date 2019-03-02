@@ -45,7 +45,7 @@ RSpec.describe WithdrawsController, type: :controller do
       login_fixture_admin
       context 'with valid params' do
         it 'should not withdraw a checked-out item' do
-          post :create, params: { basket_id: valid_create_attributes[:basket_id], withdraw: { item_identifier: '00001' } }
+          post :create, params: { basket_id: valid_create_attributes[:basket_id], withdraw: { item_identifier: '00002' } }
           expect(assigns(:withdraw)).to be_a(Withdraw)
           expect(response).to be_successful
         end

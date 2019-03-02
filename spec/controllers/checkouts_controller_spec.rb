@@ -22,9 +22,9 @@ describe CheckoutsController do
       end
 
       it "should get other user's index" do
-        get :index, params: { user_id: users(:admin).username }
+        get :index, params: { user_id: users(:librarian1).username }
         response.should be_successful
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
+        assigns(:checkouts).should eq users(:librarian1).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
       end
 
       describe "with render_views" do
@@ -76,9 +76,9 @@ describe CheckoutsController do
       end
 
       it "should get other user's index" do
-        get :index, params: { user_id: users(:admin).username }
+        get :index, params: { user_id: users(:librarian1).username }
         response.should be_successful
-        assigns(:checkouts).should eq users(:admin).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
+        assigns(:checkouts).should eq users(:librarian1).checkouts.not_returned.order('checkouts.created_at DESC').page(1)
       end
 
       it 'should get index with item_id' do
@@ -328,7 +328,7 @@ describe CheckoutsController do
       end
 
       it 'should update checkout item that is reserved' do
-        put :update, params: { id: 8, checkout: {} }
+        put :update, params: { id: 2, checkout: {} }
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_truthy
         response.should be_successful
       end
@@ -379,7 +379,7 @@ describe CheckoutsController do
       end
 
       it 'should not update checkout already renewed' do
-        put :update, params: { id: 9, checkout: {} }
+        put :update, params: { id: 10, checkout: {} }
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_truthy
         response.should be_successful
       end
@@ -405,7 +405,7 @@ describe CheckoutsController do
 
       it 'should not remove other checkout history' do
         put :remove_all, params: { user_id: users(:admin).username }
-        assigns(:user).checkouts.returned.count.should eq 0
+        assigns(:user).checkouts.returned.count.should eq 1
         response.should be_forbidden
       end
     end
