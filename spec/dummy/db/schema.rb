@@ -734,16 +734,16 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "url", default: "http://localhost:3000/"
     t.jsonb "settings"
     t.text "html_snippet"
+    t.string "book_jacket_source"
     t.integer "max_number_of_results", default: 500
     t.boolean "family_name_first", default: true
+    t.string "screenshot_generator"
     t.integer "pub_year_facet_range_interval", default: 10
     t.bigint "user_id"
     t.boolean "csv_charset_conversion", default: false, null: false
     t.text "header_logo_meta"
     t.jsonb "login_banner_translations", default: {}, null: false
     t.jsonb "footer_banner_translations", default: {}, null: false
-    t.string "book_jacket_source"
-    t.string "screenshot_generator"
     t.index ["name"], name: "index_library_groups_on_name", unique: true
     t.index ["short_name"], name: "index_library_groups_on_short_name"
     t.index ["user_id"], name: "index_library_groups_on_user_id"
