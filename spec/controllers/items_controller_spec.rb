@@ -7,12 +7,58 @@ describe ItemsController do
     FactoryBot.attributes_for(:item)
   end
 
+  describe 'POST create' do
+    before(:each) do
+      manifestation = FactoryBot.create(:manifestation)
+      @attrs = FactoryBot.attributes_for(:item, manifestation_id: manifestation.id, shelf_id: shelves(:shelf_00001).id)
+      @invalid_attrs = { item_identifier: '無効なID', manifestation_id: manifestation.id }
+    end
+
+    describe 'When logged in as Administrator' do
+      login_fixture_admin
+
+      it 'should create reserved item' do
+        post :create, params: { item: { circulation_status_id: 1, manifestation_id: manifestations(:manifestation_00002).id, shelf_id: shelves(:shelf_00001).id } }
+        expect(assigns(:item)).to be_valid
+
+        expect(response).to redirect_to item_url(assigns(:item))
+        flash[:message].should eq I18n.t('item.this_item_is_reserved')
+        assigns(:item).manifestation.should eq manifestations(:manifestation_00002)
+        assigns(:item).should be_retained
+      end
+
+      it "should create another item with already retained" do
+        reserve = FactoryBot.create(:reserve)
+        reserve.transition_to!(:requested)
+        post :create, params: { item: FactoryBot.attributes_for(:item, manifestation_id: reserve.manifestation.id, shelf_id: shelves(:shelf_00001).id) }
+        expect(assigns(:item)).to be_valid
+        expect(response).to redirect_to item_url(assigns(:item))
+        post :create, params: { item: FactoryBot.attributes_for(:item, manifestation_id: reserve.manifestation.id, shelf_id: shelves(:shelf_00001).id) }
+        expect(assigns(:item)).to be_valid
+        expect(response).to redirect_to item_url(assigns(:item))
+      end
+
+      describe 'with valid params' do
+        it 'should create a lending policy' do
+          old_lending_policy_count = LendingPolicy.count
+          post :create, params: { item: @attrs }
+          LendingPolicy.count.should eq old_lending_policy_count
+        end
+      end
+    end
+  end
+
   describe 'DELETE destroy' do
     describe 'When logged in as Administrator' do
       login_fixture_admin
 
       it 'should not destroy item if not checked in' do
         delete :destroy, params: { id: items(:item_00001) }
+        expect(response).to be_forbidden
+      end
+
+      it 'should not destroy a removed item' do
+        delete :destroy, params: { id: items(:item_00023) }
         expect(response).to be_forbidden
       end
     end

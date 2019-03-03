@@ -29,4 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails", "~> 3.7"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "sunspot_solr", "~> 2.3"
+  s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency "puma"
 end

@@ -22,5 +22,7 @@ gem 'enju_library', github: 'next-l/enju_library'
 gem 'enju_biblio', github: 'next-l/enju_biblio'
 gem 'enju_message', github: 'next-l/enju_message'
 gem 'enju_event', github: 'next-l/enju_event'
+gem 'enju_manifestation_viewer', github: 'next-l/enju_manifestation_viewer'
 gem 'rspec_junit_formatter', group: :test
+gem 'chromedriver-helper', group: :test
 gem 'sass-rails'
