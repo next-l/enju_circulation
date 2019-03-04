@@ -992,10 +992,6 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "picture_file_name"
-    t.string "picture_content_type"
-    t.integer "picture_file_size"
-    t.datetime "picture_updated_at"
     t.text "picture_meta"
     t.string "picture_fingerprint"
     t.integer "picture_width"
