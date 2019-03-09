@@ -4,10 +4,7 @@ describe "checkouts/show" do
   fixtures :checkouts, :users, :user_has_roles, :roles, :profiles, :items
 
   before(:each) do
-    @checkout = assign(:checkout, stub_model(Checkout,
-                                             user_id: 2,
-                                             item_id: items(:item_00001).id
-    ))
+    @checkout = assign(:checkout, checkouts(:checkout_00001))
     assign(:library_group, LibraryGroup.site_config)
     I18n.locale = :en
     view.stub(:current_user).and_return(User.find_by(username: 'enjuadmin'))

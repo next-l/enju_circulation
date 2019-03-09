@@ -144,7 +144,7 @@ describe CheckoutsController do
 
       it 'assigns his own checkouts as @checkouts' do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
-        user = Profile.where(checkout_icalendar_token: token).first.user
+        user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token }
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.created_at DESC')
         response.should be_successful
@@ -152,7 +152,7 @@ describe CheckoutsController do
 
       it 'should get ics template' do
         token = '577830b08ecf9c4c4333d599a57a6f44a7fe76c0'
-        user = Profile.where(checkout_icalendar_token: token).first.user
+        user = Profile.find_by(checkout_icalendar_token: token).user
         get :index, params: { icalendar_token: token, format: :ics }
         assigns(:checkouts).should eq user.checkouts.not_returned.order('checkouts.created_at DESC')
         response.should be_successful
@@ -165,7 +165,7 @@ describe CheckoutsController do
       login_fixture_admin
 
       it "should show other user's content" do
-        get :show, params: { id: 3 }
+        get :show, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
       end
     end
@@ -174,7 +174,7 @@ describe CheckoutsController do
       login_fixture_librarian
 
       it "should show other user's content" do
-        get :show, params: { id: 3 }
+        get :show, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
       end
     end
@@ -183,13 +183,13 @@ describe CheckoutsController do
       login_fixture_user
 
       it 'should show my account' do
-        get :show, params: { id: 3 }
+        get :show, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
         assigns(:checkout).should eq checkouts(:checkout_00003)
       end
 
       it "should not show other user's checkout" do
-        get :show, params: { id: 1 }
+        get :show, params: { id: checkouts(:checkout_00001).id }
         response.should be_forbidden
         assigns(:checkout).should eq checkouts(:checkout_00001)
       end
@@ -197,7 +197,7 @@ describe CheckoutsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested checkout as @checkout' do
-        get :show, params: { id: 1 }
+        get :show, params: { id: checkouts(:checkout_00001).id }
         response.should redirect_to new_user_session_url
       end
     end
@@ -208,7 +208,7 @@ describe CheckoutsController do
       login_fixture_admin
 
       it "should edit other user's checkout" do
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
       end
     end
@@ -217,7 +217,7 @@ describe CheckoutsController do
       login_fixture_librarian
 
       it "should edit other user's checkout" do
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
       end
     end
@@ -227,19 +227,19 @@ describe CheckoutsController do
 
       it 'should edit my checkout' do
         sign_in users(:user1)
-        get :edit, params: { id: 3 }
+        get :edit, params: { id: checkouts(:checkout_00003).id }
         response.should be_successful
       end
 
       it "should not edit other user's checkout" do
-        get :edit, params: { id: 1 }
+        get :edit, params: { id: checkouts(:checkout_00001).id }
         response.should be_forbidden
       end
     end
 
     describe 'When not logged in' do
       it 'should not edit checkout' do
-        get :edit, params: { id: 1 }
+        get :edit, params: { id: checkouts(:checkout_00001).id }
         response.should redirect_to new_user_session_url
       end
     end
@@ -328,13 +328,13 @@ describe CheckoutsController do
       end
 
       it 'should update checkout item that is reserved' do
-        put :update, params: { id: 2, checkout: {} }
+        put :update, params: { id: checkouts(:checkout_00002).id, checkout: {} }
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.this_item_is_reserved')).should be_truthy
         response.should be_successful
       end
 
       it "should update other user's checkout" do
-        put :update, params: { id: 1, checkout: {} }
+        put :update, params: { id: checkouts(:checkout_00001).id, checkout: {} }
         response.should redirect_to checkout_url(assigns(:checkout))
       end
 
@@ -374,24 +374,24 @@ describe CheckoutsController do
       end
 
       it "should not update other user's checkout" do
-        put :update, params: { id: 1, checkout: {} }
+        put :update, params: { id: checkouts(:checkout_00001).id, checkout: {} }
         response.should be_forbidden
       end
 
       it 'should not update checkout already renewed' do
-        put :update, params: { id: 10, checkout: {} }
+        put :update, params: { id: checkouts(:checkout_00010).id, checkout: {} }
         assigns(:checkout).errors[:base].include?(I18n.t('checkout.excessed_renewal_limit')).should be_truthy
         response.should be_successful
       end
 
       it 'should update my checkout' do
-        put :update, params: { id: 3, checkout: {} }
+        put :update, params: { id: checkouts(:checkout_00003).id, checkout: {} }
         assigns(:checkout).should be_valid
         response.should redirect_to checkout_url(assigns(:checkout))
       end
 
       it 'should not update checkout without item_id' do
-        put :update, params: { id: 3, checkout: { item_id: nil } }
+        put :update, params: { id: checkouts(:checkout_00003).id, checkout: { item_id: nil } }
         assigns(:checkout).should be_valid
         response.should redirect_to(assigns(:checkout))
         assigns(:checkout).changed?.should be_falsy
@@ -486,7 +486,7 @@ describe CheckoutsController do
       end
 
       it 'should destroy my checkout' do
-        delete :destroy, params: { id: 13 }
+        delete :destroy, params: { id: checkouts(:checkout_00013).id }
         response.should redirect_to checkouts_url(user_id: users(:user1).username)
       end
     end

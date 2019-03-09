@@ -13,7 +13,7 @@ class CheckoutsController < ApplicationController
       if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
       else
-        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
+        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.created_at DESC')
       end
     else
       unless current_user

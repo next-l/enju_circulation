@@ -45,9 +45,11 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
         items.checkout_type_id
         FROM profiles, checkouts LEFT OUTER JOIN items
         ON (checkouts.item_id = items.id)
+        LEFT OUTER JOIN checkins
+        ON (checkouts.id = checkins.checkout_id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)
-        WHERE checkouts.checkin_id IS NULL
+        WHERE checkins.id IS NULL
         GROUP BY user_group_id, checkout_type_id;'
     ]
     UserGroupHasCheckoutType.find_by_sql(sql).each do |result|

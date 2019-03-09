@@ -1,6 +1,6 @@
 class Checkout < ActiveRecord::Base
-  scope :not_returned, -> { where.not(id: Checkin.pluck(:checkout_id)) }
-  scope :returned, -> { where(id: Checkin.pluck(:checkout_id)) }
+  scope :not_returned, -> { left_joins(:checkin).where(checkins: {checkout_id: nil}) }
+  scope :returned, -> { joins(:checkin) }
   scope :overdue, lambda {|date| not_returned.where('due_date < ?', date)}
   scope :due_date_on, lambda {|date| not_returned.where(due_date: date.beginning_of_day .. date.end_of_day)}
   scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
@@ -167,10 +167,9 @@ end
 #
 # Table name: checkouts
 #
-#  id                     :bigint(8)        not null, primary key
+#  id                     :uuid             not null, primary key
 #  user_id                :bigint(8)
 #  item_id                :uuid             not null
-#  checkin_id             :bigint(8)
 #  librarian_id           :bigint(8)
 #  basket_id              :uuid
 #  due_date               :datetime
