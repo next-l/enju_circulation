@@ -8,7 +8,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
       t.datetime :start_at
       t.datetime :end_at
       t.boolean :all_day, default: false, null: false
-      t.jsonb :display_name, default: {}, null: false
+      t.jsonb :display_name_translations, default: {}, null: false
 
       t.timestamps
     end

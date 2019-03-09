@@ -4,7 +4,7 @@ class CreateEventExportFileTransitions < ActiveRecord::Migration[5.2]
       t.string :to_state
       t.jsonb :metadata, default: {}
       t.integer :sort_key
-      t.references :event_export_file
+      t.references :event_export_file, type: :uuid
       t.timestamps
     end
 

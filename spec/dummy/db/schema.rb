@@ -409,7 +409,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
 
   create_table "event_categories", force: :cascade do |t|
     t.string "name", null: false
-    t.jsonb "display_name", default: {}, null: false
+    t.jsonb "display_name_translations", default: {}, null: false
     t.text "note"
     t.integer "position"
     t.datetime "created_at", null: false
@@ -420,7 +420,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "event_export_file_id"
+    t.uuid "event_export_file_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "event_export_file_id"], name: "index_event_export_file_transitions_on_sort_key_and_file_id", unique: true
   end
 
-  create_table "event_export_files", force: :cascade do |t|
+  create_table "event_export_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id"
     t.datetime "executed_at"
     t.datetime "created_at", null: false
@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "event_import_file_id"
+    t.uuid "event_import_file_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "event_import_file_id"], name: "index_event_import_file_transitions_on_sort_key_and_file_id", unique: true
   end
 
-  create_table "event_import_files", force: :cascade do |t|
+  create_table "event_import_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
@@ -468,8 +468,8 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   end
 
   create_table "event_import_results", force: :cascade do |t|
-    t.bigint "event_import_file_id"
-    t.bigint "event_id"
+    t.uuid "event_import_file_id"
+    t.uuid "event_id"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -485,7 +485,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.boolean "all_day", default: false, null: false
-    t.jsonb "display_name", default: {}, null: false
+    t.jsonb "display_name_translations", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "place_id"

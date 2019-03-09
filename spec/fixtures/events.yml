@@ -4,7 +4,7 @@ event_00001:
   event_category_id: 1
   end_at: 2008-01-14 02:54:00 +09:00
   name: 仕事始め
-  display_name: {"ja": "仕事始め"}
+  display_name_translations: {"ja": "仕事始め"}
   start_at: 2008-01-13 02:54:00 +09:00
   id: 1665290c-5913-4e7c-808f-516856ace5ac
   note: なんとかかんとか
@@ -15,7 +15,7 @@ event_00002:
   event_category_id: 2
   end_at: 2008-01-14 02:54:00 +09:00
   name: テスト
-  display_name: {"ja": "テスト"}
+  display_name_translations: {"ja": "テスト"}
   start_at: 2008-01-13 02:54:00 +09:00
   id: cd58c195-f58b-4767-bf01-8d7ca624936c
   note: テスト用のイベントです。
@@ -26,7 +26,7 @@ event_00003:
   event_category_id: 1
   end_at: 2008-02-05 00:00:00 +09:00
   name: ミーティング
-  display_name: {"ja": "ミーティング"}
+  display_name_translations: {"ja": "ミーティング"}
   start_at: 2008-01-13 00:00:00 +09:00
   id: 43c27240-415b-41fe-ac12-793bbc9e2874
   note: ""
@@ -37,7 +37,7 @@ event_00004:
   event_category_id: 4
   end_at: 2008-02-06 00:00:00 +09:00
   name: テスト
-  display_name: {"ja": "テスト"}
+  display_name_translations: {"ja": "テスト"}
   start_at: 2008-02-05 00:00:00 +09:00
   id: 47febf0c-cc68-449f-a061-4fc7317ce752
   note: なんとかかんとか
@@ -48,7 +48,7 @@ event_00005:
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
   name: test
-  display_name: {"ja": "test"}
+  display_name_translations: {"ja": "test"}
   start_at: 2008-02-05 00:00:00 +09:00
   id: f61c4259-77ad-4283-9d72-db32b12bdb19
   note: ""
@@ -59,7 +59,7 @@ event_00006:
   event_category_id: 2
   end_at: 2008-02-08 00:00:00 +09:00
   name: なんとかかんとか
-  display_name: {"ja": "なんとかかんとか"}
+  display_name_translations: {"ja": "なんとかかんとか"}
   start_at: 2008-02-05 00:00:00 +09:00
   id: 8409a451-af5b-411a-b766-6772d4d62246
   note: ""
@@ -70,7 +70,7 @@ event_00007:
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
   name: test
-  display_name: {"ja": "test"}
+  display_name_translations: {"ja": "test"}
   start_at: 2008-02-05 00:00:00 +09:00
   id: 168416e5-ffca-4be0-a0eb-401d994b7985
   note: test
@@ -81,7 +81,7 @@ event_00008:
   event_category_id: 1
   end_at: 2008-02-05 15:00:00 +09:00
   name: test
-  display_name: {"ja": "test"}
+  display_name_translations: {"ja": "test"}
   start_at: 2008-02-05 15:00:00 +09:00
   id: 942bf9b5-ca1c-4597-9e6c-e01e617bf782
   note: test
@@ -92,16 +92,16 @@ event_00008:
 #
 # Table name: events
 #
-#  id                :uuid             not null, primary key
-#  library_id        :uuid             not null
-#  event_category_id :bigint(8)        not null
-#  name              :string           not null
-#  note              :text
-#  start_at          :datetime
-#  end_at            :datetime
-#  all_day           :boolean          default(FALSE), not null
-#  display_name      :jsonb            not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  place_id          :bigint(8)
+#  id                        :uuid             not null, primary key
+#  library_id                :uuid             not null
+#  event_category_id         :bigint(8)        not null
+#  name                      :string           not null
+#  note                      :text
+#  start_at                  :datetime
+#  end_at                    :datetime
+#  all_day                   :boolean          default(FALSE), not null
+#  display_name_translations :jsonb            not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  place_id                  :bigint(8)
 #
