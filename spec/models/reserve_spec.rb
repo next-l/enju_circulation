@@ -136,7 +136,7 @@ end
 #
 # Table name: reserves
 #
-#  id                           :bigint(8)        not null, primary key
+#  id                           :uuid             not null, primary key
 #  user_id                      :bigint(8)        not null
 #  manifestation_id             :uuid             not null
 #  item_id                      :uuid
