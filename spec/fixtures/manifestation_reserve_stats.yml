@@ -1,14 +1,14 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  id: 1
+  id: 85a0364c-743c-4885-b0d1-0381f2d9af38
   start_date: 2008-12-17 04:07:24
   end_date: 2008-12-18 04:07:24
   note: MyText
   user_id: 2
 
 two:
-  id: 2
+  id: e9d2f1cd-e96d-498a-89bc-cf536cada49a
   start_date: 2008-12-17 04:07:24
   end_date: 2008-12-18 04:07:24
   note: MyText
@@ -18,7 +18,7 @@ two:
 #
 # Table name: manifestation_reserve_stats
 #
-#  id           :bigint(8)        not null, primary key
+#  id           :uuid             not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text

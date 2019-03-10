@@ -15,7 +15,7 @@ end
 # Table name: checkout_stat_has_manifestations
 #
 #  id                             :bigint(8)        not null, primary key
-#  manifestation_checkout_stat_id :bigint(8)        not null
+#  manifestation_checkout_stat_id :uuid             not null
 #  manifestation_id               :uuid             not null
 #  checkouts_count                :integer
 #  created_at                     :datetime         not null

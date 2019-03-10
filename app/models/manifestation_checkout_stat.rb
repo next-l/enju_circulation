@@ -1,12 +1,12 @@
 class ManifestationCheckoutStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
-  default_scope {order('manifestation_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :checkout_stat_has_manifestations
   has_many :manifestations, through: :checkout_stat_has_manifestations
   belongs_to :user
 
+  has_one_attached :attachment
   paginates_per 10
   attr_accessor :mode
 
@@ -21,17 +21,15 @@ class ManifestationCheckoutStat < ActiveRecord::Base
 
   def calculate_count!
     self.started_at = Time.zone.now
-    Manifestation.find_each do |manifestation|
-      daily_count = Checkout.manifestations_count(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day, manifestation)
-      # manifestation.update_attributes({daily_checkouts_count: daily_count, total_count: manifestation.total_count + daily_count})
-      if daily_count > 0
-        manifestations << manifestation
-        sql = ['UPDATE checkout_stat_has_manifestations SET checkouts_count = ? WHERE manifestation_checkout_stat_id = ? AND manifestation_id = ?', daily_count, id, manifestation.id]
-        ManifestationCheckoutStat.connection.execute(
-          self.class.send(:sanitize_sql_array, sql)
-        )
-      end
+    results = Checkout.returned.where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).group(:manifestation_id).select('manifestation_id, count(manifestation_id)').joins(:item).map{|a| [a.manifestation_id, a.count]}
+    results.each do |result|
+     CheckoutStatHasManifestation.create(
+        manifestation_checkout_stat: self,
+        manifestation_id: result[0],
+        checkouts_count: result[1]
+      )
     end
+    # attachment.attach(io: StringIO.new(results.to_h.to_json), filename: "result_#{start_date}_#{end_date}.txt")
     self.completed_at = Time.zone.now
     transition_to!(:completed)
     send_message
@@ -52,7 +50,7 @@ end
 #
 # Table name: manifestation_checkout_stats
 #
-#  id           :bigint(8)        not null, primary key
+#  id           :uuid             not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text

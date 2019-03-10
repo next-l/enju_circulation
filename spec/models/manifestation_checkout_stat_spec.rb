@@ -19,7 +19,7 @@ end
 #
 # Table name: manifestation_checkout_stats
 #
-#  id           :bigint(8)        not null, primary key
+#  id           :uuid             not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text

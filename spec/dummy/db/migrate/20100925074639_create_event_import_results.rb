@@ -1,6 +1,6 @@
 class CreateEventImportResults < ActiveRecord::Migration[5.2]
   def change
-    create_table :event_import_results do |t|
+    create_table :event_import_results, id: :uuid do |t|
       t.references :event_import_file, type: :uuid
       t.references :event, type: :uuid
       t.text :body

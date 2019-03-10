@@ -1,12 +1,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  manifestation_reserve_stat_id: 1
+  manifestation_reserve_stat_id: 85a0364c-743c-4885-b0d1-0381f2d9af38
   manifestation_id: 0f4ef509-cf56-41d9-bfa7-78b1e14fbc21
   reserves_count: 1
 
 two:
-  manifestation_reserve_stat_id: 2
+  manifestation_reserve_stat_id: e9d2f1cd-e96d-498a-89bc-cf536cada49a
   manifestation_id: 0f4ef509-cf56-41d9-bfa7-78b1e14fbc21
   reserves_count: 1
 
