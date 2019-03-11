@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "accepts", force: :cascade do |t|
+  create_table "accepts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "basket_id"
     t.uuid "item_id"
     t.bigint "librarian_id"
@@ -1484,7 +1484,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "withdraws", force: :cascade do |t|
+  create_table "withdraws", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "basket_id"
     t.uuid "item_id"
     t.bigint "librarian_id"
