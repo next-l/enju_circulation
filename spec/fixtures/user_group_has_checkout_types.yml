@@ -5,7 +5,7 @@ user_group_has_checkout_type_00001:
   checkout_limit: 3
   reservation_limit: 2
   user_group_id: 2d387a28-f738-4afb-93d4-c42e0b593435
-  checkout_period: 0
+  checkout_period: 1
   checkout_renewal_limit: 1
   id: 1
   created_at: 2007-12-23 03:13:08.107022 +09:00

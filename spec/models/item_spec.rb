@@ -41,12 +41,13 @@ describe Item do
     Item.for_checkout.include?(items(:item_00023)).should be_falsy
   end
 
-  it "should delete lending policies" do
+  it "should update lending policy" do
     item = items(:item_00001)
-    item.checkout_type = CheckoutType.where(name: 'serial').first
+    item.lending_rule(users(:user1)).checkout_period.should eq 1
+    item.checkout_type = CheckoutType.find_by(name: 'serial')
     item.save
     item.reload
-    item.lending_policies.count.should eq 0
+    item.lending_rule(users(:user1)).checkout_period.should eq 10
   end
 
   it "should not create item without manifestation_id" do

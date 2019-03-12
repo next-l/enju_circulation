@@ -14,7 +14,6 @@ class CheckedItem < ActiveRecord::Base
   before_validation :set_due_date, on: :create
   strip_attributes only: :item_identifier
 
-  # attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
@@ -87,7 +86,7 @@ class CheckedItem < ActiveRecord::Base
 
       if lending_rule.fixed_due_date.blank?
         # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
+        self.due_date = lending_rule.checkout_period.days.since(Time.zone.now).end_of_day
       else
         # self.due_date = item_checkout_type.fixed_due_date
         self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
