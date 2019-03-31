@@ -93,7 +93,7 @@ class CheckedItem < ActiveRecord::Base
       end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)
-        if item_checkout_type.set_due_date_before_closing_day
+        if item_checkout_type.set_due_date_after_closing_day
           self.due_date = due_date.yesterday.end_of_day
         else
           self.due_date = due_date.tomorrow.end_of_day
