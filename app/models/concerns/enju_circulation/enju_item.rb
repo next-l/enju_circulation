@@ -28,6 +28,7 @@ module EnjuCirculation
         ).where(identifier_conditions)
       }
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
+      scope :not_removed, -> { includes(:circulation_status).where.not('circulation_statuses.name' => 'Removed') }
       has_many :checkouts
       has_many :reserves
       has_many :checked_items
