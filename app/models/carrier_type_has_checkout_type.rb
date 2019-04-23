@@ -17,7 +17,7 @@ end
 # Table name: carrier_type_has_checkout_types
 #
 #  id               :bigint(8)        not null, primary key
-#  carrier_type_id  :uuid             not null
+#  carrier_type_id  :bigint(8)        not null
 #  checkout_type_id :bigint(8)        not null
 #  note             :text
 #  position         :integer

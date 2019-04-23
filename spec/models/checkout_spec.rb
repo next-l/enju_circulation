@@ -61,16 +61,16 @@ end
 #
 # Table name: checkouts
 #
-#  id                     :uuid             not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  user_id                :bigint(8)
-#  item_id                :uuid             not null
+#  item_id                :bigint(8)        not null
 #  librarian_id           :bigint(8)
-#  basket_id              :uuid
+#  basket_id              :bigint(8)
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  shelf_id               :uuid
-#  library_id             :uuid
+#  shelf_id               :bigint(8)
+#  library_id             :bigint(8)
 #

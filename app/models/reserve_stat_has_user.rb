@@ -16,7 +16,7 @@ end
 # Table name: reserve_stat_has_users
 #
 #  id                   :bigint(8)        not null, primary key
-#  user_reserve_stat_id :uuid             not null
+#  user_reserve_stat_id :bigint(8)        not null
 #  user_id              :bigint(8)        not null
 #  reserves_count       :integer
 #  created_at           :datetime         not null

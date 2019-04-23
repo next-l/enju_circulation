@@ -1,91 +1,91 @@
 reserve_transition_00001:
   id: 1
   to_state: requested
-  reserve_id: 27fa6955-bae1-49e6-8cb6-1cb473292828
+  reserve_id: 1
   sort_key: 0
   most_recent: true
 reserve_transition_00002:
   id: 2
   to_state: requested
-  reserve_id: 18da6913-4195-4411-87c3-20d07fdd3fd4
+  reserve_id: 2
   sort_key: 0
   most_recent: true
 reserve_transition_00003:
-  id: ac61b096-8368-471c-912b-53ca6970053a
+  id: 3
   to_state: requested
-  reserve_id: ac61b096-8368-471c-912b-53ca6970053a
+  reserve_id: 3
   sort_key: 0
   most_recent: true
 reserve_transition_00004:
   id: 4
   to_state: requested
-  reserve_id: 8290c644-8d5e-4f6a-8bca-c0b42fbb696e
+  reserve_id: 4
   sort_key: 0
   most_recent: true
 reserve_transition_00005:
   id: 5
   to_state: requested
-  reserve_id: 13c7ced7-2f6e-4b6d-ad1b-ba9f4ae08745
+  reserve_id: 5
   sort_key: 0
   most_recent: true
 reserve_transition_00006:
   id: 6
   to_state: requested
-  reserve_id: 5527b6be-5557-4504-bbb4-617c90bffdf4
+  reserve_id: 6
   sort_key: 0
   most_recent: true
 reserve_transition_00007:
   id: 7
   to_state: requested
-  reserve_id: d7804d34-501a-4db5-b2dc-ef06ef9677cf
+  reserve_id: 7
   sort_key: 0
   most_recent: true
 reserve_transition_00008:
   id: 8
   to_state: expired
-  reserve_id: 5c2a4035-67f9-4a12-baf2-befedcba7af2
+  reserve_id: 8
   sort_key: 0
   most_recent: true
 reserve_transition_00009:
   id: 9
   to_state: requested
-  reserve_id: 259c10da-14d6-4977-97c8-42bf8c54a93a
+  reserve_id: 9
   sort_key: 0
   most_recent: true
 reserve_transition_00010:
   id: 10
   to_state: completed
-  reserve_id: 9f994ded-b97f-410a-af26-c1529be19998
+  reserve_id: 10
   sort_key: 0
   most_recent: true
 reserve_transition_00011:
   id: 11
   to_state: expired
-  reserve_id: b2b3ea91-ae83-4ccf-b23a-d02ab46913c2
+  reserve_id: 11
   sort_key: 0
   most_recent: true
 reserve_transition_00012:
   id: 12
   to_state: retained
-  reserve_id: 9214fe5d-b194-4115-b6da-469ad3248c6a
+  reserve_id: 12
   sort_key: 0
   most_recent: true
 reserve_transition_00013:
   id: 13
   to_state: requested
-  reserve_id: 92c1408d-2e65-4ce4-8eb4-34017c7ae746
+  reserve_id: 13
   sort_key: 0
   most_recent: true
 reserve_transition_00014:
   id: 14
   to_state: retained
-  reserve_id: 3510c586-a6e1-46e2-ab65-bd66f1af293d
+  reserve_id: 14
   sort_key: 0
   most_recent: true
 reserve_transition_00015:
   id: 15
   to_state: requested
-  reserve_id: 520e0b68-09d7-45a4-9535-21400b738459
+  reserve_id: 15
   sort_key: 0
   most_recent: true
 
@@ -97,7 +97,7 @@ reserve_transition_00015:
 #  to_state    :string
 #  metadata    :jsonb
 #  sort_key    :integer
-#  reserve_id  :uuid
+#  reserve_id  :bigint(8)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  most_recent :boolean          not null

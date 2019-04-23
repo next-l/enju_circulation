@@ -1,23 +1,23 @@
 --- 
 checked_item_00001:
   id: 1
-  item_id: 336346a5-b10d-4c30-9143-2afa03329760
-  basket_id: 64c57455-63c8-4745-b0c1-ca4afaaeac55
+  item_id: 10
+  basket_id: 1
   due_date: <%= 1.week.from_now.to_s(:db) %>
 checked_item_00002:
   id: 2
-  item_id: a95d6855-38bf-4181-af24-b12b8f87b7ee
-  basket_id: 5618287f-651e-4861-b3de-23ca52a900f9
+  item_id: 6
+  basket_id: 2
   due_date: <%= 1.week.from_now.to_s(:db) %>
 checked_item_00003:
   id: 3
-  item_id: a95d6855-38bf-4181-af24-b12b8f87b7ee
-  basket_id: 6c16fcc2-7e78-45e6-9a8f-dcf0f9e40a6e
+  item_id: 6
+  basket_id: 9
   due_date: <%= 1.week.from_now.to_s(:db) %>
 checked_item_00004:
   id: 4
-  item_id: f6e45bb2-69af-450e-a5ee-2d0aa21fea1d
-  basket_id: ac6aa946-a2f3-48ab-88db-a7817bca5f06
+  item_id: 12
+  basket_id: 8
   due_date: <%= 1.week.from_now.to_s(:db) %>
 
 # == Schema Information
@@ -25,8 +25,8 @@ checked_item_00004:
 # Table name: checked_items
 #
 #  id           :bigint(8)        not null, primary key
-#  item_id      :uuid             not null
-#  basket_id    :uuid             not null
+#  item_id      :bigint(8)        not null
+#  basket_id    :bigint(8)        not null
 #  librarian_id :bigint(8)
 #  due_date     :datetime         not null
 #  created_at   :datetime         not null

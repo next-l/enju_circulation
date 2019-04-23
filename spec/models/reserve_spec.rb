@@ -136,10 +136,10 @@ end
 #
 # Table name: reserves
 #
-#  id                           :uuid             not null, primary key
+#  id                           :bigint(8)        not null, primary key
 #  user_id                      :bigint(8)        not null
-#  manifestation_id             :uuid             not null
-#  item_id                      :uuid
+#  manifestation_id             :bigint(8)        not null
+#  item_id                      :bigint(8)
 #  request_status_type_id       :bigint(8)        not null
 #  checked_out_at               :datetime
 #  created_at                   :datetime         not null
@@ -148,7 +148,7 @@ end
 #  expired_at                   :datetime
 #  expiration_notice_to_patron  :boolean          default(FALSE)
 #  expiration_notice_to_library :boolean          default(FALSE)
-#  pickup_location_id           :uuid
+#  pickup_location_id           :bigint(8)
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
 #  lock_version                 :integer          default(0), not null

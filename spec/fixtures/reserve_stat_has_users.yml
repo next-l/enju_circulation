@@ -1,12 +1,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  user_reserve_stat_id: 05b8e9c7-f4d7-4eba-b58c-962e86f7774e
+  user_reserve_stat_id: 1
   user_id: 1
   reserves_count: 1
 
 two:
-  user_reserve_stat_id: af8542ff-8133-4810-a06c-51c952183bfb
+  user_reserve_stat_id: 1
   user_id: 2
   reserves_count: 1
 
@@ -15,7 +15,7 @@ two:
 # Table name: reserve_stat_has_users
 #
 #  id                   :bigint(8)        not null, primary key
-#  user_reserve_stat_id :uuid             not null
+#  user_reserve_stat_id :bigint(8)        not null
 #  user_id              :bigint(8)        not null
 #  reserves_count       :integer
 #  created_at           :datetime         not null

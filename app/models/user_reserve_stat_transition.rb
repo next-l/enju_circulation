@@ -13,7 +13,7 @@ end
 #  to_state             :string
 #  metadata             :jsonb
 #  sort_key             :integer
-#  user_reserve_stat_id :uuid
+#  user_reserve_stat_id :bigint(8)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  most_recent          :boolean          not null

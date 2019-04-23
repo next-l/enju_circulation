@@ -1,54 +1,54 @@
 --- 
 checkin_00001: 
   updated_at: 2008-01-22 12:58:54.347742 +09:00
-  id: 5950a519-e5c5-4ad9-9b59-7467d6ceb043
+  id: 1
   librarian_id: 1
   created_at: 2008-01-22 12:58:54.347742 +09:00
-  basket_id: 6c16fcc2-7e78-45e6-9a8f-dcf0f9e40a6e
-  checkout_id: 7f049d51-58e2-44a8-96bc-8156d385ec58
+  basket_id: 9
+  checkout_id: 1
   lock_version: 0
 checkin_00002: 
   updated_at: 2007-12-14 00:28:41.854022 +09:00
-  id: 3d79f067-08ad-43f7-a76f-7ee284521d92
+  id: 2
   librarian_id: 2
   created_at: 2007-12-14 00:28:41.854022 +09:00
-  basket_id: 2ef2c9b1-fb72-4b76-98c0-51cbf1a37d3e
-  checkout_id: bd43d2d1-b33e-49c3-90ec-2af3fae7b5ce
+  basket_id: 10
+  checkout_id: 9
   lock_version: 0
 checkin_00003: 
   updated_at: 2007-12-20 21:24:18.729192 +09:00
-  id: a78864a7-94b7-4c68-8436-d93df3ebd112
+  id: 3
   librarian_id: 1
   created_at: 2007-12-20 21:24:18.729192 +09:00
-  basket_id: 2ef2c9b1-fb72-4b76-98c0-51cbf1a37d3e
-  checkout_id: 8b9b8447-4654-43dc-a780-d1ccd60e6de6
+  basket_id: 10
   lock_version: 0
+  checkout_id: 8
 checkin_00004: 
   updated_at: 2008-01-23 00:39:27.785676 +09:00
-  id: 63452cd6-919a-41c4-9543-ad7618245de7
+  id: 4
   librarian_id: 2
   created_at: 2008-01-23 00:39:27.785676 +09:00
-  basket_id: 2ef2c9b1-fb72-4b76-98c0-51cbf1a37d3e
+  basket_id: 10
   lock_version: 0
-  checkout_id: d56d8bcc-acb0-4d5c-a8aa-da097c0efcda
+  checkout_id: 13
 checkin_00005: 
   updated_at: 2007-12-20 21:25:04.619479 +09:00
-  id: 6ebf598c-c12d-47cb-9a42-2e8eb48fe3cd
+  id: 5
   librarian_id: 1
   created_at: 2007-12-20 21:25:04.619479 +09:00
-  basket_id: 2ef2c9b1-fb72-4b76-98c0-51cbf1a37d3e
+  basket_id: 10
   lock_version: 0
-  checkout_id: 9dbfc6b5-a700-4bed-89a5-2a942225776b
+  checkout_id: 12
 
 # == Schema Information
 #
 # Table name: checkins
 #
-#  id           :uuid             not null, primary key
+#  id           :bigint(8)        not null, primary key
 #  librarian_id :bigint(8)
-#  basket_id    :uuid
+#  basket_id    :bigint(8)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  lock_version :integer          default(0), not null
-#  checkout_id  :uuid             not null
+#  checkout_id  :bigint(8)        not null
 #
