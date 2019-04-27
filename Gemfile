@@ -14,5 +14,8 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
-gem 'rails-controller-testing', group: :test
-gem 'rspec_junit_formatter', group: :test
+group :test do
+  gem 'rails-controller-testing'
+  gem 'rspec_junit_formatter'
+  gem 'webdrivers'
+end
