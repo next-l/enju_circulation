@@ -28,7 +28,9 @@ module EnjuCirculation
         ).where(identifier_conditions)
       }
       scope :on_shelf, -> { includes(:shelf).references(:shelf).where('shelves.name != ?', 'web').where.not(circulation_status_id: CirculationStatus.find_by(name: 'Removed').id) }
+      scope :available, -> { includes(:circulation_status).where.not('circulation_statuses.name' => 'Removed') }
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
+
       has_many :checkouts
       has_many :reserves, dependent: :nullify
       has_many :checked_items, dependent: :destroy
