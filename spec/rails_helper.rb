@@ -36,6 +36,12 @@ RSpec.configure do |config|
   config.extend ControllerMacros, type: :controller
 
   config.infer_spec_type_from_file_location!
+
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
+    end
+  end
 end
 
 FactoryBot.definition_file_paths << "#{::Rails.root}/../../spec/factories"

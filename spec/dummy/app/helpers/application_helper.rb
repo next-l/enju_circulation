@@ -2,4 +2,6 @@
 module ApplicationHelper
   include EnjuLeaf::ApplicationHelper
   include EnjuBiblio::ApplicationHelper
+  include EnjuManifestationViewer::ManifestationViewerHelper
+  include EnjuManifestationViewer::BookJacketHelper
 end
