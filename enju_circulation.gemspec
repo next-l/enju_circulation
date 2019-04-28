@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/**/*"] - Dir["spec/dummy/db/*.sqlite3"]
 
   s.add_dependency "enju_biblio", "~> 0.3.2"
-  s.add_dependency "enju_manifestation_viewer", "~> 0.3.1"
+  s.add_dependency "enju_manifestation_viewer", "~> 0.3.2"
   s.add_dependency "enju_event", "~> 0.3.1"
 
   s.add_development_dependency "capybara", "~> 3.11"
