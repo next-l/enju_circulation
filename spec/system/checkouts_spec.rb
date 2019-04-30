@@ -7,6 +7,7 @@ RSpec.describe 'Checkouts', type: :system do
   describe 'When not logged in', solr: true do
     before(:each) do
       Checkout.reindex
+      CarrierType.find_by(name: 'volume').update(attachment: File.open("#{Rails.root.to_s}/app/assets/images/icons/book.png"))
     end
 
     it 'should contain query params in the facet' do
