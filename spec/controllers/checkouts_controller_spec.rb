@@ -453,6 +453,12 @@ describe CheckoutsController do
         delete :destroy, params: { id: @returned_checkout.id }
         response.should redirect_to(checkouts_url(user_id: @returned_checkout.user.username))
       end
+
+      it 'should be forbidden to delete a checkout if its user is not set' do
+        delete :destroy, params: { id: @returned_checkout.id }
+        delete :destroy, params: { id: @returned_checkout.id }
+        expect(response).to be_forbidden
+      end
     end
 
     describe 'When logged in as Librarian' do
