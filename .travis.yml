@@ -17,10 +17,20 @@ after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 services:
   - redis-server
+  - postgresql
 notifications:
   slack:
     secure: XWkCvx8ImySMHDMgLzqOnEvBSmhUWqXK9TlLBEBG4NDeyXR1SgewcqrBWA7w+wK7fbS2QOJWASV2rkq3eMHMNOgVEjqxmgOMUcDdI7k+GEYuLWsShuIrjtYf9Yezpg4amdbNOYJiu04W3+67FoyCJCYLhDNdheFsYQ5atl+qmfg=
 sudo: false
 addons:
-  postgresql: "9.6"
-  chrome: stable
+  postgresql: "10"
+  apt:
+    sources:
+      - google-chrome
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+    - google-chrome-stable
+jdk:
+  - openjdk8
+dist: xenial
