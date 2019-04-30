@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/enju_circulation
     docker:
-      - image: circleci/ruby:2.4
+      - image: circleci/ruby:2.5-node-browsers
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_PATH: vendor/bundle
