@@ -50,7 +50,7 @@ end
 #
 # Table name: user_reserve_stats
 #
-#  id           :bigint(8)        not null, primary key
+#  id           :bigint           not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
@@ -58,5 +58,5 @@ end
 #  updated_at   :datetime         not null
 #  started_at   :datetime
 #  completed_at :datetime
-#  user_id      :bigint(8)
+#  user_id      :bigint
 #

@@ -22,12 +22,12 @@ end
 #
 # Table name: checked_items
 #
-#  id           :bigint(8)        not null, primary key
-#  item_id      :bigint(8)        not null
-#  basket_id    :bigint(8)        not null
-#  librarian_id :bigint(8)
+#  id           :bigint           not null, primary key
+#  item_id      :bigint           not null
+#  basket_id    :bigint           not null
+#  librarian_id :bigint
 #  due_date     :datetime         not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id      :bigint(8)
+#  user_id      :bigint
 #

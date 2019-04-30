@@ -23,22 +23,24 @@
   <%= @manifestation_reserve_stat.note -%>
 </p>
 
-<table class="table table-striped index">
-  <tr>
-    <th><%= t('activerecord.models.manifestation') -%></th>
-    <th><%= t('activerecord.attributes.reserve_stat_has_manifestation.reserves_count') -%></th>
-  </tr>
-  <%- @stats.each do |stat| -%>
-    <tr class="line<%= cycle("0", "1") -%>">
-      <td>
-        <%= render 'manifestations/show_index', manifestation: stat.manifestation if stat.manifestation -%>
-      </td>
-      <td><%= stat.reserves_count -%></td>
-    </tr>
-  <%- end -%>
-</table>
-
-<%= paginate(@stats) -%>
+<div id="tabs">
+  <ul>
+    <li title="active" class="selected"><a href="#tab1"><em><%= t('statistic.by_carrier_type') -%></em></a></li>
+    <li><a href="#tab2"><em><%= t('statistic.by_checkout_type') -%></em></a></li>
+    <li><a href="#tab3"><em><%= t('statistic.by_manifestation') -%></em></a></li>
+  </ul>
+  <div id="tab1">
+    <%= render 'group_by_carrier_type' %>
+  </div>
+  <div id="tab2">
+    <%= render 'group_by_checkout_type' %>
+  </div>
+  <div id="tab3">
+    <div id="group_by_manifestation">
+      <%= render 'group_by_manifestation', stats: @stats %>
+    </div>
+  </div>
+</div>
 
 </div>
 </div>

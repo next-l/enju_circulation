@@ -31,4 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sunspot_solr", "~> 2.3"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "puma"
+  s.add_development_dependency "annotate"
 end

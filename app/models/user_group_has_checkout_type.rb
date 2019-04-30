@@ -48,9 +48,9 @@ end
 #
 # Table name: user_group_has_checkout_types
 #
-#  id                             :bigint(8)        not null, primary key
-#  user_group_id                  :bigint(8)        not null
-#  checkout_type_id               :bigint(8)        not null
+#  id                             :bigint           not null, primary key
+#  user_group_id                  :bigint           not null
+#  checkout_type_id               :bigint           not null
 #  checkout_limit                 :integer          default(0), not null
 #  checkout_period                :integer          default(0), not null
 #  checkout_renewal_limit         :integer          default(0), not null

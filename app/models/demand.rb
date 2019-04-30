@@ -8,10 +8,10 @@ end
 #
 # Table name: demands
 #
-#  id         :bigint(8)        not null, primary key
-#  user_id    :bigint(8)
-#  item_id    :bigint(8)
-#  message_id :bigint(8)
+#  id         :bigint           not null, primary key
+#  user_id    :bigint
+#  item_id    :bigint
+#  message_id :bigint
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

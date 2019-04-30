@@ -3,5 +3,6 @@ class ManifestationCheckoutStatJob < ActiveJob::Base
 
   def perform(manifestation_checkout_stat)
     manifestation_checkout_stat.transition_to!(:started)
+    manifestation_checkout_stat.transition_to!(:completed)
   end
 end

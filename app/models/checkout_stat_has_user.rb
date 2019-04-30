@@ -14,9 +14,9 @@ end
 #
 # Table name: checkout_stat_has_users
 #
-#  id                    :bigint(8)        not null, primary key
-#  user_checkout_stat_id :bigint(8)        not null
-#  user_id               :bigint(8)        not null
+#  id                    :bigint           not null, primary key
+#  user_checkout_stat_id :bigint           not null
+#  user_id               :bigint           not null
 #  checkouts_count       :integer          default(0), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null

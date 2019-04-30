@@ -3,5 +3,6 @@ class ManifestationReserveStatJob < ActiveJob::Base
 
   def perform(manifestation_reserve_stat)
     manifestation_reserve_stat.transition_to!(:started)
+    manifestation_reserve_stat.transition_to!(:completed)
   end
 end
