@@ -4,6 +4,15 @@
 
   <%= render 'manifestations/title', manifestation: @checkout.item.manifestation if @checkout.item -%>
 
+<h3><%= t('item.current_checkout') %></h3>
+
+<ul>
+  <li><%= t('activerecord.attributes.user.username') %>: 
+    <%= @checkout.user.username %></li>
+  <li><%= t('activerecord.attributes.profile.user_number') %>: 
+    <%= @checkout.user.profile.user_number %></li>
+</ul>
+
 <h3><%= t('checkout.renewal') -%></h3>
 <%- if @checkout.renewable? -%>
   <%= form_for(@checkout) do |f| -%>
