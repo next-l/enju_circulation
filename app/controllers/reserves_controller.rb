@@ -298,7 +298,7 @@ class ReservesController < ApplicationController
   end
 
   def filtered_params
-    params.permit([:user_id, :reserved_from, :reserved_until, :query, :sort_by])
+    params.permit([:user_id, :reserved_from, :reserved_until, :query, :sort_by, :state])
   end
 
   helper_method :filtered_params
