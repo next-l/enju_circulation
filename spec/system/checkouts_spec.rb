@@ -4,6 +4,10 @@ RSpec.describe 'Checkouts', type: :system do
   include Devise::Test::IntegrationHelpers
   fixtures :all
 
+  before(:each) do
+    CarrierType.find_by(name: 'volume').update(attachment: File.open("#{Rails.root.to_s}/app/assets/images/icons/book.png"))
+  end
+
   describe 'When logged in as Librarian' do
     it 'should contain query params in the facet' do
       sign_in users(:librarian1)
@@ -17,7 +21,6 @@ RSpec.describe 'Checkouts', type: :system do
   describe 'When not logged in', solr: true do
     before(:each) do
       Checkout.reindex
-      CarrierType.find_by(name: 'volume').update(attachment: File.open("#{Rails.root.to_s}/app/assets/images/icons/book.png"))
     end
 
     it 'should contain query params in the facet' do
