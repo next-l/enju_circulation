@@ -3,8 +3,8 @@ CSV.generate(col_sep: "\t", row_sep: "\r\n") do |csv|
   @reserves.each do |reserve|
     csv << [
       reserve.id,
-      reserve.manifestation_id,
       reserve.current_state,
+      reserve.manifestation_id,
       reserve.manifestation.original_title,
       reserve.manifestation.creators.pluck(:full_name).join('//'),
       reserve.manifestation.publishers.pluck(:full_name).join('//'),
