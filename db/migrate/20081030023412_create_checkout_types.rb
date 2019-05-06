@@ -4,7 +4,7 @@ class CreateCheckoutTypes < ActiveRecord::Migration[5.2]
       t.string :name, index: {unique: true}, null: false
       t.jsonb :display_name_translations, default: {}, null: false
       t.text :note
-      t.integer :position
+      t.integer :position, null: false, default: 1
 
       t.timestamps
     end

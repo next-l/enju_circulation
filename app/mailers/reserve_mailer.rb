@@ -1,0 +1,2 @@
+class ReserveMailer < ApplicationMailer
+end
