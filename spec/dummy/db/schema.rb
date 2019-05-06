@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(version: 2019_03_14_151124) do
     t.string "name", null: false
     t.jsonb "display_name_translations", default: {}, null: false
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_checkout_types_on_name", unique: true
@@ -1385,8 +1385,8 @@ ActiveRecord::Schema.define(version: 2019_03_14_151124) do
     t.datetime "updated_at", null: false
     t.integer "valid_period_for_new_user", default: 0, null: false
     t.datetime "expired_at"
-    t.integer "number_of_day_to_notify_overdue", default: 1, null: false
-    t.integer "number_of_day_to_notify_due_date", default: 7, null: false
+    t.integer "number_of_day_to_notify_overdue", default: 7, null: false
+    t.integer "number_of_day_to_notify_due_date", default: 3, null: false
     t.integer "number_of_time_to_notify_overdue", default: 3, null: false
     t.index ["name"], name: "index_user_groups_on_name", unique: true
   end
