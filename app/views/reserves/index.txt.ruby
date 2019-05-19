@@ -12,7 +12,7 @@ CSV.generate(col_sep: "\t", row_sep: "\r\n") do |csv|
       reserve.manifestation.identifier_contents(:isbn).join('//'),
       reserve.item.try(:item_identifier),
       reserve.item.try(:call_number),
-      reserve.user.try(:user_number),
+      reserve.user.profile.try(:user_number),
       reserve.user.try(:username),
       reserve.pickup_location.try(:name),
       reserve.created_at,
