@@ -60,5 +60,5 @@ end
 #  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
-#  user_id      :integer
+#  user_id      :bigint
 #

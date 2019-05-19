@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_07_162048) do
+ActiveRecord::Schema.define(version: 2019_05_12_152331) do
 
   create_table "accepts", force: :cascade do |t|
     t.integer "basket_id"
@@ -227,7 +227,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "due_date", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["basket_id"], name: "index_checked_items_on_basket_id"
     t.index ["item_id"], name: "index_checked_items_on_item_id"
     t.index ["librarian_id"], name: "index_checked_items_on_librarian_id"
@@ -236,19 +236,21 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "checkins", force: :cascade do |t|
     t.integer "item_id", null: false
-    t.integer "librarian_id"
+    t.bigint "librarian_id"
     t.integer "basket_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "lock_version", default: 0, null: false
+    t.integer "checkout_id"
     t.index ["basket_id"], name: "index_checkins_on_basket_id"
+    t.index ["checkout_id"], name: "index_checkins_on_checkout_id"
     t.index ["item_id"], name: "index_checkins_on_item_id"
     t.index ["librarian_id"], name: "index_checkins_on_librarian_id"
   end
 
   create_table "checkout_stat_has_manifestations", force: :cascade do |t|
     t.integer "manifestation_checkout_stat_id", null: false
-    t.integer "manifestation_id", null: false
+    t.bigint "manifestation_id", null: false
     t.integer "checkouts_count"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -258,7 +260,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "checkout_stat_has_users", force: :cascade do |t|
     t.integer "user_checkout_stat_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "checkouts_count", default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -270,14 +272,14 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "position"
+    t.integer "position", default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["name"], name: "index_checkout_types_on_name"
+    t.index ["name"], name: "index_checkout_types_on_name", unique: true
   end
 
   create_table "checkouts", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.integer "item_id", null: false
     t.integer "checkin_id"
     t.integer "librarian_id"
@@ -306,6 +308,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["name"], name: "index_circulation_statuses_on_name", unique: true
   end
 
   create_table "colors", force: :cascade do |t|
@@ -364,7 +367,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
   create_table "demands", force: :cascade do |t|
     t.integer "user_id"
     t.integer "item_id"
-    t.integer "message_id"
+    t.bigint "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_demands_on_item_id"
@@ -545,7 +548,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "item_has_use_restrictions", force: :cascade do |t|
     t.integer "item_id", null: false
-    t.integer "use_restriction_id", null: false
+    t.bigint "use_restriction_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["item_id"], name: "index_item_has_use_restrictions_on_item_id"
@@ -698,7 +701,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "manifestation_checkout_stat_id"
+    t.bigint "manifestation_checkout_stat_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "most_recent", null: false
@@ -715,7 +718,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_manifestation_checkout_stats_on_user_id"
   end
 
@@ -743,7 +746,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "manifestation_reserve_stat_id"
+    t.bigint "manifestation_reserve_stat_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "most_recent", null: false
@@ -760,7 +763,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_manifestation_reserve_stats_on_user_id"
   end
 
@@ -965,14 +968,14 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "profiles", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "user_group_id"
+    t.integer "user_group_id", null: false
     t.integer "library_id"
     t.string "locale"
     t.string "user_number"
     t.text "full_name"
     t.text "note"
     t.text "keyword_list"
-    t.integer "required_role_id"
+    t.integer "required_role_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "checkout_icalendar_token"
@@ -981,6 +984,8 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.text "full_name_transcription"
     t.datetime "date_of_birth"
     t.index ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true
+    t.index ["library_id"], name: "index_profiles_on_library_id"
+    t.index ["user_group_id"], name: "index_profiles_on_user_group_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
     t.index ["user_number"], name: "index_profiles_on_user_number", unique: true
   end
@@ -1025,7 +1030,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "reserve_stat_has_manifestations", force: :cascade do |t|
     t.integer "manifestation_reserve_stat_id", null: false
-    t.integer "manifestation_id", null: false
+    t.bigint "manifestation_id", null: false
     t.integer "reserves_count"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1035,7 +1040,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
 
   create_table "reserve_stat_has_users", force: :cascade do |t|
     t.integer "user_reserve_stat_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "reserves_count"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1047,7 +1052,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "reserve_id"
+    t.bigint "reserve_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "most_recent", null: false
@@ -1057,7 +1062,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
   end
 
   create_table "reserves", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "manifestation_id", null: false
     t.integer "item_id"
     t.integer "request_status_type_id", null: false
@@ -1076,6 +1081,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.index ["item_id"], name: "index_reserves_on_item_id"
     t.index ["manifestation_id"], name: "index_reserves_on_manifestation_id"
     t.index ["pickup_location_id"], name: "index_reserves_on_pickup_location_id"
+    t.index ["request_status_type_id"], name: "index_reserves_on_request_status_type_id"
     t.index ["user_id"], name: "index_reserves_on_user_id"
   end
 
@@ -1158,7 +1164,8 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "score", default: 0, null: false
-    t.integer "position"
+    t.integer "position", default: 1, null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "search_engines", force: :cascade do |t|
@@ -1259,13 +1266,14 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["name"], name: "index_use_restrictions_on_name", unique: true
   end
 
   create_table "user_checkout_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "user_checkout_stat_id"
+    t.bigint "user_checkout_stat_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "most_recent", null: false
@@ -1282,7 +1290,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_user_checkout_stats_on_user_id"
   end
 
@@ -1313,7 +1321,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
   end
 
   create_table "user_group_has_checkout_types", force: :cascade do |t|
-    t.integer "user_group_id", null: false
+    t.bigint "user_group_id", null: false
     t.integer "checkout_type_id", null: false
     t.integer "checkout_limit", default: 0, null: false
     t.integer "checkout_period", default: 0, null: false
@@ -1347,12 +1355,11 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
   end
 
   create_table "user_has_roles", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.bigint "user_id", null: false
+    t.integer "role_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["role_id"], name: "index_user_has_roles_on_role_id"
-    t.index ["user_id"], name: "index_user_has_roles_on_user_id"
+    t.index ["user_id", "role_id"], name: "index_user_has_roles_on_user_id_and_role_id", unique: true
   end
 
   create_table "user_import_file_transitions", force: :cascade do |t|
@@ -1402,7 +1409,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "user_reserve_stat_id"
+    t.bigint "user_reserve_stat_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "most_recent", null: false
@@ -1419,7 +1426,7 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_user_reserve_stats_on_user_id"
   end
 
@@ -1443,7 +1450,9 @@ ActiveRecord::Schema.define(version: 2018_01_07_162048) do
     t.string "unlock_token"
     t.datetime "locked_at"
     t.datetime "confirmed_at"
+    t.integer "profile_id"
     t.index ["email"], name: "index_users_on_email"
+    t.index ["profile_id"], name: "index_users_on_profile_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true

@@ -41,9 +41,10 @@ end
 #
 #  id           :integer          not null, primary key
 #  item_id      :integer          not null
-#  librarian_id :integer
+#  librarian_id :bigint
 #  basket_id    :integer
 #  created_at   :datetime
 #  updated_at   :datetime
 #  lock_version :integer          default(0), not null
+#  checkout_id  :integer
 #

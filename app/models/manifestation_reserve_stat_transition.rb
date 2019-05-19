@@ -14,7 +14,7 @@ end
 #  to_state                      :string
 #  metadata                      :text             default({})
 #  sort_key                      :integer
-#  manifestation_reserve_stat_id :integer
+#  manifestation_reserve_stat_id :bigint
 #  created_at                    :datetime
 #  updated_at                    :datetime
 #  most_recent                   :boolean          not null

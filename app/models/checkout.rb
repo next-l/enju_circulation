@@ -168,7 +168,7 @@ end
 # Table name: checkouts
 #
 #  id                     :integer          not null, primary key
-#  user_id                :integer
+#  user_id                :bigint
 #  item_id                :integer          not null
 #  checkin_id             :integer
 #  librarian_id           :integer

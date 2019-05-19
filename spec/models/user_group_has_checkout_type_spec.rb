@@ -30,7 +30,7 @@ end
 # Table name: user_group_has_checkout_types
 #
 #  id                              :integer          not null, primary key
-#  user_group_id                   :integer          not null
+#  user_group_id                   :bigint           not null
 #  checkout_type_id                :integer          not null
 #  checkout_limit                  :integer          default(0), not null
 #  checkout_period                 :integer          default(0), not null
