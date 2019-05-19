@@ -18,7 +18,7 @@ end
 #
 #  id               :integer          not null, primary key
 #  carrier_type_id  :integer          not null
-#  checkout_type_id :integer          not null
+#  checkout_type_id :bigint           not null
 #  note             :text
 #  position         :integer
 #  created_at       :datetime

@@ -2,6 +2,11 @@ class UpgradeEnjuCirculationToEnjuLeaf20 < ActiveRecord::Migration[5.2]
   def change
     reversible do |dir|
       dir.up {
+        change_table :carrier_type_has_checkout_types do |t|
+          t.change :carrier_type_id, :bigint
+          t.change :checkout_type_id, :bigint
+        end
+
         change_table :checked_items do |t|
           t.change :basket_id, :bigint
           t.change :item_id, :bigint
@@ -43,6 +48,11 @@ class UpgradeEnjuCirculationToEnjuLeaf20 < ActiveRecord::Migration[5.2]
         change_table :item_has_use_restrictions do |t|
           t.change :item_id, :bigint
           t.change :use_restriction_id, :bigint
+        end
+
+        change_table :items do |t|
+          t.change :checkout_type_id, :bigint
+          t.change :circulation_status_id, :bigint
         end
 
         change_table :manifestation_checkout_stat_transitions do |t|
@@ -114,6 +124,11 @@ class UpgradeEnjuCirculationToEnjuLeaf20 < ActiveRecord::Migration[5.2]
       }
 
       dir.down {
+        change_table :carrier_type_has_checkout_types do |t|
+          t.change :carrier_type_id, :integer
+          t.change :checkout_type_id, :integer
+        end
+
         change_table :checked_items do |t|
           t.change :basket_id, :integer
           t.change :item_id, :integer
@@ -155,6 +170,11 @@ class UpgradeEnjuCirculationToEnjuLeaf20 < ActiveRecord::Migration[5.2]
         change_table :item_has_use_restrictions do |t|
           t.change :item_id, :integer
           t.change :use_restriction_id, :integer
+        end
+
+        change_table :items do |t|
+          t.change :checkout_type_id, :integer
+          t.change :circulation_status_id, :integer
         end
 
         change_table :manifestation_checkout_stat_transitions do |t|
@@ -241,5 +261,9 @@ class UpgradeEnjuCirculationToEnjuLeaf20 < ActiveRecord::Migration[5.2]
         dir.down { remove_index table.to_sym, :name }
       end
     end
+
+    add_foreign_key :items, :checkout_types
+    add_foreign_key :items, :circulation_statuses
+    rename_index :manifestations, :index_carrier_type_has_checkout_types_on_m_form_id, :index_carrier_type_has_checkout_types_on_carrier_type_id
   end
 end
