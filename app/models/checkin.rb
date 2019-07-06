@@ -1,7 +1,7 @@
 class Checkin < ActiveRecord::Base
   default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
-  has_one :checkout
+  has_one :checkout, dependent: :nullify
   belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
