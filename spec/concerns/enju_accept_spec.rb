@@ -6,9 +6,6 @@ end
 
 describe EnjuCirculation::EnjuAccept do
   fixtures :all
-  before do
-    Checkout.reindex
-  end
 
   it "should successfully accept" do
     accept = MyAccept.new(FactoryBot.attributes_for(:accept))
@@ -20,15 +17,16 @@ describe EnjuCirculation::EnjuAccept do
   end
 
   it "should reflect to items list", solr: true do
-    3.times do
-      FactoryBot.create(:item)
-    end
-    item_count = Item.count
-    inprocess_count = Item.where(circulation_status: CirculationStatus.find_by(name: "In Process")).count
-    onshelf_count = Item.where(circulation_status: CirculationStatus.find_by(name: "Available On Shelf")).count
+    FactoryBot.create(:item)
+    FactoryBot.create(:item)
+    FactoryBot.create(:item)
+    result = Item.search.build { facet :circulation_status }.execute
+    inprocess_count = result.facet(:circulation_status).rows.find{|e| e.value == "In Process" }.count
+    onshelf_count = result.facet(:circulation_status).rows.find{|e| e.value == "Available On Shelf" }.try(:count) || 0
     accept = MyAccept.new(FactoryBot.attributes_for(:accept))
     accept.save!
-    expect(Item.where(circulation_status: CirculationStatus.find_by(name: "In Process")).count).to eq inprocess_count
-    expect(Item.where(circulation_status: CirculationStatus.find_by(name: "Available On Shelf")).count).to eq onshelf_count + 1
+    result = Item.search.build { facet :circulation_status }.execute
+    expect(result.facet(:circulation_status).rows.find{|e| e.value == "In Process" }.count).to eq inprocess_count
+    expect(result.facet(:circulation_status).rows.find{|e| e.value == "Available On Shelf" }.try(:count)).to eq onshelf_count + 1
   end
 end

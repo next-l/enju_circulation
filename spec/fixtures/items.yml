@@ -6,7 +6,6 @@ item_00001:
   checkout_type_id: 1
   shelf_id: 1
   call_number: 
-  budget_type_id: 1
   manifestation_id: 1
   id: 1
   include_supplements: false
@@ -245,7 +244,7 @@ item_00022:
 item_00023: 
   updated_at: 2007-08-24 23:46:20.484813 +09:00
   item_identifier: '00023'
-  circulation_status_id: 16
+  circulation_status_id: 2
   checkout_type_id: 3
   shelf_id: 2
   call_number: 
@@ -285,6 +284,7 @@ item_00025:
 #  item_identifier         :string(255)
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  deleted_at              :datetime
 #  shelf_id                :integer          default(1), not null
 #  include_supplements     :boolean          default(FALSE), not null
 #  note                    :text

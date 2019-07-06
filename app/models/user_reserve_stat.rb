@@ -1,12 +1,12 @@
 class UserReserveStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
+  default_scope {order('user_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
   has_many :reserve_stat_has_users
   has_many :users, through: :reserve_stat_has_users
   belongs_to :user
 
-  has_one_attached :attachment
   paginates_per 10
   attr_accessor :mode
 
@@ -21,15 +21,16 @@ class UserReserveStat < ActiveRecord::Base
 
   def calculate_count!
     self.started_at = Time.zone.now
-    results = Reserve.where('created_at >= ? AND created_at < ?', start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).group(:user_id).select('user_id, count(user_id)').preload(:user).map{|a| [a.user_id, a.count]}
-    results.each do |result|
-     ReserveStatHasUser.create(
-        user_reserve_stat: self,
-        user_id: result[0],
-        reserves_count: result[1]
-      )
+    User.find_each do |user|
+      daily_count = user.reserves.created(start_date.beginning_of_day, end_date.tomorrow.beginning_of_day).size
+      if daily_count > 0
+        users << user
+        sql = ['UPDATE reserve_stat_has_users SET reserves_count = ? WHERE user_reserve_stat_id = ? AND user_id = ?', daily_count, id, user.id]
+        UserReserveStat.connection.execute(
+          self.class.send(:sanitize_sql_array, sql)
+        )
+      end
     end
-    # attachment.attach(io: StringIO.new(results.to_h.to_json), filename: "result_#{start_date}_#{end_date}.txt")
     self.completed_at = Time.zone.now
     transition_to!(:completed)
     send_message
@@ -50,13 +51,13 @@ end
 #
 # Table name: user_reserve_stats
 #
-#  id           :bigint           not null, primary key
+#  id           :integer          not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
-#  user_id      :bigint
+#  user_id      :integer
 #

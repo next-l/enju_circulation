@@ -23,7 +23,19 @@ module EnjuCirculation
     end
 
     def checked_item_count
-      CheckoutType.select(:id, :name).map{|c| [c.name.to_sym, checkouts.not_returned.joins(:item).where('items.checkout_type_id': c.id).count]}.to_h
+      checkout_count = {}
+      CheckoutType.all.each do |checkout_type|
+        # 資料種別ごとの貸出中の冊数を計算
+        checkout_count[:"#{checkout_type.name}"] = checkouts.count_by_sql(["
+          SELECT count(item_id) FROM checkouts
+            WHERE item_id IN (
+              SELECT id FROM items
+                WHERE checkout_type_id = ?
+            )
+            AND user_id = ? AND checkin_id IS NULL", checkout_type.id, id]
+        )
+      end
+      checkout_count
     end
 
     def reached_reservation_limit?(manifestation)

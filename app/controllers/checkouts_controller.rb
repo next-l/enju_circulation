@@ -13,7 +13,7 @@ class CheckoutsController < ApplicationController
       if icalendar_user.blank?
         raise ActiveRecord::RecordNotFound
       else
-        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.created_at DESC')
+        @checkouts = icalendar_user.checkouts.not_returned.order('checkouts.id DESC')
       end
     else
       unless current_user
@@ -30,25 +30,20 @@ class CheckoutsController < ApplicationController
     end
 
     unless icalendar_user
+      search = Checkout.search
       if @user
-        unless current_user.try(:has_role?, 'Librarian')
-          if current_user == @user
+        user = @user
+        if current_user.try(:has_role?, 'Librarian')
+          search.build do
+            with(:username).equal_to user.username
+          end
+        else
+          if current_user == user
             redirect_to checkouts_url(format: params[:format])
             return
           else
             access_denied
             return
-          end
-        end
-      end
-
-      search = Checkout.search
-      if @user
-        user = @user
-        search.build do
-          with(:username).equal_to user.username
-          unless user.profile.save_checkout_history?
-            with(:checked_in_at).equal_to nil
           end
         end
       else

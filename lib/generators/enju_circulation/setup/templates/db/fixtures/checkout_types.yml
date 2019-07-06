@@ -2,19 +2,21 @@
 
 checkout_type_00001:
   id: 1
-  name: book  
-  display_name_translations: {"en": "book", "ja": "本"}
+  name: book
+  display_name: "en: Book\r\n\
+    ja: 図書"
   note: 
   position: 1
 checkout_type_00002:
   id: 2
-  name: serial  
-  display_name_translations: {"en": "serial", "ja": "雑誌"}
+  name: serial
+  display_name: "en: Serial\r\n\
+    ja: 定期刊行物"
   note: 
   position: 2
 checkout_type_00003:
   id: 3
-  name: cd  
-  display_name_translations: {"en": "cd", "ja": "CD"}
+  name: cd
+  display_name: CD
   note: 
   position: 3

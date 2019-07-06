@@ -13,8 +13,30 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
   validates :checkout_renewal_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :reservation_limit, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :reservation_expired_period, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  after_update :update_lending_policy
 
   acts_as_list scope: :user_group_id
+
+  def create_lending_policy
+    checkout_type.items.find_each do |item|
+      policy = LendingPolicy.where(item_id: item.id, user_group_id: user_group_id).select(:id).first
+      unless policy
+        sql = ['INSERT INTO lending_policies (item_id, user_group_id, loan_period, renewal, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)', item.id, user_group_id, checkout_period, checkout_renewal_limit, Time.zone.now, Time.zone.now]
+        ActiveRecord::Base.connection.execute(
+          self.class.send(:sanitize_sql_array, sql)
+        )
+      end
+    end
+  end
+
+  def update_lending_policy
+    checkout_type.items.each do |item|
+      sql = ['UPDATE lending_policies SET loan_period = ?, renewal = ?, updated_at = ? WHERE user_group_id = ? AND item_id = ?', checkout_period, checkout_renewal_limit, Time.zone.now, user_group_id, item.id]
+      ActiveRecord::Base.connection.execute(
+        self.class.send(:sanitize_sql_array, sql)
+      )
+    end
+  end
 
   def self.update_current_checkout_count
     sql = [
@@ -23,11 +45,9 @@ class UserGroupHasCheckoutType < ActiveRecord::Base
         items.checkout_type_id
         FROM profiles, checkouts LEFT OUTER JOIN items
         ON (checkouts.item_id = items.id)
-        LEFT OUTER JOIN checkins
-        ON (checkouts.id = checkins.checkout_id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)
-        WHERE checkins.id IS NULL
+        WHERE checkouts.checkin_id IS NULL
         GROUP BY user_group_id, checkout_type_id;'
     ]
     UserGroupHasCheckoutType.find_by_sql(sql).each do |result|
@@ -48,19 +68,19 @@ end
 #
 # Table name: user_group_has_checkout_types
 #
-#  id                             :bigint           not null, primary key
-#  user_group_id                  :bigint           not null
-#  checkout_type_id               :bigint           not null
-#  checkout_limit                 :integer          default(0), not null
-#  checkout_period                :integer          default(0), not null
-#  checkout_renewal_limit         :integer          default(0), not null
-#  reservation_limit              :integer          default(0), not null
-#  reservation_expired_period     :integer          default(7), not null
-#  set_due_date_after_closing_day :boolean          default(FALSE), not null
-#  fixed_due_date                 :datetime
-#  note                           :text
-#  position                       :integer
-#  created_at                     :datetime         not null
-#  updated_at                     :datetime         not null
-#  current_checkout_count         :integer
+#  id                              :integer          not null, primary key
+#  user_group_id                   :integer          not null
+#  checkout_type_id                :integer          not null
+#  checkout_limit                  :integer          default(0), not null
+#  checkout_period                 :integer          default(0), not null
+#  checkout_renewal_limit          :integer          default(0), not null
+#  reservation_limit               :integer          default(0), not null
+#  reservation_expired_period      :integer          default(7), not null
+#  set_due_date_before_closing_day :boolean          default(FALSE), not null
+#  fixed_due_date                  :datetime
+#  note                            :text
+#  position                        :integer
+#  created_at                      :datetime
+#  updated_at                      :datetime
+#  current_checkout_count          :integer
 #

@@ -1,12 +1,15 @@
 class Checkin < ActiveRecord::Base
   default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
-  belongs_to :checkout
+  has_one :checkout
+  belongs_to :item, touch: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
 
+  validates :item_id, uniqueness: { scope: :basket_id }
+  validates :item_id, :basket_id, presence: true
   validate :available_for_checkin?, on: :create
-  before_validation :set_checkout, on: :create
+  before_validation :set_item
 
   attr_accessor :item_identifier
 
@@ -17,48 +20,44 @@ class Checkin < ActiveRecord::Base
       return nil
     end
 
-    unless checkout
-      return nil
-    end
-
-    if checkout.item.blank?
+    if item.blank?
       errors[:base] << I18n.t('checkin.item_not_found')
       return
     end
 
-    if basket.items.find_by(id: checkout.item_id)
+    if basket.items.where('item_id = ?', item.id).first
       errors[:base] << I18n.t('checkin.already_checked_in')
     end
   end
 
   def item_checkin(current_user)
-    #return unless item
     message = ''
     Checkin.transaction do
-      checkout.item.checkin!
-      unless checkout.item.shelf.library == current_user.profile.library
-        message << I18n.t('checkin.other_library_item')
-      end
-
-      # TODO: ILL時の処理
-      update!(checkout: checkout)
-      checkout.operator = current_user
-      unless checkout.user.profile.try(:save_checkout_history)
-        checkout.user = nil
+      item.checkin!
+      Checkout.not_returned.where(item_id: item_id).each do |checkout|
+        # TODO: ILL時の処理
+        checkout.checkin = self
+        checkout.operator = current_user
+        unless checkout.user.profile.try(:save_checkout_history)
+          checkout.user = nil
+        end
         checkout.save(validate: false)
+        unless checkout.item.shelf.library == current_user.profile.library
+          message << I18n.t('checkin.other_library_item')
+        end
       end
 
-      if checkout.item.reserved?
+      if item.reserved?
         # TODO: もっと目立たせるために別画面を表示するべき？
         message << I18n.t('item.this_item_is_reserved')
-        checkout.item.retain(current_user)
+        item.retain(current_user)
       end
 
-      if checkout.item.include_supplements?
+      if item.include_supplements?
         message << I18n.t('item.this_item_include_supplement')
       end
 
-      if checkout.item.circulation_status.name == 'Missing'
+      if item.circulation_status.name == 'Missing'
         message << I18n.t('checkout.missing_item_found')
       end
 
@@ -73,14 +72,11 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def set_checkout
+  def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.find_by(item_identifier: identifier)
-      if item
-        checkout = Checkout.not_returned.where(item_id: item.id).order(created_at: :desc).first
-        self.checkout = checkout
-      end
+      item = Item.where(item_identifier: identifier).first
+      self.item = item
     end
   end
 end
@@ -89,11 +85,11 @@ end
 #
 # Table name: checkins
 #
-#  id           :bigint           not null, primary key
-#  librarian_id :bigint
-#  basket_id    :bigint
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id           :integer          not null, primary key
+#  item_id      :integer          not null
+#  librarian_id :integer
+#  basket_id    :integer
+#  created_at   :datetime
+#  updated_at   :datetime
 #  lock_version :integer          default(0), not null
-#  checkout_id  :bigint           not null
 #

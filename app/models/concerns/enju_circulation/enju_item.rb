@@ -32,11 +32,12 @@ module EnjuCirculation
       scope :removed, -> { includes(:circulation_status).where('circulation_statuses.name' => 'Removed') }
 
       has_many :checkouts
-      has_many :reserves, dependent: :nullify
-      has_many :checked_items, dependent: :destroy
+      has_many :reserves
+      has_many :checked_items
       has_many :baskets, through: :checked_items
       belongs_to :circulation_status, validate: true
       belongs_to :checkout_type
+      has_many :lending_policies, dependent: :destroy
       has_one :item_has_use_restriction, dependent: :destroy
       has_one :use_restriction, through: :item_has_use_restriction
       validates_associated :circulation_status, :checkout_type
@@ -48,95 +49,113 @@ module EnjuCirculation
       end
       accepts_nested_attributes_for :item_has_use_restriction
 
-      def set_circulation_status
-        self.circulation_status = CirculationStatus.find_by(name: 'In Process') if circulation_status.nil?
-      end
+      before_update :delete_lending_policy
+    end
 
-      def checkout_status(user)
-        return nil unless user
-         user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type.id)
-      end
+    def set_circulation_status
+      self.circulation_status = CirculationStatus.find_by(name: 'In Process') if circulation_status.nil?
+    end
 
-      def reserved?
-        return true if manifestation.next_reservation
+    def checkout_status(user)
+      return nil unless user
+       user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type.id)
+    end
+
+    def reserved?
+      return true if manifestation.next_reservation
+      false
+    end
+
+    def rent?
+      return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == id}
+      false
+    end
+
+    def reserved_by_user?(user)
+      if manifestation.next_reservation
+        return true if manifestation.next_reservation.user == user
+      end
+      false
+    end
+
+    def available_for_checkout?
+      if circulation_status.name == 'On Loan'
         false
+      else
+        manifestation.items.for_checkout.include?(self)
       end
+    end
 
-      def rent?
-        return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == id}
-        false
+    def checkout!(user)
+      if reserved_by_user?(user)
+        manifestation.next_reservation.update(checked_out_at: Time.zone.now)
+        manifestation.next_reservation.transition_to!(:completed)
+        manifestation.reload
       end
+      update!(circulation_status: CirculationStatus.find_by(name: 'On Loan'))
+    end
 
-      def reserved_by_user?(user)
-        if manifestation.next_reservation
-          return true if manifestation.next_reservation.user == user
-        end
-        false
-      end
+    def checkin!
+      self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
+      save!
+    end
 
-      def available_for_checkout?
-        if circulation_status.name == 'On Loan'
-          false
-        else
-          manifestation.items.for_checkout.include?(self)
-        end
-      end
-
-      def checkout!(user)
-        if reserved_by_user?(user)
-          manifestation.next_reservation.update(checked_out_at: Time.zone.now)
-          manifestation.next_reservation.transition_to!(:completed)
-          manifestation.reload
-        end
-        update!(circulation_status: CirculationStatus.find_by(name: 'On Loan'))
-      end
-
-      def checkin!
-        self.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
-        save!
-      end
-
-      def retain(librarian)
-        self.class.transaction do
-          reservation = manifestation.next_reservation
-          if reservation
-            reservation.item = self
-            reservation.transition_to!(:retained) unless reservation.retained?
-            reservation.send_message(librarian)
-          end
+    def retain(librarian)
+      self.class.transaction do
+        reservation = manifestation.next_reservation
+        if reservation
+          reservation.item = self
+          reservation.transition_to!(:retained) unless reservation.retained?
+          reservation.send_message(librarian)
         end
       end
+    end
 
-      def retained?
-        manifestation.reserves.retained.each do |reserve|
-          if reserve.item == self
-            return true
-          end
+    def retained?
+      manifestation.reserves.retained.each do |reserve|
+        if reserve.item == self
+          return true
         end
-        false
       end
+      false
+    end
 
-      def lending_rule(user)
-        user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type_id)
+    def lending_rule(user)
+      policy = lending_policies.find_by(user_group_id: user.profile.user_group.id)
+      if policy
+        policy
+      else
+        create_lending_policy(user)
       end
+    end
 
-      def not_for_loan?
-        !manifestation.items.for_checkout.include?(self)
-      end
+    def not_for_loan?
+      !manifestation.items.for_checkout.include?(self)
+    end
 
-      def next_reservation
-        Reserve.waiting.find_by(item_id: id)
-      end
+    def create_lending_policy(user)
+      rule = user.profile.user_group.user_group_has_checkout_types.find_by(checkout_type_id: checkout_type_id)
+      return nil unless rule
+      LendingPolicy.create!(
+        item_id: id,
+        user_group_id: rule.user_group_id,
+        fixed_due_date: rule.fixed_due_date,
+        loan_period: rule.checkout_period,
+        renewal: rule.checkout_renewal_limit
+      )
+    end
 
-      def latest_checkout
-        checkouts.not_returned.order(created_at: :desc).first
-      end
+    def delete_lending_policy
+      return nil unless changes[:checkout_type_id]
+      lending_policies.delete_all
+    end
 
-      def removable?
-        return false if circulation_status.name == 'Removed'
-        return false if checkouts.exists?
-        true
-      end
+    def next_reservation
+      Reserve.waiting.find_by(item_id: id)
+    end
+
+    def latest_checkout
+      checkouts.not_returned.order(created_at: :desc).first
     end
   end
 end

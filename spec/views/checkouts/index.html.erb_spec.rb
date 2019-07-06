@@ -7,7 +7,7 @@ describe "checkouts/index" do
   before(:each) do
     assign(:checkouts, Checkout.page(1))
     assign(:checkouts_facet, [])
-    view.stub(:current_user).and_return(User.find_by(username: 'enjuadmin'))
+    view.stub(:current_user).and_return(User.where(username: 'enjuadmin').first)
   end
 
   it "renders a list of checkouts" do

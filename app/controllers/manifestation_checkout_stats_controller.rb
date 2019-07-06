@@ -20,7 +20,7 @@ class ManifestationCheckoutStatsController < ApplicationController
     if params[:format] == 'txt'
       per_page = 65534
     else
-      per_page = 10
+      per_page = CheckoutStatHasManifestation.default_per_page
     end
 
     @carrier_type_results = Checkout.where(

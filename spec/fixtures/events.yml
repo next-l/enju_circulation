@@ -4,7 +4,8 @@ event_00001:
   event_category_id: 1
   end_at: 2008-01-14 02:54:00 +09:00
   name: 仕事始め
-  display_name_translations: {"ja": "仕事始め"}
+  display_name: 仕事始め
+  deleted_at: 
   start_at: 2008-01-13 02:54:00 +09:00
   id: 1
   note: なんとかかんとか
@@ -15,7 +16,8 @@ event_00002:
   event_category_id: 2
   end_at: 2008-01-14 02:54:00 +09:00
   name: テスト
-  display_name_translations: {"ja": "テスト"}
+  display_name: テスト
+  deleted_at: 
   start_at: 2008-01-13 02:54:00 +09:00
   id: 2
   note: テスト用のイベントです。
@@ -26,7 +28,8 @@ event_00003:
   event_category_id: 1
   end_at: 2008-02-05 00:00:00 +09:00
   name: ミーティング
-  display_name_translations: {"ja": "ミーティング"}
+  display_name: ミーティング
+  deleted_at: 
   start_at: 2008-01-13 00:00:00 +09:00
   id: 3
   note: ""
@@ -37,7 +40,8 @@ event_00004:
   event_category_id: 4
   end_at: 2008-02-06 00:00:00 +09:00
   name: テスト
-  display_name_translations: {"ja": "テスト"}
+  display_name: テスト
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
   id: 4
   note: なんとかかんとか
@@ -48,7 +52,8 @@ event_00005:
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
   name: test
-  display_name_translations: {"ja": "test"}
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
   id: 5
   note: ""
@@ -59,7 +64,8 @@ event_00006:
   event_category_id: 2
   end_at: 2008-02-08 00:00:00 +09:00
   name: なんとかかんとか
-  display_name_translations: {"ja": "なんとかかんとか"}
+  display_name: なんとかかんとか
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
   id: 6
   note: ""
@@ -70,7 +76,8 @@ event_00007:
   event_category_id: 1
   end_at: 2008-02-08 00:00:00 +09:00
   name: test
-  display_name_translations: {"ja": "test"}
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 00:00:00 +09:00
   id: 7
   note: test
@@ -81,7 +88,8 @@ event_00008:
   event_category_id: 1
   end_at: 2008-02-05 15:00:00 +09:00
   name: test
-  display_name_translations: {"ja": "test"}
+  display_name: test
+  deleted_at: 
   start_at: 2008-02-05 15:00:00 +09:00
   id: 8
   note: test
@@ -92,16 +100,17 @@ event_00008:
 #
 # Table name: events
 #
-#  id                        :bigint(8)        not null, primary key
-#  library_id                :bigint(8)        not null
-#  event_category_id         :bigint(8)        not null
-#  name                      :string           not null
-#  note                      :text
-#  start_at                  :datetime
-#  end_at                    :datetime
-#  all_day                   :boolean          default(FALSE), not null
-#  display_name_translations :jsonb            not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  place_id                  :bigint(8)
+#  id                :integer         not null, primary key
+#  library_id        :integer         default(1), not null
+#  event_category_id :integer         default(1), not null
+#  name              :string(255)
+#  note              :text
+#  start_at          :datetime
+#  end_at            :datetime
+#  all_day           :boolean         default(FALSE), not null
+#  deleted_at        :datetime
+#  created_at        :datetime
+#  updated_at        :datetime
+#  display_name      :text
 #
+

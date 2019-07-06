@@ -21,34 +21,9 @@ class ManifestationReserveStatsController < ApplicationController
     if params[:format] == 'txt'
       per_page = 65534
     else
-      per_page = 10
+      per_page = ReserveStatHasManifestation.default_per_page
     end
-
-    @carrier_type_results = Reserve.where(
-      Reserve.arel_table[:created_at].gteq @manifestation_reserve_stat.start_date
-    ).where(
-      Reserve.arel_table[:created_at].lt @manifestation_reserve_stat.end_date
-    ).joins(item: :manifestation).group(
-      :carrier_type_id
-    ).merge(
-      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).count(:id)
-
-    @checkout_type_results = Reserve.where(
-      Reserve.arel_table[:created_at].gteq @manifestation_reserve_stat.start_date
-    ).where(
-      Reserve.arel_table[:created_at].lt @manifestation_reserve_stat.end_date
-    ).joins(item: :manifestation).group(
-      :checkout_type_id
-    ).count(:id)
-
-    @stats = Reserve.where(
-      Reserve.arel_table[:created_at].gteq @manifestation_reserve_stat.start_date
-    ).where(
-      Reserve.arel_table[:created_at].lt @manifestation_reserve_stat.end_date
-    ).joins(item: :manifestation).group(:manifestation_id).merge(
-      Manifestation.where(carrier_type_id: CarrierType.pluck(:id))
-    ).order('count_id DESC').page(params[:page]).per(per_page)
+    @stats = @manifestation_reserve_stat.reserve_stat_has_manifestations.order('reserves_count DESC, manifestation_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

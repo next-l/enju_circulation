@@ -1,15 +1,15 @@
 class Checkout < ActiveRecord::Base
-  scope :not_returned, -> { left_joins(:checkin).where(checkins: {checkout_id: nil}) }
-  scope :returned, -> { joins(:checkin) }
-  scope :overdue, lambda {|date| not_returned.where('due_date < ?', date)}
-  scope :due_date_on, lambda {|date| not_returned.where(due_date: date.beginning_of_day .. date.end_of_day)}
+  scope :not_returned, -> { where(checkin_id: nil) }
+  scope :returned, -> { where('checkin_id IS NOT NULL') }
+  scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
+  scope :due_date_on, lambda {|date| where(checkin_id: nil, due_date: date.beginning_of_day .. date.end_of_day)}
   scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
   belongs_to :user, optional: true
   delegate :username, :user_number, to: :user, prefix: true
   belongs_to :item, touch: true
-  has_one :checkin
+  belongs_to :checkin, optional: true
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
   belongs_to :shelf, optional: true
@@ -167,16 +167,17 @@ end
 #
 # Table name: checkouts
 #
-#  id                     :bigint           not null, primary key
-#  user_id                :bigint
-#  item_id                :bigint           not null
-#  librarian_id           :bigint
-#  basket_id              :bigint
+#  id                     :integer          not null, primary key
+#  user_id                :integer
+#  item_id                :integer          not null
+#  checkin_id             :integer
+#  librarian_id           :integer
+#  basket_id              :integer
 #  due_date               :datetime
 #  checkout_renewal_count :integer          default(0), not null
 #  lock_version           :integer          default(0), not null
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  shelf_id               :bigint
-#  library_id             :bigint
+#  created_at             :datetime
+#  updated_at             :datetime
+#  shelf_id               :integer
+#  library_id             :integer
 #

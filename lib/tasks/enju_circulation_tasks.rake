@@ -46,19 +46,20 @@ namespace :enju_circulation do
     Rake::Task['statesman:backfill_most_recent'].invoke('UserReserveStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('Reserve')
     puts 'enju_circulation: The upgrade completed successfully.'
-    update_checkout
   end
 
   desc "migrate old checkout records"
   task migrate_old_checkout: :environment do
-    update_checkout
+    Checkout.transaction do
+      update_checkout
+    end
   end
 
   namespace :export do
     desc 'Export checkouts'
     task checkout: :environment do
       puts ['checked_out_at', 'due_date', 'item_identifier', 'call_number', 'shelf', 'carrier_type', 'title', 'username', 'full_name', 'user_number'].join("\t")
-      Checkout.not_returned.find_each do |c|
+      Checkout.where(checkin_id: nil).find_each do |c|
         if c.item
           shelf = c.shelf || c.item.shelf
           puts [

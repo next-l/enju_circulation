@@ -52,9 +52,9 @@ item_has_use_restriction_00008:
 #
 # Table name: item_has_use_restrictions
 #
-#  id                 :bigint           not null, primary key
-#  item_id            :bigint           not null
-#  use_restriction_id :bigint           not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                 :integer          not null, primary key
+#  item_id            :integer          not null
+#  use_restriction_id :integer          not null
+#  created_at         :datetime
+#  updated_at         :datetime
 #

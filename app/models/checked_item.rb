@@ -14,6 +14,7 @@ class CheckedItem < ActiveRecord::Base
   before_validation :set_due_date, on: :create
   strip_attributes only: :item_identifier
 
+  # attr_protected :user_id
   attr_accessor :item_identifier, :ignore_restriction, :due_date_string
 
   def available_for_checkout?
@@ -86,14 +87,14 @@ class CheckedItem < ActiveRecord::Base
 
       if lending_rule.fixed_due_date.blank?
         # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-        self.due_date = lending_rule.checkout_period.days.since(Time.zone.now).end_of_day
+        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
       else
         # self.due_date = item_checkout_type.fixed_due_date
         self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
       end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)
-        if item_checkout_type.set_due_date_after_closing_day
+        if item_checkout_type.set_due_date_before_closing_day
           self.due_date = due_date.yesterday.end_of_day
         else
           self.due_date = due_date.tomorrow.end_of_day
@@ -125,12 +126,12 @@ end
 #
 # Table name: checked_items
 #
-#  id           :bigint           not null, primary key
-#  item_id      :bigint           not null
-#  basket_id    :bigint           not null
-#  librarian_id :bigint
+#  id           :integer          not null, primary key
+#  item_id      :integer          not null
+#  basket_id    :integer          not null
+#  librarian_id :integer
 #  due_date     :datetime         not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  user_id      :bigint
+#  created_at   :datetime
+#  updated_at   :datetime
+#  user_id      :integer
 #
