@@ -1335,7 +1335,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "checkout_renewal_limit", default: 0, null: false
     t.integer "reservation_limit", default: 0, null: false
     t.integer "reservation_expired_period", default: 7, null: false
-    t.boolean "set_due_date_before_closing_day", default: false, null: false
+    t.boolean "set_due_date_after_closing_day", default: false, null: false
     t.datetime "fixed_due_date"
     t.text "note"
     t.integer "position"

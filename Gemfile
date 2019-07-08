@@ -23,6 +23,7 @@ gem 'enju_event', github: 'next-l/enju_event'
 gem 'enju_manifestation_viewer', github: 'next-l/enju_manifestation_viewer'
 gem 'paper_trail'
 gem 'sassc-rails'
+gem 'jbuilder'
 group :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
