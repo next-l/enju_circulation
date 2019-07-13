@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_06_052525) do
+ActiveRecord::Schema.define(version: 2019_07_12_163038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "agent_relationships", id: :serial, force: :cascade do |t|
@@ -111,6 +112,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "agents", id: :serial, force: :cascade do |t|
@@ -223,6 +225,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.string "attachment_content_type"
     t.bigint "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "checked_items", id: :serial, force: :cascade do |t|
@@ -331,6 +334,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "countries", id: :serial, force: :cascade do |t|
@@ -354,6 +358,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "creates", id: :serial, force: :cascade do |t|
@@ -394,6 +399,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "event_export_file_transitions", id: :serial, force: :cascade do |t|
@@ -403,6 +409,8 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "event_export_file_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "most_recent", null: false
+    t.index ["event_export_file_id", "most_recent"], name: "index_event_export_file_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["event_export_file_id"], name: "index_event_export_file_transitions_on_file_id"
     t.index ["sort_key", "event_export_file_id"], name: "index_event_export_file_transitions_on_sort_key_and_file_id", unique: true
   end
@@ -416,6 +424,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.datetime "executed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["user_id"], name: "index_event_export_files_on_user_id"
   end
 
   create_table "event_import_file_transitions", id: :serial, force: :cascade do |t|
@@ -425,6 +434,8 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "event_import_file_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "most_recent", null: false
+    t.index ["event_import_file_id", "most_recent"], name: "index_event_import_file_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["event_import_file_id"], name: "index_event_import_file_transitions_on_event_import_file_id"
     t.index ["sort_key", "event_import_file_id"], name: "index_event_import_file_transitions_on_sort_key_and_file_id", unique: true
   end
@@ -472,8 +483,11 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.text "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "place_id"
+    t.jsonb "display_name_translations", default: {}, null: false
     t.index ["event_category_id"], name: "index_events_on_event_category_id"
     t.index ["library_id"], name: "index_events_on_library_id"
+    t.index ["place_id"], name: "index_events_on_place_id"
   end
 
   create_table "exemplifies", id: :serial, force: :cascade do |t|
@@ -493,6 +507,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "frequencies", id: :serial, force: :cascade do |t|
@@ -502,6 +517,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "identifier_types", id: :serial, force: :cascade do |t|
@@ -600,6 +616,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.string "iso_639_3"
     t.text "note"
     t.integer "position"
+    t.jsonb "display_name_translations", default: {}, null: false
     t.index ["iso_639_1"], name: "index_languages_on_iso_639_1"
     t.index ["iso_639_2"], name: "index_languages_on_iso_639_2"
     t.index ["iso_639_3"], name: "index_languages_on_iso_639_3"
@@ -691,6 +708,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "manifestation_checkout_stat_transitions", id: :serial, force: :cascade do |t|
@@ -725,6 +743,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "manifestation_relationships", id: :serial, force: :cascade do |t|
@@ -835,6 +854,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "message_request_transitions", id: :serial, force: :cascade do |t|
@@ -942,6 +962,18 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.index ["picture_attachable_id", "picture_attachable_type"], name: "index_picture_files_on_picture_attachable_id_and_type"
   end
 
+  create_table "places", id: :serial, force: :cascade do |t|
+    t.string "term"
+    t.text "city"
+    t.integer "country_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_places_on_country_id"
+    t.index ["term"], name: "index_places_on_term"
+  end
+
   create_table "produce_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "display_name"
@@ -949,6 +981,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "produces", id: :serial, force: :cascade do |t|
@@ -993,6 +1026,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "realizes", id: :serial, force: :cascade do |t|
@@ -1503,6 +1537,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_052525) do
   add_foreign_key "demands", "items"
   add_foreign_key "demands", "messages"
   add_foreign_key "demands", "users"
+  add_foreign_key "events", "event_categories"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
   add_foreign_key "items", "manifestations"
