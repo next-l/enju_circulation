@@ -1,4 +1,4 @@
-class ReserveStatHasUser < ActiveRecord::Base
+class ReserveStatHasUser < ApplicationRecord
   # attr_accessible
   # attr_accessible :user_reserve_stat_id, :user_id,
   #  as: :admin

@@ -1,4 +1,4 @@
-class ManifestationReserveStatTransition < ActiveRecord::Base
+class ManifestationReserveStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   

@@ -1,4 +1,4 @@
-class UserReserveStatJob < ActiveJob::Base
+class UserReserveStatJob < ApplicationJob
   queue_as :enju_leaf
 
   def perform(user_reserve_stat)

@@ -1,4 +1,4 @@
-class ReserveStatHasManifestation < ActiveRecord::Base
+class ReserveStatHasManifestation < ApplicationRecord
   belongs_to :manifestation_reserve_stat
   belongs_to :manifestation
 

@@ -1,4 +1,4 @@
-class ManifestationCheckoutStat < ActiveRecord::Base
+class ManifestationCheckoutStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('manifestation_checkout_stats.id DESC')}

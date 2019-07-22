@@ -1,4 +1,4 @@
-class ManifestationReserveStat < ActiveRecord::Base
+class ManifestationReserveStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('manifestation_reserve_stats.id DESC')}

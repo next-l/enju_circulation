@@ -1,4 +1,4 @@
-class UserGroupHasCheckoutType < ActiveRecord::Base
+class UserGroupHasCheckoutType < ApplicationRecord
   scope :available_for_item, lambda{|item| where(checkout_type_id: item.checkout_type.id)}
   scope :available_for_carrier_type, lambda{|carrier_type| includes(checkout_type: :carrier_types).where('carrier_types.id' => carrier_type.id)}
 

@@ -1,4 +1,4 @@
-class Checkin < ActiveRecord::Base
+class Checkin < ApplicationRecord
   default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
   has_one :checkout, dependent: :nullify

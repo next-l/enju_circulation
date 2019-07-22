@@ -1,4 +1,4 @@
-class UserReserveStat < ActiveRecord::Base
+class UserReserveStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('user_reserve_stats.id DESC')}

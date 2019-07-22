@@ -1,4 +1,4 @@
-class Reserve < ActiveRecord::Base
+class Reserve < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }

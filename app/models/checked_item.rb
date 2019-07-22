@@ -1,4 +1,4 @@
-class CheckedItem < ActiveRecord::Base
+class CheckedItem < ApplicationRecord
   belongs_to :item
   belongs_to :basket
   belongs_to :librarian, class_name: 'User', optional: true

@@ -1,4 +1,4 @@
-class ItemHasUseRestriction < ActiveRecord::Base
+class ItemHasUseRestriction < ApplicationRecord
   belongs_to :item, validate: true
   belongs_to :use_restriction, validate: true
   accepts_nested_attributes_for :use_restriction

@@ -1,4 +1,4 @@
-class UserReserveStatTransition < ActiveRecord::Base
+class UserReserveStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   

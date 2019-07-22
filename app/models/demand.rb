@@ -1,4 +1,4 @@
-class Demand < ActiveRecord::Base
+class Demand < ApplicationRecord
   belongs_to :user
   belongs_to :item
   belongs_to :message

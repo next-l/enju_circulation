@@ -1,4 +1,4 @@
-class UserCheckoutStatTransition < ActiveRecord::Base
+class UserCheckoutStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   
