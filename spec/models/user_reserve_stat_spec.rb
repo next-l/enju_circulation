@@ -27,5 +27,5 @@ end
 #  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
-#  user_id      :bigint
+#  user_id      :integer
 #

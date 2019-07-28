@@ -1,4 +1,4 @@
-class ReserveStatHasManifestation < ActiveRecord::Base
+class ReserveStatHasManifestation < ApplicationRecord
   belongs_to :manifestation_reserve_stat
   belongs_to :manifestation
 
@@ -14,7 +14,7 @@ end
 #
 #  id                            :integer          not null, primary key
 #  manifestation_reserve_stat_id :integer          not null
-#  manifestation_id              :bigint           not null
+#  manifestation_id              :integer          not null
 #  reserves_count                :integer
 #  created_at                    :datetime
 #  updated_at                    :datetime

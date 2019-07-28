@@ -1,4 +1,4 @@
-class ReserveStatHasUser < ActiveRecord::Base
+class ReserveStatHasUser < ApplicationRecord
   # attr_accessible
   # attr_accessible :user_reserve_stat_id, :user_id,
   #  as: :admin
@@ -17,7 +17,7 @@ end
 #
 #  id                   :integer          not null, primary key
 #  user_reserve_stat_id :integer          not null
-#  user_id              :bigint           not null
+#  user_id              :integer          not null
 #  reserves_count       :integer
 #  created_at           :datetime
 #  updated_at           :datetime

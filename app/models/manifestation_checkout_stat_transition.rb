@@ -1,4 +1,4 @@
-class ManifestationCheckoutStatTransition < ActiveRecord::Base
+class ManifestationCheckoutStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   
@@ -14,7 +14,7 @@ end
 #  to_state                       :string
 #  metadata                       :text             default({})
 #  sort_key                       :integer
-#  manifestation_checkout_stat_id :bigint
+#  manifestation_checkout_stat_id :integer
 #  created_at                     :datetime
 #  updated_at                     :datetime
 #  most_recent                    :boolean          not null

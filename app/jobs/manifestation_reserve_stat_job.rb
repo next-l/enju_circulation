@@ -1,4 +1,4 @@
-class ManifestationReserveStatJob < ActiveJob::Base
+class ManifestationReserveStatJob < ApplicationJob
   queue_as :enju_leaf
 
   def perform(manifestation_reserve_stat)

@@ -1,4 +1,4 @@
-class Checkout < ActiveRecord::Base
+class Checkout < ApplicationRecord
   scope :not_returned, -> { where(checkin_id: nil) }
   scope :returned, -> { where('checkin_id IS NOT NULL') }
   scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
@@ -168,7 +168,7 @@ end
 # Table name: checkouts
 #
 #  id                     :integer          not null, primary key
-#  user_id                :bigint
+#  user_id                :integer
 #  item_id                :integer          not null
 #  checkin_id             :integer
 #  librarian_id           :integer

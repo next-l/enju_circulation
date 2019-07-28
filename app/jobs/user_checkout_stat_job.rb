@@ -1,4 +1,4 @@
-class UserCheckoutStatJob < ActiveJob::Base
+class UserCheckoutStatJob < ApplicationJob
   queue_as :enju_leaf
 
   def perform(user_checkout_stat)

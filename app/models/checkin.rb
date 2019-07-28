@@ -1,4 +1,4 @@
-class Checkin < ActiveRecord::Base
+class Checkin < ApplicationRecord
   default_scope { order('checkins.id DESC') }
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
   has_one :checkout
@@ -87,10 +87,9 @@ end
 #
 #  id           :integer          not null, primary key
 #  item_id      :integer          not null
-#  librarian_id :bigint
+#  librarian_id :integer
 #  basket_id    :integer
 #  created_at   :datetime
 #  updated_at   :datetime
 #  lock_version :integer          default(0), not null
-#  checkout_id  :integer
 #

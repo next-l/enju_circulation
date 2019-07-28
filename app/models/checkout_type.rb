@@ -1,4 +1,4 @@
-class CheckoutType < ActiveRecord::Base
+class CheckoutType < ApplicationRecord
   include MasterModel
   scope :available_for_carrier_type, lambda {|carrier_type| includes(:carrier_types).where('carrier_types.name = ?', carrier_type.name).order('carrier_types.position')}
   scope :available_for_user_group, lambda {|user_group| includes(:user_groups).where('user_groups.name = ?', user_group.name).order('user_group.position')}
@@ -22,7 +22,7 @@ end
 #  name         :string           not null
 #  display_name :text
 #  note         :text
-#  position     :integer          default(1), not null
+#  position     :integer
 #  created_at   :datetime
 #  updated_at   :datetime
 #

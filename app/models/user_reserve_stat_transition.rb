@@ -1,4 +1,4 @@
-class UserReserveStatTransition < ActiveRecord::Base
+class UserReserveStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   
@@ -14,7 +14,7 @@ end
 #  to_state             :string
 #  metadata             :text             default({})
 #  sort_key             :integer
-#  user_reserve_stat_id :bigint
+#  user_reserve_stat_id :integer
 #  created_at           :datetime
 #  updated_at           :datetime
 #  most_recent          :boolean          not null

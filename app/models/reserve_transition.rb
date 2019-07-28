@@ -1,4 +1,4 @@
-class ReserveTransition < ActiveRecord::Base
+class ReserveTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
   
@@ -14,7 +14,7 @@ end
 #  to_state    :string
 #  metadata    :text             default({})
 #  sort_key    :integer
-#  reserve_id  :bigint
+#  reserve_id  :integer
 #  created_at  :datetime
 #  updated_at  :datetime
 #  most_recent :boolean          not null

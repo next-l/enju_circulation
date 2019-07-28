@@ -1,4 +1,4 @@
-class Reserve < ActiveRecord::Base
+class Reserve < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
@@ -394,7 +394,7 @@ end
 # Table name: reserves
 #
 #  id                           :integer          not null, primary key
-#  user_id                      :bigint           not null
+#  user_id                      :integer          not null
 #  manifestation_id             :integer          not null
 #  item_id                      :integer
 #  request_status_type_id       :integer          not null

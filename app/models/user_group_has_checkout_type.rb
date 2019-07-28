@@ -1,4 +1,4 @@
-class UserGroupHasCheckoutType < ActiveRecord::Base
+class UserGroupHasCheckoutType < ApplicationRecord
   scope :available_for_item, lambda{|item| where(checkout_type_id: item.checkout_type.id)}
   scope :available_for_carrier_type, lambda{|carrier_type| includes(checkout_type: :carrier_types).where('carrier_types.id' => carrier_type.id)}
 
@@ -69,7 +69,7 @@ end
 # Table name: user_group_has_checkout_types
 #
 #  id                              :integer          not null, primary key
-#  user_group_id                   :bigint           not null
+#  user_group_id                   :integer          not null
 #  checkout_type_id                :integer          not null
 #  checkout_limit                  :integer          default(0), not null
 #  checkout_period                 :integer          default(0), not null

@@ -1,4 +1,4 @@
-class CheckedItem < ActiveRecord::Base
+class CheckedItem < ApplicationRecord
   belongs_to :item
   belongs_to :basket
   belongs_to :librarian, class_name: 'User', optional: true
@@ -94,7 +94,7 @@ class CheckedItem < ActiveRecord::Base
       end
       # 返却期限日が閉館日の場合
       while item.shelf.library.closed?(due_date)
-        if item_checkout_type.set_due_date_before_closing_day
+        if item_checkout_type.set_due_date_after_closing_day
           self.due_date = due_date.yesterday.end_of_day
         else
           self.due_date = due_date.tomorrow.end_of_day
@@ -133,5 +133,5 @@ end
 #  due_date     :datetime         not null
 #  created_at   :datetime
 #  updated_at   :datetime
-#  user_id      :bigint
+#  user_id      :integer
 #

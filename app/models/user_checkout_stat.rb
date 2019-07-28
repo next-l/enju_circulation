@@ -1,4 +1,4 @@
-class UserCheckoutStat < ActiveRecord::Base
+class UserCheckoutStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
@@ -59,5 +59,5 @@ end
 #  updated_at   :datetime
 #  started_at   :datetime
 #  completed_at :datetime
-#  user_id      :bigint
+#  user_id      :integer
 #
