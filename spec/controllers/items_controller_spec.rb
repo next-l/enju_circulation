@@ -43,4 +43,20 @@ describe ItemsController do
       end
     end
   end
+
+  describe 'DELETE destroy' do
+    describe 'When logged in as Administrator' do
+      login_fixture_admin
+
+      it 'should not destroy item if not checked in' do
+        delete :destroy, params: { id: 1 }
+        expect(response).to be_forbidden
+      end
+
+      it 'should not destroy a removed item' do
+        delete :destroy, params: { id: 23 }
+        expect(response).to be_forbidden
+      end
+    end
+  end
 end
