@@ -54,7 +54,7 @@ describe ItemsController do
       end
 
       it 'should not destroy a removed item' do
-        delete :destroy, params: { id: 23 }
+        delete :destroy, params: { id: 26 }
         expect(response).to be_forbidden
       end
     end

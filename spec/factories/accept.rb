@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :accept do
     basket_id{FactoryBot.create(:basket).id}
-    item_id{FactoryBot.create(:item).id}
+    association :item, circulation_status: CirculationStatus.find_by(name: 'In Process'), budget_type: BudgetType.first, bookstore: Bookstore.first
     librarian_id{FactoryBot.create(:librarian).id}
   end
 end

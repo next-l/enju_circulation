@@ -1,0 +1,9 @@
+one:
+  basket_id: 1
+  item_id: 1
+  librarian_id: 1
+
+two:
+  basket_id: 1
+  item_id: 2
+  librarian_id: 1
