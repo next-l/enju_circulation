@@ -2,7 +2,7 @@
   <%= item.circulation_status.display_name if item.circulation_status -%>
   <% if item.use_restriction.name == 'Not For Loan' %>
     <br />
-    <%= item.use_restriction.display_name %>
+    <%= item.use_restriction.display_name.localize %>
   <% else %>
     <% if item.retained? %>
       <br />
