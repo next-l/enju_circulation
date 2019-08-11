@@ -19,3 +19,4 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
 end
+gem 'enju_biblio', github: 'next-l/enju_biblio', branch: '1.3'

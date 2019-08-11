@@ -5,5 +5,8 @@ FactoryBot.define do
     manifestation_id{FactoryBot.create(:manifestation).id}
     bookstore { Bookstore.first }
     budget_type { BudgetType.first }
+    after(:create) do |item|
+      item.use_restriction = UseRestriction.find_by(name: 'Limited Circulation, Normal Loan Period')
+    end
   end
 end

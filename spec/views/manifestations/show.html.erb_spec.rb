@@ -4,7 +4,7 @@ describe "manifestations/show" do
   fixtures :all
 
   before(:each) do
-    assign(:manifestation, FactoryBot.create(:manifestation))
+    assign(:manifestation, FactoryBot.create(:item).manifestation)
     allow(view).to receive(:policy).and_return double(create?: false, udpate?: false, destroy?: false)
   end
 
@@ -16,7 +16,6 @@ describe "manifestations/show" do
     end
 
     it "should have the total number of checkouts" do
-      assign(:manifestation, manifestations(:manifestation_00001))
       render
       expect(rendered).to have_css "div.manifestation_total_checkouts", text: /\A\s*.*?: \d+/
     end
