@@ -11,9 +11,10 @@ end
 
 Basket.include(EnjuCirculation::EnjuBasket)
 Manifestation.include(EnjuCirculation::EnjuManifestation)
+Manifestation.include(EnjuManifestationViewer::EnjuManifestation)
 Item.include(EnjuCirculation::EnjuItem)
+Item.include(EnjuLibrary::EnjuItem)
 Profile.include(EnjuCirculation::EnjuProfile)
 Library.include(EnjuEvent::EnjuLibrary)
-Item.include(EnjuLibrary::EnjuItem)
 UserGroup.include(EnjuCirculation::EnjuUserGroup)
 Withdraw.include(EnjuCirculation::EnjuWithdraw)
