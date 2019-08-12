@@ -37,6 +37,12 @@ describe ItemsController do
         expect(assigns(:item)).to be_valid
         expect(response).to redirect_to item_url(assigns(:item))
       end
+
+      it 'should create a lending policy' do
+        old_lending_policy_count = LendingPolicy.count
+        post :create, params: { item: @attrs }
+        LendingPolicy.count.should eq old_lending_policy_count
+      end
     end
   end
 
@@ -50,6 +56,11 @@ describe ItemsController do
 
       it 'should not destroy item if not checked in' do
         delete :destroy, params: { id: 1 }
+        expect(response).to be_forbidden
+      end
+
+      it 'should not destroy a removed item' do
+        delete :destroy, params: { id: 23 }
         expect(response).to be_forbidden
       end
     end
