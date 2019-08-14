@@ -74,8 +74,14 @@ namespace :enju_circulation do
             c.user.try(:profile).try(:full_name),
             c.user.try(:profile).try(:user_number),
           ].join("\t")
-	end
+        end
       end
     end
+  end
+
+  desc "upgrade enju_circulation to enju_leaf 2.0"
+  task upgrade_20: :environment do
+    sql = 'UPDATE checkins SET checkout_id = checkouts.id FROM checkouts WHERE checkouts.checkin_id = checkins.id;'
+    ActiveRecord::Base.connection.execute(sql)
   end
 end
