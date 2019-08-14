@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_115451) do
+ActiveRecord::Schema.define(version: 2019_08_14_120827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -283,6 +283,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_115451) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
     t.index ["name"], name: "index_checkout_types_on_name"
   end
 

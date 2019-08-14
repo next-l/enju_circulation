@@ -3,19 +3,19 @@
 checkout_type_00001:
   id: 1
   name: book  
-  display_name: book
+  display_name_translations: {"en": "Book", "ja": "図書"}
   note: 
   position: 1
 checkout_type_00002:
   id: 2
   name: serial  
-  display_name: serial
+  display_name_translations: {"en": "Serial", "ja": "定期刊行物"}
   note: 
   position: 2
 checkout_type_00003:
   id: 3
   name: cd  
-  display_name: cd
+  display_name_translations: {"en": "CD", "ja": "CD"}
   note: 
   position: 3
 
