@@ -37,12 +37,6 @@ describe ItemsController do
         expect(assigns(:item)).to be_valid
         expect(response).to redirect_to item_url(assigns(:item))
       end
-
-      it 'should create a lending policy' do
-        old_lending_policy_count = LendingPolicy.count
-        post :create, params: { item: @attrs }
-        LendingPolicy.count.should eq old_lending_policy_count
-      end
     end
   end
 
