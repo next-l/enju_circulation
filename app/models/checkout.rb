@@ -1,4 +1,4 @@
-class Checkout < ActiveRecord::Base
+class Checkout < ApplicationRecord
   scope :not_returned, -> { left_joins(:checkin).where(checkins: {checkout_id: nil}) }
   scope :returned, -> { joins(:checkin) }
   scope :overdue, lambda {|date| not_returned.where('due_date < ?', date)}
