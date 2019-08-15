@@ -16,13 +16,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/**/*"]
 
-  s.add_dependency "enju_biblio", "~> 0.4.0.beta.1"
+  s.add_dependency "enju_biblio", "~> 0.5.0.beta.1"
   s.add_dependency "enju_manifestation_viewer", "~> 0.4.0.beta.1"
   s.add_dependency "enju_event", "~> 0.4.0.beta.1"
 
   s.add_development_dependency "capybara", "~> 3.11"
   s.add_development_dependency "coveralls"
-  s.add_development_dependency "enju_leaf", "~> 1.4.0.beta.1"
+  # s.add_development_dependency "enju_leaf", "~> 1.4.0.beta.1"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "pg"
   s.add_development_dependency "redis", "~> 4.0"
