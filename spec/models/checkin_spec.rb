@@ -13,7 +13,7 @@ describe Checkin do
     user = users(:user1)
     checkouts_count = user.checkouts.count
     checkin = Checkin.new
-    checkin.item = user.checkouts.not_returned.first.item
+    checkin.item_identifier = user.checkouts.not_returned.first.item.item_identifier
     checkin.basket = @basket
     checkin.librarian = users(:librarian1)
     # checkin.item_identifier = checkin.item.item_identifier
@@ -26,7 +26,7 @@ describe Checkin do
     user = users(:librarian1)
     checkouts_count = user.checkouts.count
     checkin = Checkin.new
-    checkin.item = user.checkouts.not_returned.first.item
+    checkin.item_identifier = user.checkouts.not_returned.first.item.item_identifier
     checkin.basket = @basket
     checkin.librarian = users(:librarian1)
     checkin.save!
@@ -40,11 +40,11 @@ end
 # Table name: checkins
 #
 #  id           :integer          not null, primary key
-#  item_id      :integer          not null
+#  item_id      :integer
 #  librarian_id :integer
 #  basket_id    :integer
 #  created_at   :datetime
 #  updated_at   :datetime
 #  lock_version :integer          default(0), not null
-#  checkin_id   :bigint
+#  checkout_id  :bigint
 #

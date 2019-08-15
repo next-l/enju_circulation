@@ -243,15 +243,15 @@ ActiveRecord::Schema.define(version: 2019_08_14_120827) do
   end
 
   create_table "checkins", id: :serial, force: :cascade do |t|
-    t.integer "item_id", null: false
+    t.integer "item_id"
     t.integer "librarian_id"
     t.integer "basket_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "lock_version", default: 0, null: false
-    t.bigint "checkin_id"
+    t.bigint "checkout_id"
     t.index ["basket_id"], name: "index_checkins_on_basket_id"
-    t.index ["checkin_id"], name: "index_checkins_on_checkin_id"
+    t.index ["checkout_id"], name: "index_checkins_on_checkout_id"
     t.index ["item_id"], name: "index_checkins_on_item_id"
     t.index ["librarian_id"], name: "index_checkins_on_librarian_id"
   end
@@ -1517,7 +1517,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_120827) do
   add_foreign_key "checked_items", "baskets"
   add_foreign_key "checked_items", "items"
   add_foreign_key "checked_items", "users"
-  add_foreign_key "checkins", "checkins"
+  add_foreign_key "checkins", "checkouts"
   add_foreign_key "checkins", "items"
   add_foreign_key "checkout_stat_has_manifestations", "manifestations"
   add_foreign_key "checkout_stat_has_users", "user_checkout_stats"

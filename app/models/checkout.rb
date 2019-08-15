@@ -1,15 +1,15 @@
-class Checkout < ApplicationRecord
-  scope :not_returned, -> { where(checkin_id: nil) }
-  scope :returned, -> { where('checkin_id IS NOT NULL') }
-  scope :overdue, lambda {|date| where('checkin_id IS NULL AND due_date < ?', date)}
-  scope :due_date_on, lambda {|date| where(checkin_id: nil, due_date: date.beginning_of_day .. date.end_of_day)}
+class Checkout < ActiveRecord::Base
+  scope :not_returned, -> { left_joins(:checkin).where(checkins: {checkout_id: nil}) }
+  scope :returned, -> { joins(:checkin) }
+  scope :overdue, lambda {|date| not_returned.where('due_date < ?', date)}
+  scope :due_date_on, lambda {|date| not_returned.where(due_date: date.beginning_of_day .. date.end_of_day)}
   scope :completed, lambda {|start_date, end_date| where('checkouts.created_at >= ? AND checkouts.created_at < ?', start_date, end_date)}
   scope :on, lambda {|date| where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.tomorrow.beginning_of_day)}
 
   belongs_to :user, optional: true
   delegate :username, :user_number, to: :user, prefix: true
   belongs_to :item, touch: true
-  belongs_to :checkin, optional: true
+  has_one :checkin, dependent: :destroy
   belongs_to :librarian, class_name: 'User'
   belongs_to :basket
   belongs_to :shelf, optional: true
