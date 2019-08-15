@@ -24,6 +24,7 @@ gem 'paper_trail'
 gem 'sassc-rails'
 gem 'jbuilder'
 gem 'rails-i18n'
+gem 'paperclip-meta'
 group :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
