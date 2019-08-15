@@ -3,17 +3,7 @@ require 'rails_helper'
 describe UserImportFile do
   fixtures :all
 
-  describe "when its mode is 'destroy'" do
-    before(:each) do
-      file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
-        user: users(:admin),
-        default_user_group: UserGroup.find(2),
-        default_library: Library.find(3)
-      )
-      file.import_start
-    end
-
+  describe "when its mode is 'create'" do
     it "should be imported" do
       file = UserImportFile.new user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv")
       file.default_user_group = UserGroup.find(2)
@@ -24,10 +14,13 @@ describe UserImportFile do
       old_import_results_count = UserImportResult.count
       file.current_state.should eq 'pending'
       file.import_start.should eq({user_imported: 5, user_found: 0, error: 3})
+      user003 = User.find_by(username: 'user003')
       user003.profile.checkout_icalendar_token.should eq 'secrettoken'
       user003.profile.save_checkout_history.should be_truthy
     end
+  end
 
+  describe "when its mode is 'destroy'" do
     it "should not remove users" do
       old_count = User.count
       file = UserImportFile.create!(
@@ -43,6 +36,14 @@ describe UserImportFile do
     end
 
     it "should not remove users if there are checkouts" do
+      file = UserImportFile.create!(
+        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
+        user: users(:admin),
+        default_user_group: UserGroup.find(2),
+        default_library: Library.find(3)
+      )
+      file.import_start
+
       user001 = User.find_by(username: 'user001')
       FactoryBot.create(:checkout, user: user001, item: FactoryBot.create(:item))
       old_count = User.count
