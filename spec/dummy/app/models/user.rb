@@ -9,6 +9,7 @@ class User < ApplicationRecord
   include EnjuCirculation::EnjuUser
 end
 
+Accept.include(EnjuCirculation::EnjuAccept)
 Basket.include(EnjuCirculation::EnjuBasket)
 Manifestation.include(EnjuCirculation::EnjuManifestation)
 Manifestation.include(EnjuManifestationViewer::EnjuManifestation)
