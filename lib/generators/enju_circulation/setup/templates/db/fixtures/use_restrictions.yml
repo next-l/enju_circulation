@@ -13,7 +13,7 @@ use_restriction_00002:
   note: ""
 use_restriction_00003: 
   name: Limited Circulation, Long Loan Period  
-  display_name_translations: {"en": "Limited Circulation, Long Loan Period, "ja": "長期期間貸出"}
+  display_name_translations: {"en": "Limited Circulation, Long Loan Period", "ja": "長期期間貸出"}
   id: 3
   position: 3
   note: ""
@@ -77,3 +77,17 @@ use_restriction_00013:
   id: 13
   position: 13
   note: ""
+
+# == Schema Information
+#
+# Table name: use_restrictions
+#
+#  id                        :integer          not null, primary key
+#  name                      :string           not null
+#  display_name              :text
+#  note                      :text
+#  position                  :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#  display_name_translations :jsonb            not null
+#
