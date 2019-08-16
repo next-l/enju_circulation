@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "capybara", "~> 3.11"
   s.add_development_dependency "coveralls"
-  s.add_development_dependency "enju_leaf", "~> 1.4.0.beta.1"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "pg"
   s.add_development_dependency "redis", "~> 4.0"
