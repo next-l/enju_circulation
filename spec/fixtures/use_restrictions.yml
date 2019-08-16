@@ -13,7 +13,7 @@ use_restriction_00002:
   note: ""
 use_restriction_00003: 
   name: Limited Circulation, Long Loan Period  
-  display_name_translations: {"en": "Limited Circulation, Long Loan Period, "ja": "長期期間貸出"}
+  display_name_translations: {"en": "Limited Circulation, Long Loan Period", "ja": "長期期間貸出"}
   id: 3
   position: 3
   note: ""
