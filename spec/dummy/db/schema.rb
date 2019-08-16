@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_120827) do
+ActiveRecord::Schema.define(version: 2019_08_16_102803) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accepts", id: :serial, force: :cascade do |t|
@@ -1298,6 +1297,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_120827) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "user_checkout_stat_transitions", id: :serial, force: :cascade do |t|
