@@ -5,6 +5,7 @@ class UseRestriction < ApplicationRecord
   scope :available, -> {where(name: ['Not For Loan', 'Limited Circulation, Normal Loan Period'])}
   has_many :item_has_use_restrictions
   has_many :items, through: :item_has_use_restrictions
+  translates :display_name
 
   private
 
@@ -17,11 +18,12 @@ end
 #
 # Table name: use_restrictions
 #
-#  id           :integer          not null, primary key
-#  name         :string           not null
-#  display_name :text
-#  note         :text
-#  position     :integer
-#  created_at   :datetime
-#  updated_at   :datetime
+#  id                        :integer          not null, primary key
+#  name                      :string           not null
+#  display_name              :text
+#  note                      :text
+#  position                  :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#  display_name_translations :jsonb            not null
 #
