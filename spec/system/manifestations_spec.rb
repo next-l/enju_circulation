@@ -15,7 +15,7 @@ RSpec.describe 'Checkouts', type: :system do
     it 'should contain use_restriction' do
       sign_in users(:librarian1)
       visit manifestation_path(@item.manifestation)
-      expect(page).to have_content 'Not For Loan'
+      expect(page).to have_content '貸出不可'
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe 'Checkouts', type: :system do
     it 'should contain use_restriction' do
       sign_in users(:librarian1)
       visit manifestation_path(@item.manifestation)
-      expect(page).to have_content 'Not For Loan'
+      expect(page).to have_content '貸出不可'
     end
   end
 end
