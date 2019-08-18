@@ -1,4 +1,4 @@
-class AddMostRecentToEventImportFileTransitions < ActiveRecord::Migration[4.2]
+class AddMostRecentToEventImportFileTransitions < ActiveRecord::Migration[5.2]
   def up
     add_column :event_import_file_transitions, :most_recent, :boolean, null: true
   end

@@ -1,4 +1,4 @@
-class CreateBookstores < ActiveRecord::Migration[4.2]
+class CreateBookstores < ActiveRecord::Migration[5.2]
   def change
     create_table :bookstores do |t|
       t.text :name, null: false

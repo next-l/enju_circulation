@@ -393,14 +393,14 @@ end
 #
 # Table name: reserves
 #
-#  id                           :integer          not null, primary key
-#  user_id                      :integer          not null
-#  manifestation_id             :integer          not null
-#  item_id                      :integer
-#  request_status_type_id       :integer          not null
+#  id                           :bigint           not null, primary key
+#  user_id                      :bigint           not null
+#  manifestation_id             :bigint           not null
+#  item_id                      :bigint
+#  request_status_type_id       :bigint           not null
 #  checked_out_at               :datetime
-#  created_at                   :datetime
-#  updated_at                   :datetime
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime

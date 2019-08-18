@@ -1,4 +1,4 @@
-class CreateEventExportFiles < ActiveRecord::Migration[4.2]
+class CreateEventExportFiles < ActiveRecord::Migration[5.2]
   def change
     create_table :event_export_files do |t|
       t.references :user, index: true

@@ -1,4 +1,4 @@
-class CreateCarrierTypeHasCheckoutTypes < ActiveRecord::Migration[4.2]
+class CreateCarrierTypeHasCheckoutTypes < ActiveRecord::Migration[5.2]
   def self.up
     create_table :carrier_type_has_checkout_types do |t|
       t.references :carrier_type, index: false, foreign_key: true, null: false
