@@ -5,11 +5,12 @@ describe UserImportFile do
 
   describe "when its mode is 'create'" do
     it "should be imported" do
-      file = UserImportFile.new user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv")
-      file.default_user_group = UserGroup.find(2)
-      file.default_library = Library.find(3)
-      file.user = users(:admin)
-      file.save
+      file = UserImportFile.create(
+        default_user_group: UserGroup.find(2),
+        default_library: Library.find(3),
+        user: users(:admin)
+      )
+      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
       old_users_count = User.count
       old_import_results_count = UserImportResult.count
       file.current_state.should eq 'pending'
@@ -22,13 +23,13 @@ describe UserImportFile do
 
   describe "when its mode is 'destroy'" do
     it "should not remove users" do
-      old_count = User.count
-      file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"),
-        user: users(:admin),
+      file = UserImportFile.create(
         default_user_group: UserGroup.find(2),
-        default_library: Library.find(3)
+        default_library: Library.find(3),
+        user: users(:admin)
       )
+      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
+      old_count = User.count
       old_message_count = Message.count
       file.remove
       User.count.should eq old_count - 2
@@ -36,24 +37,24 @@ describe UserImportFile do
     end
 
     it "should not remove users if there are checkouts" do
-      file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"),
-        user: users(:admin),
+      file1 = UserImportFile.create(
         default_user_group: UserGroup.find(2),
-        default_library: Library.find(3)
+        default_library: Library.find(3),
+        user: users(:admin)
       )
-      file.import_start
+      file1.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
+      file1.import_start
 
       user001 = User.find_by(username: 'user001')
       FactoryBot.create(:checkout, user: user001, item: FactoryBot.create(:item))
       old_count = User.count
-      file = UserImportFile.create!(
-        user_import: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"),
+      file2 = UserImportFile.create!(
         user: users(:admin),
         default_user_group: UserGroup.find(2),
         default_library: Library.find(3)
       )
-      file.remove
+      file2.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
+      file2.remove
       User.where(username: 'user001').should_not be_blank
       User.count.should eq old_count - 2
     end

@@ -13,7 +13,7 @@ describe ResourceExportFile do
     export_file.export!
     file = export_file.resource_export
     expect(file).to be_truthy
-    csv = CSV.open(file.path, {headers: true, col_sep: "\t"})
+    csv = CSV.parse(file.download, {headers: true, col_sep: "\t"})
     csv.each do |row|
       expect(row).to have_key "total_checkouts"
       case row["item_id"].to_i
