@@ -27,6 +27,27 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["librarian_id"], name: "index_accepts_on_librarian_id"
   end
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "agent_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
@@ -41,23 +62,15 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "agent_import_files", force: :cascade do |t|
-    t.integer "parent_id"
-    t.string "content_type"
-    t.integer "size"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
-    t.string "agent_import_file_name"
-    t.string "agent_import_content_type"
-    t.integer "agent_import_file_size"
-    t.datetime "agent_import_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "agent_import_fingerprint"
     t.text "error_message"
     t.string "edit_mode"
     t.string "user_encoding"
-    t.index ["parent_id"], name: "index_agent_import_files_on_parent_id"
     t.index ["user_id"], name: "index_agent_import_files_on_user_id"
   end
 
@@ -129,7 +142,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.text "full_name_alternative"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.string "zip_code_1"
     t.string "zip_code_2"
     t.text "address_1"
@@ -188,7 +200,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.string "fax_number"
     t.string "url"
     t.integer "position"
-    t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -221,10 +232,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.bigint "attachment_file_size"
-    t.datetime "attachment_updated_at"
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
@@ -399,8 +406,8 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "donates", force: :cascade do |t|
-    t.integer "agent_id", null: false
-    t.integer "item_id", null: false
+    t.bigint "agent_id", null: false
+    t.bigint "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["agent_id"], name: "index_donates_on_agent_id"
@@ -409,7 +416,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "event_categories", force: :cascade do |t|
     t.string "name", null: false
-    t.text "display_name"
     t.text "note"
     t.integer "position"
     t.datetime "created_at", null: false
@@ -432,10 +438,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "event_export_files", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "event_export_file_name"
-    t.string "event_export_content_type"
-    t.bigint "event_export_file_size"
-    t.datetime "event_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -457,15 +459,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "event_import_files", force: :cascade do |t|
     t.bigint "parent_id"
-    t.string "content_type"
-    t.integer "size"
     t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
-    t.string "event_import_file_name"
-    t.string "event_import_content_type"
-    t.integer "event_import_file_size"
-    t.datetime "event_import_updated_at"
     t.string "edit_mode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -498,7 +494,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.boolean "all_day", default: false, null: false
-    t.datetime "deleted_at"
     t.text "display_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -550,13 +545,13 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "identifiers", force: :cascade do |t|
     t.string "body", null: false
-    t.integer "identifier_type_id", null: false
-    t.integer "manifestation_id"
+    t.bigint "identifier_type_id", null: false
+    t.bigint "manifestation_id", null: false
     t.boolean "primary"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["body", "identifier_type_id"], name: "index_identifiers_on_body_and_identifier_type_id"
+    t.index ["identifier_type_id"], name: "index_identifiers_on_identifier_type_id"
     t.index ["manifestation_id"], name: "index_identifiers_on_manifestation_id"
   end
 
@@ -575,8 +570,8 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "import_requests", force: :cascade do |t|
     t.string "isbn"
-    t.integer "manifestation_id"
-    t.integer "user_id"
+    t.bigint "manifestation_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["isbn"], name: "index_import_requests_on_isbn"
@@ -636,7 +631,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.string "item_identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.integer "shelf_id", default: 1, null: false
     t.boolean "include_supplements", default: false, null: false
     t.text "note"
@@ -683,7 +677,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "libraries", force: :cascade do |t|
     t.string "name", null: false
-    t.text "display_name"
     t.string "short_display_name", null: false
     t.string "zip_code"
     t.text "street"
@@ -701,7 +694,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.text "opening_hour"
     t.string "isil"
     t.float "latitude"
@@ -714,7 +706,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "library_groups", force: :cascade do |t|
     t.string "name", null: false
-    t.text "display_name"
     t.string "short_name", null: false
     t.text "my_networks"
     t.text "old_login_banner"
@@ -727,17 +718,11 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.string "url", default: "http://localhost:3000/"
     t.text "settings"
     t.text "html_snippet"
-    t.string "book_jacket_source"
     t.integer "max_number_of_results", default: 500
     t.boolean "family_name_first", default: true
-    t.string "screenshot_generator"
     t.integer "pub_year_facet_range_interval", default: 10
     t.bigint "user_id"
     t.boolean "csv_charset_conversion", default: false, null: false
-    t.string "header_logo_file_name"
-    t.string "header_logo_content_type"
-    t.bigint "header_logo_file_size"
-    t.datetime "header_logo_updated_at"
     t.text "header_logo_meta"
     t.jsonb "display_name_translations", default: {}, null: false
     t.jsonb "login_banner_translations", default: {}, null: false
@@ -837,7 +822,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.datetime "date_copyrighted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.string "access_address"
     t.integer "language_id", default: 1, null: false
     t.integer "carrier_type_id", default: 1, null: false
@@ -1196,14 +1180,11 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "resource_export_files", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "resource_export_file_name"
-    t.string "resource_export_content_type"
-    t.bigint "resource_export_file_size"
-    t.datetime "resource_export_updated_at"
+    t.bigint "user_id"
     t.datetime "executed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_resource_export_files_on_user_id"
   end
 
   create_table "resource_import_file_transitions", force: :cascade do |t|
@@ -1220,16 +1201,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "resource_import_files", force: :cascade do |t|
-    t.integer "parent_id"
-    t.string "content_type"
-    t.integer "size"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
-    t.string "resource_import_file_name"
-    t.string "resource_import_content_type"
-    t.integer "resource_import_file_size"
-    t.datetime "resource_import_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "edit_mode"
@@ -1237,7 +1211,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.text "error_message"
     t.string "user_encoding"
     t.integer "default_shelf_id"
-    t.index ["parent_id"], name: "index_resource_import_files_on_parent_id"
     t.index ["user_id"], name: "index_resource_import_files_on_user_id"
   end
 
@@ -1276,7 +1249,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "search_engines", force: :cascade do |t|
     t.string "name", null: false
-    t.text "display_name"
     t.string "url", null: false
     t.text "base_url", null: false
     t.text "http_method", null: false
@@ -1330,14 +1302,12 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "shelves", force: :cascade do |t|
     t.string "name", null: false
-    t.text "display_name"
     t.text "note"
     t.bigint "library_id", null: false
     t.integer "items_count", default: 0, null: false
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.boolean "closed", default: false, null: false
     t.jsonb "display_name_translations", default: {}, null: false
     t.index ["library_id"], name: "index_shelves_on_library_id"
@@ -1359,7 +1329,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.text "note"
     t.bigint "user_id"
     t.bigint "order_list_id"
-    t.datetime "deleted_at"
     t.integer "subscribes_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1418,10 +1387,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "user_export_files", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "user_export_file_name"
-    t.string "user_export_content_type"
-    t.bigint "user_export_file_size"
-    t.datetime "user_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1449,12 +1414,10 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "user_groups", force: :cascade do |t|
     t.string "name"
-    t.text "display_name"
     t.text "note"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.integer "valid_period_for_new_user", default: 0, null: false
     t.datetime "expired_at"
     t.integer "number_of_day_to_notify_overdue", default: 7, null: false
@@ -1489,10 +1452,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
-    t.string "user_import_file_name"
-    t.string "user_import_content_type"
-    t.integer "user_import_file_size"
-    t.datetime "user_import_updated_at"
     t.string "user_import_fingerprint"
     t.string "edit_mode"
     t.text "error_message"
@@ -1591,6 +1550,8 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["librarian_id"], name: "index_withdraws_on_librarian_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agent_import_files", "users"
   add_foreign_key "carrier_type_has_checkout_types", "carrier_types"
   add_foreign_key "carrier_type_has_checkout_types", "checkout_types"
   add_foreign_key "checked_items", "baskets"
@@ -1610,7 +1571,15 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "demands", "messages"
   add_foreign_key "demands", "users"
   add_foreign_key "doi_records", "manifestations"
+  add_foreign_key "donates", "agents"
+  add_foreign_key "donates", "items"
+  add_foreign_key "event_export_files", "users"
+  add_foreign_key "event_import_files", "users"
   add_foreign_key "events", "event_categories"
+  add_foreign_key "identifiers", "identifier_types"
+  add_foreign_key "identifiers", "manifestations"
+  add_foreign_key "import_requests", "manifestations"
+  add_foreign_key "import_requests", "users"
   add_foreign_key "isbn_record_and_manifestations", "isbn_records"
   add_foreign_key "isbn_record_and_manifestations", "manifestations"
   add_foreign_key "issn_record_and_manifestations", "issn_records"
@@ -1631,13 +1600,17 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "reserve_stat_has_users", "users"
   add_foreign_key "reserves", "manifestations"
   add_foreign_key "reserves", "users"
+  add_foreign_key "resource_import_files", "users"
   add_foreign_key "retains", "items"
   add_foreign_key "retains", "reserves"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "user_checkout_stats", "users"
+  add_foreign_key "user_export_files", "users"
   add_foreign_key "user_group_has_checkout_types", "checkout_types"
   add_foreign_key "user_group_has_checkout_types", "user_groups"
   add_foreign_key "user_has_roles", "roles"
   add_foreign_key "user_has_roles", "users"
+  add_foreign_key "user_import_files", "users"
   add_foreign_key "user_reserve_stats", "users"
   add_foreign_key "users", "profiles"
 end

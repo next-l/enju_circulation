@@ -12,7 +12,6 @@ end
 Accept.include(EnjuCirculation::EnjuAccept)
 Basket.include(EnjuCirculation::EnjuBasket)
 Manifestation.include(EnjuCirculation::EnjuManifestation)
-Manifestation.include(EnjuManifestationViewer::EnjuManifestation)
 Item.include(EnjuCirculation::EnjuItem)
 Item.include(EnjuLibrary::EnjuItem)
 Profile.include(EnjuCirculation::EnjuProfile)

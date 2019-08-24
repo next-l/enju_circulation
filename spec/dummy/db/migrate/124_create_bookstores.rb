@@ -9,7 +9,6 @@ class CreateBookstores < ActiveRecord::Migration[5.2]
       t.string :fax_number
       t.string :url
       t.integer :position
-      t.datetime :deleted_at
 
       t.timestamps
     end
