@@ -1004,10 +1004,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.string "picture_content_type"
     t.integer "picture_file_size"
     t.datetime "picture_updated_at"
-    t.text "picture_meta"
-    t.string "picture_fingerprint"
-    t.integer "picture_width"
-    t.integer "picture_height"
     t.index ["picture_attachable_id", "picture_attachable_type"], name: "index_picture_files_on_picture_attachable_id_and_type"
   end
 
