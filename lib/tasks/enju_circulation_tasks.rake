@@ -38,8 +38,8 @@ namespace :enju_circulation do
     Checkout.send_overdue_notification
   end
 
-  desc "upgrade enju_circulation"
-  task upgrade: :environment do
+  desc "upgrade enju_circulation to 1.3"
+  task upgrade_to_13: :environment do
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationCheckoutStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('ManifestationReserveStat')
     Rake::Task['statesman:backfill_most_recent'].invoke('UserCheckoutStat')
@@ -77,5 +77,24 @@ namespace :enju_circulation do
         end
       end
     end
+  end
+
+  desc "upgrade enju_circulation to 2.0"
+  task upgrade: :environment do
+    sql = 'UPDATE checkins SET checkout_id = checkouts.id FROM checkouts WHERE checkouts.checkin_id = checkins.id;'
+    ActiveRecord::Base.connection.execute(sql)
+
+    class_names = [
+      CheckoutType, CirculationStatus, UseRestriction
+    ]
+    class_names.each do |klass|
+      klass.find_each do |record|
+        I18n.available_locales.each do |locale|
+          next unless record.respond_to?("display_name_#{locale}")
+          record.update("display_name_#{locale}": YAML.safe_load(record[:display_name])[locale.to_s])
+        end
+      end
+    end
+    puts 'enju_circulation: The upgrade completed successfully.'
   end
 end
