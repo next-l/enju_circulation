@@ -1,5 +1,4 @@
 class ReserveTransition < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordTransition
 
   
   belongs_to :reserve, inverse_of: :reserve_transitions
@@ -12,7 +11,7 @@ end
 #
 #  id          :bigint           not null, primary key
 #  to_state    :string
-#  metadata    :text             default({})
+#  metadata    :jsonb
 #  sort_key    :integer
 #  reserve_id  :integer
 #  created_at  :datetime         not null

@@ -1,5 +1,4 @@
 class UserReserveStatTransition < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordTransition
 
   
   belongs_to :user_reserve_stat, inverse_of: :user_reserve_stat_transitions
@@ -12,7 +11,7 @@ end
 #
 #  id                   :bigint           not null, primary key
 #  to_state             :string
-#  metadata             :text             default({})
+#  metadata             :jsonb
 #  sort_key             :integer
 #  user_reserve_stat_id :integer
 #  created_at           :datetime         not null
