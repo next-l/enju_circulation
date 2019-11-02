@@ -31,8 +31,9 @@ jobs:
         mv spec/dummy/config/database.yml spec/dummy/config/database.yml.orig
         bundle exec rake db:create
         bundle exec rake db:schema:load
-        yarn install
-        bundle exec rake sunspot:solr:start
+        spec/dummy/bin/yarn install
+        spec/dummy/bin/webpack
+        bundle exec rake app:sunspot:solr:start
         bundle exec rake
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/dummy_test
