@@ -44,7 +44,7 @@ module EnjuCirculation
     end
 
     def has_overdue?(day = 1)
-      true if checkouts.where(checkin_id: nil).where(Checkout.arel_table[:due_date].lt day.days.ago).count >= 1
+      true if checkouts.overdue(day.days.from_now).count >= 1
     end
   end
 end
