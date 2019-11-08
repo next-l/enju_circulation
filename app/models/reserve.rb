@@ -1,5 +1,8 @@
 class Reserve < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: ReserveTransition,
+    initial_state: :pending
+  ]
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
   scope :waiting, -> {not_in_state(:completed, :expired, :retained).where('canceled_at IS NULL AND (expired_at > ? OR expired_at IS NULL)', Time.zone.now).order('reserves.id DESC')}

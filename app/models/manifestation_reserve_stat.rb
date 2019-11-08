@@ -1,5 +1,8 @@
 class ManifestationReserveStat < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: ManifestationReserveStatTransition,
+    initial_state: :pending
+  ]
   include CalculateStat
   default_scope {order('manifestation_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
