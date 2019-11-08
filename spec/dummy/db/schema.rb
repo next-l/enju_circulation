@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accepts", force: :cascade do |t|
@@ -1369,7 +1368,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "user_export_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.bigint "user_export_file_id"
     t.datetime "created_at", null: false
@@ -1433,7 +1432,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "user_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.bigint "user_import_file_id"
     t.datetime "created_at", null: false
