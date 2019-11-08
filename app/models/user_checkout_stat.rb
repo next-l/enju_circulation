@@ -1,5 +1,8 @@
 class UserCheckoutStat < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: UserCheckoutStatTransition,
+    initial_state: :pending
+  ]
   include CalculateStat
   default_scope {order('user_checkout_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}

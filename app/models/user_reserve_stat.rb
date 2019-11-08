@@ -1,5 +1,8 @@
 class UserReserveStat < ApplicationRecord
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: UserReserveStatTransition,
+    initial_state: :pending
+  ]
   include CalculateStat
   default_scope {order('user_reserve_stats.id DESC')}
   scope :not_calculated, -> {in_state(:pending)}
