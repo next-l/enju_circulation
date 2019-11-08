@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "agent_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "agent_import_file_id"
     t.datetime "created_at", null: false
@@ -424,7 +424,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "event_export_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "event_export_file_id"
     t.datetime "created_at", null: false
@@ -445,7 +445,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "event_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "event_import_file_id"
     t.datetime "created_at", null: false
@@ -556,7 +556,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "import_request_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "import_request_id"
     t.datetime "created_at", null: false
@@ -888,25 +888,28 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "message_request_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "message_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "most_recent"
+    t.boolean "most_recent", null: false
+    t.index ["message_request_id", "most_recent"], name: "index_message_request_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["message_request_id"], name: "index_message_request_transitions_on_message_request_id"
     t.index ["sort_key", "message_request_id"], name: "index_message_request_transitions_on_sort_key_and_request_id", unique: true
   end
 
   create_table "message_requests", force: :cascade do |t|
-    t.integer "sender_id"
-    t.integer "receiver_id"
-    t.integer "message_template_id"
+    t.bigint "sender_id"
+    t.bigint "receiver_id"
+    t.bigint "message_template_id"
     t.datetime "sent_at"
-    t.datetime "deleted_at"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["message_template_id"], name: "index_message_requests_on_message_template_id"
+    t.index ["receiver_id"], name: "index_message_requests_on_receiver_id"
+    t.index ["sender_id"], name: "index_message_requests_on_sender_id"
   end
 
   create_table "message_templates", force: :cascade do |t|
@@ -922,24 +925,25 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "message_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "most_recent"
+    t.boolean "most_recent", null: false
+    t.index ["message_id", "most_recent"], name: "index_message_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["message_id"], name: "index_message_transitions_on_message_id"
     t.index ["sort_key", "message_id"], name: "index_message_transitions_on_sort_key_and_message_id", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
     t.datetime "read_at"
-    t.integer "receiver_id"
-    t.integer "sender_id"
+    t.bigint "sender_id"
+    t.bigint "receiver_id"
     t.string "subject", null: false
     t.text "body"
-    t.integer "message_request_id"
-    t.integer "parent_id"
+    t.bigint "message_request_id"
+    t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "lft"
@@ -1163,7 +1167,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "resource_export_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "resource_export_file_id"
     t.datetime "created_at", null: false
@@ -1184,7 +1188,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "resource_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
-    t.text "metadata", default: "{}"
+    t.jsonb "metadata", default: {}
     t.integer "sort_key"
     t.integer "resource_import_file_id"
     t.datetime "created_at", null: false
@@ -1586,6 +1590,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "library_groups", "users"
   add_foreign_key "manifestation_checkout_stats", "users"
   add_foreign_key "manifestation_reserve_stats", "users"
+  add_foreign_key "messages", "messages", column: "parent_id"
+  add_foreign_key "messages", "users", column: "receiver_id"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "periodical_and_manifestations", "manifestations"
   add_foreign_key "periodical_and_manifestations", "periodicals"
   add_foreign_key "periodicals", "frequencies"
