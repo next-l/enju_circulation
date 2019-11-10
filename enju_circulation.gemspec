@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/**/*"]
 
-  s.add_dependency "enju_biblio", "~> 0.4.0.beta.1"
+  s.add_dependency "enju_biblio", "~> 0.4.0.beta.2"
   s.add_dependency "enju_manifestation_viewer", "~> 0.4.0.beta.1"
   s.add_dependency "enju_event", "~> 0.4.0.beta.1"
 
@@ -33,5 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sunspot_solr", "~> 2.5"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "puma"
-  s.add_development_dependency "annotate", '~> 2.7'
+  s.add_development_dependency "annotate"
 end
