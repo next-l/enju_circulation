@@ -13,7 +13,6 @@ gemspec
 
 # To use debugger
 # gem 'debugger'
-gem 'paper_trail'
 gem 'sassc-rails'
 gem 'jbuilder'
 gem 'rails-i18n'
