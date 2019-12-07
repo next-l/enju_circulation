@@ -16,11 +16,11 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/{log,private,solr,tmp}/**/*"] - Dir["spec/dummy/db/*.sqlite3"]
 
-  s.add_dependency "enju_biblio", "~> 0.3.5"
+  s.add_dependency "enju_biblio", "~> 0.3.6"
   s.add_dependency "enju_manifestation_viewer", "~> 0.3.3"
   s.add_dependency "enju_event", "~> 0.3.2"
 
-  s.add_development_dependency "capybara", "~> 3.11", "< 3.16"
+  s.add_development_dependency "capybara", "~> 3.11", "< 3.27"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "enju_leaf", "~> 1.3.3"
   s.add_development_dependency "factory_bot_rails"
@@ -36,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "puma"
   s.add_development_dependency "annotate"
   s.add_development_dependency "rails", "~> 5.2"
+  s.add_development_dependency "sprockets", "~> 3.7"
 end
