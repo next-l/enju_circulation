@@ -385,18 +385,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["user_id"], name: "index_demands_on_user_id"
   end
 
-  create_table "doi_records", force: :cascade do |t|
-    t.string "body", null: false
-    t.string "display_body", null: false
-    t.string "source"
-    t.jsonb "response", default: {}, null: false
-    t.bigint "manifestation_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["body"], name: "index_doi_records_on_body", unique: true
-    t.index ["manifestation_id"], name: "index_doi_records_on_manifestation_id"
-  end
-
   create_table "donates", id: :serial, force: :cascade do |t|
     t.integer "agent_id", null: false
     t.integer "item_id", null: false
@@ -577,44 +565,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["isbn"], name: "index_import_requests_on_isbn"
     t.index ["manifestation_id"], name: "index_import_requests_on_manifestation_id"
     t.index ["user_id"], name: "index_import_requests_on_user_id"
-  end
-
-  create_table "isbn_record_and_manifestations", force: :cascade do |t|
-    t.bigint "isbn_record_id", null: false
-    t.bigint "manifestation_id", null: false
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["isbn_record_id"], name: "index_isbn_record_and_manifestations_on_isbn_record_id"
-    t.index ["manifestation_id"], name: "index_isbn_record_and_manifestations_on_manifestation_id"
-  end
-
-  create_table "isbn_records", force: :cascade do |t|
-    t.string "body", null: false
-    t.string "isbn_type"
-    t.string "source"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["body"], name: "index_isbn_records_on_body", unique: true
-  end
-
-  create_table "issn_record_and_manifestations", force: :cascade do |t|
-    t.bigint "issn_record_id", null: false
-    t.bigint "manifestation_id", null: false
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["issn_record_id"], name: "index_issn_record_and_manifestations_on_issn_record_id"
-    t.index ["manifestation_id"], name: "index_issn_record_and_manifestations_on_manifestation_id"
-  end
-
-  create_table "issn_records", force: :cascade do |t|
-    t.string "body", null: false
-    t.string "issn_type"
-    t.string "source"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["body"], name: "index_issn_records_on_body", unique: true
   end
 
   create_table "item_has_use_restrictions", id: :serial, force: :cascade do |t|
@@ -904,8 +854,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.integer "message_request_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "most_recent", null: false
-    t.index ["message_request_id", "most_recent"], name: "index_message_request_transitions_parent_most_recent", unique: true, where: "most_recent"
+    t.boolean "most_recent"
     t.index ["message_request_id"], name: "index_message_request_transitions_on_message_request_id"
     t.index ["sort_key", "message_request_id"], name: "index_message_request_transitions_on_sort_key_and_request_id", unique: true
   end
@@ -939,8 +888,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.integer "message_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "most_recent", null: false
-    t.index ["message_id", "most_recent"], name: "index_message_transitions_parent_most_recent", unique: true, where: "most_recent"
+    t.boolean "most_recent"
     t.index ["message_id"], name: "index_message_transitions_on_message_id"
     t.index ["sort_key", "message_id"], name: "index_message_transitions_on_sort_key_and_message_id", unique: true
   end
@@ -982,25 +930,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.datetime "updated_at"
     t.index ["agent_id"], name: "index_participates_on_agent_id"
     t.index ["event_id"], name: "index_participates_on_event_id"
-  end
-
-  create_table "periodical_and_manifestations", force: :cascade do |t|
-    t.bigint "periodical_id", null: false
-    t.bigint "manifestation_id", null: false
-    t.boolean "periodical_master", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["manifestation_id"], name: "index_periodical_and_manifestations_on_manifestation_id"
-    t.index ["periodical_id"], name: "index_periodical_and_manifestations_on_periodical_id"
-    t.index ["periodical_master"], name: "index_periodical_and_manifestations_on_periodical_master", unique: true, where: "(periodical_master IS TRUE)"
-  end
-
-  create_table "periodicals", force: :cascade do |t|
-    t.text "original_title", null: false
-    t.bigint "frequency_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["frequency_id"], name: "index_periodicals_on_frequency_id"
   end
 
   create_table "picture_files", id: :serial, force: :cascade do |t|
@@ -1603,12 +1532,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "demands", "items"
   add_foreign_key "demands", "messages"
   add_foreign_key "demands", "users"
-  add_foreign_key "doi_records", "manifestations"
   add_foreign_key "events", "event_categories"
-  add_foreign_key "isbn_record_and_manifestations", "isbn_records"
-  add_foreign_key "isbn_record_and_manifestations", "manifestations"
-  add_foreign_key "issn_record_and_manifestations", "issn_records"
-  add_foreign_key "issn_record_and_manifestations", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
   add_foreign_key "items", "manifestations"
@@ -1616,9 +1540,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "library_groups", "users"
   add_foreign_key "manifestation_checkout_stats", "users"
   add_foreign_key "manifestation_reserve_stats", "users"
-  add_foreign_key "periodical_and_manifestations", "manifestations"
-  add_foreign_key "periodical_and_manifestations", "periodicals"
-  add_foreign_key "periodicals", "frequencies"
   add_foreign_key "profiles", "users"
   add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserve_stat_has_users", "user_reserve_stats"
