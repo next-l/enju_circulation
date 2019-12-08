@@ -39,16 +39,6 @@ class ManifestationReserveStat < ApplicationRecord
     transition_to!(:completed)
     send_message
   end
-
-  private
-
-  def self.transition_class
-    ManifestationReserveStatTransition
-  end
-
-  def self.initial_state
-    :pending
-  end
 end
 
 # == Schema Information

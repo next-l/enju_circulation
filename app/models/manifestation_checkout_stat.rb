@@ -39,16 +39,6 @@ class ManifestationCheckoutStat < ApplicationRecord
     transition_to!(:completed)
     send_message
   end
-
-  private
-
-  def self.transition_class
-    ManifestationCheckoutStatTransition
-  end
-
-  def self.initial_state
-    :pending
-  end
 end
 
 # == Schema Information
