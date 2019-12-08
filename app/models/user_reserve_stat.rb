@@ -38,16 +38,6 @@ class UserReserveStat < ApplicationRecord
     transition_to!(:completed)
     send_message
   end
-
-  private
-
-  def self.transition_class
-    UserReserveStatTransition
-  end
-
-  def self.initial_state
-    :pending
-  end
 end
 
 # == Schema Information

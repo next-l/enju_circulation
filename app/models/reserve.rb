@@ -382,14 +382,6 @@ class Reserve < ApplicationRecord
   if defined?(EnjuInterLibraryLoan)
     has_one :inter_library_loan
   end
-
-  def self.transition_class
-    ReserveTransition
-  end
-
-  def self.initial_state
-    :pending
-  end
 end
 
 # == Schema Information

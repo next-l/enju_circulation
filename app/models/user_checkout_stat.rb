@@ -38,16 +38,6 @@ class UserCheckoutStat < ApplicationRecord
     transition_to!(:completed)
     send_message
   end
-
-  private
-
-  def self.transition_class
-    UserCheckoutStatTransition
-  end
-
-  def self.initial_state
-    :pending
-  end
 end
 
 # == Schema Information
