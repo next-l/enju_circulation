@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accepts", force: :cascade do |t|
@@ -893,8 +894,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.integer "message_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "most_recent", null: false
-    t.index ["message_request_id", "most_recent"], name: "index_message_request_transitions_parent_most_recent", unique: true, where: "most_recent"
+    t.boolean "most_recent"
     t.index ["message_request_id"], name: "index_message_request_transitions_on_message_request_id"
     t.index ["sort_key", "message_request_id"], name: "index_message_request_transitions_on_sort_key_and_request_id", unique: true
   end
@@ -930,8 +930,7 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.integer "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "most_recent", null: false
-    t.index ["message_id", "most_recent"], name: "index_message_transitions_parent_most_recent", unique: true, where: "most_recent"
+    t.boolean "most_recent"
     t.index ["message_id"], name: "index_message_transitions_on_message_id"
     t.index ["sort_key", "message_id"], name: "index_message_transitions_on_sort_key_and_message_id", unique: true
   end
@@ -1419,9 +1418,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.datetime "updated_at", null: false
     t.integer "valid_period_for_new_user", default: 0, null: false
     t.datetime "expired_at"
-    t.integer "number_of_day_to_notify_overdue", default: 7, null: false
-    t.integer "number_of_day_to_notify_due_date", default: 3, null: false
-    t.integer "number_of_time_to_notify_overdue", default: 3, null: false
+    t.integer "number_of_day_to_notify_overdue", default: 0, null: false
+    t.integer "number_of_day_to_notify_due_date", default: 0, null: false
+    t.integer "number_of_time_to_notify_overdue", default: 0, null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
