@@ -6,7 +6,7 @@ describe User do
 
   it "should get checked_item_count" do
     count = users(:user1).checked_item_count
-    count.should eq({book: 3, serial: 2, cd: 1})
+    count.should eq({book: 2, serial: 1, cd: 1})
   end
 
   it "should get reserves_count" do
