@@ -249,10 +249,10 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["user_id"], name: "index_checked_items_on_user_id"
   end
 
-  create_table "checkins", force: :cascade do |t|
-    t.bigint "item_id"
-    t.bigint "librarian_id"
-    t.bigint "basket_id"
+  create_table "checkins", comment: "返却", force: :cascade do |t|
+    t.bigint "item_id", comment: "所蔵ID"
+    t.bigint "librarian_id", comment: "貸出担当者ユーザID"
+    t.bigint "basket_id", comment: "貸出セッションID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "lock_version", default: 0, null: false
@@ -294,21 +294,19 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["name"], name: "index_checkout_types_on_name"
   end
 
-  create_table "checkouts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "item_id", null: false
-    t.bigint "checkin_id"
-    t.bigint "librarian_id"
-    t.bigint "basket_id"
-    t.datetime "due_date"
-    t.integer "checkout_renewal_count", default: 0, null: false
+  create_table "checkouts", comment: "貸出", force: :cascade do |t|
+    t.bigint "user_id", comment: "貸出対象者ユーザID"
+    t.bigint "item_id", null: false, comment: "貸出資料所蔵ID"
+    t.bigint "librarian_id", comment: "貸出担当者ユーザID"
+    t.bigint "basket_id", comment: "貸出セッションID"
+    t.datetime "due_date", comment: "返却期限日"
+    t.integer "checkout_renewal_count", default: 0, null: false, comment: "貸出更新回数"
     t.integer "lock_version", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "shelf_id"
     t.bigint "library_id"
     t.index ["basket_id"], name: "index_checkouts_on_basket_id"
-    t.index ["checkin_id"], name: "index_checkouts_on_checkin_id"
     t.index ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true
     t.index ["item_id"], name: "index_checkouts_on_item_id"
     t.index ["librarian_id"], name: "index_checkouts_on_librarian_id"
@@ -317,10 +315,10 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["user_id"], name: "index_checkouts_on_user_id"
   end
 
-  create_table "circulation_statuses", force: :cascade do |t|
-    t.string "name", null: false
+  create_table "circulation_statuses", comment: "貸出状態マスタ", force: :cascade do |t|
+    t.string "name", null: false, comment: "貸出状態コード"
     t.text "display_name"
-    t.text "note"
+    t.text "note", comment: "備考"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1141,10 +1139,10 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["sort_key", "reserve_id"], name: "index_reserve_transitions_on_sort_key_and_reserve_id", unique: true
   end
 
-  create_table "reserves", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "manifestation_id", null: false
-    t.bigint "item_id"
+  create_table "reserves", comment: "予約", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "予約者のユーザID"
+    t.bigint "manifestation_id", null: false, comment: "予約対象資料の書誌ID"
+    t.bigint "item_id", comment: "予約対象資料の所蔵ID"
     t.bigint "request_status_type_id", null: false
     t.datetime "checked_out_at"
     t.datetime "created_at", null: false
@@ -1560,7 +1558,6 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   add_foreign_key "checkout_stat_has_manifestations", "manifestations"
   add_foreign_key "checkout_stat_has_users", "user_checkout_stats"
   add_foreign_key "checkout_stat_has_users", "users"
-  add_foreign_key "checkouts", "checkins"
   add_foreign_key "checkouts", "items"
   add_foreign_key "checkouts", "libraries"
   add_foreign_key "checkouts", "shelves"

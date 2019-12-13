@@ -1,9 +1,9 @@
 class CreateReserves < ActiveRecord::Migration[5.2]
   def change
-    create_table :reserves do |t|
-      t.references :user, index: true, foreign_key: true, null: false
-      t.references :manifestation, index: true, null: false
-      t.references :item, index: true
+    create_table :reserves, comment: '予約' do |t|
+      t.references :user, foreign_key: true, null: false, comment: '予約者のユーザID'
+      t.references :manifestation, null: false, comment: '予約対象資料の書誌ID'
+      t.references :item, comment: '予約対象資料の所蔵ID'
       t.references :request_status_type, null: false
       t.datetime :checked_out_at
       t.timestamps
