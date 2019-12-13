@@ -3,7 +3,7 @@ module EnjuCirculation
     extend ActiveSupport::Concern
 
     included do
-      before_save :withdraw!, on: :create
+      before_create :withdraw!
     end
 
     def withdraw!

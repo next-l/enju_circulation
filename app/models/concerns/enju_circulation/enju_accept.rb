@@ -3,7 +3,7 @@ module EnjuCirculation
     extend ActiveSupport::Concern
 
     included do
-      before_save :accept!, on: :create
+      before_create :accept!
     end
 
     def accept!

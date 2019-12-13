@@ -3,9 +3,19 @@ module EnjuCirculation
     extend ActiveSupport::Concern
 
     included do
-      #private
+      private
 
       def prepare_options
+        @libraries = Library.order(:position)
+        if @item
+          @library = @item.shelf.library
+        else
+          @library = Library.real.includes(:shelves).order(:position).first
+        end
+        @shelves = @library.try(:shelves)
+        @bookstores = Bookstore.order(:position)
+        @budget_types = BudgetType.order(:position)
+        @roles = Role.all
         @circulation_statuses = CirculationStatus.order(:position)
         @use_restrictions = UseRestriction.available
         if @manifestation
@@ -13,8 +23,6 @@ module EnjuCirculation
         else
           @checkout_types = CheckoutType.order(:position)
         end
-
-        super
       end
     end
   end
