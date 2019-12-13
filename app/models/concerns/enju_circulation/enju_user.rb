@@ -27,13 +27,14 @@ module EnjuCirculation
       CheckoutType.all.each do |checkout_type|
         # 資料種別ごとの貸出中の冊数を計算
         checkout_count[:"#{checkout_type.name}"] = checkouts.count_by_sql(["
-          SELECT count(item_id) FROM checkouts
-            WHERE item_id IN (
+          SELECT count(checkouts.item_id) FROM checkouts
+            LEFT JOIN checkins ON checkins.checkout_id = checkouts.id
+            WHERE checkouts.item_id IN (
               SELECT id FROM items
                 WHERE checkout_type_id = ?
             )
-            AND user_id = ? AND checkin_id IS NULL", checkout_type.id, id]
-                                                                         )
+            AND user_id = ? AND checkins.id IS NULL", checkout_type.id, id]
+        )
       end
       checkout_count
     end
@@ -44,7 +45,8 @@ module EnjuCirculation
     end
 
     def has_overdue?(day = 1)
-      true if checkouts.overdue(day.days.from_now).count >= 1
+      return true if checkouts.overdue(day.days.ago).count >= 1
+      false
     end
   end
 end
