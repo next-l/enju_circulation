@@ -236,10 +236,10 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "checked_items", force: :cascade do |t|
-    t.bigint "item_id", null: false
-    t.bigint "basket_id", null: false
-    t.bigint "librarian_id"
-    t.datetime "due_date", null: false
+    t.bigint "item_id", null: false, comment: "貸出予定資料ID"
+    t.bigint "basket_id", null: false, comment: "貸出セッションID"
+    t.bigint "librarian_id", comment: "貸出担当者ユーザID"
+    t.datetime "due_date", null: false, comment: "貸出期限予定日（貸出時に上書き可能）"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -250,9 +250,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "checkins", comment: "返却", force: :cascade do |t|
-    t.bigint "item_id", comment: "所蔵ID"
-    t.bigint "librarian_id", comment: "貸出担当者ユーザID"
-    t.bigint "basket_id", comment: "貸出セッションID"
+    t.bigint "item_id", comment: "返却資料の所蔵ID"
+    t.bigint "librarian_id", comment: "返却担当者ユーザID"
+    t.bigint "basket_id", comment: "返却セッションID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "lock_version", default: 0, null: false
@@ -295,16 +295,16 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
   end
 
   create_table "checkouts", comment: "貸出", force: :cascade do |t|
-    t.bigint "user_id", comment: "貸出対象者ユーザID"
-    t.bigint "item_id", null: false, comment: "貸出資料所蔵ID"
-    t.bigint "librarian_id", comment: "貸出担当者ユーザID"
+    t.bigint "user_id", comment: "貸出対象者のユーザID"
+    t.bigint "item_id", null: false, comment: "貸出資料の所蔵ID"
+    t.bigint "librarian_id", comment: "貸出担当者のユーザID"
     t.bigint "basket_id", comment: "貸出セッションID"
     t.datetime "due_date", comment: "返却期限日"
     t.integer "checkout_renewal_count", default: 0, null: false, comment: "貸出更新回数"
     t.integer "lock_version", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "shelf_id"
+    t.bigint "shelf_id", comment: "貸出時書架ID"
     t.bigint "library_id"
     t.index ["basket_id"], name: "index_checkouts_on_basket_id"
     t.index ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true
@@ -615,9 +615,9 @@ ActiveRecord::Schema.define(version: 2019_08_18_075628) do
     t.index ["body"], name: "index_issn_records_on_body", unique: true
   end
 
-  create_table "item_has_use_restrictions", force: :cascade do |t|
-    t.bigint "item_id", null: false
-    t.bigint "use_restriction_id", null: false
+  create_table "item_has_use_restrictions", comment: "所属と利用期限の関係", force: :cascade do |t|
+    t.bigint "item_id", null: false, comment: "所蔵ID"
+    t.bigint "use_restriction_id", null: false, comment: "利用制限ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_item_has_use_restrictions_on_item_id"

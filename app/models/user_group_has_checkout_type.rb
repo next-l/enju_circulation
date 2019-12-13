@@ -25,7 +25,9 @@ class UserGroupHasCheckoutType < ApplicationRecord
         ON (checkouts.item_id = items.id)
         LEFT OUTER JOIN users
         ON (users.id = checkouts.user_id)
-        WHERE checkouts.checkin_id IS NULL
+        LEFT OUTER JOIN checkins
+        ON (checkins.checkout_id = checkouts.id)
+        WHERE checkins.checkout_id IS NULL
         GROUP BY user_group_id, checkout_type_id;'
     ]
     UserGroupHasCheckoutType.find_by_sql(sql).each do |result|
