@@ -11,14 +11,13 @@ class Checkout < ApplicationRecord
   belongs_to :item, touch: true
   has_one :checkin, dependent: :destroy
   belongs_to :librarian, class_name: 'User'
-  belongs_to :basket
   belongs_to :shelf, optional: true
   belongs_to :library, optional: true
 
   validates_associated :user, :item, :librarian, :checkin # , :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   # validates_presence_of :user, :item, :basket
-  validates :item_id, :basket_id, :due_date, presence: true
+  validates :item_id, :due_date, presence: true
   validates :item_id, uniqueness: { scope: [:basket_id, :user_id] }
   validate :is_not_checked?, on: :create
   validate :renewable?, on: :update
@@ -58,6 +57,7 @@ class Checkout < ApplicationRecord
 
   def renewable?
     return nil if checkin
+
     messages = []
     if !operator && overdue?
       messages << I18n.t('checkout.you_have_overdue_item')
@@ -80,6 +80,7 @@ class Checkout < ApplicationRecord
 
   def reserved?
     return true if item.try(:reserved?)
+
     false
   end
 
@@ -90,19 +91,12 @@ class Checkout < ApplicationRecord
 
   def overdue?
     return false unless due_date
-    if Time.zone.now > due_date.tomorrow.beginning_of_day
-      return true
-    else
-      return false
-    end
+
+    Time.zone.now > due_date.tomorrow.beginning_of_day
   end
 
   def is_today_due_date?
-    if Time.zone.now.beginning_of_day == due_date.beginning_of_day
-      return true
-    else
-      return false
-    end
+    Time.zone.now.beginning_of_day == due_date.beginning_of_day
   end
 
   def set_new_due_date
@@ -111,6 +105,7 @@ class Checkout < ApplicationRecord
 
   def get_new_due_date
     return nil unless user
+
     if item
       if checkout_renewal_count <= item.checkout_status(user).checkout_renewal_limit
         new_due_date = Time.zone.now.advance(days: item.checkout_status(user).checkout_period).beginning_of_day

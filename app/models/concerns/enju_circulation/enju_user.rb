@@ -33,7 +33,7 @@ module EnjuCirculation
                 WHERE checkout_type_id = ?
             )
             AND user_id = ? AND checkin_id IS NULL", checkout_type.id, id]
-        )
+                                                                         )
       end
       checkout_count
     end

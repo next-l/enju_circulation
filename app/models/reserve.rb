@@ -275,8 +275,8 @@ class Reserve < ApplicationRecord
         Reserve.send_message_to_library('expired', manifestations: Reserve.not_sent_expiration_notice_to_library.collect(&:manifestation))
       end
     end
-  # rescue
-  #  logger.info "#{Time.zone.now} expiring reservations failed!"
+    # rescue
+    #  logger.info "#{Time.zone.now} expiring reservations failed!"
   end
 
   def checked_out_now?

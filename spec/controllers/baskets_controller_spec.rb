@@ -311,12 +311,14 @@ describe BasketsController do
 
       describe 'with valid params' do
         it 'updates the requested basket' do
-          put :update, params: { id: baskets(:basket_00008).id, basket: @attrs }
+          put :update, params: { id: baskets(:basket_00001).id, basket: @attrs }
         end
 
         it 'assigns the requested basket as @basket' do
-          put :update, params: { id: baskets(:basket_00008).id, basket: @attrs }
-          assigns(:basket).checkouts.order('created_at DESC').first.item.circulation_status.name.should eq 'On Loan'
+          put :update, params: { id: baskets(:basket_00001).id, basket: @attrs }
+          assigns(:basket).checked_items.order(created_at: :desc).map{|checked_item|
+            checked_item.item.circulation_status.name
+          }.uniq.should eq ['On Loan']
           response.should redirect_to(checkouts_url(user_id: assigns(:basket).user.username))
         end
       end
