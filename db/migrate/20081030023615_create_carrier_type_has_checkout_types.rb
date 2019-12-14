@@ -1,17 +1,13 @@
 class CreateCarrierTypeHasCheckoutTypes < ActiveRecord::Migration[5.2]
-  def self.up
+  def change
     create_table :carrier_type_has_checkout_types do |t|
       t.references :carrier_type, index: false, foreign_key: true, null: false
-      t.references :checkout_type, index: true, foreign_key: true, null: false
-      t.text :note
-      t.integer :position
+      t.references :checkout_type, foreign_key: true, null: false
+      t.text :note, comment: '備考'
+      t.integer :position, comment: '表示順序'
 
       t.timestamps
     end
     add_index :carrier_type_has_checkout_types, :carrier_type_id, name: 'index_carrier_type_has_checkout_types_on_m_form_id'
-  end
-
-  def self.down
-    drop_table :carrier_type_has_checkout_types
   end
 end

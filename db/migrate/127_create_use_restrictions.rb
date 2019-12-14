@@ -3,8 +3,8 @@ class CreateUseRestrictions < ActiveRecord::Migration[5.2]
     create_table :use_restrictions do |t|
       t.string :name, null: false
       t.text :display_name
-      t.text :note
-      t.integer :position
+      t.text :note, comment: '備考'
+      t.integer :position, comment: '表示順序'
 
       t.timestamps
     end

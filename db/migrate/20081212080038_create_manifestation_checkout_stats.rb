@@ -3,7 +3,7 @@ class CreateManifestationCheckoutStats < ActiveRecord::Migration[5.2]
     create_table :manifestation_checkout_stats do |t|
       t.datetime :start_date
       t.datetime :end_date
-      t.text :note
+      t.text :note, comment: '備考'
 
       t.timestamps
     end
