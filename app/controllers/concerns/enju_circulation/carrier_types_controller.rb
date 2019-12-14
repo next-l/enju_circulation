@@ -21,7 +21,7 @@ module EnjuCirculation
       end
 
       def prepare_options
-        @checkout_types = CheckoutType.select([:id, :display_name, :position])
+        @checkout_types = CheckoutType.order(:position)
       end
     end
   end
