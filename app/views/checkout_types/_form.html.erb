@@ -1,19 +1,19 @@
 <%= simple_form_for(@checkout_type, validate: true) do |f| %>
   <%= f.error_messages %>
 
-  <div class="field">
-    <%= f.label :name %><br />
+  <div class="form-group">
+    <%= f.label :name %>
     <%= f.text_field :name, required: true %>
   </div>
-  <div class="field">
-    <%= f.label :display_name %><br />
-    <%= f.text_area :display_name %>
+  <div class="form-group">
+    <%= f.label :display_name %>
+    <%= f.text_area :display_name, class: 'form-control' %>
   </div>
-  <div class="field">
-    <%= f.label :note %><br />
-    <%= f.text_area :note %>
+  <div class="form-group">
+    <%= f.label :note %>
+    <%= f.text_area :note, class: 'form-control' %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
