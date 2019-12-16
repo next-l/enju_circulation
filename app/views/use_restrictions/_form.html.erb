@@ -1,17 +1,17 @@
 <%= simple_form_for(@use_restriction, validate: true) do |f| %>
   <%= f.error_messages %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :name %><br />
     <%= f.text_field :name, required: true %>
   </div>
-  <div class="field">
+  <div class="form-group">
     <%= f.label :display_name %><br />
     <%= f.text_area :display_name %>
   </div>
-  <div class="field">
+  <div class="form-group">
     <%= f.label :note %><br />
-    <%= f.text_area :note %>
+    <%= f.text_area :note, class: 'form-control' %>
   </div>
   <div class="actions">
     <%= f.submit %>
