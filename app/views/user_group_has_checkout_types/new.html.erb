@@ -1,52 +1,7 @@
 <div class="row">
   <div class="col-md-9">
     <h1 class="title"><%= t('page.new', model: t('activerecord.models.user_group_has_checkout_type')) -%></h1>
-
-    <%= form_for(@user_group_has_checkout_type) do |f| -%>
-      <%= f.error_messages -%>
-
-      <div class="form-group">
-        <%= f.label t('activerecord.models.user_group') -%><br />
-        <%= f.select(:user_group_id, @user_groups.collect{|u| [u.display_name, u.id]}, include_blank: true) -%>
-      </div>
-      <div class="form-group">
-        <%= f.label t('activerecord.models.checkout_type') -%><br />
-        <%= f.select(:checkout_type_id, @checkout_types.collect{|c| [c.display_name, c.id]}, include_blank: true) -%>
-      </div>
-      <div class="form-group">
-        <%= f.label :checkout_limit -%><br />
-        <%= f.text_field :checkout_limit, class: 'resource_integer' -%>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :checkout_period -%><br />
-        <%= f.text_field :checkout_period, class: 'resource_integer' -%>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :checkout_renewal_limit -%><br />
-        <%= f.text_field :checkout_renewal_limit, class: 'resource_integer' -%>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :reservation_limit -%><br />
-        <%= f.text_field :reservation_limit, class: 'resource_integer' -%>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :set_due_date_after_closing_day -%>
-        <%= f.check_box :set_due_date_after_closing_day -%>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :note -%><br />
-        <%= f.text_area :note, class: 'form-control' -%>
-      </div>
-      <div class="actions">
-        <%= f.submit class: 'btn btn-primary' %>
-      </div>
-    <%- end -%>
-
+    <%= render 'form' %>
   </div>
 
   <div class="col">
