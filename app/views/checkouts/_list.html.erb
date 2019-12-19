@@ -24,6 +24,13 @@
         <%= link_to checkout.shelf.display_name.localize, checkout.shelf %>
         (<%= link_to checkout.shelf.library.display_name.localize, checkout.shelf.library %>)
       <% end %>
+      <% if checkout.item.manifestation.next_reservation %>
+        <br />
+        (<%= link_to_if(current_user.has_role?('Librarian'),
+            t('page.number_of_reservations',
+            count: Reserve.waiting.where(manifestation_id: checkout.item.manifestation.id, checked_out_at: nil).count),
+            reserves_path(query: "manifestation_id_i:#{checkout.item.manifestation.id}")) -%>)
+      <% end %>
     </td>
     <td>
       <%= l(checkout.due_date, format: :only_date) -%>
