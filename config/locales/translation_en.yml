@@ -129,8 +129,8 @@ en:
         item:
           attributes:
             circulation_status_id:
-              is_rented: is invalid. This item is rented.
-              is_reserved: is invalid. This item is reserved.
+              is_rented: Circulation status is invalid. This item is rented.
+              is_reserved: Circulation status is invalid. This item is reserved.
         withdraw:
           attributes:
             item_id:
