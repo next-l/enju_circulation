@@ -44,6 +44,14 @@ describe ItemsController do
     end
   end
 
+  describe 'PUT update' do
+    before(:each) do
+      @item = FactoryBot.create(:reserve).item
+      @item.circulation_status = CirculationStatus.find_by(name: 'Withdrawn')
+      expect(@item.valid).to be_falsy
+    end
+  end
+
   describe 'DELETE destroy' do
     describe 'When logged in as Administrator' do
       login_fixture_admin

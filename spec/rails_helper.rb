@@ -7,7 +7,7 @@ Coveralls.wear!
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../dummy/config/environment", __FILE__)
 require 'rspec/rails'
-require 'factory_bot'
+require 'factory_bot_rails'
 require 'rspec/active_model/mocks'
 require "capybara/rspec"
 require "pundit/rspec"
@@ -44,6 +44,3 @@ RSpec.configure do |config|
     end
   end
 end
-
-FactoryBot.definition_file_paths << "#{::Rails.root}/../../spec/factories"
-FactoryBot.find_definitions

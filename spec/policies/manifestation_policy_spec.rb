@@ -8,8 +8,7 @@ describe ManifestationPolicy do
     end
 
     it "not grants destroy if it is reserved" do
-      record = FactoryBot.create(:manifestation)
-      reserve = FactoryBot.create(:reserve, manifestation_id: record.id)
+      record = FactoryBot.create(:reserve).manifestation
       expect(subject).not_to permit(@admin, record)
     end
   end
