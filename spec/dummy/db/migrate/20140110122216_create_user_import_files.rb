@@ -2,7 +2,7 @@ class CreateUserImportFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :user_import_files do |t|
       t.references :user, index: true
-      t.text :note
+      t.text :note, comment: '備考'
       t.datetime :executed_at
       t.string :user_import_file_name
       t.string :user_import_content_type

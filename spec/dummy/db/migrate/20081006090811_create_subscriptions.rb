@@ -2,7 +2,7 @@ class CreateSubscriptions < ActiveRecord::Migration[4.2]
   def change
     create_table :subscriptions do |t|
       t.text :title, null: false
-      t.text :note
+      t.text :note, comment: '備考'
       t.references :user, index: true
       t.references :order_list, index: true
       t.datetime :deleted_at

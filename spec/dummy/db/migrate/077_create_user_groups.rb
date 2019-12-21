@@ -3,7 +3,7 @@ class CreateUserGroups < ActiveRecord::Migration[4.2]
     create_table :user_groups do |t|
       t.string :name, not_null: true
       t.text :display_name
-      t.text :note
+      t.text :note, comment: '備考'
       t.integer :position
       t.timestamps
       t.datetime :deleted_at

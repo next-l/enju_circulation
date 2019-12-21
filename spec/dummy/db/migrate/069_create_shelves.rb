@@ -3,7 +3,7 @@ class CreateShelves < ActiveRecord::Migration[4.2]
     create_table :shelves do |t|
       t.string :name, null: false
       t.text :display_name
-      t.text :note
+      t.text :note, comment: '備考'
       t.references :library, index: true, null: false
       t.integer :items_count, default: 0, null: false
       t.integer :position
