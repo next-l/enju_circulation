@@ -35,12 +35,16 @@ module EnjuCirculation
       has_many :reserves
       has_many :checked_items
       has_many :baskets, through: :checked_items
-      belongs_to :circulation_status, validate: true
+      belongs_to :circulation_status
       belongs_to :checkout_type
       has_one :item_has_use_restriction, dependent: :destroy
       has_one :use_restriction, through: :item_has_use_restriction
-      validates_associated :circulation_status, :checkout_type
       validates :circulation_status, :checkout_type, presence: true
+      validate :before_withdraw, if: Proc.new{|item| item.circulation_status.name == 'Withdrawn'} do
+        errors.add(:item_id, :is_rented) if rented?
+        errors.add(:item_id, :is_reserved) if reserved?
+      end
+
       searchable do
         string :circulation_status do
           circulation_status.name
@@ -66,6 +70,10 @@ module EnjuCirculation
     def rent?
       return true if checkouts.not_returned.select(:item_id).detect{|checkout| checkout.item_id == id}
       false
+    end
+
+    def rented?
+      rent?
     end
 
     def reserved_by_user?(user)
