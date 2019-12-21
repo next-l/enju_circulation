@@ -13,14 +13,14 @@ RSpec.describe Withdraw, type: :model do
     withdraw = Withdraw.new(librarian: users(:librarian1))
     withdraw.item = items(:item_00013)
     expect(withdraw.valid?).to be_falsy
-    expect(withdraw.errors.messages[:item_id]).to include('This item is rented.')
+    expect(withdraw.errors.messages[:item_id]).to include('item is rented.')
   end
 
   it "should not withdraw reserved item" do
     reserve = FactoryBot.create(:reserve)
     withdraw = FactoryBot.build(:withdraw, item: reserve.manifestation.items.first)
     expect(withdraw.valid?).to be_falsy
-    expect(withdraw.errors.messages[:item_id]).to include('This item is reserved.')
+    expect(withdraw.errors.messages[:item_id]).to include('item is reserved.')
   end
 end
 
