@@ -41,6 +41,10 @@ module EnjuCirculation
       has_one :use_restriction, through: :item_has_use_restriction
       validates :circulation_status, :checkout_type, presence: true
       validate :check_circulation_status
+      validate :before_withdraw, if: Proc.new{|item| item.circulation_status.name == 'Withdrawn'} do
+        errors.add(:item_id, :is_rented) if rented?
+        errors.add(:item_id, :is_reserved) if reserved?
+      end
 
       searchable do
         string :circulation_status do
