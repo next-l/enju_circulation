@@ -43,7 +43,7 @@ describe ItemsController do
   describe 'PUT update' do
     before(:each) do
       @item = FactoryBot.create(:reserve).item
-      @item.circulation_status = CirculationStatus.find_by(name: 'Withdrawn')
+      put :update, params: { item: FactoryBot.attributes_for(:item, circulation_status_id: CirculationStatus.find_by(name: 'Withdrawn').id) }
       expect(@item.valid).to be_falsy
     end
   end
