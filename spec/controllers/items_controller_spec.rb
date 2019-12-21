@@ -41,7 +41,6 @@ describe ItemsController do
   end
 
   describe 'PUT update' do
-<<<<<<< HEAD
     describe 'When logged in as Administrator' do
       login_fixture_admin
 
@@ -76,12 +75,6 @@ describe ItemsController do
         expect(assigns(:item).valid?).to be_falsy
         expect(response).to be_successful
       end
-=======
-    before(:each) do
-      @item = FactoryBot.create(:reserve).item
-      put :update, params: { item: FactoryBot.attributes_for(:item, circulation_status_id: CirculationStatus.find_by(name: 'Withdrawn').id) }
-      expect(@item.valid).to be_falsy
->>>>>>> add an error message when a reserved item is going to be withdrawn
     end
   end
 
