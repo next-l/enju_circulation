@@ -6,7 +6,7 @@ class CreateLibraryGroups < ActiveRecord::Migration[4.2]
       t.string :short_name, index: true, null: false
       t.text :my_networks
       t.text :login_banner
-      t.text :note, comment: '備考'
+      t.text :note
       t.integer :country_id
       t.integer :position
 
