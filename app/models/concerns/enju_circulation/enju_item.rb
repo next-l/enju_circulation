@@ -41,10 +41,7 @@ module EnjuCirculation
       has_one :item_has_use_restriction, dependent: :destroy
       has_one :use_restriction, through: :item_has_use_restriction
       validates :circulation_status, :checkout_type, presence: true
-      validate :before_withdraw, if: Proc.new{|item| item.circulation_status.name == 'Withdrawn'} do
-        errors.add(:item_id, :is_rented) if rented?
-        errors.add(:item_id, :is_reserved) if reserved?
-      end
+      validate :check_circulation_status
 
       searchable do
         string :circulation_status do
@@ -58,6 +55,14 @@ module EnjuCirculation
 
     def set_circulation_status
       self.circulation_status = CirculationStatus.find_by(name: 'In Process') if circulation_status.nil?
+    end
+
+    def check_circulation_status
+      #circulation_status.name_will_change!
+      #return unless circulation_status.name_change.first == 'Removed'
+      return unless circulation_status.name == 'Removed'
+      errors[:base] << I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_rented') if rented?
+      errors[:base] << I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_reserved') if reserved?
     end
 
     def checkout_status(user)
