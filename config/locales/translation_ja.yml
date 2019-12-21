@@ -122,6 +122,13 @@ ja:
       profile:
         checkout_icalendar_token: 貸出iCalendarのトークン
         save_checkout_history: 貸出の履歴を保存する
+    errors:
+      models:
+        withdraw:
+          attributes:
+            item_id:
+              is_reserved: この資料は貸し出されています。
+              is_reserved: この資料は予約されています。
 
   basket:
     this_account_is_suspended: "このアカウントは停止されています。"

@@ -6,6 +6,10 @@ FactoryBot.define do
       user.profile = profile
       reserve.user = user
     end
-    manifestation_id{FactoryBot.create(:manifestation).id}
+    after(:build) do |reserve|
+      item = FactoryBot.create(:item, use_restriction: UseRestriction.find_by(name: 'Available On Shelf'))
+      reserve.manifestation = item.manifestation
+      reserve.item = item
+    end
   end
 end
