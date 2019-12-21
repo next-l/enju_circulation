@@ -127,8 +127,8 @@ ja:
         withdraw:
           attributes:
             item_id:
-              is_reserved: この資料は貸し出されています。
-              is_reserved: この資料は予約されています。
+              is_reserved: は貸し出されています。
+              is_reserved: は予約されています。
 
   basket:
     this_account_is_suspended: "このアカウントは停止されています。"
