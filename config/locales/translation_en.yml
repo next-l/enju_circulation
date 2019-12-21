@@ -130,8 +130,8 @@ en:
         withdraw:
           attributes:
             item_id:
-              is_rented: This item is rented.
-              is_reserved: This item is reserved.
+              is_rented: is rented.
+              is_reserved: is reserved.
 
   basket:
     this_account_is_suspended: "This account is suspended."
