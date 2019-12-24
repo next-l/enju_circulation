@@ -3,9 +3,10 @@ class UserReserveStatStateMachine
   state :pending, initial: true
   state :started
   state :completed
+  state :failed
 
-  transition from: :pending, to: :started
-  transition from: :started, to: :completed
+  transition from: :pending, to: [:started, :failed]
+  transition from: :started, to: [:completed, :failed]
 
   after_transition(to: :started) do |user_reserve_stat|
     user_reserve_stat.update_column(:started_at, Time.zone.now)
