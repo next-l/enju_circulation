@@ -58,6 +58,24 @@ describe ItemsController do
         expect(response).to be_successful
       end
     end
+
+    describe 'When logged in as Administrator' do
+      login_fixture_admin
+
+      it 'should remove an item' do
+        item = FactoryBot.create(:item)
+        put :update, params: { id: item.id, item: {circulation_status_id: CirculationStatus.find_by(name: 'Removed').id } }
+        expect(assigns(:item).valid?).to be_truthy
+        expect(response).to redirect_to item_url(assigns(:item))
+      end
+
+      it 'should not remove a reserved item' do
+        item = FactoryBot.create(:reserve).item
+        put :update, params: { id: item.id, item: {circulation_status_id: CirculationStatus.find_by(name: 'Removed').id } }
+        expect(assigns(:item).valid?).to be_falsy
+        expect(response).to be_successful
+      end
+    end
   end
 
   describe 'DELETE destroy' do
