@@ -32,10 +32,5 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'reserve', 'reserves'
 end
 EOS
-
-    UserGroup.order(created_at: :desc).first.update!(
-      number_of_day_to_notify_overdue: 7,
-      number_of_day_to_notify_due_date: 3
-    )
   end
 end
