@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "accepts", id: :serial, force: :cascade do |t|
-    t.integer "basket_id"
-    t.integer "item_id"
-    t.integer "librarian_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "accepts", force: :cascade do |t|
+    t.bigint "basket_id"
+    t.bigint "item_id"
+    t.bigint "librarian_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["basket_id"], name: "index_accepts_on_basket_id"
     t.index ["item_id"], name: "index_accepts_on_item_id"
     t.index ["librarian_id"], name: "index_accepts_on_librarian_id"
@@ -129,7 +129,6 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.text "full_name_alternative"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string "zip_code_1"
     t.string "zip_code_2"
     t.text "address_1"
@@ -170,16 +169,16 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["required_role_id"], name: "index_agents_on_required_role_id"
   end
 
-  create_table "baskets", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "baskets", force: :cascade do |t|
+    t.bigint "user_id"
     t.text "note"
     t.integer "lock_version", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
-  create_table "bookstores", id: :serial, force: :cascade do |t|
+  create_table "bookstores", force: :cascade do |t|
     t.text "name", null: false
     t.string "zip_code"
     t.text "address"
@@ -188,28 +187,27 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.string "fax_number"
     t.string "url"
     t.integer "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "budget_types", id: :serial, force: :cascade do |t|
+  create_table "budget_types", force: :cascade do |t|
     t.string "name"
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "carrier_type_has_checkout_types", id: :serial, force: :cascade do |t|
-    t.integer "carrier_type_id", null: false
-    t.integer "checkout_type_id", null: false
+  create_table "carrier_type_has_checkout_types", force: :cascade do |t|
+    t.bigint "carrier_type_id", null: false
+    t.bigint "checkout_type_id", null: false
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["carrier_type_id"], name: "index_carrier_type_has_checkout_types_on_m_form_id"
     t.index ["checkout_type_id"], name: "index_carrier_type_has_checkout_types_on_checkout_type_id"
   end
@@ -228,26 +226,26 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "checked_items", id: :serial, force: :cascade do |t|
-    t.integer "item_id", null: false
-    t.integer "basket_id", null: false
-    t.integer "librarian_id"
+  create_table "checked_items", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.bigint "basket_id", null: false
+    t.bigint "librarian_id"
     t.datetime "due_date", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["basket_id"], name: "index_checked_items_on_basket_id"
     t.index ["item_id"], name: "index_checked_items_on_item_id"
     t.index ["librarian_id"], name: "index_checked_items_on_librarian_id"
     t.index ["user_id"], name: "index_checked_items_on_user_id"
   end
 
-  create_table "checkins", id: :serial, force: :cascade do |t|
-    t.integer "item_id", null: false
-    t.integer "librarian_id"
-    t.integer "basket_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "checkins", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.bigint "librarian_id"
+    t.bigint "basket_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "lock_version", default: 0, null: false
     t.bigint "checkout_id"
     t.index ["basket_id"], name: "index_checkins_on_basket_id"
@@ -256,50 +254,50 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["librarian_id"], name: "index_checkins_on_librarian_id"
   end
 
-  create_table "checkout_stat_has_manifestations", id: :serial, force: :cascade do |t|
-    t.integer "manifestation_checkout_stat_id", null: false
-    t.integer "manifestation_id", null: false
+  create_table "checkout_stat_has_manifestations", force: :cascade do |t|
+    t.bigint "manifestation_checkout_stat_id", null: false
+    t.bigint "manifestation_id", null: false
     t.integer "checkouts_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["manifestation_checkout_stat_id"], name: "index_checkout_stat_has_manifestations_on_checkout_stat_id"
     t.index ["manifestation_id"], name: "index_checkout_stat_has_manifestations_on_manifestation_id"
   end
 
-  create_table "checkout_stat_has_users", id: :serial, force: :cascade do |t|
-    t.integer "user_checkout_stat_id", null: false
-    t.integer "user_id", null: false
+  create_table "checkout_stat_has_users", force: :cascade do |t|
+    t.bigint "user_checkout_stat_id", null: false
+    t.bigint "user_id", null: false
     t.integer "checkouts_count", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_checkout_stat_id"], name: "index_checkout_stat_has_users_on_user_checkout_stat_id"
     t.index ["user_id"], name: "index_checkout_stat_has_users_on_user_id"
   end
 
-  create_table "checkout_types", id: :serial, force: :cascade do |t|
+  create_table "checkout_types", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
     t.index ["name"], name: "index_checkout_types_on_name"
   end
 
-  create_table "checkouts", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "item_id", null: false
-    t.integer "checkin_id"
-    t.integer "librarian_id"
-    t.integer "basket_id"
+  create_table "checkouts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id", null: false
+    t.bigint "checkin_id"
+    t.bigint "librarian_id"
+    t.bigint "basket_id"
     t.datetime "due_date"
     t.integer "checkout_renewal_count", default: 0, null: false
     t.integer "lock_version", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "shelf_id"
-    t.integer "library_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "shelf_id"
+    t.bigint "library_id"
     t.index ["basket_id"], name: "index_checkouts_on_basket_id"
     t.index ["checkin_id"], name: "index_checkouts_on_checkin_id"
     t.index ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true
@@ -310,23 +308,23 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["user_id"], name: "index_checkouts_on_user_id"
   end
 
-  create_table "circulation_statuses", id: :serial, force: :cascade do |t|
+  create_table "circulation_statuses", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "colors", id: :serial, force: :cascade do |t|
-    t.integer "library_group_id"
+  create_table "colors", force: :cascade do |t|
+    t.bigint "library_group_id"
     t.string "property"
     t.string "code"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["library_group_id"], name: "index_colors_on_library_group_id"
   end
 
@@ -384,15 +382,27 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "demands", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "item_id"
-    t.integer "message_id"
+  create_table "demands", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.bigint "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_demands_on_item_id"
     t.index ["message_id"], name: "index_demands_on_message_id"
     t.index ["user_id"], name: "index_demands_on_user_id"
+  end
+
+  create_table "doi_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "display_body", null: false
+    t.string "source"
+    t.jsonb "response", default: {}, null: false
+    t.bigint "manifestation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_doi_records_on_body", unique: true
+    t.index ["manifestation_id"], name: "index_doi_records_on_manifestation_id"
   end
 
   create_table "donates", id: :serial, force: :cascade do |t|
@@ -577,11 +587,49 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["user_id"], name: "index_import_requests_on_user_id"
   end
 
-  create_table "item_has_use_restrictions", id: :serial, force: :cascade do |t|
-    t.integer "item_id", null: false
-    t.integer "use_restriction_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "isbn_record_and_manifestations", force: :cascade do |t|
+    t.bigint "isbn_record_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["isbn_record_id"], name: "index_isbn_record_and_manifestations_on_isbn_record_id"
+    t.index ["manifestation_id"], name: "index_isbn_record_and_manifestations_on_manifestation_id"
+  end
+
+  create_table "isbn_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "isbn_type"
+    t.string "source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_isbn_records_on_body", unique: true
+  end
+
+  create_table "issn_record_and_manifestations", force: :cascade do |t|
+    t.bigint "issn_record_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issn_record_id"], name: "index_issn_record_and_manifestations_on_issn_record_id"
+    t.index ["manifestation_id"], name: "index_issn_record_and_manifestations_on_manifestation_id"
+  end
+
+  create_table "issn_records", force: :cascade do |t|
+    t.string "body", null: false
+    t.string "issn_type"
+    t.string "source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["body"], name: "index_issn_records_on_body", unique: true
+  end
+
+  create_table "item_has_use_restrictions", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.bigint "use_restriction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_item_has_use_restrictions_on_item_id"
     t.index ["use_restriction_id"], name: "index_item_has_use_restrictions_on_use_restriction_id"
   end
@@ -591,7 +639,6 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.string "item_identifier"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.integer "shelf_id", default: 1, null: false
     t.boolean "include_supplements", default: false, null: false
     t.text "note"
@@ -636,7 +683,7 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["name"], name: "index_languages_on_name", unique: true
   end
 
-  create_table "libraries", id: :serial, force: :cascade do |t|
+  create_table "libraries", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.string "short_display_name", null: false
@@ -650,23 +697,23 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.text "note"
     t.integer "call_number_rows", default: 1, null: false
     t.string "call_number_delimiter", default: "|", null: false
-    t.integer "library_group_id", null: false
+    t.bigint "library_group_id", null: false
     t.integer "users_count", default: 0, null: false
     t.integer "position"
-    t.integer "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "deleted_at"
+    t.bigint "country_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "opening_hour"
     t.string "isil"
     t.float "latitude"
     t.float "longitude"
     t.jsonb "display_name_translations", default: {}, null: false
+    t.index ["country_id"], name: "index_libraries_on_country_id"
     t.index ["library_group_id"], name: "index_libraries_on_library_group_id"
     t.index ["name"], name: "index_libraries_on_name"
   end
 
-  create_table "library_groups", id: :serial, force: :cascade do |t|
+  create_table "library_groups", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.string "short_name", null: false
@@ -675,8 +722,8 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.text "note"
     t.integer "country_id"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "admin_networks"
     t.string "url", default: "http://localhost:3000/"
     t.text "settings"
@@ -686,7 +733,7 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.boolean "family_name_first", default: true
     t.string "screenshot_generator"
     t.integer "pub_year_facet_range_interval", default: 10
-    t.integer "user_id"
+    t.bigint "user_id"
     t.boolean "csv_charset_conversion", default: false, null: false
     t.string "header_logo_file_name"
     t.string "header_logo_content_type"
@@ -712,28 +759,28 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "manifestation_checkout_stat_transitions", id: :serial, force: :cascade do |t|
+  create_table "manifestation_checkout_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "manifestation_checkout_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["manifestation_checkout_stat_id", "most_recent"], name: "index_manifestation_checkout_stat_transitions_parent_most_rece", unique: true, where: "most_recent"
     t.index ["manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_stat_id"
     t.index ["sort_key", "manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_transition", unique: true
   end
 
-  create_table "manifestation_checkout_stats", id: :serial, force: :cascade do |t|
+  create_table "manifestation_checkout_stats", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_manifestation_checkout_stats_on_user_id"
   end
 
@@ -758,28 +805,28 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["parent_id"], name: "index_manifestation_relationships_on_parent_id"
   end
 
-  create_table "manifestation_reserve_stat_transitions", id: :serial, force: :cascade do |t|
+  create_table "manifestation_reserve_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "manifestation_reserve_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["manifestation_reserve_stat_id", "most_recent"], name: "index_manifestation_reserve_stat_transitions_parent_most_recen", unique: true, where: "most_recent"
     t.index ["manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_stat_id"
     t.index ["sort_key", "manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_transition", unique: true
   end
 
-  create_table "manifestation_reserve_stats", id: :serial, force: :cascade do |t|
+  create_table "manifestation_reserve_stats", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_manifestation_reserve_stats_on_user_id"
   end
 
@@ -793,7 +840,6 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.datetime "date_copyrighted"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string "access_address"
     t.integer "language_id", default: 1, null: false
     t.integer "carrier_type_id", default: 1, null: false
@@ -944,6 +990,25 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["event_id"], name: "index_participates_on_event_id"
   end
 
+  create_table "periodical_and_manifestations", force: :cascade do |t|
+    t.bigint "periodical_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.boolean "periodical_master", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["manifestation_id"], name: "index_periodical_and_manifestations_on_manifestation_id"
+    t.index ["periodical_id"], name: "index_periodical_and_manifestations_on_periodical_id"
+    t.index ["periodical_master"], name: "index_periodical_and_manifestations_on_periodical_master", unique: true, where: "(periodical_master IS TRUE)"
+  end
+
+  create_table "periodicals", force: :cascade do |t|
+    t.text "original_title", null: false
+    t.bigint "frequency_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["frequency_id"], name: "index_periodicals_on_frequency_id"
+  end
+
   create_table "picture_files", id: :serial, force: :cascade do |t|
     t.integer "picture_attachable_id"
     t.string "picture_attachable_type"
@@ -997,24 +1062,24 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["manifestation_id"], name: "index_produces_on_manifestation_id"
   end
 
-  create_table "profiles", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "user_group_id"
+    t.bigint "library_id"
     t.string "locale"
     t.string "user_number"
     t.text "full_name"
     t.text "note"
     t.text "keyword_list"
-    t.integer "required_role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.bigint "required_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "checkout_icalendar_token"
     t.boolean "save_checkout_history", default: false, null: false
     t.datetime "expired_at"
     t.text "full_name_transcription"
     t.datetime "date_of_birth"
     t.jsonb "full_name_translations", default: {}, null: false
-    t.bigint "user_group_id"
-    t.bigint "library_id"
     t.index ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true
     t.index ["library_id"], name: "index_profiles_on_library_id"
     t.index ["user_group_id"], name: "index_profiles_on_user_group_id"
@@ -1043,70 +1108,69 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["expression_id"], name: "index_realizes_on_expression_id"
   end
 
-  create_table "request_status_types", id: :serial, force: :cascade do |t|
+  create_table "request_status_types", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "request_types", id: :serial, force: :cascade do |t|
+  create_table "request_types", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "reserve_stat_has_manifestations", id: :serial, force: :cascade do |t|
-    t.integer "manifestation_reserve_stat_id", null: false
-    t.integer "manifestation_id", null: false
+  create_table "reserve_stat_has_manifestations", force: :cascade do |t|
+    t.bigint "manifestation_reserve_stat_id", null: false
+    t.bigint "manifestation_id", null: false
     t.integer "reserves_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["manifestation_id"], name: "index_reserve_stat_has_manifestations_on_manifestation_id"
     t.index ["manifestation_reserve_stat_id"], name: "index_reserve_stat_has_manifestations_on_m_reserve_stat_id"
   end
 
-  create_table "reserve_stat_has_users", id: :serial, force: :cascade do |t|
-    t.integer "user_reserve_stat_id", null: false
-    t.integer "user_id", null: false
+  create_table "reserve_stat_has_users", force: :cascade do |t|
+    t.bigint "user_reserve_stat_id", null: false
+    t.bigint "user_id", null: false
     t.integer "reserves_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_reserve_stat_has_users_on_user_id"
     t.index ["user_reserve_stat_id"], name: "index_reserve_stat_has_users_on_user_reserve_stat_id"
   end
 
-  create_table "reserve_transitions", id: :serial, force: :cascade do |t|
+  create_table "reserve_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "reserve_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["reserve_id", "most_recent"], name: "index_reserve_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["reserve_id"], name: "index_reserve_transitions_on_reserve_id"
     t.index ["sort_key", "reserve_id"], name: "index_reserve_transitions_on_sort_key_and_reserve_id", unique: true
   end
 
-  create_table "reserves", id: :serial, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "manifestation_id", null: false
-    t.integer "item_id"
-    t.integer "request_status_type_id", null: false
+  create_table "reserves", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.bigint "item_id"
+    t.bigint "request_status_type_id", null: false
     t.datetime "checked_out_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "canceled_at"
     t.datetime "expired_at"
-    t.datetime "deleted_at"
     t.boolean "expiration_notice_to_patron", default: false
     t.boolean "expiration_notice_to_library", default: false
     t.integer "pickup_location_id"
@@ -1116,6 +1180,7 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["item_id"], name: "index_reserves_on_item_id"
     t.index ["manifestation_id"], name: "index_reserves_on_manifestation_id"
     t.index ["pickup_location_id"], name: "index_reserves_on_pickup_location_id"
+    t.index ["request_status_type_id"], name: "index_reserves_on_request_status_type_id"
     t.index ["user_id"], name: "index_reserves_on_user_id"
   end
 
@@ -1200,18 +1265,18 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["reserve_id"], name: "index_retains_on_reserve_id"
   end
 
-  create_table "roles", id: :serial, force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.string "display_name"
     t.text "note"
-    t.integer "score", default: 0, null: false
-    t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "score", default: 0, null: false
+    t.integer "position"
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "search_engines", id: :serial, force: :cascade do |t|
+  create_table "search_engines", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.string "url", null: false
@@ -1221,8 +1286,8 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.text "additional_param"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
@@ -1265,87 +1330,85 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["series_statement_identifier"], name: "index_series_statements_on_series_statement_identifier"
   end
 
-  create_table "shelves", id: :serial, force: :cascade do |t|
+  create_table "shelves", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
-    t.integer "library_id", null: false
+    t.bigint "library_id", null: false
     t.integer "items_count", default: 0, null: false
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "closed", default: false, null: false
     t.jsonb "display_name_translations", default: {}, null: false
     t.index ["library_id"], name: "index_shelves_on_library_id"
   end
 
-  create_table "subscribes", id: :serial, force: :cascade do |t|
-    t.integer "subscription_id", null: false
+  create_table "subscribes", force: :cascade do |t|
+    t.bigint "subscription_id", null: false
     t.integer "work_id", null: false
     t.datetime "start_at", null: false
     t.datetime "end_at", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["subscription_id"], name: "index_subscribes_on_subscription_id"
     t.index ["work_id"], name: "index_subscribes_on_work_id"
   end
 
-  create_table "subscriptions", id: :serial, force: :cascade do |t|
+  create_table "subscriptions", force: :cascade do |t|
     t.text "title", null: false
     t.text "note"
-    t.integer "user_id"
-    t.integer "order_list_id"
-    t.datetime "deleted_at"
+    t.bigint "user_id"
+    t.bigint "order_list_id"
     t.integer "subscribes_count", default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["order_list_id"], name: "index_subscriptions_on_order_list_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "use_restrictions", id: :serial, force: :cascade do |t|
+  create_table "use_restrictions", force: :cascade do |t|
     t.string "name", null: false
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "user_checkout_stat_transitions", id: :serial, force: :cascade do |t|
+  create_table "user_checkout_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "user_checkout_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["sort_key", "user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_sort_key_and_stat_id", unique: true
     t.index ["user_checkout_stat_id", "most_recent"], name: "index_user_checkout_stat_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_user_checkout_stat_id"
   end
 
-  create_table "user_checkout_stats", id: :serial, force: :cascade do |t|
+  create_table "user_checkout_stats", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_user_checkout_stats_on_user_id"
   end
 
-  create_table "user_export_file_transitions", id: :serial, force: :cascade do |t|
+  create_table "user_export_file_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "user_export_file_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.bigint "user_export_file_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["sort_key", "user_export_file_id"], name: "index_user_export_file_transitions_on_sort_key_and_file_id", unique: true
     t.index ["user_export_file_id", "most_recent"], name: "index_user_export_file_transitions_parent_most_recent", unique: true, where: "most_recent"
@@ -1353,21 +1416,21 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["user_export_file_id"], name: "index_user_export_file_transitions_on_user_export_file_id"
   end
 
-  create_table "user_export_files", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "user_export_files", force: :cascade do |t|
+    t.bigint "user_id"
     t.string "user_export_file_name"
     t.string "user_export_content_type"
     t.bigint "user_export_file_size"
     t.datetime "user_export_updated_at"
     t.datetime "executed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_export_files_on_user_id"
   end
 
-  create_table "user_group_has_checkout_types", id: :serial, force: :cascade do |t|
-    t.integer "user_group_id", null: false
-    t.integer "checkout_type_id", null: false
+  create_table "user_group_has_checkout_types", force: :cascade do |t|
+    t.bigint "user_group_id", null: false
+    t.bigint "checkout_type_id", null: false
     t.integer "checkout_limit", default: 0, null: false
     t.integer "checkout_period", default: 0, null: false
     t.integer "checkout_renewal_limit", default: 0, null: false
@@ -1377,21 +1440,20 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.datetime "fixed_due_date"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "current_checkout_count"
     t.index ["checkout_type_id"], name: "index_user_group_has_checkout_types_on_checkout_type_id"
     t.index ["user_group_id"], name: "index_user_group_has_checkout_types_on_user_group_id"
   end
 
-  create_table "user_groups", id: :serial, force: :cascade do |t|
+  create_table "user_groups", force: :cascade do |t|
     t.string "name"
     t.text "display_name"
     t.text "note"
     t.integer "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "valid_period_for_new_user", default: 0, null: false
     t.datetime "expired_at"
     t.integer "number_of_day_to_notify_overdue", default: 0, null: false
@@ -1400,28 +1462,30 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.jsonb "display_name_translations", default: {}, null: false
   end
 
-  create_table "user_has_roles", id: :serial, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "role_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "user_has_roles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_user_has_roles_on_role_id"
+    t.index ["user_id"], name: "index_user_has_roles_on_user_id"
   end
 
-  create_table "user_import_file_transitions", id: :serial, force: :cascade do |t|
+  create_table "user_import_file_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
-    t.integer "user_import_file_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.bigint "user_import_file_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["sort_key", "user_import_file_id"], name: "index_user_import_file_transitions_on_sort_key_and_file_id", unique: true
     t.index ["user_import_file_id", "most_recent"], name: "index_user_import_file_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["user_import_file_id"], name: "index_user_import_file_transitions_on_user_import_file_id"
   end
 
-  create_table "user_import_files", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "user_import_files", force: :cascade do |t|
+    t.bigint "user_id"
     t.text "note"
     t.datetime "executed_at"
     t.string "user_import_file_name"
@@ -1431,47 +1495,49 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.string "user_import_fingerprint"
     t.string "edit_mode"
     t.text "error_message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "user_encoding"
-    t.integer "default_library_id"
-    t.integer "default_user_group_id"
+    t.bigint "default_library_id"
+    t.bigint "default_user_group_id"
+    t.index ["default_library_id"], name: "index_user_import_files_on_default_library_id"
+    t.index ["default_user_group_id"], name: "index_user_import_files_on_default_user_group_id"
     t.index ["user_id"], name: "index_user_import_files_on_user_id"
   end
 
-  create_table "user_import_results", id: :serial, force: :cascade do |t|
-    t.integer "user_import_file_id"
-    t.integer "user_id"
+  create_table "user_import_results", force: :cascade do |t|
+    t.bigint "user_import_file_id"
+    t.bigint "user_id"
     t.text "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "error_message"
     t.index ["user_id"], name: "index_user_import_results_on_user_id"
     t.index ["user_import_file_id"], name: "index_user_import_results_on_user_import_file_id"
   end
 
-  create_table "user_reserve_stat_transitions", id: :serial, force: :cascade do |t|
+  create_table "user_reserve_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "user_reserve_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["sort_key", "user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_sort_key_and_stat_id", unique: true
     t.index ["user_reserve_stat_id", "most_recent"], name: "index_user_reserve_stat_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_user_reserve_stat_id"
   end
 
-  create_table "user_reserve_stats", id: :serial, force: :cascade do |t|
+  create_table "user_reserve_stats", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_user_reserve_stats_on_user_id"
   end
 
@@ -1512,10 +1578,10 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "withdraws", id: :serial, force: :cascade do |t|
-    t.integer "basket_id"
-    t.integer "item_id"
-    t.integer "librarian_id"
+  create_table "withdraws", force: :cascade do |t|
+    t.bigint "basket_id"
+    t.bigint "item_id"
+    t.bigint "librarian_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["basket_id"], name: "index_withdraws_on_basket_id"
@@ -1541,7 +1607,12 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
   add_foreign_key "demands", "items"
   add_foreign_key "demands", "messages"
   add_foreign_key "demands", "users"
+  add_foreign_key "doi_records", "manifestations"
   add_foreign_key "events", "event_categories"
+  add_foreign_key "isbn_record_and_manifestations", "isbn_records"
+  add_foreign_key "isbn_record_and_manifestations", "manifestations"
+  add_foreign_key "issn_record_and_manifestations", "issn_records"
+  add_foreign_key "issn_record_and_manifestations", "manifestations"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
   add_foreign_key "items", "manifestations"
@@ -1549,8 +1620,9 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
   add_foreign_key "library_groups", "users"
   add_foreign_key "manifestation_checkout_stats", "users"
   add_foreign_key "manifestation_reserve_stats", "users"
-  add_foreign_key "profiles", "libraries"
-  add_foreign_key "profiles", "user_groups"
+  add_foreign_key "periodical_and_manifestations", "manifestations"
+  add_foreign_key "periodical_and_manifestations", "periodicals"
+  add_foreign_key "periodicals", "frequencies"
   add_foreign_key "profiles", "users"
   add_foreign_key "reserve_stat_has_manifestations", "manifestations"
   add_foreign_key "reserve_stat_has_users", "user_reserve_stats"
