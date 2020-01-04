@@ -37,6 +37,20 @@ describe ItemsController do
         expect(assigns(:item)).to be_valid
         expect(response).to redirect_to item_url(assigns(:item))
       end
+
+      it 'should not create item without manifestation_id' do
+        lambda do
+          post :create, params: { item: { circulation_status_id: 1 } }
+        end.should raise_error(ActiveRecord::RecordNotFound)
+        expect(assigns(:item)).to_not be_valid
+        # expect(response).to be_missing
+      end
+
+      it 'should not create item already created' do
+        post :create, params: { item: { circulation_status_id: 1, item_identifier: '00001', manifestation_id: 1 } }
+        expect(assigns(:item)).to_not be_valid
+        expect(response).to be_successful
+      end
     end
   end
 
