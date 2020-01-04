@@ -9,12 +9,5 @@ class User < ApplicationRecord
   include EnjuCirculation::EnjuUser
 end
 
-Accept.include(EnjuCirculation::EnjuAccept)
-Basket.include(EnjuCirculation::EnjuBasket)
-Manifestation.include(EnjuCirculation::EnjuManifestation)
-Item.include(EnjuCirculation::EnjuItem)
 Item.include(EnjuLibrary::EnjuItem)
-Profile.include(EnjuCirculation::EnjuProfile)
 Profile.include(EnjuLibrary::EnjuProfile)
-UserGroup.include(EnjuCirculation::EnjuUserGroup)
-Withdraw.include(EnjuCirculation::EnjuWithdraw)
