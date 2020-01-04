@@ -56,8 +56,8 @@ end
 #
 # Table name: baskets
 #
-#  id           :bigint           not null, primary key
-#  user_id      :bigint
+#  id           :integer          not null, primary key
+#  user_id      :integer
 #  note         :text
 #  lock_version :integer          default(0), not null
 #  created_at   :datetime         not null

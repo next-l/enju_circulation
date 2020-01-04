@@ -16,6 +16,16 @@ class EnjuCirculation::SetupGenerator < Rails::Generators::Base
     inject_into_class 'app/models/user.rb', User do
       "  include EnjuCirculation::EnjuUser\n"
     end
+    append_to_file "app/models/user.rb", <<EOS
+Accept.include(EnjuCirculation::EnjuAccept)
+Basket.include(EnjuCirculation::EnjuBasket)
+CarrierType.include(EnjuCirculation::EnjuCarrierType)
+Manifestation.include(EnjuCirculation::EnjuManifestation)
+Item.include(EnjuCirculation::EnjuItem)
+Profile.include(EnjuCirculation::EnjuProfile)
+UserGroup.include(EnjuCirculation::EnjuUserGroup)
+Withdraw.include(EnjuCirculation::EnjuWithdraw)
+EOS
     append_to_file("config/schedule.rb", File.open(File.expand_path('../templates', __FILE__) + '/config/schedule.rb').read)
     append_to_file 'config/initializers/inflections.rb',  <<EOS
 ActiveSupport::Inflector.inflections do |inflect|
