@@ -13,7 +13,7 @@ describe UserImportFile do
       old_users_count = User.count
       old_import_results_count = UserImportResult.count
       file.current_state.should eq 'pending'
-      file.import_start.should eq({user_imported: 5, user_found: 0, failed: 0, error: 3})
+      file.import_start.should eq({user_imported: 5, user_found: 0, error: 3})
       user003 = User.find_by(username: 'user003')
       user003.profile.checkout_icalendar_token.should eq 'secrettoken'
       user003.profile.save_checkout_history.should be_truthy

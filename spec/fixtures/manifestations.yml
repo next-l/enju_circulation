@@ -1833,14 +1833,14 @@ manifestation_00217:
 #  original_title                  :text             not null
 #  title_alternative               :text
 #  title_transcription             :text
-#  classification_number           :string
-#  manifestation_identifier        :string
+#  classification_number           :string(255)
+#  manifestation_identifier        :string(255)
 #  date_of_publication             :datetime
 #  date_copyrighted                :datetime
 #  created_at                      :datetime
 #  updated_at                      :datetime
 #  deleted_at                      :datetime
-#  access_address                  :string
+#  access_address                  :string(255)
 #  language_id                     :integer          default(1), not null
 #  carrier_type_id                 :integer          default(1), not null
 #  start_page                      :integer
@@ -1850,9 +1850,9 @@ manifestation_00217:
 #  depth                           :integer
 #  price                           :integer
 #  fulltext                        :text
-#  volume_number_string            :string
-#  issue_number_string             :string
-#  serial_number_string            :string
+#  volume_number_string            :string(255)
+#  issue_number_string             :string(255)
+#  serial_number_string            :string(255)
 #  edition                         :integer
 #  note                            :text
 #  repository_content              :boolean          default(FALSE), not null
@@ -1861,8 +1861,8 @@ manifestation_00217:
 #  required_score                  :integer          default(0), not null
 #  frequency_id                    :integer          default(1), not null
 #  subscription_master             :boolean          default(FALSE), not null
-#  attachment_file_name            :string
-#  attachment_content_type         :string
+#  attachment_file_name            :string(255)
+#  attachment_content_type         :string(255)
 #  attachment_file_size            :integer
 #  attachment_updated_at           :datetime
 #  title_alternative_transcription :text
@@ -1872,9 +1872,9 @@ manifestation_00217:
 #  valid_until                     :datetime
 #  date_submitted                  :datetime
 #  date_accepted                   :datetime
-#  date_captured                   :datetime
-#  pub_date                        :string
-#  edition_string                  :string
+#  date_caputured                  :datetime
+#  pub_date                        :string(255)
+#  edition_string                  :string(255)
 #  volume_number                   :integer
 #  issue_number                    :integer
 #  serial_number                   :integer
@@ -1888,5 +1888,4 @@ manifestation_00217:
 #  publication_place               :text
 #  extent                          :text
 #  dimensions                      :text
-#  memo                            :text
 #

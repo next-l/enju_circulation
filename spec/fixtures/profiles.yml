@@ -81,27 +81,3 @@ profile_user4:
   user_number: "00007"
   locale: "ja"
   checkout_icalendar_token: e3e0277cbba03183c3a12d2b740f3eabebd7df0d
-
-# == Schema Information
-#
-# Table name: profiles
-#
-#  id                       :integer          not null, primary key
-#  user_id                  :integer
-#  locale                   :string
-#  user_number              :string
-#  full_name                :text
-#  note                     :text
-#  keyword_list             :text
-#  required_role_id         :integer
-#  created_at               :datetime
-#  updated_at               :datetime
-#  checkout_icalendar_token :string
-#  save_checkout_history    :boolean          default(FALSE), not null
-#  expired_at               :datetime
-#  full_name_transcription  :text
-#  date_of_birth            :datetime
-#  full_name_translations   :jsonb            not null
-#  user_group_id            :bigint
-#  library_id               :bigint
-#
