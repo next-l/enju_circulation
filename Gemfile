@@ -14,7 +14,7 @@ gemspec
 # To use debugger
 # gem 'debugger'
 gem 'sassc-rails'
-gem 'jbuilder'
+gem 'rails', '~> 5.2'
 gem 'rails-i18n'
 gem 'sprockets', '~> 3.7'
 group :test do
@@ -22,6 +22,7 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
 end
+gem 'enju_seed', github: 'next-l/enju_seed', branch: '2.x'
 gem 'enju_leaf', github: 'next-l/enju_leaf', branch: '2.x'
 gem 'enju_library', github: 'next-l/enju_library', branch: '2.x'
 gem 'enju_biblio', github: 'next-l/enju_biblio', branch: '2.x'
