@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/**/*"]
 
   s.add_dependency "enju_biblio", "~> 0.4.0.rc.1"
-  s.add_dependency "enju_manifestation_viewer", "~> 0.4.0.rc.1"
   s.add_dependency "enju_event", "~> 0.4.0.rc.1"
 
   s.add_development_dependency "enju_leaf", "~> 2.0.0.rc.1"
