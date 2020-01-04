@@ -19,11 +19,11 @@ describe Manifestation, solr: true do
     manifestation = FactoryBot.create(:manifestation)
     use_restriction = UseRestriction.find(1)
     item = FactoryBot.create(:item, manifestation: manifestation, use_restriction: use_restriction)
-    lines = Manifestation.export(format: :txt, role: "Guest")
+    lines = Manifestation.export(role: "Guest")
     csv = CSV.parse(lines, headers: true, col_sep: "\t")
     expect(csv["use_restriction"].compact).to be_empty
 
-    lines = Manifestation.export(format: :txt, role: "Administrator")
+    lines = Manifestation.export(role: "Administrator")
     csv = CSV.parse(lines, headers: true, col_sep: "\t")
     expect(csv["use_restriction"].compact).not_to be_empty
   end
