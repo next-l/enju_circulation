@@ -17,7 +17,7 @@ class CreateCountries < ActiveRecord::Migration[5.2]
       t.string :alpha_2,      size: 2
       t.string :alpha_3,      size: 3
       t.string :numeric_3, size: 3
-      t.text :note
+      t.text :note, comment: '備考'
       t.integer :position
     end
     add_index :countries, :name
