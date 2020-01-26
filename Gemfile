@@ -17,7 +17,7 @@ gem 'jquery-rails'
 gem 'sassc-rails'
 gem 'rails', '~> 5.2'
 gem 'rails-i18n'
-gem 'sprockets', '~> 3.7'
+gem 'webpacker'
 group :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
