@@ -71,6 +71,13 @@ describe ItemsController do
         expect(assigns(:item).valid?).to be_falsy
         expect(response).to be_successful
       end
+
+      it 'should not remove a withdrawn item' do
+        item = FactoryBot.create(:reserve).item
+        put :update, params: { id: item.id, item: {circulation_status_id: CirculationStatus.find_by(name: 'Withdrawn').id } }
+        expect(assigns(:item).valid?).to be_falsy
+        expect(response).to be_successful
+      end
     end
   end
 
