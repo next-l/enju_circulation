@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_19_122214) do
+ActiveRecord::Schema.define(version: 2019_08_18_075628) do
 
   create_table "accepts", force: :cascade do |t|
     t.integer "basket_id"
@@ -359,15 +359,6 @@ ActiveRecord::Schema.define(version: 2019_12_19_122214) do
     t.integer "create_type_id"
     t.index ["agent_id"], name: "index_creates_on_agent_id"
     t.index ["work_id"], name: "index_creates_on_work_id"
-  end
-
-  create_table "custom_properties", force: :cascade do |t|
-    t.integer "resource_id", null: false
-    t.string "resource_type", null: false
-    t.text "label", null: false
-    t.text "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "demands", force: :cascade do |t|

@@ -404,10 +404,10 @@ end
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
 #  deleted_at                   :datetime
-#  expiration_notice_to_patron  :boolean          default(FALSE)
-#  expiration_notice_to_library :boolean          default(FALSE)
+#  expiration_notice_to_patron  :boolean          default("0")
+#  expiration_notice_to_library :boolean          default("0")
 #  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
-#  lock_version                 :integer          default(0), not null
+#  lock_version                 :integer          default("0"), not null
 #
