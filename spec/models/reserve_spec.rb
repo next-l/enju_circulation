@@ -146,10 +146,10 @@ end
 #  updated_at                   :datetime         not null
 #  canceled_at                  :datetime
 #  expired_at                   :datetime
-#  expiration_notice_to_patron  :boolean          default(FALSE)
-#  expiration_notice_to_library :boolean          default(FALSE)
+#  expiration_notice_to_patron  :boolean          default("false")
+#  expiration_notice_to_library :boolean          default("false")
 #  pickup_location_id           :integer
 #  retained_at                  :datetime
 #  postponed_at                 :datetime
-#  lock_version                 :integer          default(0), not null
+#  lock_version                 :integer          default("0"), not null
 #

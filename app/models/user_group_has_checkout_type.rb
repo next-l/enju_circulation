@@ -51,12 +51,12 @@ end
 #  id                             :bigint           not null, primary key
 #  user_group_id                  :bigint           not null
 #  checkout_type_id               :bigint           not null
-#  checkout_limit                 :integer          default(0), not null
-#  checkout_period                :integer          default(0), not null
-#  checkout_renewal_limit         :integer          default(0), not null
-#  reservation_limit              :integer          default(0), not null
-#  reservation_expired_period     :integer          default(7), not null
-#  set_due_date_after_closing_day :boolean          default(FALSE), not null
+#  checkout_limit                 :integer          default("0"), not null
+#  checkout_period                :integer          default("0"), not null
+#  checkout_renewal_limit         :integer          default("0"), not null
+#  reservation_limit              :integer          default("0"), not null
+#  reservation_expired_period     :integer          default("7"), not null
+#  set_due_date_after_closing_day :boolean          default("false"), not null
 #  fixed_due_date                 :datetime
 #  note                           :text
 #  position                       :integer
