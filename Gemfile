@@ -20,7 +20,6 @@ gem 'enju_biblio', github: 'next-l/enju_biblio'
 gem 'enju_message', github: 'next-l/enju_message'
 gem 'enju_event', github: 'next-l/enju_event'
 gem 'sassc-rails'
-gem 'rails', '~> 5.2.4'
 gem 'rails-i18n'
 gem 'webpacker'
 group :test do

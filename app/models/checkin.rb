@@ -96,6 +96,6 @@ end
 #  basket_id    :bigint
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  lock_version :integer          default("0"), not null
+#  lock_version :integer          default(0), not null
 #  checkout_id  :bigint
 #

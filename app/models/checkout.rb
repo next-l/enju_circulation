@@ -168,8 +168,8 @@ end
 #  librarian_id           :bigint
 #  basket_id              :bigint
 #  due_date               :datetime
-#  checkout_renewal_count :integer          default("0"), not null
-#  lock_version           :integer          default("0"), not null
+#  checkout_renewal_count :integer          default(0), not null
+#  lock_version           :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  shelf_id               :bigint
