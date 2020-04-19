@@ -8,7 +8,7 @@ RSpec.describe 'Checkouts', type: :system do
     @item = FactoryBot.create(:item)
     @item.use_restriction = UseRestriction.find_by(name: 'Not For Loan')
     @item.save
-    CarrierType.find_by(name: 'volume').update(attachment: File.open("#{Rails.root.to_s}/../dummy/app/assets/images/icons/book.png"))
+    CarrierType.find_by(name: 'volume').update(attachment: File.open("#{Rails.root.to_s}/examples/book.png"))
   end
 
   describe 'When logged in as Librarian' do
