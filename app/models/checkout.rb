@@ -80,6 +80,7 @@ class Checkout < ApplicationRecord
 
   def reserved?
     return true if item&.reserved?
+
     false
   end
 
