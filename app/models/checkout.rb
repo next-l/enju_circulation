@@ -27,18 +27,18 @@ class Checkout < ApplicationRecord
 
   searchable do
     string :username do
-      user.try(:username)
+      user&.username
     end
     string :user_number do
-      user.try(:profile).try(:user_number)
+      user&.profile&.user_number
     end
     string :item_identifier do
-      item.try(:item_identifier)
+      item&.item_identifier
     end
     time :due_date
     time :created_at
     time :checked_in_at do
-      checkin.try(:created_at)
+      checkin&.created_at
     end
     boolean :reserved do
       reserved?
@@ -79,7 +79,7 @@ class Checkout < ApplicationRecord
   end
 
   def reserved?
-    return true if item.try(:reserved?)
+    return true if item&.reserved?
     false
   end
 
@@ -106,7 +106,7 @@ class Checkout < ApplicationRecord
   end
 
   def set_new_due_date
-    self.due_date = due_date.try(:end_of_day)
+    self.due_date = due_date&.end_of_day
   end
 
   def get_new_due_date

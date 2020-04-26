@@ -84,20 +84,20 @@ class Reserve < ApplicationRecord
 
   searchable do
     text :username do
-      user.try(:username)
+      user&.username
     end
     string :username do
-      user.try(:username)
+      user&.username
     end
     string :user_number do
-      user.profile.try(:user_number)
+      user.profile&.user_number
     end
     time :created_at
     text :item_identifier do
       manifestation.items.pluck(:item_identifier) if manifestation
     end
     text :title do
-      manifestation.try(:titles)
+      manifestation&.titles
     end
     boolean :hold do |reserve|
       hold.include?(reserve)
@@ -106,7 +106,7 @@ class Reserve < ApplicationRecord
       current_state
     end
     string :title_transcription do
-      manifestation.try(:title_transcription)
+      manifestation&.title_transcription
     end
     integer :manifestation_id
   end
@@ -118,7 +118,7 @@ class Reserve < ApplicationRecord
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(item_identifier: identifier).first
+      item = Item.find_by(item_identifier: identifier)
       self.item = item
     end
   end
@@ -126,13 +126,13 @@ class Reserve < ApplicationRecord
   def set_user
     number = user_number.to_s.strip
     if number.present?
-      self.user = Profile.where(user_number: number).first.try(:user)
+      self.user = Profile.find_by(user_number: number)&.user
     end
   end
 
   def valid_item?
     if item_identifier.present?
-      item = Item.where(item_identifier: item_identifier).first
+      item = Item.find_by(item_identifier: item_identifier)
       errors[:base] << I18n.t('reserve.invalid_item') unless item
     end
   end
@@ -147,7 +147,7 @@ class Reserve < ApplicationRecord
   end
 
   def set_request_status
-    self.request_status_type = RequestStatusType.where(name: 'In Process').first
+    self.request_status_type = RequestStatusType.find_by(name: 'In Process')
   end
 
   def check_expired_at
@@ -169,66 +169,38 @@ class Reserve < ApplicationRecord
   def send_message(sender = nil)
     sender ||= User.find(1) # TODO: システムからのメッセージの発信者
     Reserve.transaction do
+      mailer = nil
+
       case current_state
       when 'requested'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_accepted_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_to_patron)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent) # 受付時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_accepted_for_library', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_to_library)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent) # 受付時は即時送信
+        mailer = ReserveMailer.accepted(self)
       when 'canceled'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_canceled_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_to_patron)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent) # キャンセル時は即時送信
-        message_template_to_library = MessageTemplate.localized_template('reservation_canceled_for_library', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_to_library)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent) # キャンセル時は即時送信
+        mailer = ReserveMailer.cancelled(self)
       when 'expired'
-        message_template_to_patron = MessageTemplate.localized_template('reservation_expired_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_to_patron)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent)
-        reload
-        update_attribute(:expiration_notice_to_patron, true)
-        message_template_to_library = MessageTemplate.localized_template('reservation_expired_for_library', sender.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_to_library)
-        request.save_message_body(manifestations: Array[manifestation], user: sender)
-        request.transition_to!(:sent)
+        mailer = ReserveMailer.expired(self)
       when 'retained'
-        message_template_for_patron = MessageTemplate.localized_template('item_received_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_for_patron)
-        request.save_message_body(manifestations: Array[item.manifestation], user: user)
-        request.transition_to!(:sent)
-        message_template_for_library = MessageTemplate.localized_template('item_received_for_library', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_for_library)
-        request.save_message_body(manifestations: Array[item.manifestation], user: user)
-        request.transition_to!(:sent)
+        mailer = ReserveMailer.retained(self)
       when 'postponed'
-        message_template_for_patron = MessageTemplate.localized_template('reservation_postponed_for_patron', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: user, message_template: message_template_for_patron)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent)
-        message_template_for_library = MessageTemplate.localized_template('reservation_postponed_for_library', user.profile.locale)
-        request = MessageRequest.new
-        request.assign_attributes(sender: sender, receiver: sender, message_template: message_template_for_library)
-        request.save_message_body(manifestations: Array[manifestation], user: user)
-        request.transition_to!(:sent)
+        mailer = ReserveMailer.postponed(self)
       else
         raise 'status not defined'
+      end
+
+      if mailer
+        mailer.deliver_later
+        Message.create!(
+          subject: mailer.subject,
+          sender: sender,
+          recipient: user.username,
+          body: mailer.body.to_s
+        )
+
+        Message.create!(
+          subject: mailer.subject,
+          sender: sender,
+          recipient: sender.username,
+          body: mailer.body.to_s
+        )
       end
     end
   end
@@ -317,13 +289,13 @@ class Reserve < ApplicationRecord
   private
 
   def do_request
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil)
+    assign_attributes(request_status_type: RequestStatusType.find_by(name: 'In Process'), item_id: nil, retained_at: nil)
     save!
   end
 
   def retain
     # TODO: 「取り置き中」の状態を正しく表す
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now)
+    assign_attributes(request_status_type: RequestStatusType.find_by(name: 'In Process'), retained_at: Time.zone.now)
     Reserve.transaction do
       item.next_reservation.try(:transition_to!, :postponed)
       save!
@@ -332,7 +304,7 @@ class Reserve < ApplicationRecord
 
   def expire
     Reserve.transaction do
-      assign_attributes(request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now)
+      assign_attributes(request_status_type: RequestStatusType.find_by(name: 'Expired'), canceled_at: Time.zone.now)
       reserve = next_reservation
       if reserve
         reserve.item = item
@@ -346,7 +318,7 @@ class Reserve < ApplicationRecord
 
   def cancel
     Reserve.transaction do
-      assign_attributes(request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now)
+      assign_attributes(request_status_type: RequestStatusType.find_by(name: 'Cannot Fulfill Request'), canceled_at: Time.zone.now)
       save!
       reserve = next_reservation
       if reserve
@@ -359,13 +331,13 @@ class Reserve < ApplicationRecord
   end
 
   def checkout
-    assign_attributes(request_status_type: RequestStatusType.where(name: 'Available For Pickup').first, checked_out_at: Time.zone.now)
+    assign_attributes(request_status_type: RequestStatusType.find_by(name: 'Available For Pickup'), checked_out_at: Time.zone.now)
     save!
   end
 
   def postpone
     assign_attributes(
-      request_status_type: RequestStatusType.where(name: 'In Process').first,
+      request_status_type: RequestStatusType.find_by(name: 'In Process'),
       item_id: nil,
       retained_at: nil,
       postponed_at: Time.zone.now

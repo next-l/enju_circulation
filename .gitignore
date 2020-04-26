@@ -8,4 +8,5 @@ spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/solr/
 spec/dummy/tmp/
+spec/dummy/node_modules/
 spec/cassette_library/

@@ -214,3 +214,9 @@ en:
     by_manifestation: By manifestation
   manifestation:
     currently_checked_out: Currently checked out
+  reserve_mailer:
+    accepted: Reservation accepted
+    cancelled: Reservation cancelled
+    expired: Reservation expired
+    retained: Reservation retained
+    postponed: Reservation postponed
