@@ -12,7 +12,7 @@ module EnjuCirculation
         else
           @library = Library.real.includes(:shelves).order(:position).first
         end
-        @shelves = @library.try(:shelves)
+        @shelves = @library&.shelves
         @bookstores = Bookstore.order(:position)
         @budget_types = BudgetType.order(:position)
         @roles = Role.all

@@ -212,3 +212,9 @@ ja:
     by_manifestation: 書誌別
   manifestation:
     currently_checked_out: 貸出中
+  reserve_mailer:
+    accepted: 予約を受け付けました
+    cancelled: 予約を取り消しました
+    expired: 予約の期限が切れました
+    retained: 予約を確保しました
+    postponed: 予約が順延されました

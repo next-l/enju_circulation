@@ -7,7 +7,7 @@ module EnjuCirculation
       # POST /baskets.json
       def create
         @basket = Basket.new(basket_params)
-        @user = Profile.find_by(user_number: @basket.user_number).try(:user) if @basket.user_number.present?
+        @user = Profile.find_by(user_number: @basket.user_number)&.user if @basket.user_number.present?
         if @user
           @basket.user = @user
         end

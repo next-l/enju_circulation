@@ -44,7 +44,7 @@ class Checkin < ApplicationRecord
       # TODO: ILL時の処理
       update!(checkout: checkout)
       checkout.operator = current_user
-      unless checkout.user.profile.try(:save_checkout_history)
+      unless checkout.user.profile&.save_checkout_history
         checkout.user = nil
         checkout.save(validate: false)
       end

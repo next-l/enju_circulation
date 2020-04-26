@@ -81,7 +81,7 @@ class CheckedItem < ApplicationRecord
     return nil unless item_checkout_type
 
     if due_date_string.present?
-      self.due_date = Time.zone.parse(due_date_string).try(:end_of_day)
+      self.due_date = Time.zone.parse(due_date_string)&.end_of_day
     else
       due_date = item_checkout_type.checkout_period.days.since Time.zone.today
       # 返却期限日が閉館日の場合

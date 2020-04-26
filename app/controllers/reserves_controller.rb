@@ -151,7 +151,7 @@ class ReservesController < ApplicationController
 
   # GET /reserves/1/edit
   def edit
-    @reserve.item_identifier = @reserve.item.try(:item_identifier)
+    @reserve.item_identifier = @reserve.item&.item_identifier
   end
 
   # POST /reserves

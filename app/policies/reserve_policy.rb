@@ -15,7 +15,7 @@ class ReservePolicy < ApplicationPolicy
     if user.try(:has_role?, 'Librarian')
       true
     elsif user.try(:has_role?, 'User')
-      true if user.profile.user_number.try(:present?)
+      true if user.profile.user_number.present?
     end
   end
 

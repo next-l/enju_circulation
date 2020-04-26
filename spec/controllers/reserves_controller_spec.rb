@@ -607,11 +607,11 @@ describe ReservesController do
       end
 
       it "should cancel other user's reservation" do
-        old_message_requests_count = MessageRequest.count
+        old_messages_count = Message.count
         put :update, params: { id: 3, reserve: { user_number: users(:user1).profile.user_number }, mode: 'cancel' }
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
-        MessageRequest.count.should eq old_message_requests_count + 2
+        Message.count.should eq old_messages_count + 2
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 
@@ -651,11 +651,11 @@ describe ReservesController do
       end
 
       it 'should cancel my reservation' do
-        old_message_requests_count = MessageRequest.count
+        old_messages_count = Message.count
         put :update, params: { id: 3, mode: 'cancel' }
         flash[:notice].should eq I18n.t('reserve.reservation_was_canceled')
         assigns(:reserve).current_state.should eq 'canceled'
-        MessageRequest.count.should eq old_message_requests_count + 2
+        Message.count.should eq old_messages_count + 2
         response.should redirect_to reserve_url(assigns(:reserve))
       end
 

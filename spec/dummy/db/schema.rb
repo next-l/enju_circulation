@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_16_131755) do
+ActiveRecord::Schema.define(version: 2020_04_25_074822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -615,6 +615,27 @@ ActiveRecord::Schema.define(version: 2019_12_16_131755) do
     t.index ["body"], name: "index_issn_records_on_body", unique: true
   end
 
+  create_table "item_custom_properties", force: :cascade do |t|
+    t.string "name", null: false, comment: "ラベル名"
+    t.jsonb "display_name_translations", default: {}, null: false, comment: "表示名"
+    t.text "note", comment: "備考"
+    t.integer "position", default: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_item_custom_properties_on_name", unique: true
+  end
+
+  create_table "item_custom_values", force: :cascade do |t|
+    t.bigint "item_custom_property_id", null: false
+    t.bigint "item_id", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_custom_property_id", "item_id"], name: "index_item_custom_values_on_custom_item_property_and_item_id", unique: true
+    t.index ["item_custom_property_id"], name: "index_item_custom_values_on_custom_property_id"
+    t.index ["item_id"], name: "index_item_custom_values_on_item_id"
+  end
+
   create_table "item_has_use_restrictions", comment: "所属と利用期限の関係", force: :cascade do |t|
     t.bigint "item_id", null: false, comment: "所蔵ID"
     t.bigint "use_restriction_id", null: false, comment: "利用制限ID"
@@ -762,6 +783,27 @@ ActiveRecord::Schema.define(version: 2019_12_16_131755) do
     t.datetime "completed_at"
     t.bigint "user_id"
     t.index ["user_id"], name: "index_manifestation_checkout_stats_on_user_id"
+  end
+
+  create_table "manifestation_custom_properties", force: :cascade do |t|
+    t.string "name", null: false, comment: "ラベル名"
+    t.jsonb "display_name_translations", default: {}, null: false, comment: "表示名"
+    t.text "note", comment: "備考"
+    t.integer "position", default: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_manifestation_custom_properties_on_name", unique: true
+  end
+
+  create_table "manifestation_custom_values", force: :cascade do |t|
+    t.bigint "manifestation_custom_property_id", null: false
+    t.bigint "manifestation_id", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manifestation_custom_property_id", "manifestation_id"], name: "index_manifestation_custom_values_on_property_and_manifestation", unique: true
+    t.index ["manifestation_custom_property_id"], name: "index_manifestation_custom_values_on_custom_property_id"
+    t.index ["manifestation_id"], name: "index_manifestation_custom_values_on_manifestation_id"
   end
 
   create_table "manifestation_relationship_types", force: :cascade do |t|
@@ -1551,6 +1593,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_131755) do
   add_foreign_key "checked_items", "users"
   add_foreign_key "checkins", "checkouts"
   add_foreign_key "checkins", "items"
+  add_foreign_key "checkins", "users", column: "librarian_id"
   add_foreign_key "checkout_stat_has_manifestations", "manifestations"
   add_foreign_key "checkout_stat_has_users", "user_checkout_stats"
   add_foreign_key "checkout_stat_has_users", "users"
@@ -1575,11 +1618,15 @@ ActiveRecord::Schema.define(version: 2019_12_16_131755) do
   add_foreign_key "isbn_record_and_manifestations", "manifestations"
   add_foreign_key "issn_record_and_manifestations", "issn_records"
   add_foreign_key "issn_record_and_manifestations", "manifestations"
+  add_foreign_key "item_custom_values", "item_custom_properties"
+  add_foreign_key "item_custom_values", "items"
   add_foreign_key "item_has_use_restrictions", "items"
   add_foreign_key "item_has_use_restrictions", "use_restrictions"
   add_foreign_key "items", "manifestations"
   add_foreign_key "libraries", "library_groups"
   add_foreign_key "manifestation_checkout_stats", "users"
+  add_foreign_key "manifestation_custom_values", "manifestation_custom_properties"
+  add_foreign_key "manifestation_custom_values", "manifestations"
   add_foreign_key "manifestation_reserve_stats", "users"
   add_foreign_key "messages", "messages", column: "parent_id"
   add_foreign_key "messages", "users", column: "receiver_id"
