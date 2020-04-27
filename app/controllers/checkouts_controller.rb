@@ -1,5 +1,5 @@
 class CheckoutsController < ApplicationController
-  before_action :set_checkout, only: [:show, :edit, :update, :destroy]
+  before_action :set_checkout, only: [:show, :edit, :update, :destroy, :notify_due_date, :notify_overdue]
   before_action :check_policy, only: [:index, :new, :create, :remove_all]
   before_action :get_user, only: [:index, :remove_all]
   before_action :get_item, only: :index
@@ -164,6 +164,16 @@ class CheckoutsController < ApplicationController
       format.html { redirect_to checkouts_url, notice: t('controller.successfully_deleted', model: t('activerecord.models.checkout')) }
       format.json { head :no_content }
     end
+  end
+
+  def notify_due_date
+    @checkout.send_due_date_notification
+    redirect_to @checkout
+  end
+
+  def notify_overdue
+    @checkout.send_due_date_notification
+    redirect_to @checkout
   end
 
   private
