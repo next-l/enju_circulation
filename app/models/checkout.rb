@@ -132,30 +132,30 @@ class Checkout < ApplicationRecord
   end
 
   def self.send_due_date_notification
-    template = 'recall_item'
-    queues = []
+    count = 0
     User.find_each do |user|
       # 未来の日時を指定する
-      checkouts = user.checkouts.due_date_on(user.profile.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day)
-      unless checkouts.empty?
-        queues << user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
+      user.checkouts.due_date_on(user.profile.user_group.number_of_day_to_notify_due_date.days.from_now.beginning_of_day).each_with_index do |checkout, i|
+        checkout.send_due_date_notification
+        count += 1
       end
     end
-    queues.size
+
+    count
   end
 
   def self.send_overdue_notification
-    template = 'recall_overdue_item'
-    queues = []
+    count = 0
     User.find_each do |user|
       user.profile.user_group.number_of_time_to_notify_overdue.times do |i|
-        checkouts = user.checkouts.due_date_on((user.profile.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day)
-        unless checkouts.empty?
-          queues << user.profile.user.send_message(template, manifestations: checkouts.collect(&:item).collect(&:manifestation))
+        user.checkouts.due_date_on((user.profile.user_group.number_of_day_to_notify_overdue * (i + 1)).days.ago.beginning_of_day).each_with_index do |checkout, j|
+          checkout.send_overdue_notification
+          count += 1
         end
       end
     end
-    queues.size
+
+    count
   end
 
   def self.remove_all_history(user)
