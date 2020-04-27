@@ -30,6 +30,9 @@
     <div class="card card-body">
       <%= render 'manifestations/book_jacket', manifestation: @checkout.item.manifestation -%>
       <ul>
+        <% if @checkout.overdue? %>
+          <li><%= link_to t('checkout.send_overdue_reminder'), checkout_path(@checkout) -%></li>
+        <% end %>
         <li><%= link_to t('page.edit'), edit_checkout_path(@checkout) -%></li>
         <li><%= link_to t('page.back'), :back -%></li>
         <%- if current_user.has_role?('Librarian') -%>

@@ -508,4 +508,66 @@ describe CheckoutsController do
       end
     end
   end
+
+  describe 'POST notify_due_date' do
+    before(:each) do
+      @checkout = checkouts(:checkout_00003)
+    end
+
+    describe 'When logged in as Librarian' do
+      login_fixture_librarian
+
+      it 'should be redirected to the checkout' do
+        post :notify_due_date, params: {id: @checkout.id }
+        expect(response).to redirect_to(@checkout)
+      end
+    end
+
+    describe 'When logged in as User' do
+      login_fixture_user
+
+      it 'should be forbidden' do
+        post :notify_due_date, params: {id: @checkout.id }
+        expect(response).to be_forbidden
+      end
+    end
+
+    describe 'When not logged in' do
+      it 'should be forbidden' do
+        post :notify_due_date, params: {id: @checkout.id }
+        expect(response).to redirect_to(new_user_session_url)
+      end
+    end
+  end
+
+  describe 'POST notify_overdue' do
+    before(:each) do
+      @checkout = checkouts(:checkout_00003)
+    end
+
+    describe 'When logged in as Librarian' do
+      login_fixture_librarian
+
+      it 'should be redirected to the checkout' do
+        post :notify_overdue, params: {id: @checkout.id }
+        expect(response).to redirect_to(@checkout)
+      end
+    end
+
+    describe 'When logged in as User' do
+      login_fixture_user
+
+      it 'should be forbidden' do
+        post :notify_overdue, params: {id: @checkout.id }
+        expect(response).to be_forbidden
+      end
+    end
+
+    describe 'When not logged in' do
+      it 'should be forbidden' do
+        post :notify_overdue, params: {id: @checkout.id }
+        expect(response).to redirect_to(new_user_session_url)
+      end
+    end
+  end
 end
