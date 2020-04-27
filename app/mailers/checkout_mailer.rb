@@ -5,7 +5,11 @@ class CheckoutMailer < ApplicationMailer
     system_name = LibraryGroup.system_name(checkout.user.profile.locale)
 
     from = "#{system_name} <#{@library_group.email}>"
+<<<<<<< HEAD
     subject = "[#{system_name}] #{I18n.t('checkout_mailer.due_date')}"
+=======
+    subject = "#{system_name} #{I18n.t('checkout_mailer.accepted')}"
+>>>>>>> fec7b6aa... add CheckoutMailer
     mail(from: from, to: checkout.user.email, cc: from, subject: subject)
   end
 
@@ -15,7 +19,11 @@ class CheckoutMailer < ApplicationMailer
     system_name = LibraryGroup.system_name(checkout.user.profile.locale)
 
     from = "#{system_name} <#{@library_group.email}>"
+<<<<<<< HEAD
     subject = "[#{system_name}] #{I18n.t('checkout_mailer.overdue')}"
+=======
+    subject = "#{system_name} #{I18n.t('checkout_mailer.accepted')}"
+>>>>>>> fec7b6aa... add CheckoutMailer
     mail(from: from, to: checkout.user.email, cc: from, subject: subject)
   end
 end

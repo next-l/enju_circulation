@@ -212,6 +212,9 @@ ja:
     by_manifestation: 書誌別
   manifestation:
     currently_checked_out: 貸出中
+  checkout_mailer:
+    due_date: 貸出期限が近づいています
+    overdue: 貸出期限を過ぎています
   reserve_mailer:
     accepted: 予約を受け付けました
     cancelled: 予約を取り消しました

@@ -120,6 +120,28 @@ class Checkout < ApplicationRecord
     end
   end
 
+  def send_due_date_notification
+    mailer = CheckoutMailer.due_date(self)
+    mailer.deliver_later
+    Message.create!(
+      subject: mailer.subject,
+      sender: User.find(1),
+      recipient: user.username,
+      body: mailer.body.to_s
+    )
+  end
+
+  def send_overdue_notification
+    mailer = CheckoutMailer.overdue(self)
+    mailer.deliver_later
+    Message.create!(
+      subject: mailer.subject,
+      sender: User.find(1),
+      recipient: user.username,
+      body: mailer.body.to_s
+    )
+  end
+
   def self.manifestations_count(start_date, end_date, manifestation)
     where(
       arel_table[:created_at].gteq start_date

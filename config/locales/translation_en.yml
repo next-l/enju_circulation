@@ -214,6 +214,9 @@ en:
     by_manifestation: By manifestation
   manifestation:
     currently_checked_out: Currently checked out
+  checkout_mailer:
+    due_date: Your due date is approaching
+    overdue: You have an overdue item
   reserve_mailer:
     accepted: Reservation accepted
     cancelled: Reservation cancelled
