@@ -3,7 +3,7 @@
 以下の資料の貸出期限が近づいています。
 
 <%= @checkout.item.manifestation.original_title %>
-<%= manifestation_url(@checkout.manifestation) %>
+<%= manifestation_url(@checkout.item.manifestation) %>
 
 貸出期限: <%= l(@checkout.due_date) %>
 
