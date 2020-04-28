@@ -364,7 +364,8 @@ describe CheckinsController do
         assigns(:checkin).should_not be_valid
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
-        expect(json['messages']['checkout']).to include(I18n.t('errors.messages.blank'))
+        expect(json['messages']['base']).to match_array([I18n.t('checkin.item_not_found')])
+        expect(json['messages']['item_id']).to match_array([I18n.t('errors.messages.blank')])
       end
     end
 
@@ -456,7 +457,7 @@ describe CheckinsController do
 
         it "re-renders the 'edit' template" do
           put :update, params: { id: @checkin.id, checkin: @invalid_attrs }
-          response.should redirect_to(@checkin)
+          expect(response).to be_success
         end
 
         it 'should not update checkin without item_identifier' do
@@ -485,12 +486,12 @@ describe CheckinsController do
       describe 'with invalid params' do
         it 'assigns the checkin as @checkin' do
           put :update, params: { id: @checkin.id, checkin: @invalid_attrs }
-          assigns(:checkin).should be_valid
+          expect(assigns(:checkin)).not_to be_valid
         end
 
         it "re-renders the 'edit' template" do
           put :update, params: { id: @checkin.id, checkin: @invalid_attrs }
-          response.should redirect_to(@checkin)
+          expect(response).to be_success
         end
       end
     end
