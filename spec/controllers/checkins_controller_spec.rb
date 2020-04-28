@@ -318,54 +318,53 @@ describe CheckinsController do
 
       describe 'with valid params' do
         it 'assigns a newly created checkin as @checkin' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
           assigns(:checkin).should be_nil
         end
 
         it 'should not create checkin without basket_id' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
           json = JSON.parse(response.body)
           expect(json['error']).to eq('forbidden')
         end
 
         describe 'When basket_id is specified' do
           it 'redirects to the created checkin' do
-            post :create, checkin: @attrs, basket_id: 9
+            post :create, params: { checkin: @attrs, basket_id: 9 }
             expect(response).to have_http_status(:created)
             json = JSON.parse(response.body)
             expect(json['result']['basket_id']).to eq(9)
-            assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
+            assigns(:checkin).checkout.item.circulation_status.name.should eq 'Available On Shelf'
           end
 
           it 'should checkin the overdue item' do
-            post :create, checkin: { item_identifier: '00014' }, basket_id: 9
+            post :create, params: { checkin: { item_identifier: '00014' }, basket_id: 9 }
             expect(response).to have_http_status(:created)
             assigns(:checkin).checkout.should be_valid
-            assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
+            assigns(:checkin).checkout.item.circulation_status.name.should eq 'Available On Shelf'
           end
         end
       end
 
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved checkin as @checkin' do
-          post :create, checkin: @invalid_attrs
+          post :create, params: { checkin: @invalid_attrs }
           assigns(:checkin).should be_nil
         end
 
         it 'should be forbidden' do
-          post :create, checkin: @invalid_attrs
+          post :create, params: { checkin: @invalid_attrs }
           json = JSON.parse(response.body)
           expect(json['error']).to eq('forbidden')
         end
       end
 
       it 'should not create checkin without item_id' do
-        post :create, checkin: { item_identifier: nil }, basket_id: 9
+        post :create, params: { checkin: { item_identifier: nil }, basket_id: 9 }
         assigns(:checkin).should_not be_valid
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
-        expect(json['messages']['base']).to match_array([I18n.t('checkin.item_not_found')])
-        expect(json['messages']['item_id']).to match_array([I18n.t('errors.messages.blank')])
+        expect(json['messages']['checkout']).to include(I18n.t('errors.messages.blank'))
       end
     end
 
@@ -374,27 +373,27 @@ describe CheckinsController do
 
       describe 'with valid params' do
         it 'assigns a newly created checkin as @checkin' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
           assigns(:checkin).should be_nil
         end
 
         it 'should not create checkin without basket_id' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
           json = JSON.parse(response.body)
           expect(json['error']).to eq('forbidden')
         end
 
         it 'should show notification when it is reserved' do
-          post :create, checkin: { item_identifier: '00008' }, basket_id: 9
+          post :create, params: { checkin: { item_identifier: '00008' }, basket_id: 9 }
           flash[:message].to_s.index(I18n.t('item.this_item_is_reserved')).should be_truthy
-          assigns(:checkin).item.should be_retained
-          assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
+          assigns(:checkin).checkout.item.should be_retained
+          assigns(:checkin).checkout.item.circulation_status.name.should eq 'Available On Shelf'
           expect(response).to have_http_status(:created)
         end
 
         it 'should show notification when an item includes supplements' do
-          post :create, checkin: { item_identifier: '00004' }, basket_id: 9
-          assigns(:checkin).item.circulation_status.name.should eq 'Available On Shelf'
+          post :create, params: { checkin: { item_identifier: '00004' }, basket_id: 9 }
+          assigns(:checkin).checkout.item.circulation_status.name.should eq 'Available On Shelf'
           flash[:message].to_s.index(I18n.t('item.this_item_include_supplement')).should be_truthy
           expect(response).to have_http_status(:created)
         end
@@ -402,7 +401,7 @@ describe CheckinsController do
 
       it "should show notice when other library's item is checked in" do
         sign_in users(:librarian2)
-        post :create, checkin: { item_identifier: '00009' }, basket_id: 9
+        post :create, params: { checkin: { item_identifier: '00009' }, basket_id: 9 }
         assigns(:checkin).should be_valid
         flash[:message].to_s.index(I18n.t('checkin.other_library_item')).should be_truthy
         expect(response).to have_http_status(:created)
@@ -417,11 +416,11 @@ describe CheckinsController do
 
       describe 'with valid params' do
         it 'assigns a newly created checkin as @checkin' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
         end
 
         it 'should redirect to new session url' do
-          post :create, checkin: @attrs
+          post :create, params: { checkin: @attrs }
           expect(response).to have_http_status(:ok)
         end
       end

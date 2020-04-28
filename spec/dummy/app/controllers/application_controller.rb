@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include EnjuLibrary::Controller
   include EnjuBiblio::Controller
   include EnjuCirculation::Controller
-  after_action :verify_authorized
+  after_action :verify_authorized, unless: :devise_controller?
 
   include Pundit
 end
