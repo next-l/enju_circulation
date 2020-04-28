@@ -457,7 +457,7 @@ describe CheckinsController do
 
         it "re-renders the 'edit' template" do
           put :update, params: { id: @checkin.id, checkin: @invalid_attrs }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
 
         it 'should not update checkin without item_identifier' do
@@ -491,7 +491,7 @@ describe CheckinsController do
 
         it "re-renders the 'edit' template" do
           put :update, params: { id: @checkin.id, checkin: @invalid_attrs }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
