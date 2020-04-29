@@ -12,12 +12,6 @@ describe User do
   it "should get reserves_count" do
     users(:user1).reserves.waiting.count.should eq 1
   end
-
-  it "should send_message" do
-    assert users(:librarian1).send_message('reservation_expired_for_patron', manifestations: users(:librarian1).reserves.not_sent_expiration_notice_to_patron.collect(&:manifestation))
-    users(:librarian1).reload
-    users(:librarian1).reserves.not_sent_expiration_notice_to_patron.should be_empty
-  end
 end
 
 # == Schema Information
