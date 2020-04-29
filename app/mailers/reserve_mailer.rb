@@ -4,8 +4,8 @@ class ReserveMailer < ApplicationMailer
     @reserve = reserve
     system_name = LibraryGroup.system_name(reserve.user.profile.locale)
 
-    from = "#{system_name} <#{@library_group.email}>"
-    subject = "#{system_name} #{I18n.t('reserve_mailer.accepted')}"
+    from = "#{system_name}] <#{@library_group.email}>"
+    subject = "[#{system_name}] #{I18n.t('reserve_mailer.accepted')}"
     mail(from: from, to: reserve.user.email, cc: from, subject: subject)
   end
 
@@ -14,8 +14,8 @@ class ReserveMailer < ApplicationMailer
     @reserve = reserve
     system_name = LibraryGroup.system_name(reserve.user.profile.locale)
 
-    from = "#{system_name} <#{@library_group.email}>"
-    subject = "#{system_name} #{I18n.t('reserve_mailer.cancelled')}"
+    from = "#{system_name}] <#{@library_group.email}>"
+    subject = "[#{system_name}] #{I18n.t('reserve_mailer.cancelled')}"
     mail(from: from, to: reserve.user.email, cc: from, subject: subject)
   end
 
@@ -24,8 +24,8 @@ class ReserveMailer < ApplicationMailer
     @reserve = reserve
     system_name = LibraryGroup.system_name(reserve.user.profile.locale)
 
-    from = "#{system_name} <#{@library_group.email}>"
-    subject = "#{system_name} #{I18n.t('reserve_mailer.expired')}"
+    from = "#{system_name}] <#{@library_group.email}>"
+    subject = "[#{system_name}] #{I18n.t('reserve_mailer.expired')}"
     mail(from: from, to: reserve.user.email, cc: from, subject: subject)
   end
 
@@ -34,8 +34,8 @@ class ReserveMailer < ApplicationMailer
     @reserve = reserve
     system_name = LibraryGroup.system_name(reserve.user.profile.locale)
 
-    from = "#{system_name} <#{@library_group.email}>"
-    subject = "#{system_name} #{I18n.t('reserve_mailer.retained')}"
+    from = "#{system_name}] <#{@library_group.email}>"
+    subject = "[#{system_name}] #{I18n.t('reserve_mailer.retained')}"
     mail(from: from, to: reserve.user.email, cc: from, subject: subject)
   end
 
@@ -44,8 +44,8 @@ class ReserveMailer < ApplicationMailer
     @reserve = reserve
     system_name = LibraryGroup.system_name(reserve.user.profile.locale)
 
-    from = "#{system_name} <#{@library_group.email}>"
-    subject = "#{system_name} #{I18n.t('reserve_mailer.postponed')}"
+    from = "#{system_name}] <#{@library_group.email}>"
+    subject = "[#{system_name}] #{I18n.t('reserve_mailer.postponed')}"
     mail(from: from, to: reserve.user.email, cc: from, subject: subject)
   end
 end
