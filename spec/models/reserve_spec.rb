@@ -47,10 +47,6 @@ describe Reserve do
     Message.count.should eq old_count + 2
   end
 
-  it "should send message to library" do
-    Reserve.send_message_to_library('expired', manifestations: Reserve.not_sent_expiration_notice_to_library.collect(&:manifestation)).should be_truthy
-  end
-
   it "should have reservations that will be expired" do
     reserve = FactoryBot.create(:reserve)
     reserve.transition_to!(:requested)
