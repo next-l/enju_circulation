@@ -1,6 +1,6 @@
 class CreateItems < ActiveRecord::Migration[5.2]
   def change
-    create_table :items, class: '所蔵' do |t|
+    create_table :items, comment: '所蔵' do |t|
       t.string :call_number, comment: '請求記号'
       t.string :item_identifier, comment: '所蔵情報ID'
       t.timestamps
