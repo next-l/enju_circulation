@@ -16,16 +16,18 @@ describe ResourceImportFile do
       item_10103 = Item.find_by(item_identifier: '10103')
       expect(item_10103.use_restriction.name).to eq 'In Library Use Only'
       expect(item_10103.circulation_status.name).to eq 'Not Available'
+      expect(item_10103.checkout_type.name).to eq 'serial'
       item_00001 = Item.find_by(item_identifier: '00001')
       expect(item_00001.use_restriction.name).to eq 'Supervision Required'
       expect(item_00001.circulation_status.name).to eq 'Available On Shelf'
+      expect(item_00001.checkout_type.name).to eq 'book'
       expect(result[:circulation_imported]).to eq 1
       expect(result[:circulation_skipped]).to eq 1
     end
   end
 
   describe "when its mode is 'update'" do
-    it "should import ncid value" do
+    it "should import circulation status" do
       file = ResourceImportFile.new(
         user: users(:admin),
         edit_mode: 'update'
@@ -33,15 +35,17 @@ describe ResourceImportFile do
       file.resource_import.attach(io: File.new("#{Rails.root}/../../examples/resource_update.tsv"), filename: 'attachment.txt')
       file.save
       result = file.import_start
-      expect(result[:manifestation_updated]).to eq 2
+      expect(result[:manifestation_updated]).to eq 3
       expect(file.error_message).to be_nil
       item_00001 = Item.find_by(item_identifier: '00001')
       expect(item_00001.use_restriction.name).to eq 'In Library Use Only'
       expect(item_00001.circulation_status.name).to eq 'Not Available'
+      expect(item_00001.checkout_type.name).to eq 'book'
       item_00002 = Item.find_by(item_identifier: '00002')
       expect(item_00002.use_restriction.name).to eq 'In Library Use Only'
       expect(item_00002.circulation_status.name).to eq 'Available On Shelf'
-      expect(result[:circulation_imported]).to eq 1
+      expect(item_00002.checkout_type.name).to eq 'book'
+      expect(result[:circulation_imported]).to eq 2
       expect(result[:circulation_skipped]).to eq 1
     end
   end

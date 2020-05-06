@@ -1,3 +1,4 @@
-item_identifier	use_restriction	circulation_status
-00001	In Library Use Only	Not Available
-00002	Invalid	Invalid
+item_identifier	use_restriction	circulation_status	checkout_type
+00001	In Library Use Only	Not Available	book
+00002	Invalid	Invalid	
+00002	Invalid	Invalid	book
