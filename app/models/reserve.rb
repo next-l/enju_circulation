@@ -5,7 +5,7 @@ class Reserve < ApplicationRecord
   ]
   scope :hold, -> { where('item_id IS NOT NULL') }
   scope :not_hold, -> { where(item_id: nil) }
-  scope :waiting, -> {not_in_state(:completed, :expired, :retained).where('canceled_at IS NULL AND (expired_at > ? OR expired_at IS NULL)', Time.zone.now).order('reserves.id DESC')}
+  scope :waiting, -> {not_in_state(:completed, :expired).where('canceled_at IS NULL AND (expired_at > ? OR expired_at IS NULL)', Time.zone.now).order('reserves.id DESC')}
   scope :retained, -> {in_state(:retained).where('retained_at IS NOT NULL')}
   scope :completed, -> {in_state(:completed).where('checked_out_at IS NOT NULL')}
   scope :canceled, -> {in_state(:canceled).where('canceled_at IS NOT NULL')}

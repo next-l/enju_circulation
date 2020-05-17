@@ -14,16 +14,15 @@ class ReserveStateMachine
   transition from: :requested, to: [:retained, :canceled, :expired, :completed]
 
   after_transition(to: :requested) do |reserve|
-    reserve.update(request_status_type: RequestStatusType.where(name: 'In Process').first, item_id: nil, retained_at: nil)
+    reserve.update(request_status_type: RequestStatusType.find_by(name: 'In Process'), item_id: nil, retained_at: nil)
   end
 
   after_transition(to: :retained) do |reserve|
     # TODO: 「取り置き中」の状態を正しく表す
-    reserve.update(request_status_type: RequestStatusType.where(name: 'In Process').first, retained_at: Time.zone.now)
+    reserve.update(request_status_type: RequestStatusType.find_by(name: 'In Process'), retained_at: Time.zone.now)
     Reserve.transaction do
       if reserve.item
         other_reserves = reserve.item.reserves.waiting
-        other_reserves += reserve.item.reserves.in_state(:retained)
         other_reserves.each{|r|
           if r != reserve
             r.transition_to!(:postponed)
