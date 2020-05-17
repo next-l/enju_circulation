@@ -10,7 +10,7 @@ describe ResourceImportFile do
         default_shelf_id: 3,
         edit_mode: 'create'
       )
-      file.resource_import.attach(io: File.new("#{Rails.root}/../../examples/resource_import.tsv"), filename: 'attachment.txt')
+      file.attachment.attach(io: File.new("#{Rails.root}/../../examples/resource_import.tsv"), filename: 'attachment.txt')
       file.save
       result = file.import_start
       item_10103 = Item.find_by(item_identifier: '10103')
@@ -32,7 +32,7 @@ describe ResourceImportFile do
         user: users(:admin),
         edit_mode: 'update'
       )
-      file.resource_import.attach(io: File.new("#{Rails.root}/../../examples/resource_update.tsv"), filename: 'attachment.txt')
+      file.attachment.attach(io: File.new("#{Rails.root}/../../examples/resource_update.tsv"), filename: 'attachment.txt')
       file.save
       result = file.import_start
       expect(result[:manifestation_updated]).to eq 3
