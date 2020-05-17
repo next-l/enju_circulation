@@ -10,7 +10,7 @@ describe UserImportFile do
         default_library: Library.find(3),
         user: users(:admin)
       )
-      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
+      file.attachment.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
       old_users_count = User.count
       old_import_results_count = UserImportResult.count
       file.current_state.should eq 'pending'
@@ -28,7 +28,7 @@ describe UserImportFile do
         default_library: Library.find(3),
         user: users(:admin)
       )
-      file.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
+      file.attachment.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
       old_count = User.count
       old_message_count = Message.count
       file.remove
@@ -42,7 +42,7 @@ describe UserImportFile do
         default_library: Library.find(3),
         user: users(:admin)
       )
-      file1.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
+      file1.attachment.attach(io: File.new("#{Rails.root}/../../examples/user_import_file_sample.tsv"), filename: 'attachment.txt')
       file1.import_start
 
       user001 = User.find_by(username: 'user001')
@@ -53,7 +53,7 @@ describe UserImportFile do
         default_user_group: UserGroup.find(2),
         default_library: Library.find(3)
       )
-      file2.user_import.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
+      file2.attachment.attach(io: File.new("#{Rails.root}/../../examples/user_delete_file.tsv"), filename: 'attachment.txt')
       file2.remove
       User.where(username: 'user001').should_not be_blank
       User.count.should eq old_count - 2
