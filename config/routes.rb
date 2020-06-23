@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   resources :reserves
   resources :items do
     resources :checked_items
+    resources :checkouts
     resources :item_has_use_restrictions
   end
 end
