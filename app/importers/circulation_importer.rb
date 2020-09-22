@@ -16,7 +16,7 @@ class CirculationImporter
         action: options[:action]
       )
       
-      entry.import unless entry.dummy.present?
+      entry.import if entry.dummy.blank?
       entry.result = :skipped unless entry.result
 
       entries << entry

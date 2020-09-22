@@ -34,7 +34,7 @@ module EnjuCirculation
 
     def is_reserved_by?(user)
       return nil unless user
-      reserve = Reserve.waiting.where(user_id: user.id, manifestation_id: id).first
+      reserve = Reserve.waiting.find_by(user_id: user.id, manifestation_id: id)
       if reserve
         reserve
       else

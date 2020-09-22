@@ -250,6 +250,7 @@ class Reserve < ApplicationRecord
 
   def retained?
     return true if current_state == 'retained'
+
     false
   end
 

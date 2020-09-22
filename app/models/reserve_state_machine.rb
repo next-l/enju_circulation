@@ -36,7 +36,7 @@ class ReserveStateMachine
 
   after_transition(to: :canceled) do |reserve|
     Reserve.transaction do
-      reserve.update(request_status_type: RequestStatusType.where(name: 'Cannot Fulfill Request').first, canceled_at: Time.zone.now)
+      reserve.update(request_status_type: RequestStatusType.find_by(name: 'Cannot Fulfill Request'), canceled_at: Time.zone.now)
       next_reserve = reserve.next_reservation
       if next_reserve
         next_reserve.item = reserve.item
@@ -49,7 +49,7 @@ class ReserveStateMachine
 
   after_transition(to: :expired) do |reserve|
     Reserve.transaction do
-      reserve.update(request_status_type: RequestStatusType.where(name: 'Expired').first, canceled_at: Time.zone.now)
+      reserve.update(request_status_type: RequestStatusType.find_by(name: 'Expired'), canceled_at: Time.zone.now)
       next_reserve = reserve.next_reservation
       if next_reserve
         next_reserve.item = reserve.item
@@ -67,7 +67,7 @@ class ReserveStateMachine
 
   after_transition(to: :completed) do |reserve|
     reserve.update(
-      request_status_type: RequestStatusType.where(name: 'Available For Pickup').first,
+      request_status_type: RequestStatusType.find_by(name: 'Available For Pickup'),
       checked_out_at: Time.zone.now
     )
   end

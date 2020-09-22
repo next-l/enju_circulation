@@ -31,7 +31,7 @@ class CheckedItem < ApplicationRecord
 
     unless item.available_for_checkout?
       if item.circulation_status.name == 'Missing'
-        item.circulation_status = CirculationStatus.where(name: 'Available On Shelf').first
+        item.circulation_status = CirculationStatus.find_by(name: 'Available On Shelf')
         item.save
         set_due_date
       else
@@ -98,7 +98,7 @@ class CheckedItem < ApplicationRecord
   def set_item
     identifier = item_identifier.to_s.strip
     if identifier.present?
-      item = Item.where(item_identifier: identifier).first
+      item = Item.find_by(item_identifier: identifier)
       self.item = item
     end
   end
