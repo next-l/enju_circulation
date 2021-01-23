@@ -19,13 +19,13 @@ class CheckedItem < ApplicationRecord
 
   def available_for_checkout?
     if item.blank?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.item_not_found')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.item_not_found'))
       return false
     end
 
     if item.rent?
       unless item.circulation_status.name == 'Missing'
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+        errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.already_checked_out'))
       end
     end
 
@@ -35,7 +35,7 @@ class CheckedItem < ApplicationRecord
         item.save
         set_due_date
       else
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
+        errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout'))
         return false
       end
     end

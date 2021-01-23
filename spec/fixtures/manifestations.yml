@@ -35,10 +35,7 @@ manifestation_00003:
   carrier_type_id: 1
   language_id: 1
   updated_at: 2007-11-19 16:59:02.618359 +09:00
-  original_title: !binary |
-    44GT44KM44GL44KJ44Gu55Sf5ZG956eR5a2m56CU56m26ICF44Gu44Gf44KB
-    44Gu44OQ44Kk44Kq54m56Kix5YWl6ZaA6Kyb5bqn
-
+  original_title: test00003
   price: 
   manifestation_identifier: 
   depth: 
@@ -66,9 +63,7 @@ manifestation_00005:
   carrier_type_id: 1
   language_id: 1
   updated_at: 2007-11-19 16:59:04.333183 +09:00
-  original_title: !binary |
-    6aGn5a6i5rqA6Laz5Z6L44Oe44O844Kx44OG44Kj44Oz44Kw44Gu5qeL5Zuz
-
+  original_title: test00005
   price: 
   manifestation_identifier: 
   depth: 
@@ -82,9 +77,7 @@ manifestation_00006:
   carrier_type_id: 1
   language_id: 1
   updated_at: 2007-11-19 16:59:05.255684 +09:00
-  original_title: !binary |
-    5LuV57WE44G/6Z2p5paw44Gu5pmC5Luj
-
+  original_title: test00006
   price: 
   manifestation_identifier: 
   depth: 
@@ -126,9 +119,7 @@ manifestation_00009:
   carrier_type_id: 1
   language_id: 1
   updated_at: 2007-11-19 16:59:08.166195 +09:00
-  original_title: !binary |
-    6YCQ5p2h6Kej6Kqs5LiN5q2j56u25LqJ6Ziy5q2i5rOV
-
+  original_title: test00009
   price: 
   manifestation_identifier: 
   depth: 
