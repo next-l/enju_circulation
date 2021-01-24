@@ -26,13 +26,6 @@ class Reserve < ApplicationRecord
   belongs_to :request_status_type
   belongs_to :pickup_location, class_name: 'Library', optional: true
 
-  validates_associated :user, :librarian, :request_status_type
-  validates :manifestation, associated: true # , on: :create
-  validates :user, :request_status_type, presence: true
-  validates :manifestation, presence: true, unless: Proc.new{|reserve|
-    reserve.completed?
-  }
-  # validates_uniqueness_of :manifestation_id, scope: :user_id
   validates_date :expired_at, allow_blank: true
   validate :manifestation_must_include_item
   validate :available_for_reservation?, on: :create
@@ -133,7 +126,7 @@ class Reserve < ApplicationRecord
   def valid_item?
     if item_identifier.present?
       item = Item.find_by(item_identifier: item_identifier)
-      errors[:base] << I18n.t('reserve.invalid_item') unless item
+      errors.add(:base, I18n.t('reserve.invalid_item')) unless item
     end
   end
 
@@ -141,7 +134,7 @@ class Reserve < ApplicationRecord
     return nil if force_retaining == '1'
     if item && !retained?
       if Reserve.retained.where(item_id: item.id).count > 0
-        errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
+        errors.add(:base, I18n.t('reserve.attempt_to_update_retained_reservation'))
       end
     end
   end
@@ -154,7 +147,7 @@ class Reserve < ApplicationRecord
     if canceled_at.blank? && expired_at?
       if !completed?
         if expired_at.beginning_of_day < Time.zone.now
-          errors[:base] << I18n.t('reserve.invalid_date')
+          errors.add(:base, I18n.t('reserve.invalid_date'))
         end
       end
     end
@@ -227,19 +220,19 @@ class Reserve < ApplicationRecord
   def available_for_reservation?
     if manifestation
       if checked_out_now?
-        errors[:base] << I18n.t('reserve.this_manifestation_is_already_checked_out')
+        errors.add(:base, I18n.t('reserve.this_manifestation_is_already_checked_out'))
       end
 
       if manifestation.is_reserved_by?(user)
-        errors[:base] << I18n.t('reserve.this_manifestation_is_already_reserved')
+        errors.add(:base, I18n.t('reserve.this_manifestation_is_already_reserved'))
       end
       if user.try(:reached_reservation_limit?, manifestation)
-        errors[:base] << I18n.t('reserve.excessed_reservation_limit')
+        errors.add(:base, I18n.t('reserve.excessed_reservation_limit'))
       end
 
       expired_period = manifestation.try(:reservation_expired_period, user)
       if expired_period.nil?
-        errors[:base] << I18n.t('reserve.this_patron_cannot_reserve')
+        errors.add(:base, I18n.t('reserve.this_patron_cannot_reserve'))
       end
     end
   end

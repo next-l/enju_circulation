@@ -14,10 +14,9 @@ class Checkout < ApplicationRecord
   belongs_to :shelf, optional: true
   belongs_to :library, optional: true
 
-  validates_associated :user, :item, :librarian, :checkin # , :basket
   # TODO: 貸出履歴を保存しない場合は、ユーザ名を削除する
   # validates_presence_of :user, :item, :basket
-  validates :item_id, :due_date, presence: true
+  validates :due_date, presence: true
   validates :item_id, uniqueness: { scope: [:basket_id, :user_id] }
   validate :is_not_checked?, on: :create
   validate :renewable?, on: :update
@@ -51,7 +50,7 @@ class Checkout < ApplicationRecord
   def is_not_checked?
     checkout = Checkout.not_returned.where(item_id: item_id)
     unless checkout.empty?
-      errors[:base] << I18n.t('activerecord.errors.messages.checkin.already_checked_out')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checkin.already_checked_out'))
     end
   end
 
@@ -72,7 +71,7 @@ class Checkout < ApplicationRecord
       true
     else
       messages.each do |message|
-        errors[:base] << message
+        errors.add(:base, message)
       end
       false
     end
