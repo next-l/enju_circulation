@@ -37,8 +37,8 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           command: |
-          sudo apt update
-          sudo apt install -y openjdk-8-jre-headless
+            sudo apt update
+            sudo apt install -y openjdk-8-jre-headless
       - run:
           command: sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
       - run: bundle exec rake db:create
