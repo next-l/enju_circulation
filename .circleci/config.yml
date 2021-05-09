@@ -1,10 +1,7 @@
-# Ruby CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
 version: 2.1
 orbs:
-  slack: circleci/slack@3.4.2
+  ruby: circleci/ruby@0.1.2
+
 jobs:
   build:
     docker:
