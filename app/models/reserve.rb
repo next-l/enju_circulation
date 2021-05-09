@@ -133,7 +133,7 @@ class Reserve < ApplicationRecord
   def valid_item?
     if item_identifier.present?
       item = Item.find_by(item_identifier: item_identifier)
-      errors[:base] << I18n.t('reserve.invalid_item') unless item
+      errors.add(:base, I18n.t('reserve.invalid_item')) unless item
     end
   end
 
@@ -141,7 +141,7 @@ class Reserve < ApplicationRecord
     return nil if force_retaining == '1'
     if item && !retained?
       if Reserve.retained.where(item_id: item.id).count > 0
-        errors[:base] << I18n.t('reserve.attempt_to_update_retained_reservation')
+        errors.add(:base, I18n.t('reserve.attempt_to_update_retained_reservation'))
       end
     end
   end
@@ -154,7 +154,7 @@ class Reserve < ApplicationRecord
     if canceled_at.blank? && expired_at?
       if !completed?
         if expired_at.beginning_of_day < Time.zone.now
-          errors[:base] << I18n.t('reserve.invalid_date')
+          errors.add(:base, I18n.t('reserve.invalid_date'))
         end
       end
     end
@@ -227,19 +227,19 @@ class Reserve < ApplicationRecord
   def available_for_reservation?
     if manifestation
       if checked_out_now?
-        errors[:base] << I18n.t('reserve.this_manifestation_is_already_checked_out')
+        errors.add(:base, I18n.t('reserve.this_manifestation_is_already_checked_out'))
       end
 
       if manifestation.is_reserved_by?(user)
-        errors[:base] << I18n.t('reserve.this_manifestation_is_already_reserved')
+        errors.add(:base, I18n.t('reserve.this_manifestation_is_already_reserved'))
       end
       if user.try(:reached_reservation_limit?, manifestation)
-        errors[:base] << I18n.t('reserve.excessed_reservation_limit')
+        errors.add(:base, I18n.t('reserve.excessed_reservation_limit'))
       end
 
       expired_period = manifestation.try(:reservation_expired_period, user)
       if expired_period.nil?
-        errors[:base] << I18n.t('reserve.this_patron_cannot_reserve')
+        errors.add(:base, I18n.t('reserve.this_patron_cannot_reserve'))
       end
     end
   end
@@ -314,7 +314,7 @@ class Reserve < ApplicationRecord
 
   def manifestation_must_include_item
     if manifestation && item && !completed?
-      errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
+      errors.add(:base, I18n.t('reserve.invalid_item')) unless manifestation.items.include?(item)
     end
   end
 

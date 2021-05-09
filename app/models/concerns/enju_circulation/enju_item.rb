@@ -58,8 +58,8 @@ module EnjuCirculation
       #circulation_status.name_will_change!
       #return unless circulation_status.name_change.first == 'Removed'
       return unless circulation_status.name == 'Removed'
-      errors[:base] << I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_rented') if rented?
-      errors[:base] << I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_reserved') if reserved?
+      errors.add(:base, I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_rented')) if rented?
+      errors.add(:base, I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_reserved')) if reserved?
     end
 
     def checkout_status(user)

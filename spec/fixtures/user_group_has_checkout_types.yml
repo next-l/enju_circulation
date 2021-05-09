@@ -2,7 +2,7 @@
 user_group_has_checkout_type_00001: 
   checkout_type_id: 1
   updated_at: 2007-12-23 03:13:08.107022 +09:00
-  checkout_limit: 3
+  checkout_limit: 4
   reservation_limit: 2
   user_group_id: 1
   checkout_period: 1
