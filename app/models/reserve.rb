@@ -308,7 +308,7 @@ class Reserve < ApplicationRecord
 
   def manifestation_must_include_item
     if manifestation && item && !completed?
-      errors[:base] << I18n.t('reserve.invalid_item') unless manifestation.items.include?(item)
+      errors.add(:base, I18n.t('reserve.invalid_item')) unless manifestation.items.include?(item)
     end
   end
 

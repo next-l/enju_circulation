@@ -23,12 +23,12 @@ class Checkin < ApplicationRecord
     end
 
     if checkout.item.blank?
-      errors[:base] << I18n.t('checkin.item_not_found')
+      errors.add(:base, I18n.t('checkin.item_not_found'))
       return
     end
 
     if basket.items.find_by(id: checkout.item_id)
-      errors[:base] << I18n.t('checkin.already_checked_in')
+      errors.add(:base, I18n.t('checkin.already_checked_in'))
     end
   end
 
