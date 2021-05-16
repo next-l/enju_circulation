@@ -10,12 +10,12 @@ end
 #
 # Table name: user_reserve_stat_transitions
 #
-#  id                   :bigint           not null, primary key
+#  id                   :integer          not null, primary key
 #  to_state             :string
 #  metadata             :text             default({})
 #  sort_key             :integer
 #  user_reserve_stat_id :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  created_at           :datetime
+#  updated_at           :datetime
 #  most_recent          :boolean          not null
 #
