@@ -105,6 +105,8 @@ module EnjuCirculation
         manifestation.next_reservation.transition_to!(:completed)
         manifestation.reload
       end
+
+      reload
       update!(circulation_status: CirculationStatus.find_by(name: 'On Loan'))
     end
 
