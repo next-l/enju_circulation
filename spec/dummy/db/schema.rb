@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "carrier_type_has_checkout_types", id: :serial, force: :cascade do |t|
@@ -679,8 +680,20 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.string "isil"
     t.float "latitude"
     t.float "longitude"
+    t.jsonb "display_name_translations", default: {}, null: false
     t.index ["library_group_id"], name: "index_libraries_on_library_group_id"
     t.index ["name"], name: "index_libraries_on_name"
+  end
+
+  create_table "library_group_translations", force: :cascade do |t|
+    t.integer "library_group_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "login_banner"
+    t.text "footer_banner"
+    t.index ["library_group_id"], name: "index_library_group_translations_on_library_group_id"
+    t.index ["locale"], name: "index_library_group_translations_on_locale"
   end
 
   create_table "library_groups", id: :serial, force: :cascade do |t|
@@ -699,7 +712,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.text "settings"
     t.text "html_snippet"
     t.string "book_jacket_source"
-    t.integer "max_number_of_results", default: 500
+    t.integer "max_number_of_results", default: 1000
     t.boolean "family_name_first", default: true
     t.string "screenshot_generator"
     t.integer "pub_year_facet_range_interval", default: 10
@@ -710,6 +723,11 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.bigint "header_logo_file_size"
     t.datetime "header_logo_updated_at"
     t.text "header_logo_meta"
+    t.jsonb "display_name_translations", default: {}, null: false
+    t.jsonb "login_banner_translations", default: {}, null: false
+    t.jsonb "footer_banner_translations", default: {}, null: false
+    t.string "email"
+    t.index ["email"], name: "index_library_groups_on_email"
     t.index ["short_name"], name: "index_library_groups_on_short_name"
     t.index ["user_id"], name: "index_library_groups_on_user_id"
   end
@@ -1065,6 +1083,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "request_types", id: :serial, force: :cascade do |t|
@@ -1074,6 +1093,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "reserve_stat_has_manifestations", id: :serial, force: :cascade do |t|
@@ -1226,6 +1246,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "series_statement_merge_lists", id: :serial, force: :cascade do |t|
@@ -1278,6 +1299,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.datetime "updated_at"
     t.datetime "deleted_at"
     t.boolean "closed", default: false, null: false
+    t.jsonb "display_name_translations", default: {}, null: false
     t.index ["library_id"], name: "index_shelves_on_library_id"
   end
 
@@ -1397,6 +1419,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_033454) do
     t.integer "number_of_day_to_notify_overdue", default: 0, null: false
     t.integer "number_of_day_to_notify_due_date", default: 0, null: false
     t.integer "number_of_time_to_notify_overdue", default: 0, null: false
+    t.jsonb "display_name_translations", default: {}, null: false
   end
 
   create_table "user_has_roles", id: :serial, force: :cascade do |t|
