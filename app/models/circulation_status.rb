@@ -4,7 +4,6 @@ class CirculationStatus < ApplicationRecord
 
   scope :available_for_checkout, -> { where(name: 'Available On Shelf') }
   has_many :items
-  translates :display_name
 
   private
 

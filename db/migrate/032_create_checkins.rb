@@ -1,11 +1,14 @@
-class CreateCheckins < ActiveRecord::Migration[5.2]
-  def change
-    create_table :checkins, comment: '返却' do |t|
-      t.references :item, foreign_key: true, null: false, comment: '返却資料の所蔵ID'
-      t.references :librarian, foreign_key: {to_table: :users}, comment: '返却担当者ユーザID'
-      t.references :basket, comment: '返却セッションID'
-
+class CreateCheckins < ActiveRecord::Migration[4.2]
+  def self.up
+    create_table :checkins do |t|
+      t.references :item, index: true, foreign_key: true, null: false
+      t.references :librarian, index: true
+      t.references :basket, index: true
       t.timestamps
     end
+  end
+
+  def self.down
+    drop_table :checkins
   end
 end

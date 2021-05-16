@@ -1,4 +1,4 @@
-class CreateManifestationCustomValues < ActiveRecord::Migration[6.0]
+class CreateManifestationCustomValues < ActiveRecord::Migration[5.2]
   def change
     create_table :manifestation_custom_values do |t|
       t.references :manifestation_custom_property, null: false, foreign_key: true, index: {name: 'index_manifestation_custom_values_on_custom_property_id'}
@@ -7,6 +7,6 @@ class CreateManifestationCustomValues < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
-    add_index :manifestation_custom_values, [:manifestation_custom_property_id, :manifestation_id], unique: true, name: 'index_manifestation_custom_values_on_property_and_manifestation'
+    add_index :manifestation_custom_values, [:manifestation_custom_property_id, :manifestation_id], unique: true, name: 'index_manifestation_custom_values_on_property_manifestation'
   end
 end

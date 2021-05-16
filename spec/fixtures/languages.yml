@@ -1333,7 +1333,9 @@ language_00104:
 language_00132: 
   position: 132
   name: Pali
-  display_name: Pali
+  display_name: !binary |
+    UMSBbGk=
+
   iso_639_1: pi
   iso_639_2: pli
   iso_639_3: pli

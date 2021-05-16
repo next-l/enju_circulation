@@ -1,4 +1,4 @@
-class CreateItemCustomValues < ActiveRecord::Migration[6.0]
+class CreateItemCustomValues < ActiveRecord::Migration[5.2]
   def change
     create_table :item_custom_values do |t|
       t.references :item_custom_property, null: false, foreign_key: true, index: {name: 'index_item_custom_values_on_custom_property_id'}
