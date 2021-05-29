@@ -19,13 +19,13 @@ class CheckedItem < ApplicationRecord
 
   def available_for_checkout?
     if item.blank?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.item_not_found')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.item_not_found'))
       return false
     end
 
     if item.rent?
       unless item.circulation_status.name == 'Missing'
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.already_checked_out')
+        errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.already_checked_out'))
       end
     end
 
@@ -35,13 +35,13 @@ class CheckedItem < ApplicationRecord
         item.save
         set_due_date
       else
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
+        errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout'))
         return false
       end
     end
 
     if item_checkout_type.blank?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.this_group_cannot_checkout')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.this_group_cannot_checkout'))
       return false
     end
     # ここまでは絶対に貸出ができない場合
@@ -49,19 +49,19 @@ class CheckedItem < ApplicationRecord
     return true if ignore_restriction == "1"
 
     if item.not_for_loan?
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.not_available_for_checkout'))
     end
 
     if item.reserved?
       unless item.manifestation.next_reservation.user == basket.user
-        errors[:base] << I18n.t('activerecord.errors.messages.checked_item.reserved_item_included')
+        errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.reserved_item_included'))
       end
     end
 
     checkout_count = basket.user.checked_item_count
     checkout_type = item_checkout_type.checkout_type
     if checkout_count[:"#{checkout_type.name}"] >= item_checkout_type.checkout_limit
-      errors[:base] << I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit')
+      errors.add(:base, I18n.t('activerecord.errors.messages.checked_item.excessed_checkout_limit'))
     end
     
     if errors[:base].empty?
@@ -80,28 +80,18 @@ class CheckedItem < ApplicationRecord
   def set_due_date
     return nil unless item_checkout_type
     if due_date_string.present?
-      self.due_date = Time.zone.parse(due_date_string).try(:end_of_day)
+      self.due_date = Time.zone.parse(due_date_string)&.end_of_day
     else
-      lending_rule = item.lending_rule(basket.user)
-      return nil if lending_rule.nil?
-
-      if lending_rule.fixed_due_date.blank?
-        # self.due_date = item_checkout_type.checkout_period.days.since Time.zone.today
-        self.due_date = lending_rule.loan_period.days.since(Time.zone.now).end_of_day
-      else
-        # self.due_date = item_checkout_type.fixed_due_date
-        self.due_date = lending_rule.fixed_due_date.tomorrow.end_of_day
-      end
+      due_date = item_checkout_type.checkout_period.days.since Time.zone.today
       # 返却期限日が閉館日の場合
-      while item.shelf.library.closed?(due_date)
-        if item_checkout_type.set_due_date_before_closing_day
-          self.due_date = due_date.yesterday.end_of_day
-        else
-          self.due_date = due_date.tomorrow.end_of_day
-        end
+      if item.shelf.library.closed?(due_date) && item_checkout_type.set_due_date_after_closing_day
+        self.due_date = due_date.tomorrow.end_of_day
+      else
+        self.due_date = due_date.end_of_day
       end
     end
-    return due_date
+
+    self
   end
 
   def set_item
