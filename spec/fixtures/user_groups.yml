@@ -1,7 +1,7 @@
 --- 
 user_group_00001: 
-  name: not_specified
-  display_name: (not specified)
+  name: first_group
+  display_name_translations: {"en": "first_group", "ja": "最初のグループ"}
   updated_at: 2007-12-13 21:00:51.564542 +09:00
   id: 1
   note: ""
@@ -11,7 +11,7 @@ user_group_00001:
   number_of_day_to_notify_due_date: 2
 user_group_00002: 
   name: user
-  display_name: User
+  display_name_translations: {"en": "User", "ja": "一般ユーザ"}
   updated_at: 2007-12-23 03:14:56.836548 +09:00
   id: 2
   note: ""
@@ -22,10 +22,29 @@ user_group_00002:
   number_of_time_to_notify_overdue: 6
 user_group_00003: 
   name: faculty
-  display_name: Faculty
+  display_name_translations: {"en": "Faculty", "ja": "教職員"}
   updated_at: 2007-12-23 03:15:05.134351 +09:00
   id: 3
   note: ""
   created_at: 2007-12-23 03:15:05.126457 +09:00
   position: 3
   valid_period_for_new_user: 730
+
+# == Schema Information
+#
+# Table name: user_groups
+#
+#  id                               :bigint           not null, primary key
+#  name                             :string
+#  display_name                     :text
+#  note                             :text
+#  position                         :integer
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  valid_period_for_new_user        :integer          default(0), not null
+#  expired_at                       :datetime
+#  number_of_day_to_notify_overdue  :integer          default(7), not null
+#  number_of_day_to_notify_due_date :integer          default(3), not null
+#  number_of_time_to_notify_overdue :integer          default(3), not null
+#  display_name_translations        :jsonb            not null
+#

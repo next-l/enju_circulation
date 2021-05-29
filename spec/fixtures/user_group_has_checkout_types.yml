@@ -108,3 +108,4 @@ user_group_has_checkout_type_00008:
 #  updated_at                      :datetime
 #  current_checkout_count          :integer
 #
+

@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+editor:
+  name: editor
+  display_name_translations: {"en": "Editor", "ja": "編者"}
+  note: 
+  position: 1
+  id: 1
+
+translator:
+  name: translator
+  display_name_translations: {"en": "Translator", "ja": "訳者"}
+  note: 
+  position: 2
+  id: 2
+
+illustrator:
+  name: illustrator
+  display_name_translations: {"en": "Illustrator", "ja": "作画者"}
+  note: 
+  position: 3
+  id: 3

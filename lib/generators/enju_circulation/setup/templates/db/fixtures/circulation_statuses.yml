@@ -1,84 +1,84 @@
 --- 
 circulation_status_00001: 
-  name: Available For Pickup  
+  name: Available For Pickup
   display_name_translations: {"en": "Available For Pickup", "ja": "持ち出し可能"}
   id: 1
   note: ""
   position: 1
 circulation_status_00002: 
-  name: Available On Shelf  
+  name: Available On Shelf
   display_name_translations: {"en": "Available on Shelf", "ja": "在架（利用可能）"}
   id: 2
   note: ""
   position: 2
 circulation_status_00003: 
-  name: Circulation Status Undefined  
+  name: Circulation Status Undefined
   display_name_translations: {"en": "Circulation Status Undefined", "ja": "貸出状態未定義"}
   id: 3
   note: ""
   position: 3
 circulation_status_00004: 
-  name: Claimed Returned Or Never Borrowed  
+  name: Claimed Returned Or Never Borrowed
   display_name_translations: {"en": "Claimed Returned Or Never Borrowed", "ja": "利用者が返却済み、または未貸出と主張"}
   id: 4
   note: ""
   position: 4
 circulation_status_00005: 
-  name: In Process  
+  name: In Process
   display_name_translations: {"en": "In Process", "ja": "作業中"}
   id: 5
   note: ""
   position: 5
 circulation_status_00006: 
-  name: In Transit Between Library Locations  
+  name: In Transit Between Library Locations
   display_name_translations: {"en": "In Transit Between Library Locations", "ja": "移動中"}
   id: 6
   note: ""
   position: 6
 circulation_status_00007: 
-  name: Lost  
+  name: Lost
   display_name_translations: {"en": "Lost", "ja": "紛失"}
   id: 7
   note: ""
   position: 7
 circulation_status_00008: 
-  name: Missing  
+  name: Missing
   display_name_translations: {"en": "Missing", "ja": "行方不明"}
   id: 8
   note: ""
   position: 8
 circulation_status_00009: 
-  name: Not Available  
+  name: Not Available
   display_name_translations: {"en": "Not Available", "ja": "利用不可"}
   id: 9
   note: ""
   position: 9
 circulation_status_00010: 
-  name: On Loan  
+  name: On Loan
   display_name_translations: {"en": "On Loan", "ja": "貸出中"}
   id: 10
   note: ""
   position: 10
 circulation_status_00011: 
-  name: On Order  
+  name: On Order
   display_name_translations: {"en": "On Order", "ja": "発注中"}
   id: 11
   note: ""
   position: 11
 circulation_status_00012: 
-  name: Pending Transfer  
+  name: Pending Transfer
   display_name_translations: {"en": "Pending Transfer", "ja": "移動予定"}
   id: 12
   note: ""
   position: 12
 circulation_status_00013: 
-  name: Recalled  
+  name: Recalled
   display_name_translations: {"en": "Recalled",  "ja": "返却依頼中"}
   id: 13
   note: ""
   position: 13
 circulation_status_00014: 
-  name: Waiting To Be Reshelved  
+  name: Waiting To Be Reshelved
   display_name_translations: {"en": "Waiting To Be Reshelved", "ja": "再配架待ち"}
   id: 14
   note: ""

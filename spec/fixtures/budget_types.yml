@@ -2,14 +2,14 @@
 
 public_fund:
   name: Public fund
-  display_name: {"en": "Public fund"}
+  display_name: Public fund
   note: 
   position: 1
   id: 1
 
 donation:
   name: Donation
-  display_name: {"en": "Donation"}
+  display_name: Donation
   note: 
   position: 2
   id: 2
@@ -18,13 +18,12 @@ donation:
 #
 # Table name: budget_types
 #
-#  id                        :bigint           not null, primary key
-#  name                      :string
-#  display_name              :text
-#  note                      :text
-#  position                  :integer
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  display_name_translations :jsonb            not null
+#  id           :integer         not null, primary key
+#  name         :string(255)
+#  display_name :text
+#  note         :text
+#  position     :integer
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
