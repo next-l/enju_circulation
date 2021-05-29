@@ -33,7 +33,7 @@ class UserGroupHasCheckoutType < ApplicationRecord
         'UPDATE user_group_has_checkout_types
           SET current_checkout_count = ?
           WHERE user_group_id = ? AND checkout_type_id = ?;',
-          result.current_checkout_count, result.user_group_id, result.checkout_type_id
+        result.current_checkout_count, result.user_group_id, result.checkout_type_id
       ]
       ActiveRecord::Base.connection.execute(
         send(:sanitize_sql_array, update_sql)

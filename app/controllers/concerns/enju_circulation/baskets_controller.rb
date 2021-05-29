@@ -17,7 +17,7 @@ module EnjuCirculation
             format.html {
               redirect_to new_checked_item_url(basket_id: @basket.id), notice: t('controller.successfully_created', model: t('activerecord.models.basket'))
             }
-            format.json { render json: @basket, status: :created, location:  @basket }
+            format.json { render json: @basket, status: :created, location: @basket }
           else
             format.html { render action: "new" }
             format.json { render json: @basket.errors, status: :unprocessable_entity }
