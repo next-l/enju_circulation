@@ -26,9 +26,6 @@ class Reserve < ApplicationRecord
   belongs_to :request_status_type
   belongs_to :pickup_location, class_name: 'Library', optional: true
 
-  validates_associated :user, :librarian, :request_status_type
-  validates :manifestation, associated: true # , on: :create
-  validates :user, :request_status_type, presence: true
   validates :manifestation, presence: true, unless: Proc.new{|reserve|
     reserve.completed?
   }

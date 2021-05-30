@@ -3,7 +3,6 @@ class CheckedItem < ApplicationRecord
   belongs_to :basket
   belongs_to :librarian, class_name: 'User', optional: true
 
-  validates_associated :item, :basket, on: :update
   validates :item, :basket, :due_date, presence: { on: :update }
   validates :item_id, uniqueness: { scope: :basket_id }
   validate :available_for_checkout?, on: :create
