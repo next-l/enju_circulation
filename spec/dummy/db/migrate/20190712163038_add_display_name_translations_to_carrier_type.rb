@@ -8,7 +8,7 @@ class AddDisplayNameTranslationsToCarrierType < ActiveRecord::Migration[5.2]
       :create_types,
       :form_of_works,
       :frequencies,
-      # :languages,
+      :languages,
       :licenses,
       :manifestation_relationship_types,
       :medium_of_performances,

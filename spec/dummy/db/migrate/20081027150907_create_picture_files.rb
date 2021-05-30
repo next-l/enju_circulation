@@ -3,9 +3,7 @@ class CreatePictureFiles < ActiveRecord::Migration[4.2]
     create_table :picture_files do |t|
       t.integer :picture_attachable_id
       t.string :picture_attachable_type
-      t.string :content_type
       t.text :title
-      t.string :thumbnail
       t.integer :position
 
       t.timestamps
