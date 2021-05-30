@@ -39,7 +39,6 @@ module EnjuCirculation
       belongs_to :checkout_type
       has_one :item_has_use_restriction, dependent: :destroy
       has_one :use_restriction, through: :item_has_use_restriction
-      validates :circulation_status, :checkout_type, presence: true
       validate :check_circulation_status
 
       searchable do
