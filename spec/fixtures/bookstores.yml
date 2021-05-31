@@ -10,9 +10,7 @@ bookstore_00001:
   created_at: 2008-02-10 11:14:57.605329 +09:00
   position: 1
 bookstore_00002: 
-  name: !binary |
-    5a+E6LSI
-
+  name: test2
   fax_number: ""
   updated_at: 2008-02-10 12:15:14.840711 +09:00
   telephone_number: ""
@@ -22,9 +20,7 @@ bookstore_00002:
   created_at: 2008-02-10 11:16:02.598844 +09:00
   position: 2
 bookstore_00003: 
-  name: !binary |
-    5pyJ6Zqj5aCC
-
+  name: test3
   fax_number: ""
   updated_at: 2008-02-10 12:15:33.555463 +09:00
   telephone_number: ""
@@ -34,9 +30,7 @@ bookstore_00003:
   created_at: 2008-02-10 11:16:11.585284 +09:00
   position: 3
 bookstore_00004: 
-  name: !binary |
-    57SA5LyK5ZyL5bGL5pu45bqX
-
+  name: test4
   fax_number: ""
   updated_at: 2008-02-10 12:16:07.726445 +09:00
   telephone_number: ""
@@ -46,9 +40,7 @@ bookstore_00004:
   created_at: 2008-02-10 11:16:22.565660 +09:00
   position: 4
 bookstore_00005: 
-  name: !binary |
-    5Li45ZaE
-
+  name: test5
   fax_number: ""
   updated_at: 2008-02-10 12:16:17.990285 +09:00
   telephone_number: ""
@@ -58,9 +50,7 @@ bookstore_00005:
   created_at: 2008-02-10 12:15:44.923758 +09:00
   position: 5
 bookstore_00006: 
-  name: !binary |
-    5Zuz5pu46aSo5rWB6YCa44K744Oz44K/44O8
-
+  name: test6
   fax_number: ""
   updated_at: 2008-02-10 12:16:25.906073 +09:00
   telephone_number: ""
@@ -84,16 +74,16 @@ bookstore_00007:
 #
 # Table name: bookstores
 #
-#  id               :bigint           not null, primary key
-#  name             :text             not null
-#  zip_code         :string
+#  id               :integer         not null, primary key
+#  name             :text            not null
+#  zip_code         :string(255)
 #  address          :text
 #  note             :text
-#  telephone_number :string
-#  fax_number       :string
-#  url              :string
+#  telephone_number :string(255)
+#  fax_number       :string(255)
+#  url              :string(255)
 #  position         :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
