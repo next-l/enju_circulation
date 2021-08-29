@@ -45,8 +45,8 @@ describe CheckoutsController do
         response.should be_successful
       end
 
-      it 'should get index txt' do
-        get :index, format: 'txt'
+      it 'should get index text' do
+        get :index, format: :text
         assigns(:checkouts).count.should eq assigns(:checkouts).total_entries
         response.should be_successful
       end
@@ -117,9 +117,9 @@ describe CheckoutsController do
         response.should redirect_to checkouts_url
       end
 
-      it 'should get my index in txt format' do
-        get :index, params: { user_id: users(:user1).username, format: 'txt' }
-        response.should redirect_to checkouts_url(format: :txt)
+      it 'should get my index in text format' do
+        get :index, params: { user_id: users(:user1).username, format: :text }
+        response.should redirect_to checkouts_url(format: :text)
         assigns(:checkouts).should be_nil
       end
 

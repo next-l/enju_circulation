@@ -52,7 +52,7 @@ class ManifestationCheckoutStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @manifestation_checkout_stat }
-      format.txt
+      format.text
       format.js
     end
   end

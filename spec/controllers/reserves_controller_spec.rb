@@ -38,8 +38,8 @@ describe ReservesController do
         assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
       end
 
-      it 'should get index txt without user_id' do
-        get :index, format: 'txt'
+      it 'should get index text without user_id' do
+        get :index, format: :text
         response.should be_successful
         assigns(:reserves).count.should eq assigns(:reserves).total_entries
         assigns(:reserves).should eq(Reserve.order('reserves.id DESC').includes(:manifestation))
@@ -51,8 +51,8 @@ describe ReservesController do
         assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation).page(1))
       end
 
-      it 'should get index txt with user_id' do
-        get :index, params: { user_id: users(:user1).username, format: 'txt' }
+      it 'should get index text with user_id' do
+        get :index, params: { user_id: users(:user1).username, format: :text }
         response.should be_successful
         assigns(:reserves).should eq(users(:user1).reserves.order('reserves.id DESC').includes(:manifestation))
       end
@@ -89,8 +89,8 @@ describe ReservesController do
         response.should render_template('index')
       end
 
-      it 'should get my index txt' do
-        get :index, format: :txt
+      it 'should get my index text' do
+        get :index, format: :text
         response.should be_successful
         response.should render_template('index')
       end
@@ -106,9 +106,9 @@ describe ReservesController do
           response.should redirect_to reserves_url(format: :rss)
         end
 
-        it 'should redirect to my reservation txt' do
-          get :index, params: { user_id: users(:user1).username, format: 'txt' }
-          response.should redirect_to reserves_url(format: :txt)
+        it 'should redirect to my reservation text' do
+          get :index, params: { user_id: users(:user1).username, format: :text }
+          response.should redirect_to reserves_url(format: :text)
         end
       end
 

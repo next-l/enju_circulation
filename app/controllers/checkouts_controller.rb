@@ -21,7 +21,7 @@ class CheckoutsController < ApplicationController
       end
     end
 
-    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
+    if ['text', 'rss'].include?(params[:format].to_s.downcase)
       per_page = 500
       page = 1
     else
@@ -100,7 +100,7 @@ class CheckoutsController < ApplicationController
       format.json { render json: @checkouts }
       format.rss  { render layout: false }
       format.ics
-      format.txt
+      format.text
       format.atom
     end
   end

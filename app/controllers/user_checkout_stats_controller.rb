@@ -27,7 +27,7 @@ class UserCheckoutStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user_checkout_stat }
-      format.txt
+      format.text
     end
   end
 

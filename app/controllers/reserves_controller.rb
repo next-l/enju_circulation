@@ -34,7 +34,7 @@ class ReservesController < ApplicationController
       sort_column = :created_at
       order = :desc
     end
-    if ['txt', 'rss'].include?(params[:format].to_s.downcase)
+    if ['text', 'rss'].include?(params[:format].to_s.downcase)
       per_page = 500
       page = 1
     else
@@ -105,7 +105,7 @@ class ReservesController < ApplicationController
       format.json { render json: @reserves }
       format.rss  { render layout: false }
       format.atom
-      format.txt
+      format.text
     end
   end
 
