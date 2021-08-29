@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/{log,private,solr,tmp}/**/*"] - Dir["spec/dummy/db/*.sqlite3"]
 
   s.add_dependency "enju_library", "~> 0.3.9"
-  s.add_dependency "enju_biblio", "~> 0.3.10"
+  s.add_dependency "enju_biblio", "~> 0.3.13"
   s.add_dependency "enju_manifestation_viewer", "~> 0.3.4"
   s.add_dependency "enju_event", "~> 0.3.2"
 
