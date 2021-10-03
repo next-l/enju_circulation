@@ -17,7 +17,7 @@ class UserCheckoutStatsController < ApplicationController
   # GET /user_checkout_stats/1
   # GET /user_checkout_stats/1.json
   def show
-    if params[:format] == 'txt'
+    if request.format.text?
       per_page = 65534
     else
       per_page = CheckoutStatHasUser.default_per_page

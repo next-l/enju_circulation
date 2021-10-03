@@ -18,7 +18,7 @@ class ManifestationReserveStatsController < ApplicationController
   # GET /manifestation_reserve_stats/1
   # GET /manifestation_reserve_stats/1.json
   def show
-    if params[:format] == 'txt'
+    if request.format.text?
       per_page = 65534
     else
       per_page = ReserveStatHasManifestation.default_per_page

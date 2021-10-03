@@ -17,7 +17,7 @@ class UserReserveStatsController < ApplicationController
   # GET /user_reserve_stats/1
   # GET /user_reserve_stats/1.json
   def show
-    if params[:format] == 'txt'
+    if request.format.text?
       per_page = 65534
     else
       per_page = ReserveStatHasUser.default_per_page

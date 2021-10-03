@@ -17,7 +17,7 @@ class ManifestationCheckoutStatsController < ApplicationController
   # GET /manifestation_checkout_stats/1
   # GET /manifestation_checkout_stats/1.json
   def show
-    if params[:format] == 'txt'
+    if request.format.text?
       per_page = 65534
     else
       per_page = CheckoutStatHasManifestation.default_per_page
