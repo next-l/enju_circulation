@@ -100,7 +100,7 @@ class CheckoutsController < ApplicationController
       format.json { render json: @checkouts }
       format.rss  { render layout: false }
       format.ics
-      format.txt
+      format.text
       format.atom
     end
   end

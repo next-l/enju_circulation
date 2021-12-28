@@ -105,7 +105,7 @@ class ReservesController < ApplicationController
       format.json { render json: @reserves }
       format.rss  { render layout: false }
       format.atom
-      format.txt
+      format.text
     end
   end
 

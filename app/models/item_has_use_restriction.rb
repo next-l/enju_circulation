@@ -1,5 +1,5 @@
 class ItemHasUseRestriction < ApplicationRecord
-  belongs_to :item
+  belongs_to :item, touch: true
   belongs_to :use_restriction
   accepts_nested_attributes_for :use_restriction
 

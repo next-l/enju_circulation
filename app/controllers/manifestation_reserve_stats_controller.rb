@@ -28,7 +28,7 @@ class ManifestationReserveStatsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @manifestation_reserve_stat }
-      format.txt
+      format.text
     end
   end
 

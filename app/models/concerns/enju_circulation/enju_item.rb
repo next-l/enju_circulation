@@ -55,7 +55,7 @@ module EnjuCirculation
     end
 
     def check_circulation_status
-      return unless circulation_status.name == 'Removed'
+      return unless circulation_status&.name == 'Removed'
       errors.add(:base, I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_rented')) if rented?
       errors.add(:base, I18n.t('activerecord.errors.models.item.attributes.circulation_status_id.is_reserved')) if reserved?
     end
