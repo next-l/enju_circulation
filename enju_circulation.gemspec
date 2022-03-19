@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "enju_library", "~> 0.3.9"
   s.add_dependency "enju_biblio", "~> 0.3.13"
   s.add_dependency "enju_manifestation_viewer", "~> 0.3.4"
-  s.add_dependency "enju_event", "~> 0.3.2"
+  s.add_dependency "enju_event", "~> 0.3.5"
 
   s.add_development_dependency "capybara"
   s.add_development_dependency "coveralls", "~> 0.8.23"
