@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/{log,private,solr,tmp}/**/*"] - Dir["spec/dummy/db/*.sqlite3"]
 
-  s.add_dependency "enju_library", "~> 0.3.10"
-  s.add_dependency "enju_biblio", "~> 0.3.14"
+  s.add_dependency "enju_library", "~> 0.3.11"
+  s.add_dependency "enju_biblio", "~> 0.3.15"
   s.add_dependency "enju_manifestation_viewer", "~> 0.3.5"
   s.add_dependency "enju_event", "~> 0.3.5"
 
